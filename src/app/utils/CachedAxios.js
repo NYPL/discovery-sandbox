@@ -7,11 +7,10 @@ function CachedAxios() {
       return Promise.resolve(this.cache[url]);
     }
 
-    return axios(url)
-      .then((res) => {
-        this.cache[url] = res;
-        return res;
-      });
+    return axios(url).then((res) => {
+      this.cache[url] = res;
+      return res;
+    });
   };
 }
 

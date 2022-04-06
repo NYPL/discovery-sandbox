@@ -18,18 +18,21 @@ const LoadingLayer = ({ loading, title, focus }) => {
       }}
     >
       <div
-        className="loadingLayer focus-trap"
-        aria-labelledby="loading-animation"
-        aria-describedby="loading-description"
-        role="alert"
-        tabIndex="0"
+        className='loadingLayer focus-trap'
+        aria-labelledby='loading-animation'
+        aria-describedby='loading-description'
+        role='alert'
+        tabIndex='0'
       >
-        <div className="loadingLayer-layer" />
-        <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+        <div className='loadingLayer-layer' />
+        <div className='loadingLayer-texts'>
+          <span
+            id='loading-animation'
+            className='loadingLayer-texts-loadingWord'
+          >
             Loading...
           </span>
-          <div className="loadingDots">
+          <div className='loadingDots'>
             <span />
             <span />
             <span />

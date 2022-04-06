@@ -1,10 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import {
-  LeftWedgeIcon,
-  RightWedgeIcon,
-} from '@nypl/dgx-svg-icons';
+import { LeftWedgeIcon, RightWedgeIcon } from '@nypl/dgx-svg-icons';
 
 import appConfig from '../../data/appConfig';
 
@@ -25,12 +22,8 @@ class Pagination extends React.Component {
    * @param {string} type Either 'Next' or 'Previous' to indication link label.
    */
   getPage(page, type = 'Next') {
-    const {
-      hasNext,
-      subjectShowPage,
-      shepNavigation,
-      subjectIndexPage,
-    } = this.props;
+    const { hasNext, subjectShowPage, shepNavigation, subjectIndexPage } =
+      this.props;
     if (!page) return null;
     if (type === 'Next' && subjectShowPage && !hasNext) return null;
     const intPage = parseInt(page, 10);
@@ -46,8 +39,8 @@ class Pagination extends React.Component {
     } else {
       apiUrl = this.props.createAPIQuery({ page: pageNum });
       localUrl = `${this.props.to.pathname}${pageNum}`;
-      url = apiUrl ?
-        { pathname: `${appConfig.baseUrl}/search?${apiUrl}` }
+      url = apiUrl
+        ? { pathname: `${appConfig.baseUrl}/search?${apiUrl}` }
         : { pathname: localUrl };
     }
 
@@ -56,34 +49,27 @@ class Pagination extends React.Component {
     linkProps.rel = type.toLowerCase();
     linkProps.className = `${type.toLowerCase()}-link`;
 
-    if (!subjectIndexPage) linkProps.onClick = e => this.onClick(e, pageNum);
+    if (!subjectIndexPage) linkProps.onClick = (e) => this.onClick(e, pageNum);
 
     return (
-      <Link
-        aria-controls={this.props.ariaControls}
-        {...linkProps}
-      >
+      <Link aria-controls={this.props.ariaControls} {...linkProps}>
         {svg} {type}
       </Link>
     );
   }
 
   render() {
-    const {
-      total,
-      page,
-      perPage,
-      subjectIndexPage,
-    } = this.props;
+    const { total, page, perPage, subjectIndexPage } = this.props;
     const subjectHeadingPage = this.props.subjectShowPage || subjectIndexPage;
     let nextPage;
-    const prevPage = page > 1 || subjectIndexPage ? this.getPage(page, 'Previous') : null;
+    const prevPage =
+      page > 1 || subjectIndexPage ? this.getPage(page, 'Previous') : null;
     let pageFactor;
     let totalPages;
     if (!subjectHeadingPage) {
       if (!total) return null;
       pageFactor = parseInt(page, 10) * perPage;
-      nextPage = (pageFactor >= total) ? null : this.getPage(page, 'Next');
+      nextPage = pageFactor >= total ? null : this.getPage(page, 'Next');
       totalPages = Math.ceil(total / perPage);
     } else {
       if (total && perPage) totalPages = Math.ceil(total / perPage);
@@ -91,20 +77,22 @@ class Pagination extends React.Component {
     }
 
     return (
-      <nav className="nypl-results-pagination showPage" aria-label="More results">
+      <nav
+        className='nypl-results-pagination showPage'
+        aria-label='More results'
+      >
         {prevPage}
-        {page && totalPages
-          ?
-            <span
-              className={`page-count${page === 1 ? ' first' : ''}${!nextPage ? ' last-page' : ''}`}
-              aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
-              tabIndex="0"
-            >
-              Page {page} of {totalPages}
-            </span>
-          :
-            null
-        }
+        {page && totalPages ? (
+          <span
+            className={`page-count${page === 1 ? ' first' : ''}${
+              !nextPage ? ' last-page' : ''
+            }`}
+            aria-label={`Displaying page ${page} out of ${totalPages} total pages.`}
+            tabIndex='0'
+          >
+            Page {page} of {totalPages}
+          </span>
+        ) : null}
         {nextPage}
       </nav>
     );

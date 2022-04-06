@@ -299,7 +299,6 @@ export class HoldRequest extends React.Component {
       closedLocations,
       recapClosedLocations,
       nonRecapClosedLocations,
-      holdRequestNotification,
       searchKeywords,
       loading,
       params,
@@ -315,7 +314,9 @@ export class HoldRequest extends React.Component {
         : '';
     const itemId = params && params.itemId ? params.itemId : '';
     const selectedItem = bib && itemId ? LibraryItem.getItem(bib, itemId) : {};
-    const selectedItemAvailable = selectedItem ? selectedItem.available : false;
+    const selectedItemAvailable = selectedItem
+      ? selectedItem.physRequestable
+      : false;
     const bibLink =
       bibId && title ? (
         <h2>

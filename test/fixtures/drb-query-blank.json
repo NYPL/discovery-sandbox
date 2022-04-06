@@ -1,1 +1,2105 @@
-{"data":{"facets":{"formats":[{"count":908731,"value":"text/html"},{"count":879559,"value":"application/pdf"},{"count":13819,"value":"application/webpub+json"},{"count":4435,"value":"application/html+edd"},{"count":3234,"value":"application/epub+xml"},{"count":3234,"value":"application/epub+zip"},{"count":3218,"value":"application/x.html+edd"},{"count":120,"value":"catalog"},{"count":34,"value":"edd"},{"count":33,"value":"application/pdf+json"}],"languages":[{"count":694260,"value":"English"},{"count":79254,"value":"German"},{"count":56824,"value":"French"},{"count":49765,"value":"Undetermined"},{"count":18490,"value":"Spanish"},{"count":14715,"value":"Italian"},{"count":12036,"value":"Latin"},{"count":7660,"value":"Russian"},{"count":2374,"value":"Ancient Greek (to 1453)"},{"count":4591,"value":"Dutch"},{"count":3478,"value":"Danish"},{"count":3379,"value":"Portuguese"},{"count":2736,"value":"Swedish"},{"count":2629,"value":"Chinese"},{"count":3129,"value":"No linguistic content"},{"count":3039,"value":"Japanese"},{"count":2461,"value":"Multiple languages"},{"count":1988,"value":"Polish"},{"count":1659,"value":"Norwegian"},{"count":1302,"value":"Modern Greek (1453-)"},{"count":1656,"value":"Czech"},{"count":860,"value":"Hungarian"},{"count":1606,"value":"Arabic"},{"count":1593,"value":"Armenian"},{"count":1076,"value":"Thai"},{"count":1104,"value":"Hebrew"},{"count":736,"value":"Ottoman Turkish (1500-1928)"},{"count":645,"value":"Yiddish"},{"count":491,"value":"Catalan"},{"count":347,"value":"Finnish"},{"count":483,"value":"Croatian"},{"count":450,"value":"Serbian"},{"count":306,"value":"Romanian"},{"count":390,"value":"Turkish"},{"count":312,"value":"Bulgarian"},{"count":337,"value":"Ukrainian"},{"count":348,"value":"Icelandic"},{"count":222,"value":"Middle High German (ca. 1050-1500)"},{"count":162,"value":"Slovenian"},{"count":286,"value":"Old French (842-ca. 1400)"},{"count":297,"value":"Middle English (1100-1500)"},{"count":297,"value":"Persian"},{"count":124,"value":"Slovak"},{"count":189,"value":"Sanskrit"},{"count":209,"value":"Tagalog"},{"count":170,"value":"Korean"},{"count":193,"value":"Welsh"},{"count":159,"value":"Old English (ca. 450-1100)"},{"count":202,"value":"Uncoded languages"},{"count":108,"value":"Indonesian"},{"count":164,"value":"Middle French (ca. 1400-1600)"},{"count":122,"value":"Esperanto"},{"count":148,"value":"Gothic"},{"count":122,"value":"Irish"},{"count":86,"value":"Afrikaans"},{"count":99,"value":"Vietnamese"},{"count":80,"value":"Malay (macrolanguage)"},{"count":81,"value":"Lithuanian"},{"count":59,"value":"Norwegian Bokm\u00e5l"},{"count":69,"value":"Western Frisian"},{"count":65,"value":"Urdu"},{"count":37,"value":"Estonian"},{"count":63,"value":"Old Proven\u00e7al (to 1500)"},{"count":71,"value":"Syriac"},{"count":65,"value":"Church Slavic"},{"count":68,"value":"Hindi"},{"count":56,"value":"Scots"},{"count":47,"value":"Tamil"},{"count":67,"value":"Beng"},{"count":38,"value":"Scottish Gaelic"},{"count":49,"value":"Akkadian"},{"count":33,"value":"Latvian"},{"count":44,"value":"Coptic"},{"count":49,"value":"Low German"},{"count":33,"value":"Pali"},{"count":45,"value":"Basque"},{"count":43,"value":"Occitan (post 1500)"},{"count":33,"value":"Bengali"},{"count":30,"value":"Javanese"},{"count":2,"value":"Serrano"},{"count":29,"value":"Old High German (ca. 750-1050)"},{"count":35,"value":"Official Aramaic (700-300 BCE)"},{"count":27,"value":"Georgian"},{"count":34,"value":"Marathi"},{"count":25,"value":"Galician"},{"count":28,"value":"Old Norse"},{"count":22,"value":"Hawaiian"},{"count":21,"value":"Albanian"},{"count":23,"value":"Belarusian"},{"count":19,"value":"Telugu"},{"count":25,"value":"Irigwe"},{"count":10,"value":"Cree"},{"count":25,"value":"Azerbaijani"},{"count":15,"value":"Ojibwa"},{"count":22,"value":"Maltese"},{"count":21,"value":"Newari"},{"count":19,"value":"Romany"},{"count":18,"value":"Judeo-Arabic"},{"count":17,"value":"Panjabi"},{"count":18,"value":"Burmese"},{"count":15,"value":"Dakota"},{"count":15,"value":"Geez"},{"count":18,"value":"Norwegian Nynorsk"},{"count":15,"value":"Sundanese"},{"count":12,"value":"Romansh"},{"count":13,"value":"Gujarati"},{"count":16,"value":"Nai"},{"count":16,"value":"Swahili (macrolanguage)"},{"count":15,"value":"Egyptian (Ancient)"},{"count":12,"value":"Maori"},{"count":10,"value":"Amharic"},{"count":14,"value":"Kalaallisut"},{"count":14,"value":"Kannada"},{"count":13,"value":"Middle Dutch (ca. 1050-1350)"},{"count":13,"value":"Bashkir"},{"count":10,"value":"Breton"},{"count":7,"value":"Mongolian"},{"count":10,"value":"Pahlavi"},{"count":13,"value":"Uzbek"},{"count":8,"value":"Cebuano"},{"count":8,"value":"Malayalam"},{"count":11,"value":"Oriya (macrolanguage)"},{"count":9,"value":"Pampanga"},{"count":8,"value":"Samoan"},{"count":10,"value":"Bosnian"},{"count":10,"value":"Classical Syriac"},{"count":8,"value":"Ladino"},{"count":8,"value":"Gwich\u02bcin"},{"count":6,"value":"Iloko"},{"count":9,"value":"Sumerian"},{"count":7,"value":"Faroese"},{"count":4,"value":"Hausa"},{"count":8,"value":"Kazakh"},{"count":8,"value":"Macedonian"},{"count":7,"value":"Tibetan"},{"count":7,"value":"Creek"},{"count":7,"value":"Ewe"},{"count":5,"value":"Pangasinan"},{"count":6,"value":"Tajik"},{"count":7,"value":"Uighur"},{"count":4,"value":"Xhosa"},{"count":6,"value":"Zulu"},{"count":6,"value":"Cherokee"},{"count":6,"value":"Guarequena"},{"count":5,"value":"Inuktitut"},{"count":4,"value":"Navajo"},{"count":5,"value":"Northwest Alaska Inupiatun"},{"count":5,"value":"Tahitian"},{"count":5,"value":"Afar"},{"count":2,"value":"Avestan"},{"count":3,"value":"Bikol"},{"count":5,"value":"Central Khmer"},{"count":3,"value":"Choctaw"},{"count":3,"value":"Kawi"},{"count":4,"value":"Marshallese"},{"count":3,"value":"Papiamento"},{"count":5,"value":"Sicilian"},{"count":5,"value":"Swiss German"},{"count":4,"value":"Turkmen"},{"count":3,"value":"Chagatai"},{"count":3,"value":"Cornish"},{"count":3,"value":"Fijian"},{"count":2,"value":"Hiligaynon"},{"count":2,"value":"Kosraean"},{"count":4,"value":"Lao"},{"count":3,"value":"Laru"},{"count":3,"value":"Manx"},{"count":3,"value":"Mohawk"},{"count":4,"value":"Nepali (macrolanguage)"},{"count":4,"value":"Old Persian (ca. 600-400 B.C.)"},{"count":3,"value":"Samaritan Aramaic"},{"count":4,"value":"Sandawe"},{"count":4,"value":"Tagoi"},{"count":3,"value":"Buginese"},{"count":2,"value":"Chinook jargon"},{"count":1,"value":"Gilbertese"},{"count":2,"value":"Grebo"},{"count":3,"value":"Klingon"},{"count":3,"value":"Makasar"},{"count":3,"value":"Malagasy"},{"count":3,"value":"Mi'kmaq"},{"count":2,"value":"Palauan"},{"count":2,"value":"Pohnpeian"},{"count":3,"value":"Sinhala"},{"count":3,"value":"Slave (Athapascan)"},{"count":3,"value":"Tatar"},{"count":3,"value":"Tonga (Tonga Islands)"},{"count":2,"value":"Aragonese"},{"count":2,"value":"Arapaho"},{"count":2,"value":"Assamese"},{"count":2,"value":"Chamorro"},{"count":2,"value":"Chechen"},{"count":2,"value":"Duala"},{"count":2,"value":"Efik"},{"count":2,"value":"Ethiopian Sign Language"},{"count":2,"value":"Fang (Equatorial Guinea)"},{"count":2,"value":"Guarani"},{"count":2,"value":"Herero"},{"count":2,"value":"Kabyle"},{"count":2,"value":"Lushai"}]},"paging":{"currentPage":1,"firstPage":1,"lastPage":91002,"nextPage":2,"previousPage":null,"recordsPerPage":10},"totalWorks":910015,"works":[{"alt_titles":[],"authors":[{"lcnaf":"","name":"United States. National Credit Union Administration.","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":1,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1975","type":"publication_date"},{"date":"1975","type":"copyright_date"}],"edition":null,"edition_id":737754,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"University of Michigan","roles":["responsible","provider"],"viaf":""}],"drm":null,"item_id":1148685,"links":[{"link_id":2092952,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015055397114"},{"link_id":2092951,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015055397114"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[{"link_id":5363134,"mediaType":"image/jpeg","url":"drb-files-qa.s3.amazonaws.com/covers/hathi/mdp.39015055397114.jpeg"}],"measurements":[{"type":"government_document","value":"1"}],"publication_date":1975,"publication_place":"District of Columbia","publishers":[{"lcnaf":"","name":"National Credit Union Administration","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Type-of-membership classification for federally-insured credit unions.","volume":null,"work_uuid":"00002497-de4b-43eb-8429-0b40338fc0d4"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[],"title":"Type-of-membership classification for federally-insured credit unions.","uuid":"00002497-de4b-43eb-8429-0b40338fc0d4"},{"alt_titles":[],"authors":[],"contributors":[],"dates":null,"edition_count":1,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1907","type":"publication_date"},{"date":"2021-05-04","type":"catalog_date"}],"edition":null,"edition_id":3577288,"edition_statement":null,"extent":"1 online resource.","items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":4144227,"links":[{"link_id":5664526,"mediaType":"text/html","url":"WU9FB9WH4A.search.serialssolutions.com/?V=1.0&L=WU9FB9WH4A&S=JCs&C=TC_043473007&T=marc&tab=BOOKS"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"nypl"}],"languages":[],"links":[],"measurements":[],"publication_date":1907,"publication_place":"No country","publishers":[{"lcnaf":"","name":"[s.n.],","viaf":""}],"sub_title":null,"summary":"{\"Title from content provider.\"}","table_of_contents":null,"title":"Financial Records - Mortgage Investments - General Agents' Correspondence [electronic resource] : 28 Bowery Street","volume":null,"work_uuid":"000037c7-82b4-4be7-bcb6-ca37ad3341b6"}],"languages":[],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"","controlNo":"","heading":"Electronic books"}],"title":"Financial Records - Mortgage Investments - General Agents' Correspondence [electronic resource] : 28 Bowery Street","uuid":"000037c7-82b4-4be7-bcb6-ca37ad3341b6"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Wolzogen, Ernst von, (1855-1934.)","primary":"","viaf":""}],"contributors":[],"dates":null,"edition_count":7,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1933","type":"publication_date"}],"edition":null,"edition_id":1055101,"edition_statement":null,"extent":"1 p. l., 5-399, [1] p. ;","items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":1467518,"links":[{"link_id":2670617,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/25086506.html"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"oclc"}],"languages":[{"iso_2":"de","iso_3":"deu","language":"German"}],"links":[],"measurements":[],"publication_date":1933,"publication_place":null,"publishers":[{"lcnaf":"","name":"Josef Singer Verlag","viaf":""},{"lcnaf":"","name":"J. Singer,","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Der Kraft-Mayr","volume":null,"work_uuid":"0000759f-210c-434d-b2d2-ee4f6fa5897f"},{"alt_titles":[],"contributors":[],"dates":[{"date":"1897","type":"publication_date"},{"date":"1897","type":"copyright_date"}],"edition":null,"edition_id":1055096,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":1467517,"links":[{"link_id":2670616,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/4246710.html"},{"link_id":2670615,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/25086512.html"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"oclc"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Wisconsin","roles":["provider","responsible"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1467516,"links":[{"link_id":2670614,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=wu.89038310322"},{"link_id":2670613,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=wu.89038310322"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Michigan","roles":["provider","responsible"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1467515,"links":[{"link_id":2670612,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015014655487"},{"link_id":2670611,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015014655487"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"Harvard University","roles":["provider","responsible"],"viaf":""}],"drm":null,"item_id":1467514,"links":[{"link_id":2670610,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.hny9al"},{"link_id":2670609,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=hvd.hny9al"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"de","iso_3":"deu","language":"German"}],"links":[],"measurements":[{"type":"government_document","value":"0"}],"publication_date":1897,"publication_place":null,"publishers":[{"lcnaf":"","name":"J. Engelhorn,","viaf":""},{"lcnaf":"","name":"Singer,","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Der Kraft-Mayr","volume":null,"work_uuid":"0000759f-210c-434d-b2d2-ee4f6fa5897f"}],"languages":[{"iso_2":"de","iso_3":"deu","language":"German"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"fast","controlNo":"(OCoLC)fst00039270","heading":"Liszt, Franz"},{"authority":"fast","controlNo":"(OCoLC)fst01726679","heading":"Musical fiction"},{"authority":"fast","controlNo":"(OCoLC)fst01423787","heading":"Fiction"},{"authority":"","controlNo":"","heading":"Foreign language books"}],"title":"Der Kraft-Mayr","uuid":"0000759f-210c-434d-b2d2-ee4f6fa5897f"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Yehuda Moraly","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":1,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1998","type":"Issued"}],"edition":null,"edition_id":2115500,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":2516294,"links":[{"link_id":4113084,"mediaType":"text/html","url":"books.openedition.org/pufc/1710"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"http://purl.org/coar/access_right/c_abf2","rightsStatement":"open access","source":"doab"}],"source":"doab"}],"languages":[{"iso_2":"fr","iso_3":"fra","language":"French"}],"links":[],"measurements":[],"publication_date":null,"publication_place":null,"publishers":[{"lcnaf":"","name":"Presses universitaires de Franche-Comt\u00e9","viaf":""}],"sub_title":null,"summary":"\u00c0 travers quatorze exp\u00e9riences de mise en sc\u00e8ne effectu\u00e9es par Claudel entre 1917 et 1949, ce texte voudrait saisir ce que ses recherches sc\u00e9niques ont de plus original : le mouvement consid\u00e9r\u00e9 comme un langage, l\u2019union du drame et de la musique, la mise en sc\u00e8ne de l\u2019\u00e9criture. On y d\u00e9couvre un autre Claudel, \u00e0 la fois proche d\u2019Appia et d\u2019Artaud, \u00e0 la recherche d\u2019un nouveau drame sacr\u00e9 dont il a su pr\u00e9voir tous les aspects. \u00c0 la fronti\u00e8re entre les deux mondes, le po\u00e8te explicateur nous montre \u00e0 l\u2019aide des aventures humaines, la Cr\u00e9ation du monde, du tohu-bohu aux chants toujours improvis\u00e9s de l\u2019humanit\u00e9 future. Il nous apprend \u00e0 lire, dans le monde mat\u00e9riel, les signes de l\u2019Au-del\u00e0.","table_of_contents":null,"title":"Claudel metteur en sc\u00e8ne : La fronti\u00e8re entre les deux mondes","volume":null,"work_uuid":"00008783-6873-447b-947b-2c5a517574cc"}],"languages":[{"iso_2":"fr","iso_3":"fra","language":"French"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"","controlNo":"","heading":"drame"},{"authority":"","controlNo":"","heading":"\u00e9criture"},{"authority":"","controlNo":"","heading":"recherche sc\u00e9nique"},{"authority":"","controlNo":"","heading":"mouvement"},{"authority":"","controlNo":"","heading":"musique"},{"authority":"","controlNo":"","heading":"langage"}],"title":"Claudel metteur en sc\u00e8ne : La fronti\u00e8re entre les deux mondes","uuid":"00008783-6873-447b-947b-2c5a517574cc"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Wait, James R.","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":1,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1960","type":"copyright_date"},{"date":"1960","type":"publication_date"}],"edition":null,"edition_id":2049090,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"University of Illinois at Urbana-Champaign","roles":["responsible","provider"],"viaf":""}],"drm":null,"item_id":2455443,"links":[{"link_id":4041257,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=uiug.30112105089749"},{"link_id":4041256,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=uiug.30112105089749"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"University of Michigan","roles":["responsible"],"viaf":""},{"lcnaf":"","name":"Technical Report Archive and Image Library","roles":["provider"],"viaf":""}],"drm":null,"item_id":2455442,"links":[{"link_id":4041255,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015086508754"},{"link_id":4041254,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015086508754"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"1"}],"publication_date":1960,"publication_place":"District of Columbia","publishers":[{"lcnaf":"","name":"Distributed by U.S. Dept. of Commerce, Office of Technical Services","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Field strength calculations for E.L.F. radio waves / by James R. Wait and Nancy F. Carter","volume":null,"work_uuid":"00009002-934a-44b6-82b9-5777872d95e5"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[],"title":"Field strength calculations for E.L.F. radio waves / by James R. Wait and Nancy F. Carter","uuid":"00009002-934a-44b6-82b9-5777872d95e5"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Burritt, Elihu, 1810-1879.","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":1,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1854","type":"copyright_date"},{"date":"1854","type":"publication_date"}],"edition":null,"edition_id":2593687,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"New York Public Library","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":3010285,"links":[{"link_id":4839276,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=nyp.33433074798152"},{"link_id":4839277,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433074798152"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"0"}],"publication_date":1854,"publication_place":"Massachusetts","publishers":[{"lcnaf":"","name":"Phillips, Sampson, and company; J. c. Derby","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Thoughts and things at home and abroad. By Elihu Burritt ... With a memoir, by Mary Howitt","volume":null,"work_uuid":"00009dc9-d570-4c9d-afce-666fd146ee16"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[],"title":"Thoughts and things at home and abroad. By Elihu Burritt ... With a memoir, by Mary Howitt","uuid":"00009dc9-d570-4c9d-afce-666fd146ee16"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Wandner, Stephen A. ()","primary":"","viaf":""}],"contributors":[{"lcnaf":"","name":"Wandner, Stephen A.","roles":["editor"],"viaf":""}],"dates":null,"edition_count":2,"editions":[{"alt_titles":[],"contributors":[{"lcnaf":"","name":"Project Muse","roles":["manufacturer","distributor"],"viaf":""}],"dates":[{"date":"2017","type":"publication_date"},{"date":"2018","type":"publication_date"}],"edition":null,"edition_id":1559734,"edition_statement":null,"extent":"1 online resource (pages cm.)","items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":2050340,"links":[{"link_id":3484001,"mediaType":"application/webpub+json","url":"drb-files-qa.s3.amazonaws.com/manifests/muse/muse66600.json"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"https://creativecommons.org/licenses/by-nc/4.0/","rightsStatement":"Creative Commons Attribution-NonCommercial 4.0 International","source":"muse"}],"source":"muse"},{"content_type":"ebook","contributors":[],"drm":null,"item_id":2050339,"links":[{"link_id":3484000,"mediaType":"text/html","url":"muse.jhu.edu/book/60684/"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"https://creativecommons.org/licenses/by-nc/4.0/","rightsStatement":"Creative Commons Attribution-NonCommercial 4.0 International","source":"muse"}],"source":"muse"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[],"publication_date":2017,"publication_place":"Kalamazoo, Michigan","publishers":[{"lcnaf":"","name":"W.E. Upjohn Institute for Employment Research","viaf":""}],"sub_title":null,"summary":"{\"Includes bibliographical references and index\"}","table_of_contents":null,"title":"Unemployment Insurance Reform Fixing a Broken System","volume":null,"work_uuid":"0000b1d2-bf42-4ce3-823b-fe8c4facac86"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"","controlNo":"","heading":"Electronic books"},{"authority":"fast","controlNo":"(OCoLC)fst01725696","heading":"Unemployment insurance"},{"authority":"","controlNo":"","heading":"Unemployment insurance -- Government policy -- United States"},{"authority":"fast","controlNo":"(OCoLC)fst01204155","heading":"United States"},{"authority":"fast","controlNo":"","heading":"BUSINESS & ECONOMICS"},{"authority":"","controlNo":"","heading":"Unemployment insurance -- United States"}],"title":"Unemployment Insurance Reform Fixing a Broken System","uuid":"0000b1d2-bf42-4ce3-823b-fe8c4facac86"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"Knox-Little, W. J. 1839-1918.","primary":"true","viaf":""},{"lcnaf":"","name":"Little, William John Knox, 1839-1918.","primary":"true","viaf":""},{"lcnaf":"","name":"Great Britain. Indian Currency Committee, 1893.","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":4,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1897","type":"publication_date"},{"date":"1897","type":"copyright_date"}],"edition":null,"edition_id":1255232,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Harvard University","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717365,"links":[{"link_id":3138044,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044023324346"},{"link_id":3138043,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=hvd.32044023324346"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Harvard University","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717364,"links":[{"link_id":3138042,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044021581525"},{"link_id":3138041,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=hvd.32044021581525"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Yale University","roles":["responsible","provider","digitizer"],"viaf":""}],"drm":null,"item_id":1717363,"links":[{"link_id":3138040,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=yale.39002053404563"},{"link_id":3138039,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=yale.39002053404563"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"New York Public Library","roles":["responsible","provider"],"viaf":""}],"drm":null,"item_id":1717362,"links":[{"link_id":3138038,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433068287097"},{"link_id":3138037,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=nyp.33433068287097"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Michigan","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717361,"links":[{"link_id":3138036,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015067855331"},{"link_id":3138035,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015067855331"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"0"}],"publication_date":1897,"publication_place":"England","publishers":[{"lcnaf":"","name":"T. Whittaker","viaf":""},{"lcnaf":"","name":"Isbister & Co., ltd","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"St. Francis of Assisi; his times, life and work; lectures delivered in substance in the Ladye chapel of Worcester cathedral in the Lent of 1896, by W. J. Knox Little","volume":null,"work_uuid":"0000b93b-dd8e-4817-b095-8eda15e8945b"},{"alt_titles":[],"contributors":[],"dates":[{"date":"1898","type":"publication_date"},{"date":"1898","type":"copyright_date"}],"edition":null,"edition_id":1255233,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Chicago","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717366,"links":[{"link_id":3138046,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=chi.50816589"},{"link_id":3138045,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=chi.50816589"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"0"}],"publication_date":1898,"publication_place":"New York (State)","publishers":[{"lcnaf":"","name":"T. Whittaker","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"St. Francis of Assisi : his times, life and work : lectures delivered in substance in the Ladye chapel of Worcester cathedral in the Lent of 1896 / by W. J. Knox Little","volume":null,"work_uuid":"0000b93b-dd8e-4817-b095-8eda15e8945b"},{"alt_titles":[],"contributors":[],"dates":[{"date":"1893","type":"copyright_date"},{"date":"1893","type":"publication_date"}],"edition":null,"edition_id":1255231,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Michigan","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717360,"links":[{"link_id":3138034,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015077835836"},{"link_id":3138033,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015077835836"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"New York Public Library","roles":["responsible","provider"],"viaf":""}],"drm":null,"item_id":1717359,"links":[{"link_id":3138032,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=nyp.33433023168135"},{"link_id":3138031,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433023168135"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Harvard University","roles":["responsible","provider"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":1717358,"links":[{"link_id":3138030,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044081941650"},{"link_id":3138029,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=hvd.32044081941650"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"1"}],"publication_date":1893,"publication_place":"District of Columbia","publishers":[{"lcnaf":"","name":"Government Printing Office","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Report of the Commission appointed to inquire into the Indian currency : commonly known as the Herschell report on the coinage of silver in India, with the accompanying correspondence and testimony / [Indian Currency Committee]","volume":null,"work_uuid":"0000b93b-dd8e-4817-b095-8eda15e8945b"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[],"title":"Report of the Commission appointed to inquire into the Indian currency : commonly known as the Herschell report on the coinage of silver in India, with the accompanying correspondence and testimony / [Indian Currency Committee]","uuid":"0000b93b-dd8e-4817-b095-8eda15e8945b"},{"alt_titles":[],"authors":[{"lcnaf":"","name":"John, Fritz, (1910-1994.)","primary":"","viaf":""}],"contributors":[],"dates":null,"edition_count":2,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1953","type":"publication_date"},{"date":"1953","type":"copyright_date"}],"edition":null,"edition_id":646765,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":997858,"links":[{"link_id":1820077,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/66788928.html"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"oclc"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"University of Michigan","roles":["provider","responsible"],"viaf":""}],"drm":null,"item_id":997857,"links":[{"link_id":1820076,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015018046774"},{"link_id":1820075,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015018046774"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain (us_only)","rightsStatement":"Public Domain when viewed in the US","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[{"link_id":4849379,"mediaType":"image/jpeg","url":"drb-files-qa.s3.amazonaws.com/covers/hathi/mdp.39015018046774.jpeg"}],"measurements":[{"type":"government_document","value":"0"}],"publication_date":1953,"publication_place":null,"publishers":[{"lcnaf":"","name":"?","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Partial differential equations. ","volume":null,"work_uuid":"0000bbd6-b188-414c-9ff0-badcb25c3495"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"fast","controlNo":"(OCoLC)fst00893484","heading":"Differential equations, Partial"}],"title":"Partial differential equations. ","uuid":"0000bbd6-b188-414c-9ff0-badcb25c3495"},{"alt_titles":[],"authors":[{"lcnaf":"","name":" Committee on the Judiciary.","primary":"true","viaf":""},{"lcnaf":"","name":"United States. Congress. Senate. Committee on the Judiciary.","primary":"true","viaf":""},{"lcnaf":"","name":" Senate.","primary":"true","viaf":""},{"lcnaf":"","name":" Subcommittee to Investigate Juvenile Delinquency.","primary":"true","viaf":""}],"contributors":[],"dates":null,"edition_count":3,"editions":[{"alt_titles":[],"contributors":[],"dates":[{"date":"1954","type":"publication_date"}],"edition":null,"edition_id":2369589,"edition_statement":null,"extent":"iii, 90 pages ;","items":[{"content_type":"ebook","contributors":[],"drm":null,"item_id":2773905,"links":[{"link_id":2394097,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/6552876.html"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"oclc"},{"content_type":"ebook","contributors":[],"drm":null,"item_id":2773904,"links":[{"link_id":2394095,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/722796769.html"},{"link_id":2394096,"mediaType":"text/html","url":"catalog.hathitrust.org/api/volumes/oclc/6453445.html"}],"location":null,"measurements":null,"modified":null,"rights":[],"source":"oclc"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[],"publication_date":1954,"publication_place":null,"publishers":[{"lcnaf":"","name":"U.S. Govt. Print. Off.,","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Juvenile delinquency (Denver, Colo.)","volume":null,"work_uuid":"0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"},{"alt_titles":[],"contributors":[],"dates":[{"date":"1954","type":"copyright_date"},{"date":"1954","type":"publication_date"}],"edition":null,"edition_id":2369588,"edition_statement":null,"extent":null,"items":[{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Minnesota","roles":["provider","responsible"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":2773903,"links":[{"link_id":2394093,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=umn.31951001562162y"},{"link_id":2394094,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=umn.31951001562162y"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""},{"lcnaf":"","name":"The Ohio State University","roles":["provider","responsible"],"viaf":""}],"drm":null,"item_id":2773902,"links":[{"link_id":2394092,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=osu.32435010092948"},{"link_id":2394091,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=osu.32435010092948"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Minnesota","roles":["provider","responsible"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":2773901,"links":[{"link_id":2394089,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=umn.319510025677592"},{"link_id":2394090,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=umn.319510025677592"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"},{"content_type":"ebook","contributors":[{"lcnaf":"","name":"University of Michigan","roles":["provider","responsible"],"viaf":""},{"lcnaf":"","name":"Google","roles":["digitizer"],"viaf":""}],"drm":null,"item_id":2773900,"links":[{"link_id":2394088,"mediaType":"text/html","url":"babel.hathitrust.org/cgi/pt?id=mdp.39015077094079"},{"link_id":2394087,"mediaType":"application/pdf","url":"babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015077094079"}],"location":null,"measurements":null,"modified":null,"rights":[{"license":"public_domain","rightsStatement":"Public Domain","source":"hathitrust"}],"source":"hathitrust"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"links":[],"measurements":[{"type":"government_document","value":"1"}],"publication_date":1954,"publication_place":"District of Columbia","publishers":[{"lcnaf":"","name":"U. S. Govt. Print. Off","viaf":""}],"sub_title":null,"summary":null,"table_of_contents":null,"title":"Juvenile delinquency, Denver, Colo","volume":null,"work_uuid":"0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"}],"languages":[{"iso_2":"en","iso_3":"eng","language":"English"}],"measurements":[],"medium":null,"series":null,"series_position":null,"sub_title":null,"subjects":[{"authority":"fast","controlNo":"(OCoLC)fst00985320","heading":"Juvenile delinquency"},{"authority":"fast","controlNo":"(OCoLC)fst01343207","heading":"Colorado"},{"authority":"","controlNo":"","heading":"Electronic books"}],"title":"Juvenile Delinquency (Denver, Colo.)","uuid":"0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"}]},"responseType":"searchResponse","status":200,"timestamp":"Thu, 13 May 2021 15:12:06 GMT"}
+{
+  "data": {
+    "facets": {
+      "formats": [
+        { "count": 908731, "value": "text/html" },
+        { "count": 879559, "value": "application/pdf" },
+        { "count": 13819, "value": "application/webpub+json" },
+        { "count": 4435, "value": "application/html+edd" },
+        { "count": 3234, "value": "application/epub+xml" },
+        { "count": 3234, "value": "application/epub+zip" },
+        { "count": 3218, "value": "application/x.html+edd" },
+        { "count": 120, "value": "catalog" },
+        { "count": 34, "value": "edd" },
+        { "count": 33, "value": "application/pdf+json" }
+      ],
+      "languages": [
+        { "count": 694260, "value": "English" },
+        { "count": 79254, "value": "German" },
+        { "count": 56824, "value": "French" },
+        { "count": 49765, "value": "Undetermined" },
+        { "count": 18490, "value": "Spanish" },
+        { "count": 14715, "value": "Italian" },
+        { "count": 12036, "value": "Latin" },
+        { "count": 7660, "value": "Russian" },
+        { "count": 2374, "value": "Ancient Greek (to 1453)" },
+        { "count": 4591, "value": "Dutch" },
+        { "count": 3478, "value": "Danish" },
+        { "count": 3379, "value": "Portuguese" },
+        { "count": 2736, "value": "Swedish" },
+        { "count": 2629, "value": "Chinese" },
+        { "count": 3129, "value": "No linguistic content" },
+        { "count": 3039, "value": "Japanese" },
+        { "count": 2461, "value": "Multiple languages" },
+        { "count": 1988, "value": "Polish" },
+        { "count": 1659, "value": "Norwegian" },
+        { "count": 1302, "value": "Modern Greek (1453-)" },
+        { "count": 1656, "value": "Czech" },
+        { "count": 860, "value": "Hungarian" },
+        { "count": 1606, "value": "Arabic" },
+        { "count": 1593, "value": "Armenian" },
+        { "count": 1076, "value": "Thai" },
+        { "count": 1104, "value": "Hebrew" },
+        { "count": 736, "value": "Ottoman Turkish (1500-1928)" },
+        { "count": 645, "value": "Yiddish" },
+        { "count": 491, "value": "Catalan" },
+        { "count": 347, "value": "Finnish" },
+        { "count": 483, "value": "Croatian" },
+        { "count": 450, "value": "Serbian" },
+        { "count": 306, "value": "Romanian" },
+        { "count": 390, "value": "Turkish" },
+        { "count": 312, "value": "Bulgarian" },
+        { "count": 337, "value": "Ukrainian" },
+        { "count": 348, "value": "Icelandic" },
+        { "count": 222, "value": "Middle High German (ca. 1050-1500)" },
+        { "count": 162, "value": "Slovenian" },
+        { "count": 286, "value": "Old French (842-ca. 1400)" },
+        { "count": 297, "value": "Middle English (1100-1500)" },
+        { "count": 297, "value": "Persian" },
+        { "count": 124, "value": "Slovak" },
+        { "count": 189, "value": "Sanskrit" },
+        { "count": 209, "value": "Tagalog" },
+        { "count": 170, "value": "Korean" },
+        { "count": 193, "value": "Welsh" },
+        { "count": 159, "value": "Old English (ca. 450-1100)" },
+        { "count": 202, "value": "Uncoded languages" },
+        { "count": 108, "value": "Indonesian" },
+        { "count": 164, "value": "Middle French (ca. 1400-1600)" },
+        { "count": 122, "value": "Esperanto" },
+        { "count": 148, "value": "Gothic" },
+        { "count": 122, "value": "Irish" },
+        { "count": 86, "value": "Afrikaans" },
+        { "count": 99, "value": "Vietnamese" },
+        { "count": 80, "value": "Malay (macrolanguage)" },
+        { "count": 81, "value": "Lithuanian" },
+        { "count": 59, "value": "Norwegian Bokm\u00e5l" },
+        { "count": 69, "value": "Western Frisian" },
+        { "count": 65, "value": "Urdu" },
+        { "count": 37, "value": "Estonian" },
+        { "count": 63, "value": "Old Proven\u00e7al (to 1500)" },
+        { "count": 71, "value": "Syriac" },
+        { "count": 65, "value": "Church Slavic" },
+        { "count": 68, "value": "Hindi" },
+        { "count": 56, "value": "Scots" },
+        { "count": 47, "value": "Tamil" },
+        { "count": 67, "value": "Beng" },
+        { "count": 38, "value": "Scottish Gaelic" },
+        { "count": 49, "value": "Akkadian" },
+        { "count": 33, "value": "Latvian" },
+        { "count": 44, "value": "Coptic" },
+        { "count": 49, "value": "Low German" },
+        { "count": 33, "value": "Pali" },
+        { "count": 45, "value": "Basque" },
+        { "count": 43, "value": "Occitan (post 1500)" },
+        { "count": 33, "value": "Bengali" },
+        { "count": 30, "value": "Javanese" },
+        { "count": 2, "value": "Serrano" },
+        { "count": 29, "value": "Old High German (ca. 750-1050)" },
+        { "count": 35, "value": "Official Aramaic (700-300 BCE)" },
+        { "count": 27, "value": "Georgian" },
+        { "count": 34, "value": "Marathi" },
+        { "count": 25, "value": "Galician" },
+        { "count": 28, "value": "Old Norse" },
+        { "count": 22, "value": "Hawaiian" },
+        { "count": 21, "value": "Albanian" },
+        { "count": 23, "value": "Belarusian" },
+        { "count": 19, "value": "Telugu" },
+        { "count": 25, "value": "Irigwe" },
+        { "count": 10, "value": "Cree" },
+        { "count": 25, "value": "Azerbaijani" },
+        { "count": 15, "value": "Ojibwa" },
+        { "count": 22, "value": "Maltese" },
+        { "count": 21, "value": "Newari" },
+        { "count": 19, "value": "Romany" },
+        { "count": 18, "value": "Judeo-Arabic" },
+        { "count": 17, "value": "Panjabi" },
+        { "count": 18, "value": "Burmese" },
+        { "count": 15, "value": "Dakota" },
+        { "count": 15, "value": "Geez" },
+        { "count": 18, "value": "Norwegian Nynorsk" },
+        { "count": 15, "value": "Sundanese" },
+        { "count": 12, "value": "Romansh" },
+        { "count": 13, "value": "Gujarati" },
+        { "count": 16, "value": "Nai" },
+        { "count": 16, "value": "Swahili (macrolanguage)" },
+        { "count": 15, "value": "Egyptian (Ancient)" },
+        { "count": 12, "value": "Maori" },
+        { "count": 10, "value": "Amharic" },
+        { "count": 14, "value": "Kalaallisut" },
+        { "count": 14, "value": "Kannada" },
+        { "count": 13, "value": "Middle Dutch (ca. 1050-1350)" },
+        { "count": 13, "value": "Bashkir" },
+        { "count": 10, "value": "Breton" },
+        { "count": 7, "value": "Mongolian" },
+        { "count": 10, "value": "Pahlavi" },
+        { "count": 13, "value": "Uzbek" },
+        { "count": 8, "value": "Cebuano" },
+        { "count": 8, "value": "Malayalam" },
+        { "count": 11, "value": "Oriya (macrolanguage)" },
+        { "count": 9, "value": "Pampanga" },
+        { "count": 8, "value": "Samoan" },
+        { "count": 10, "value": "Bosnian" },
+        { "count": 10, "value": "Classical Syriac" },
+        { "count": 8, "value": "Ladino" },
+        { "count": 8, "value": "Gwich\u02bcin" },
+        { "count": 6, "value": "Iloko" },
+        { "count": 9, "value": "Sumerian" },
+        { "count": 7, "value": "Faroese" },
+        { "count": 4, "value": "Hausa" },
+        { "count": 8, "value": "Kazakh" },
+        { "count": 8, "value": "Macedonian" },
+        { "count": 7, "value": "Tibetan" },
+        { "count": 7, "value": "Creek" },
+        { "count": 7, "value": "Ewe" },
+        { "count": 5, "value": "Pangasinan" },
+        { "count": 6, "value": "Tajik" },
+        { "count": 7, "value": "Uighur" },
+        { "count": 4, "value": "Xhosa" },
+        { "count": 6, "value": "Zulu" },
+        { "count": 6, "value": "Cherokee" },
+        { "count": 6, "value": "Guarequena" },
+        { "count": 5, "value": "Inuktitut" },
+        { "count": 4, "value": "Navajo" },
+        { "count": 5, "value": "Northwest Alaska Inupiatun" },
+        { "count": 5, "value": "Tahitian" },
+        { "count": 5, "value": "Afar" },
+        { "count": 2, "value": "Avestan" },
+        { "count": 3, "value": "Bikol" },
+        { "count": 5, "value": "Central Khmer" },
+        { "count": 3, "value": "Choctaw" },
+        { "count": 3, "value": "Kawi" },
+        { "count": 4, "value": "Marshallese" },
+        { "count": 3, "value": "Papiamento" },
+        { "count": 5, "value": "Sicilian" },
+        { "count": 5, "value": "Swiss German" },
+        { "count": 4, "value": "Turkmen" },
+        { "count": 3, "value": "Chagatai" },
+        { "count": 3, "value": "Cornish" },
+        { "count": 3, "value": "Fijian" },
+        { "count": 2, "value": "Hiligaynon" },
+        { "count": 2, "value": "Kosraean" },
+        { "count": 4, "value": "Lao" },
+        { "count": 3, "value": "Laru" },
+        { "count": 3, "value": "Manx" },
+        { "count": 3, "value": "Mohawk" },
+        { "count": 4, "value": "Nepali (macrolanguage)" },
+        { "count": 4, "value": "Old Persian (ca. 600-400 B.C.)" },
+        { "count": 3, "value": "Samaritan Aramaic" },
+        { "count": 4, "value": "Sandawe" },
+        { "count": 4, "value": "Tagoi" },
+        { "count": 3, "value": "Buginese" },
+        { "count": 2, "value": "Chinook jargon" },
+        { "count": 1, "value": "Gilbertese" },
+        { "count": 2, "value": "Grebo" },
+        { "count": 3, "value": "Klingon" },
+        { "count": 3, "value": "Makasar" },
+        { "count": 3, "value": "Malagasy" },
+        { "count": 3, "value": "Mi'kmaq" },
+        { "count": 2, "value": "Palauan" },
+        { "count": 2, "value": "Pohnpeian" },
+        { "count": 3, "value": "Sinhala" },
+        { "count": 3, "value": "Slave (Athapascan)" },
+        { "count": 3, "value": "Tatar" },
+        { "count": 3, "value": "Tonga (Tonga Islands)" },
+        { "count": 2, "value": "Aragonese" },
+        { "count": 2, "value": "Arapaho" },
+        { "count": 2, "value": "Assamese" },
+        { "count": 2, "value": "Chamorro" },
+        { "count": 2, "value": "Chechen" },
+        { "count": 2, "value": "Duala" },
+        { "count": 2, "value": "Efik" },
+        { "count": 2, "value": "Ethiopian Sign Language" },
+        { "count": 2, "value": "Fang (Equatorial Guinea)" },
+        { "count": 2, "value": "Guarani" },
+        { "count": 2, "value": "Herero" },
+        { "count": 2, "value": "Kabyle" },
+        { "count": 2, "value": "Lushai" }
+      ]
+    },
+    "paging": {
+      "currentPage": 1,
+      "firstPage": 1,
+      "lastPage": 91002,
+      "nextPage": 2,
+      "previousPage": null,
+      "recordsPerPage": 10
+    },
+    "totalWorks": 910015,
+    "works": [
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "United States. National Credit Union Administration.",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 1,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1975", "type": "publication_date" },
+              { "date": "1975", "type": "copyright_date" }
+            ],
+            "edition": null,
+            "edition_id": 737754,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1148685,
+                "links": [
+                  {
+                    "link_id": 2092952,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015055397114"
+                  },
+                  {
+                    "link_id": 2092951,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015055397114"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [
+              {
+                "link_id": 5363134,
+                "mediaType": "image/jpeg",
+                "url": "drb-files-qa.s3.amazonaws.com/covers/hathi/mdp.39015055397114.jpeg"
+              }
+            ],
+            "measurements": [{ "type": "government_document", "value": "1" }],
+            "publication_date": 1975,
+            "publication_place": "District of Columbia",
+            "publishers": [
+              {
+                "lcnaf": "",
+                "name": "National Credit Union Administration",
+                "viaf": ""
+              }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Type-of-membership classification for federally-insured credit unions.",
+            "volume": null,
+            "work_uuid": "00002497-de4b-43eb-8429-0b40338fc0d4"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [],
+        "title": "Type-of-membership classification for federally-insured credit unions.",
+        "uuid": "00002497-de4b-43eb-8429-0b40338fc0d4"
+      },
+      {
+        "alt_titles": [],
+        "authors": [],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 1,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1907", "type": "publication_date" },
+              { "date": "2021-05-04", "type": "catalog_date" }
+            ],
+            "edition": null,
+            "edition_id": 3577288,
+            "edition_statement": null,
+            "extent": "1 online resource.",
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 4144227,
+                "links": [
+                  {
+                    "link_id": 5664526,
+                    "mediaType": "text/html",
+                    "url": "WU9FB9WH4A.search.serialssolutions.com/?V=1.0&L=WU9FB9WH4A&S=JCs&C=TC_043473007&T=marc&tab=BOOKS"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "nypl"
+              }
+            ],
+            "languages": [],
+            "links": [],
+            "measurements": [],
+            "publication_date": 1907,
+            "publication_place": "No country",
+            "publishers": [{ "lcnaf": "", "name": "[s.n.],", "viaf": "" }],
+            "sub_title": null,
+            "summary": "{\"Title from content provider.\"}",
+            "table_of_contents": null,
+            "title": "Financial Records - Mortgage Investments - General Agents' Correspondence [electronic resource] : 28 Bowery Street",
+            "volume": null,
+            "work_uuid": "000037c7-82b4-4be7-bcb6-ca37ad3341b6"
+          }
+        ],
+        "languages": [],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          { "authority": "", "controlNo": "", "heading": "Electronic books" }
+        ],
+        "title": "Financial Records - Mortgage Investments - General Agents' Correspondence [electronic resource] : 28 Bowery Street",
+        "uuid": "000037c7-82b4-4be7-bcb6-ca37ad3341b6"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Wolzogen, Ernst von, (1855-1934.)",
+            "primary": "",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 7,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [{ "date": "1933", "type": "publication_date" }],
+            "edition": null,
+            "edition_id": 1055101,
+            "edition_statement": null,
+            "extent": "1 p. l., 5-399, [1] p. ;",
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 1467518,
+                "links": [
+                  {
+                    "link_id": 2670617,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/25086506.html"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "oclc"
+              }
+            ],
+            "languages": [
+              { "iso_2": "de", "iso_3": "deu", "language": "German" }
+            ],
+            "links": [],
+            "measurements": [],
+            "publication_date": 1933,
+            "publication_place": null,
+            "publishers": [
+              { "lcnaf": "", "name": "Josef Singer Verlag", "viaf": "" },
+              { "lcnaf": "", "name": "J. Singer,", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Der Kraft-Mayr",
+            "volume": null,
+            "work_uuid": "0000759f-210c-434d-b2d2-ee4f6fa5897f"
+          },
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1897", "type": "publication_date" },
+              { "date": "1897", "type": "copyright_date" }
+            ],
+            "edition": null,
+            "edition_id": 1055096,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 1467517,
+                "links": [
+                  {
+                    "link_id": 2670616,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/4246710.html"
+                  },
+                  {
+                    "link_id": 2670615,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/25086512.html"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "oclc"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Wisconsin",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1467516,
+                "links": [
+                  {
+                    "link_id": 2670614,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=wu.89038310322"
+                  },
+                  {
+                    "link_id": 2670613,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=wu.89038310322"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1467515,
+                "links": [
+                  {
+                    "link_id": 2670612,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015014655487"
+                  },
+                  {
+                    "link_id": 2670611,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015014655487"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Harvard University",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1467514,
+                "links": [
+                  {
+                    "link_id": 2670610,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.hny9al"
+                  },
+                  {
+                    "link_id": 2670609,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=hvd.hny9al"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "de", "iso_3": "deu", "language": "German" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "0" }],
+            "publication_date": 1897,
+            "publication_place": null,
+            "publishers": [
+              { "lcnaf": "", "name": "J. Engelhorn,", "viaf": "" },
+              { "lcnaf": "", "name": "Singer,", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Der Kraft-Mayr",
+            "volume": null,
+            "work_uuid": "0000759f-210c-434d-b2d2-ee4f6fa5897f"
+          }
+        ],
+        "languages": [{ "iso_2": "de", "iso_3": "deu", "language": "German" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst00039270",
+            "heading": "Liszt, Franz"
+          },
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst01726679",
+            "heading": "Musical fiction"
+          },
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst01423787",
+            "heading": "Fiction"
+          },
+          {
+            "authority": "",
+            "controlNo": "",
+            "heading": "Foreign language books"
+          }
+        ],
+        "title": "Der Kraft-Mayr",
+        "uuid": "0000759f-210c-434d-b2d2-ee4f6fa5897f"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Yehuda Moraly",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 1,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [{ "date": "1998", "type": "Issued" }],
+            "edition": null,
+            "edition_id": 2115500,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 2516294,
+                "links": [
+                  {
+                    "link_id": 4113084,
+                    "mediaType": "text/html",
+                    "url": "books.openedition.org/pufc/1710"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "http://purl.org/coar/access_right/c_abf2",
+                    "rightsStatement": "open access",
+                    "source": "doab"
+                  }
+                ],
+                "source": "doab"
+              }
+            ],
+            "languages": [
+              { "iso_2": "fr", "iso_3": "fra", "language": "French" }
+            ],
+            "links": [],
+            "measurements": [],
+            "publication_date": null,
+            "publication_place": null,
+            "publishers": [
+              {
+                "lcnaf": "",
+                "name": "Presses universitaires de Franche-Comt\u00e9",
+                "viaf": ""
+              }
+            ],
+            "sub_title": null,
+            "summary": "\u00c0 travers quatorze exp\u00e9riences de mise en sc\u00e8ne effectu\u00e9es par Claudel entre 1917 et 1949, ce texte voudrait saisir ce que ses recherches sc\u00e9niques ont de plus original : le mouvement consid\u00e9r\u00e9 comme un langage, l\u2019union du drame et de la musique, la mise en sc\u00e8ne de l\u2019\u00e9criture. On y d\u00e9couvre un autre Claudel, \u00e0 la fois proche d\u2019Appia et d\u2019Artaud, \u00e0 la recherche d\u2019un nouveau drame sacr\u00e9 dont il a su pr\u00e9voir tous les aspects. \u00c0 la fronti\u00e8re entre les deux mondes, le po\u00e8te explicateur nous montre \u00e0 l\u2019aide des aventures humaines, la Cr\u00e9ation du monde, du tohu-bohu aux chants toujours improvis\u00e9s de l\u2019humanit\u00e9 future. Il nous apprend \u00e0 lire, dans le monde mat\u00e9riel, les signes de l\u2019Au-del\u00e0.",
+            "table_of_contents": null,
+            "title": "Claudel metteur en sc\u00e8ne : La fronti\u00e8re entre les deux mondes",
+            "volume": null,
+            "work_uuid": "00008783-6873-447b-947b-2c5a517574cc"
+          }
+        ],
+        "languages": [{ "iso_2": "fr", "iso_3": "fra", "language": "French" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          { "authority": "", "controlNo": "", "heading": "drame" },
+          { "authority": "", "controlNo": "", "heading": "\u00e9criture" },
+          {
+            "authority": "",
+            "controlNo": "",
+            "heading": "recherche sc\u00e9nique"
+          },
+          { "authority": "", "controlNo": "", "heading": "mouvement" },
+          { "authority": "", "controlNo": "", "heading": "musique" },
+          { "authority": "", "controlNo": "", "heading": "langage" }
+        ],
+        "title": "Claudel metteur en sc\u00e8ne : La fronti\u00e8re entre les deux mondes",
+        "uuid": "00008783-6873-447b-947b-2c5a517574cc"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Wait, James R.",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 1,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1960", "type": "copyright_date" },
+              { "date": "1960", "type": "publication_date" }
+            ],
+            "edition": null,
+            "edition_id": 2049090,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "University of Illinois at Urbana-Champaign",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2455443,
+                "links": [
+                  {
+                    "link_id": 4041257,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=uiug.30112105089749"
+                  },
+                  {
+                    "link_id": 4041256,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=uiug.30112105089749"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Technical Report Archive and Image Library",
+                    "roles": ["provider"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2455442,
+                "links": [
+                  {
+                    "link_id": 4041255,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015086508754"
+                  },
+                  {
+                    "link_id": 4041254,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015086508754"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "1" }],
+            "publication_date": 1960,
+            "publication_place": "District of Columbia",
+            "publishers": [
+              {
+                "lcnaf": "",
+                "name": "Distributed by U.S. Dept. of Commerce, Office of Technical Services",
+                "viaf": ""
+              }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Field strength calculations for E.L.F. radio waves / by James R. Wait and Nancy F. Carter",
+            "volume": null,
+            "work_uuid": "00009002-934a-44b6-82b9-5777872d95e5"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [],
+        "title": "Field strength calculations for E.L.F. radio waves / by James R. Wait and Nancy F. Carter",
+        "uuid": "00009002-934a-44b6-82b9-5777872d95e5"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Burritt, Elihu, 1810-1879.",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 1,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1854", "type": "copyright_date" },
+              { "date": "1854", "type": "publication_date" }
+            ],
+            "edition": null,
+            "edition_id": 2593687,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "New York Public Library",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 3010285,
+                "links": [
+                  {
+                    "link_id": 4839276,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=nyp.33433074798152"
+                  },
+                  {
+                    "link_id": 4839277,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433074798152"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "0" }],
+            "publication_date": 1854,
+            "publication_place": "Massachusetts",
+            "publishers": [
+              {
+                "lcnaf": "",
+                "name": "Phillips, Sampson, and company; J. c. Derby",
+                "viaf": ""
+              }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Thoughts and things at home and abroad. By Elihu Burritt ... With a memoir, by Mary Howitt",
+            "volume": null,
+            "work_uuid": "00009dc9-d570-4c9d-afce-666fd146ee16"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [],
+        "title": "Thoughts and things at home and abroad. By Elihu Burritt ... With a memoir, by Mary Howitt",
+        "uuid": "00009dc9-d570-4c9d-afce-666fd146ee16"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Wandner, Stephen A. ()",
+            "primary": "",
+            "viaf": ""
+          }
+        ],
+        "contributors": [
+          {
+            "lcnaf": "",
+            "name": "Wandner, Stephen A.",
+            "roles": ["editor"],
+            "viaf": ""
+          }
+        ],
+        "dates": null,
+        "edition_count": 2,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [
+              {
+                "lcnaf": "",
+                "name": "Project Muse",
+                "roles": ["manufacturer", "distributor"],
+                "viaf": ""
+              }
+            ],
+            "dates": [
+              { "date": "2017", "type": "publication_date" },
+              { "date": "2018", "type": "publication_date" }
+            ],
+            "edition": null,
+            "edition_id": 1559734,
+            "edition_statement": null,
+            "extent": "1 online resource (pages cm.)",
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 2050340,
+                "links": [
+                  {
+                    "link_id": 3484001,
+                    "mediaType": "application/webpub+json",
+                    "url": "drb-files-qa.s3.amazonaws.com/manifests/muse/muse66600.json"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+                    "rightsStatement": "Creative Commons Attribution-NonCommercial 4.0 International",
+                    "source": "muse"
+                  }
+                ],
+                "source": "muse"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 2050339,
+                "links": [
+                  {
+                    "link_id": 3484000,
+                    "mediaType": "text/html",
+                    "url": "muse.jhu.edu/book/60684/"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+                    "rightsStatement": "Creative Commons Attribution-NonCommercial 4.0 International",
+                    "source": "muse"
+                  }
+                ],
+                "source": "muse"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [],
+            "publication_date": 2017,
+            "publication_place": "Kalamazoo, Michigan",
+            "publishers": [
+              {
+                "lcnaf": "",
+                "name": "W.E. Upjohn Institute for Employment Research",
+                "viaf": ""
+              }
+            ],
+            "sub_title": null,
+            "summary": "{\"Includes bibliographical references and index\"}",
+            "table_of_contents": null,
+            "title": "Unemployment Insurance Reform Fixing a Broken System",
+            "volume": null,
+            "work_uuid": "0000b1d2-bf42-4ce3-823b-fe8c4facac86"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          { "authority": "", "controlNo": "", "heading": "Electronic books" },
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst01725696",
+            "heading": "Unemployment insurance"
+          },
+          {
+            "authority": "",
+            "controlNo": "",
+            "heading": "Unemployment insurance -- Government policy -- United States"
+          },
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst01204155",
+            "heading": "United States"
+          },
+          {
+            "authority": "fast",
+            "controlNo": "",
+            "heading": "BUSINESS & ECONOMICS"
+          },
+          {
+            "authority": "",
+            "controlNo": "",
+            "heading": "Unemployment insurance -- United States"
+          }
+        ],
+        "title": "Unemployment Insurance Reform Fixing a Broken System",
+        "uuid": "0000b1d2-bf42-4ce3-823b-fe8c4facac86"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "Knox-Little, W. J. 1839-1918.",
+            "primary": "true",
+            "viaf": ""
+          },
+          {
+            "lcnaf": "",
+            "name": "Little, William John Knox, 1839-1918.",
+            "primary": "true",
+            "viaf": ""
+          },
+          {
+            "lcnaf": "",
+            "name": "Great Britain. Indian Currency Committee, 1893.",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 4,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1897", "type": "publication_date" },
+              { "date": "1897", "type": "copyright_date" }
+            ],
+            "edition": null,
+            "edition_id": 1255232,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Harvard University",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717365,
+                "links": [
+                  {
+                    "link_id": 3138044,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044023324346"
+                  },
+                  {
+                    "link_id": 3138043,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=hvd.32044023324346"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Harvard University",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717364,
+                "links": [
+                  {
+                    "link_id": 3138042,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044021581525"
+                  },
+                  {
+                    "link_id": 3138041,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=hvd.32044021581525"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Yale University",
+                    "roles": ["responsible", "provider", "digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717363,
+                "links": [
+                  {
+                    "link_id": 3138040,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=yale.39002053404563"
+                  },
+                  {
+                    "link_id": 3138039,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=yale.39002053404563"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "New York Public Library",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717362,
+                "links": [
+                  {
+                    "link_id": 3138038,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433068287097"
+                  },
+                  {
+                    "link_id": 3138037,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=nyp.33433068287097"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717361,
+                "links": [
+                  {
+                    "link_id": 3138036,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015067855331"
+                  },
+                  {
+                    "link_id": 3138035,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015067855331"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "0" }],
+            "publication_date": 1897,
+            "publication_place": "England",
+            "publishers": [
+              { "lcnaf": "", "name": "T. Whittaker", "viaf": "" },
+              { "lcnaf": "", "name": "Isbister & Co., ltd", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "St. Francis of Assisi; his times, life and work; lectures delivered in substance in the Ladye chapel of Worcester cathedral in the Lent of 1896, by W. J. Knox Little",
+            "volume": null,
+            "work_uuid": "0000b93b-dd8e-4817-b095-8eda15e8945b"
+          },
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1898", "type": "publication_date" },
+              { "date": "1898", "type": "copyright_date" }
+            ],
+            "edition": null,
+            "edition_id": 1255233,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Chicago",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717366,
+                "links": [
+                  {
+                    "link_id": 3138046,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=chi.50816589"
+                  },
+                  {
+                    "link_id": 3138045,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=chi.50816589"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "0" }],
+            "publication_date": 1898,
+            "publication_place": "New York (State)",
+            "publishers": [{ "lcnaf": "", "name": "T. Whittaker", "viaf": "" }],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "St. Francis of Assisi : his times, life and work : lectures delivered in substance in the Ladye chapel of Worcester cathedral in the Lent of 1896 / by W. J. Knox Little",
+            "volume": null,
+            "work_uuid": "0000b93b-dd8e-4817-b095-8eda15e8945b"
+          },
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1893", "type": "copyright_date" },
+              { "date": "1893", "type": "publication_date" }
+            ],
+            "edition": null,
+            "edition_id": 1255231,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717360,
+                "links": [
+                  {
+                    "link_id": 3138034,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015077835836"
+                  },
+                  {
+                    "link_id": 3138033,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015077835836"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "New York Public Library",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717359,
+                "links": [
+                  {
+                    "link_id": 3138032,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=nyp.33433023168135"
+                  },
+                  {
+                    "link_id": 3138031,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=nyp.33433023168135"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Harvard University",
+                    "roles": ["responsible", "provider"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 1717358,
+                "links": [
+                  {
+                    "link_id": 3138030,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=hvd.32044081941650"
+                  },
+                  {
+                    "link_id": 3138029,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=hvd.32044081941650"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "1" }],
+            "publication_date": 1893,
+            "publication_place": "District of Columbia",
+            "publishers": [
+              { "lcnaf": "", "name": "Government Printing Office", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Report of the Commission appointed to inquire into the Indian currency : commonly known as the Herschell report on the coinage of silver in India, with the accompanying correspondence and testimony / [Indian Currency Committee]",
+            "volume": null,
+            "work_uuid": "0000b93b-dd8e-4817-b095-8eda15e8945b"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [],
+        "title": "Report of the Commission appointed to inquire into the Indian currency : commonly known as the Herschell report on the coinage of silver in India, with the accompanying correspondence and testimony / [Indian Currency Committee]",
+        "uuid": "0000b93b-dd8e-4817-b095-8eda15e8945b"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": "John, Fritz, (1910-1994.)",
+            "primary": "",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 2,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1953", "type": "publication_date" },
+              { "date": "1953", "type": "copyright_date" }
+            ],
+            "edition": null,
+            "edition_id": 646765,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 997858,
+                "links": [
+                  {
+                    "link_id": 1820077,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/66788928.html"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "oclc"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 997857,
+                "links": [
+                  {
+                    "link_id": 1820076,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015018046774"
+                  },
+                  {
+                    "link_id": 1820075,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015018046774"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain (us_only)",
+                    "rightsStatement": "Public Domain when viewed in the US",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [
+              {
+                "link_id": 4849379,
+                "mediaType": "image/jpeg",
+                "url": "drb-files-qa.s3.amazonaws.com/covers/hathi/mdp.39015018046774.jpeg"
+              }
+            ],
+            "measurements": [{ "type": "government_document", "value": "0" }],
+            "publication_date": 1953,
+            "publication_place": null,
+            "publishers": [{ "lcnaf": "", "name": "?", "viaf": "" }],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Partial differential equations. ",
+            "volume": null,
+            "work_uuid": "0000bbd6-b188-414c-9ff0-badcb25c3495"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst00893484",
+            "heading": "Differential equations, Partial"
+          }
+        ],
+        "title": "Partial differential equations. ",
+        "uuid": "0000bbd6-b188-414c-9ff0-badcb25c3495"
+      },
+      {
+        "alt_titles": [],
+        "authors": [
+          {
+            "lcnaf": "",
+            "name": " Committee on the Judiciary.",
+            "primary": "true",
+            "viaf": ""
+          },
+          {
+            "lcnaf": "",
+            "name": "United States. Congress. Senate. Committee on the Judiciary.",
+            "primary": "true",
+            "viaf": ""
+          },
+          { "lcnaf": "", "name": " Senate.", "primary": "true", "viaf": "" },
+          {
+            "lcnaf": "",
+            "name": " Subcommittee to Investigate Juvenile Delinquency.",
+            "primary": "true",
+            "viaf": ""
+          }
+        ],
+        "contributors": [],
+        "dates": null,
+        "edition_count": 3,
+        "editions": [
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [{ "date": "1954", "type": "publication_date" }],
+            "edition": null,
+            "edition_id": 2369589,
+            "edition_statement": null,
+            "extent": "iii, 90 pages ;",
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 2773905,
+                "links": [
+                  {
+                    "link_id": 2394097,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/6552876.html"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "oclc"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [],
+                "drm": null,
+                "item_id": 2773904,
+                "links": [
+                  {
+                    "link_id": 2394095,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/722796769.html"
+                  },
+                  {
+                    "link_id": 2394096,
+                    "mediaType": "text/html",
+                    "url": "catalog.hathitrust.org/api/volumes/oclc/6453445.html"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [],
+                "source": "oclc"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [],
+            "publication_date": 1954,
+            "publication_place": null,
+            "publishers": [
+              { "lcnaf": "", "name": "U.S. Govt. Print. Off.,", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Juvenile delinquency (Denver, Colo.)",
+            "volume": null,
+            "work_uuid": "0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"
+          },
+          {
+            "alt_titles": [],
+            "contributors": [],
+            "dates": [
+              { "date": "1954", "type": "copyright_date" },
+              { "date": "1954", "type": "publication_date" }
+            ],
+            "edition": null,
+            "edition_id": 2369588,
+            "edition_statement": null,
+            "extent": null,
+            "items": [
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Minnesota",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2773903,
+                "links": [
+                  {
+                    "link_id": 2394093,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=umn.31951001562162y"
+                  },
+                  {
+                    "link_id": 2394094,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=umn.31951001562162y"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "The Ohio State University",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2773902,
+                "links": [
+                  {
+                    "link_id": 2394092,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=osu.32435010092948"
+                  },
+                  {
+                    "link_id": 2394091,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=osu.32435010092948"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Minnesota",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2773901,
+                "links": [
+                  {
+                    "link_id": 2394089,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=umn.319510025677592"
+                  },
+                  {
+                    "link_id": 2394090,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=umn.319510025677592"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              },
+              {
+                "content_type": "ebook",
+                "contributors": [
+                  {
+                    "lcnaf": "",
+                    "name": "University of Michigan",
+                    "roles": ["provider", "responsible"],
+                    "viaf": ""
+                  },
+                  {
+                    "lcnaf": "",
+                    "name": "Google",
+                    "roles": ["digitizer"],
+                    "viaf": ""
+                  }
+                ],
+                "drm": null,
+                "item_id": 2773900,
+                "links": [
+                  {
+                    "link_id": 2394088,
+                    "mediaType": "text/html",
+                    "url": "babel.hathitrust.org/cgi/pt?id=mdp.39015077094079"
+                  },
+                  {
+                    "link_id": 2394087,
+                    "mediaType": "application/pdf",
+                    "url": "babel.hathitrust.org/cgi/imgsrv/download/pdf?id=mdp.39015077094079"
+                  }
+                ],
+                "location": null,
+                "measurements": null,
+                "modified": null,
+                "rights": [
+                  {
+                    "license": "public_domain",
+                    "rightsStatement": "Public Domain",
+                    "source": "hathitrust"
+                  }
+                ],
+                "source": "hathitrust"
+              }
+            ],
+            "languages": [
+              { "iso_2": "en", "iso_3": "eng", "language": "English" }
+            ],
+            "links": [],
+            "measurements": [{ "type": "government_document", "value": "1" }],
+            "publication_date": 1954,
+            "publication_place": "District of Columbia",
+            "publishers": [
+              { "lcnaf": "", "name": "U. S. Govt. Print. Off", "viaf": "" }
+            ],
+            "sub_title": null,
+            "summary": null,
+            "table_of_contents": null,
+            "title": "Juvenile delinquency, Denver, Colo",
+            "volume": null,
+            "work_uuid": "0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"
+          }
+        ],
+        "languages": [{ "iso_2": "en", "iso_3": "eng", "language": "English" }],
+        "measurements": [],
+        "medium": null,
+        "series": null,
+        "series_position": null,
+        "sub_title": null,
+        "subjects": [
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst00985320",
+            "heading": "Juvenile delinquency"
+          },
+          {
+            "authority": "fast",
+            "controlNo": "(OCoLC)fst01343207",
+            "heading": "Colorado"
+          },
+          { "authority": "", "controlNo": "", "heading": "Electronic books" }
+        ],
+        "title": "Juvenile Delinquency (Denver, Colo.)",
+        "uuid": "0000bf06-e5da-4094-bbf9-d8c2bdb2eea7"
+      }
+    ]
+  },
+  "responseType": "searchResponse",
+  "status": 200,
+  "timestamp": "Thu, 13 May 2021 15:12:06 GMT"
+}

@@ -31,9 +31,9 @@ class Sorter extends React.Component {
     e.preventDefault();
     const sortValue = e.target.value;
 
-    const sortParams = sortValue.split("_")
-    sortParams.sort = sortParams[0]
-    sortParams.sortDirection = sortParams[1]
+    const sortParams = sortValue.split('_');
+    sortParams.sort = sortParams[0];
+    sortParams.sortDirection = sortParams[1];
 
     this.setState({ sortValue }, this.props.updateResults(sortParams));
   }
@@ -45,7 +45,7 @@ class Sorter extends React.Component {
    * @return {HTML Element}
    */
   generateSortOptions() {
-    return this.props.sortOptions.map(d => (
+    return this.props.sortOptions.map((d) => (
       <option value={d.val} key={d.val}>
         {d.label}
       </option>
@@ -56,24 +56,24 @@ class Sorter extends React.Component {
     const { sortValue } = this.state;
 
     return (
-      <div className="nypl-results-sorting-controls">
+      <div className='nypl-results-sorting-controls'>
         <div className={`nypl-results-sorter ${this.props.page}`}>
-          <div className="nypl-select-field-results">
-            <label htmlFor="sort-by-label">Sort by</label>
+          <div className='nypl-select-field-results'>
+            <label htmlFor='sort-by-label'>Sort by</label>
             <form>
-              <span className="nypl-omni-fields">
+              <span className='nypl-omni-fields'>
                 <strong>
                   <select
-                    id="sort-by-label"
+                    id='sort-by-label'
                     onChange={this.updateSortValue}
                     value={sortValue}
-                    name="sort_scope"
+                    name='sort_scope'
                   >
                     {this.generateSortOptions()}
                   </select>
                 </strong>
               </span>
-              {!this.state.js && <input type="submit" />}
+              {!this.state.js && <input type='submit' />}
             </form>
           </div>
         </div>

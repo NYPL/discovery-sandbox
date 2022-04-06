@@ -42,8 +42,8 @@ function LibraryItem() {
    */
   this.getDefaultNyplLocation = () => ({
     '@id': '',
-    prefLabel: 'Check with Staff',
-    customerCode: '',
+    'prefLabel': 'Check with Staff',
+    'customerCode': '',
   });
 
   /**
@@ -53,8 +53,8 @@ function LibraryItem() {
    */
   this.nonNyplRecapLocation = () => ({
     '@id': '',
-    prefLabel: 'Offsite',
-    customerCode: '',
+    'prefLabel': 'Offsite',
+    'customerCode': '',
   });
 
   /**
@@ -65,19 +65,20 @@ function LibraryItem() {
   this.defaultDeliveryLocations = () => [
     {
       '@id': 'loc:mal',
-      prefLabel: 'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
-      customerCode: 'NH',
+      'prefLabel':
+        'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
+      'customerCode': 'NH',
     },
     {
       '@id': 'loc:mai',
-      prefLabel:
+      'prefLabel':
         'Stephen A. Schwarzman Building - Milstein Microform Reading Room 119',
-      customerCode: 'NF',
+      'customerCode': 'NF',
     },
     {
       '@id': 'loc:myr',
-      prefLabel: 'Library of Performing Arts - Print Delivery Desk 3rd Floor',
-      customerCode: 'NP',
+      'prefLabel': 'Library of Performing Arts - Print Delivery Desk 3rd Floor',
+      'customerCode': 'NP',
     },
   ];
 
@@ -258,7 +259,12 @@ function LibraryItem() {
     }
 
     return {
+<<<<<<< HEAD
       ...item,
+=======
+      physRequestable: item.physRequestable,
+      eddRequestable: item.eddRequestable,
+>>>>>>> SCC-3052
       id,
       status,
       availability,

@@ -1,4 +1,3 @@
-/* global window */
 import { updateBibPage } from '@Actions';
 import { Heading } from '@nypl/design-system-react-components';
 import { ajaxCall } from '@utils';

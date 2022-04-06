@@ -20,9 +20,11 @@ describe('TimedLogoutModal', () => {
       sandbox = sinon.sandbox.create();
       clock = sinon.useFakeTimers();
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie = 'accountPageExp=1615496302599';
-      sandbox.stub(window.location, 'replace').callsFake(() => { callRecord.push({ replace: true }); });
+      sandbox.stub(window.location, 'replace').callsFake(() => {
+        callRecord.push({ replace: true });
+      });
       sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
@@ -39,19 +41,21 @@ describe('TimedLogoutModal', () => {
 
       component = mount(
         <TimedLogoutModal
-          stayLoggedIn={() => {}}
-          baseUrl="fakeBaseUrl"
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
         />,
       );
     });
 
     it('should set a timeout to update in 1 second', () => {
-      expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(true);
-      expect(callRecord.some(call => call.setUpdate === true)).to.equal(true);
+      expect(callRecord.some((call) => call.setTimeout === 1000)).to.equal(
+        true,
+      );
+      expect(callRecord.some((call) => call.setUpdate === true)).to.equal(true);
     });
 
     it('should not trigger a logout', () => {
-      expect(callRecord.some(call => call.replace)).to.equal(false);
+      expect(callRecord.some((call) => call.replace)).to.equal(false);
     });
 
     it('should render null', () => {
@@ -72,9 +76,11 @@ describe('TimedLogoutModal', () => {
     before(() => {
       sandbox = sinon.sandbox.create();
 
-      window.location = { replace: () => {} };
-      global.document.cookie = `accountPageExp=${((60) + 3) * 1000}`;
-      sandbox.stub(window.location, 'replace').callsFake(() => { callRecord.push({ replace: true }); });
+      window.location = { replace: () => undefined };
+      global.document.cookie = `accountPageExp=${(60 + 3) * 1000}`;
+      sandbox.stub(window.location, 'replace').callsFake(() => {
+        callRecord.push({ replace: true });
+      });
       sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
@@ -94,29 +100,37 @@ describe('TimedLogoutModal', () => {
 
       component = mount(
         <TimedLogoutModal
-          stayLoggedIn={() => {}}
-          baseUrl="fakeBaseUrl"
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
         />,
       );
     });
 
     it('should set a timeout to update in 1 second', () => {
-      expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(true);
-      expect(callRecord.some(call => call.setUpdate === true)).to.equal(true);
+      expect(callRecord.some((call) => call.setTimeout === 1000)).to.equal(
+        true,
+      );
+      expect(callRecord.some((call) => call.setUpdate === true)).to.equal(true);
     });
 
     it('should not trigger a logout', () => {
-      expect(callRecord.some(call => call.replace)).to.equal(false);
+      expect(callRecord.some((call) => call.replace)).to.equal(false);
     });
 
-    it('should say \'Your session is about to expire\'', () => {
-      expect(component.find('.research-modal__content').text()).to.include('Your session is about to expire');
+    it("should say 'Your session is about to expire'", () => {
+      expect(component.find('.research-modal__content').text()).to.include(
+        'Your session is about to expire',
+      );
     });
     it('should display the time', () => {
-      expect(component.find('.research-modal__content').text()).to.include('1:03');
+      expect(component.find('.research-modal__content').text()).to.include(
+        '1:03',
+      );
     });
-    it('should say \'Do you want to stay logged in\'', () => {
-      expect(component.find('.research-modal__content').text()).to.include('Do you want to stay logged in');
+    it("should say 'Do you want to stay logged in'", () => {
+      expect(component.find('.research-modal__content').text()).to.include(
+        'Do you want to stay logged in',
+      );
     });
     it('should have a button to log out', () => {
       expect(component.find('Button').at(0).text()).to.equal('Log off');
@@ -143,9 +157,12 @@ describe('TimedLogoutModal', () => {
         iframes[index].parentNode.removeChild(iframes[index]);
       }
 
-      window.location = { replace: () => {} };
-      global.document.cookie = 'accountPageExp=;expires=Thu, 01-Jan-1970 00:00:01 GMT;';
-      sandbox.stub(window.location, 'replace').callsFake((arg) => { callRecord.push({ replace: arg }); });
+      window.location = { replace: () => undefined };
+      global.document.cookie =
+        'accountPageExp=;expires=Thu, 01-Jan-1970 00:00:01 GMT;';
+      sandbox.stub(window.location, 'replace').callsFake((arg) => {
+        callRecord.push({ replace: arg });
+      });
       sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
@@ -163,8 +180,8 @@ describe('TimedLogoutModal', () => {
 
       component = mount(
         <TimedLogoutModal
-          stayLoggedIn={() => {}}
-          baseUrl="fakeBaseUrl"
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
         />,
       );
     });
@@ -173,12 +190,18 @@ describe('TimedLogoutModal', () => {
       const onload = global.document.getElementsByTagName('iframe')[0].onload;
       expect(!!onload).to.equal(true);
       onload();
-      expect(callRecord.some(call => call.replace === 'fakeBaseUrl')).to.equal(true);
+      expect(
+        callRecord.some((call) => call.replace === 'fakeBaseUrl'),
+      ).to.equal(true);
     });
 
     it('should not call update', () => {
-      expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(false);
-      expect(callRecord.some(call => call.setUpdate === true)).to.equal(false);
+      expect(callRecord.some((call) => call.setTimeout === 1000)).to.equal(
+        false,
+      );
+      expect(callRecord.some((call) => call.setUpdate === true)).to.equal(
+        false,
+      );
     });
 
     after(() => {
@@ -200,18 +223,22 @@ describe('TimedLogoutModal', () => {
         iframes[index].parentNode.removeChild(iframes[index]);
       }
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie = 'accountPageExp=63000;';
-      sandbox.stub(window.location, 'replace').callsFake((arg) => { replace = arg; });
-      sandbox.stub(global, 'setTimeout').callsFake(() => {});
-      sandbox.stub(Date.prototype, 'getTime').callsFake(function() {
+      sandbox.stub(window.location, 'replace').callsFake((arg) => {
+        replace = arg;
+      });
+      sandbox.stub(global, 'setTimeout').callsFake(() => undefined);
+      sandbox.stub(Date.prototype, 'getTime').callsFake(function () {
         return this.toString().includes('63000') ? 63000 : 0;
       });
 
       component = mount(
         <TimedLogoutModal
-          stayLoggedIn={() => { stayLoggedIn = true; }}
-          baseUrl="fakeBaseUrl"
+          stayLoggedIn={() => {
+            stayLoggedIn = true;
+          }}
+          baseUrl='fakeBaseUrl'
         />,
       );
     });
