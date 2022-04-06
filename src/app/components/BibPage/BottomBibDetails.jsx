@@ -1,8 +1,7 @@
 import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
-import { isNyplBnumber } from '../../utils/utils';
+import { definitionMarcs } from '../../utils/bibDetailsUtils';
 import BibDetails_Functional from './BibDetails_Functional';
 
 // `linkable` means that those values are links inside the app.
@@ -47,12 +46,7 @@ const BottomBibDetails = ({ bib }) => {
       <Heading level={3}>Details</Heading>
       <BibDetails_Functional
         fields={fields}
-        // TODO: Can this be moved inside the Functional Component?
-        additionalData={
-          isNyplBnumber(bib.uri) && bib.annotatedMarc
-            ? annotatedMarcDetails(bib)
-            : []
-        }
+        additionalData={definitionMarcs(bib)}
       />
     </section>
   );

@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNyplBnumber } from './utils';
 
 const definitionItem = (value, index = 0) => {
   const link = (
@@ -15,11 +16,14 @@ const definitionItem = (value, index = 0) => {
   );
 };
 
-const annotatedMarcDetails = (bib) =>
-  bib.annotatedMarc.bib.fields.map((field) => ({
-    term: field.label,
-    definition: field.values.map(definitionItem),
-  }));
+const definitionMarcs = (bib = {}) => {
+  return isNyplBnumber(bib.uri) && bib.annotatedMarc
+    ? bib.annotatedMarc.bib.fields.map((field) => ({
+        term: field.label,
+        definition: field.values.map(definitionItem),
+      }))
+    : [];
+};
 
 const combineBibDetailsData = (bibDetails, additionalData) => {
   if (!additionalData || !additionalData.length) return bibDetails;
@@ -31,4 +35,4 @@ const combineBibDetailsData = (bibDetails, additionalData) => {
   return bibDetails.concat(filteredAdditionalData);
 };
 
-export { definitionItem, annotatedMarcDetails, combineBibDetailsData };
+export { definitionItem, definitionMarcs, combineBibDetailsData };
