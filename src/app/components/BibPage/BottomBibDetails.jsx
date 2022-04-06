@@ -48,7 +48,6 @@ const BottomBibDetails = ({ bib, resources }) => {
       <BibDetails_Functional
         bib={bib}
         fields={detailsFields}
-        electronicResources={resources}
         additionalData={
           isNyplBnumber(bib.uri) && bib.annotatedMarc
             ? annotatedMarcDetails(bib)
