@@ -9,8 +9,8 @@ import BibDetails_Functional from './BibDetails_Functional';
 // `selfLinkable` means that those values are external links and should be self-linked,
 // e.g. the prefLabel is the label and the URL is the id.
 
-const BottomBibDetails = ({ bib, resources }) => {
-  const bottomFields = [
+const BottomBibDetails = ({ bib }) => {
+  const fields = [
     {
       label: 'Additional Authors',
       value: 'contributorLiteral',
@@ -46,8 +46,8 @@ const BottomBibDetails = ({ bib, resources }) => {
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
       <BibDetails_Functional
-        bib={bib}
-        fields={bottomFields}
+        fields={fields}
+        // TODO: Can this be moved inside the Functional Component?
         additionalData={
           isNyplBnumber(bib.uri) && bib.annotatedMarc
             ? annotatedMarcDetails(bib)
