@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
 import { isNyplBnumber } from '../../utils/utils';
-import BibDetails from './BibDetails';
+import BibDetails_Functional from './BibDetails_Functional';
 
 // `linkable` means that those values are links inside the app.
 // `selfLinkable` means that those values are external links and should be self-linked,
@@ -45,7 +45,7 @@ const BottomBibDetails = ({ bib, resources }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
-      <BibDetails
+      <BibDetails_Functional
         bib={bib}
         fields={detailsFields}
         electronicResources={resources}
