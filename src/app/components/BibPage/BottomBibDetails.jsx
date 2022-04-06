@@ -10,7 +10,7 @@ import BibDetails_Functional from './BibDetails_Functional';
 // e.g. the prefLabel is the label and the URL is the id.
 
 const BottomBibDetails = ({ bib, resources }) => {
-  const detailsFields = [
+  const bottomFields = [
     {
       label: 'Additional Authors',
       value: 'contributorLiteral',
@@ -47,7 +47,7 @@ const BottomBibDetails = ({ bib, resources }) => {
       <Heading level={3}>Details</Heading>
       <BibDetails_Functional
         bib={bib}
-        fields={detailsFields}
+        fields={bottomFields}
         additionalData={
           isNyplBnumber(bib.uri) && bib.annotatedMarc
             ? annotatedMarcDetails(bib)
