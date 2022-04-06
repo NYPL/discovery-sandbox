@@ -122,10 +122,7 @@ class ItemTableRow extends React.Component {
 
   render() {
     const { item, includeVolColumn, page } = this.props;
-<<<<<<< HEAD
     const BibPage = page === 'BibPage';
-=======
->>>>>>> SCC-3052
 
     if (_isEmpty(item)) {
       return null;
@@ -155,7 +152,6 @@ class ItemTableRow extends React.Component {
     }
 
     return (
-<<<<<<< HEAD
       <>
         <tr className={item.availability}>
           {includeVolColumn ? (
@@ -163,15 +159,6 @@ class ItemTableRow extends React.Component {
               <span>{item.volume || ''}</span>
             </td>
           ) : null}
-=======
-      <tr className={item.availability}>
-        {includeVolColumn ? (
-          <td className='vol-date-col' data-th='Vol/Date'>
-            <span>{item.volume || ''}</span>
-          </td>
-        ) : null}
-        {page !== 'SearchResults' ? (
->>>>>>> SCC-3052
           <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
@@ -195,23 +182,7 @@ class ItemTableRow extends React.Component {
             </td>
           </tr>
         ) : null}
-<<<<<<< HEAD
       </>
-=======
-        <td data-th='Message'>
-          <span>{this.message()}</span>
-        </td>
-        <td data-th='Status'>
-          <span>{this.requestButton()}</span>
-        </td>
-        <td data-th='Call Number'>
-          <span>{itemCallNumber}</span>
-        </td>
-        <td data-th='Location'>
-          <span>{itemLocation}</span>
-        </td>
-      </tr>
->>>>>>> SCC-3052
     );
   }
 }

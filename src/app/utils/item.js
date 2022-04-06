@@ -259,12 +259,7 @@ function LibraryItem() {
     }
 
     return {
-<<<<<<< HEAD
       ...item,
-=======
-      physRequestable: item.physRequestable,
-      eddRequestable: item.eddRequestable,
->>>>>>> SCC-3052
       id,
       status,
       availability,
