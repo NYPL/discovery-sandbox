@@ -11,29 +11,14 @@ import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
 import { trackDiscovery } from '../../utils/utils';
+import IdentifierNode from './components/IndentifierNode';
+import LinkableBibField from './components/LinkableField';
 import DefinitionList from './DefinitionList';
 
 class BibDetails extends React.Component {
   constructor(props) {
     super(props);
     this.owner = getOwner(this.props.bib);
-  }
-
-  /**
-   * Return note array or null.
-   *
-   * @param {object} bib
-   * @return {null|array}
-   */
-  getNote(bib) {
-    const note = bib.note;
-    const notes = note && note.length ? note : null;
-
-    if (!notes) {
-      return null;
-    }
-
-    return notes;
   }
 
   /**
@@ -56,6 +41,7 @@ class BibDetails extends React.Component {
     fieldLabel,
   ) {
     // If there's only one value, we just want that value and not a list.
+    // TODO: Determin WHY we want a single <span> or <Link> isntead of a list
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
@@ -196,7 +182,7 @@ class BibDetails extends React.Component {
     fieldLabel,
   ) {
     if (fieldValue === 'identifier') {
-      return this.getIdentifiers(bibValues, fieldIdentifier);
+      return <IdentifierNode values={bibValues} type={fieldIdentifier} />;
     }
 
     if (bibValues.length === 1) {
@@ -277,30 +263,11 @@ class BibDetails extends React.Component {
 
     if (fieldLinkable) {
       return (
-        <Link
-          onClick={(event) =>
-            this.newSearch(event, url, fieldValue, bibValue, fieldLabel)
-          }
-          to={`${appConfig.baseUrl}/search?${url}`}
-        >
-          {bibValue}
-        </Link>
-      );
-    }
-
-    if (fieldSelfLinkable) {
-      return (
-        <a
-          href={bibValue.url}
-          onClick={() =>
-            trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
-            )
-          }
-        >
-          {bibValue.prefLabel || bibValue.label || bibValue.url}
-        </a>
+        <LinkableBibField
+          label={fieldLabel}
+          bibValue={bibValue}
+          outbound={fieldSelfLinkable}
+        />
       );
     }
 
@@ -321,28 +288,23 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * getDisplayFields(bib)
+   * buildDefiniions(bib)
    * Get an array of definition term/values.
    *
    * @param {object} bib
    * @return {array}
    */
-  getDisplayFields(bib) {
+  buildDefiniions(bib) {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
     const fields = this.props.fields;
     const fieldsToRender = [];
 
     fields.forEach((field) => {
-      const fieldLabel = field.label;
-      const fieldValue = field.value;
-      const fieldLinkable = field.linkable;
-      const fieldSelfLinkable = field.selfLinkable;
-      const fieldIdentifier = field.identifier;
-      let bibValues = bib[fieldValue];
+      let bibValues = bib[field.value];
 
-      if (fieldValue === 'subjectLiteral') {
-        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
+      if (field.value === 'subjectLiteral') {
+        bibValues = this.compressSubjectLiteral(bib[field.value]);
       }
 
       // skip absent fields
@@ -353,27 +315,27 @@ class BibDetails extends React.Component {
         // Each value is an object with @id and prefLabel properties.
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
-            term: fieldLabel,
+            term: field.label,
             definition: this.getDefinitionObject(
               bibValues,
-              fieldValue,
-              fieldLinkable,
-              fieldSelfLinkable,
-              fieldLabel,
+              field.value,
+              field.linkable,
+              field.selfLinkable,
+              field.label,
             ),
           });
         } else {
           const definition = this.getDefinition(
             bibValues,
-            fieldValue,
-            fieldLinkable,
-            fieldIdentifier,
-            fieldSelfLinkable,
-            fieldLabel,
+            field.value,
+            field.linkable,
+            field.identifier,
+            field.selfLinkable,
+            field.label,
           );
           if (definition) {
             fieldsToRender.push({
-              term: fieldLabel,
+              term: field.label,
               definition,
             });
           }
@@ -381,11 +343,11 @@ class BibDetails extends React.Component {
       }
 
       // The Owner is complicated too.
-      if (fieldLabel === 'Owning Institutions') {
+      if (field.label === 'Owning Institutions') {
         const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
-            term: fieldLabel,
+            term: field.label,
             definition: owner,
           });
         }
@@ -399,8 +361,9 @@ class BibDetails extends React.Component {
       //     'prefLabel': 'string',
       //     '@type': 'bf:Note'},
       //    {...}]
-      if (fieldLabel === 'Notes') {
-        const note = this.getNote(this.props.bib);
+      if (field.label === 'Notes') {
+        const note = bib.note && bib.note.length ? bib.note : null;
+
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
           // Group notes by noteType:
@@ -432,7 +395,7 @@ class BibDetails extends React.Component {
       }
 
       if (
-        fieldLabel === 'Electronic Resource' &&
+        field.label === 'Electronic Resource' &&
         this.props.electronicResources.length
       ) {
         const electronicResources = this.props.electronicResources;
@@ -480,7 +443,7 @@ class BibDetails extends React.Component {
         }
 
         fieldsToRender.push({
-          term: fieldLabel,
+          term: field.label,
           definition: electronicElem,
         });
       }
@@ -629,7 +592,7 @@ class BibDetails extends React.Component {
       return null;
     }
 
-    const bibDetails = this.getDisplayFields(this.props.bib);
+    const bibDetails = this.buildDefiniions(this.props.bib);
     const data = combineBibDetailsData(bibDetails, this.props.additionalData);
 
     return (

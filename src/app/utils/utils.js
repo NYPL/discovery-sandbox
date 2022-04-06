@@ -759,6 +759,10 @@ function isNyplBnumber(bnum) {
   return /^b/.test(bnum);
 }
 
+function capitalize(field) {
+  return field.charAt(0).toUpperCase() + field.slice(1);
+}
+
 export {
   trackDiscovery,
   ajaxCall,

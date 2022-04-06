@@ -22,6 +22,8 @@ const annotatedMarcDetails = (bib) =>
   }));
 
 const combineBibDetailsData = (bibDetails, additionalData) => {
+  if (!additionalData || !additionalData.length) return bibDetails;
+
   const bibDetailsTerms = new Set(bibDetails.map((item) => item.term));
   const filteredAdditionalData = additionalData.filter(
     (item) => !bibDetailsTerms.has(item.term),

@@ -15,7 +15,7 @@ const BibNotFound404 = ({ context }) => {
 };
 
 BibNotFound404.propTypes = {
-  context: PropTypes.obj,
+  context: PropTypes.object,
 };
 
 export default BibNotFound404;
