@@ -21,7 +21,9 @@ const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
       const origin =
         bib[field.value] ??
         // Allow origin to be resources
-        (field.label === 'Electronic Resource' && resources);
+        (field.label === 'Electronic Resource' &&
+          resources.length &&
+          resources);
 
       if (origin) {
         return [
@@ -62,7 +64,7 @@ BibDetails_Functional.propTypes = {
 };
 
 BibDetails_Functional.defaultProps = {
-  resources: [],
+  // resources: [],
   additionalData: [],
 };
 

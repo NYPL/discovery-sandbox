@@ -23,7 +23,7 @@ const topFields = [
   },
 ];
 
-const TopBibDetails = ({ resources = [] }) => {
+const TopBibDetails = ({ resources }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <BibDetails_Functional fields={topFields} resources={resources} />
@@ -36,7 +36,7 @@ TopBibDetails.propTypes = {
 };
 
 TopBibDetails.defaultProps = {
-  resources: [],
+  // resources: [],
 };
 
 export default TopBibDetails;
