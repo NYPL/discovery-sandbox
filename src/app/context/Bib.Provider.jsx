@@ -78,10 +78,10 @@ function extractParallels(bib) {
         // If parallel but no none parallel (original) match
         if (!bib[field]) return store;
 
-        const mapping = bib[key]
+        const mapping = bib[field]
           .reduce((acc, curr, idx) => {
-            const pa = curr;
-            const og = bib[field][idx];
+            const og = curr;
+            const pa = bib[key][idx];
             // @seanredmond would like the parallel to show up first
             // https://jira.nypl.org/browse/SCC-2915?focusedCommentId=68727&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-68727
             const ne = [pa, og];
