@@ -14,12 +14,8 @@ const NoteList = ({ notes, type }) => {
     <ul>
       {list
         .map((note, idx, ogArr) => {
-          if (type === 'Note') {
-            return <li key={idx.toString()}>{note.prefLabel ?? note}</li>;
-          }
-
           // Check by object reference
-          if (note === notes[0]) {
+          if (note === notes[0] || type === 'Note') {
             return (
               <>
                 {(typeof ogArr[idx - 1] === 'string' && (
