@@ -41,6 +41,7 @@ const BottomBibDetails = ({ bib }) => {
     { label: 'Owning Institutions', value: '' },
   ];
 
+  // TODO: Can marcs be moved inside the Functional Component?
   return (
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
