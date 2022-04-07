@@ -2,8 +2,9 @@ import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import { useBib } from '../../context/Bib.Provider';
-import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
+import { combineBibDetailsData, groupNotes } from '../../utils/bibDetailsUtils';
 import DefinitionField from './components/DefinitionField';
+import NoteList from './components/NoteList';
 import DefinitionList from './DefinitionList';
 
 const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
@@ -24,6 +25,21 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
         (field.label === 'Electronic Resource' &&
           resources.length &&
           resources);
+
+      if (field.value === 'note') {
+        const group = groupNotes(origin);
+        return [
+          ...store,
+          ...Object.keys(group).map((type, idx) => {
+            return {
+              term: type,
+              definition: (
+                <NoteList notes={group[type]} index={idx} type={type} />
+              ),
+            };
+          }),
+        ];
+      }
 
       if (origin) {
         return [
