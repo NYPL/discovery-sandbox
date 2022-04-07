@@ -28,7 +28,7 @@ const BottomBibDetails = ({ bib }) => {
       ? { label: 'Subject', value: 'subjectHeadingData' }
       : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
-    { label: 'Notes', value: 'React Component' },
+    { label: 'Notes', value: 'note' },
     { label: 'Contents', value: 'tableOfContents' },
     { label: 'Bibliography', value: '' },
     { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
