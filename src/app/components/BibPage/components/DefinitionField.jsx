@@ -17,6 +17,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
       {list
         .map((value, idx) => {
           if (_isObject(value)) {
+            // WIP
             return;
           }
 
