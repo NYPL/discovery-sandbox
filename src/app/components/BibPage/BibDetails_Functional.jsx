@@ -6,7 +6,7 @@ import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import DefinitionField from './components/DefinitionField';
 import DefinitionList from './DefinitionList';
 
-const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
+const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
   const {
     bib,
     bib: { subjectHeadingData },
@@ -34,7 +34,7 @@ const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
               <DefinitionField
                 bibValues={origin}
                 field={field}
-                additional={additionalData}
+                additional={marcs}
               />
             ),
           },
@@ -43,16 +43,14 @@ const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
 
       return store;
     }, []);
-  }, [additionalData, bib, fields, resources]);
+  }, [marcs, bib, fields, resources]);
 
   // Make sure fields is a nonempty array
   if (_isEmpty(fields) || !_isArray(fields)) {
     return null;
   }
 
-  const data =
-    (!additionalData.length && definitions) ||
-    combineBibDetailsData(definitions, additionalData);
+  const data = combineBibDetailsData(definitions, marcs);
 
   return <DefinitionList data={data} headings={subjectHeadingData} />;
 };
@@ -60,11 +58,11 @@ const BibDetails_Functional = ({ fields = [], additionalData, resources }) => {
 BibDetails_Functional.propTypes = {
   fields: PropTypes.array.isRequired,
   resources: PropTypes.array,
-  additionalData: PropTypes.array,
+  marcs: PropTypes.array,
 };
 
 BibDetails_Functional.defaultProps = {
-  additionalData: [],
+  marcs: [],
 };
 
 BibDetails_Functional.contextTypes = {

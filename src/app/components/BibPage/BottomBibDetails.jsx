@@ -44,10 +44,7 @@ const BottomBibDetails = ({ bib }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
-      <BibDetails_Functional
-        fields={fields}
-        additionalData={definitionMarcs(bib)}
-      />
+      <BibDetails_Functional fields={fields} marcs={definitionMarcs(bib)} />
     </section>
   );
 };
