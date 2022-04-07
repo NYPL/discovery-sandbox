@@ -35,4 +35,29 @@ const combineBibDetailsData = (bibDetails, additionalData) => {
   return bibDetails.concat(filteredAdditionalData);
 };
 
-export { definitionItem, definitionMarcs, combineBibDetailsData };
+const getNoteType = (note) => {
+  const type = note.noteType || '';
+  return type.toLowerCase().includes('note') ? type : `${type} (note)`;
+};
+
+const groupNotes = (note = []) => {
+  return (
+    note
+      // Make sure all notes are blanknodes:
+      .filter((note) => typeof note === 'object')
+      .reduce((groups, note) => {
+        const noteType = getNoteType(note);
+        if (!groups[noteType]) groups[noteType] = [];
+        groups[noteType].push(note);
+        return groups;
+      }, {})
+  );
+};
+
+export {
+  definitionItem,
+  definitionMarcs,
+  combineBibDetailsData,
+  getNoteType,
+  groupNotes,
+};
