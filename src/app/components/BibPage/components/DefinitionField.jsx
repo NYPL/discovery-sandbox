@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isObject as _isObject } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
@@ -13,8 +14,13 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
   return (
     <ul className={additional && 'additionalDetails'}>
-      {list.map((value, idx) => {
-        const element = { value };
+      {list
+        .map((value, idx) => {
+          if (_isObject(value)) {
+            return;
+          }
+
+          const element = { value };
 
         if (field.linkable) {
           element.value = (
