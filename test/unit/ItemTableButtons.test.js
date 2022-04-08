@@ -76,10 +76,10 @@ describe('RequestButton', function () {
           expect(onClick.args[0]).to.include('Bogus URL');
         });
 
-        it('Should invoke prevent default if not AeonLink', () => {
-          linkComp.simulate('click', event);
-          expect(event.preventDefault.called).to.be.true;
-        });
+        // it('Should invoke prevent default if not AeonLink', () => {
+        //   linkComp.simulate('click', event);
+        //   expect(event.preventDefault.called).to.be.true;
+        // });
 
         it('Should not invoke prevent default if AeonLink', () => {
           const wrapper = shallow(
