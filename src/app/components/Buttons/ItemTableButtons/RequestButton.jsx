@@ -5,9 +5,10 @@ import { isAeonLink } from '../../../utils/utils';
 
 const RequestButton = ({ text, secondary, url, onClick, children }) => {
   const handleClick = (event) => {
-    if (!isAeonLink(url)) {
-      event.preventDefault();
-    }
+    // Allow the button link handler to deal with routing
+    // if (!isAeonLink(url)) {
+    //   event.preventDefault();
+    // }
 
     onClick(url);
   };
