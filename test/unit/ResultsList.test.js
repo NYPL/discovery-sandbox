@@ -66,16 +66,19 @@ const endYear9999Bib = {
 
 describe('ResultsList', () => {
   let mockStore;
+  const context = mockRouterContext();
   const childContextTypes = {
     router: PropTypes.object,
     media: PropTypes.string,
   };
-  const context = mockRouterContext();
+
   before(() => {
     mockStore = makeTestStore({ loading: false, appConfig: { features: [] } });
   });
+
   describe('Default rendering', () => {
     let component;
+
     before(() => {
       component = mountTestRender(<ResultsList />, {
         store: mockStore,
@@ -83,6 +86,7 @@ describe('ResultsList', () => {
         childContextTypes,
       });
     });
+
     it('should return null if no results were passed', () => {
       expect(component.find('ResultsList').isEmptyRender()).to.equal(true);
     });
@@ -124,7 +128,7 @@ describe('ResultsList', () => {
       }).find('ResultsList');
     });
 
-    it('should render two bib li items', () => {
+    it('should render three bib li items', () => {
       expect(component.find('.nypl-results-item').length).to.equal(3);
     });
 
@@ -144,8 +148,17 @@ describe('ResultsList', () => {
       expect(component.find('li').length).to.equal(15);
     });
 
-    it('should render one table for each bib', () => {
-      expect(component.find('table').length).to.equal(3);
+    it('should render one table && two links for each bib', () => {
+      expect(component.find('.nypl-results-item').length).to.equal(3);
+      expect(component.find('table').length).to.equal(1);
+      expect(
+        component
+          .find('.nypl-results-item')
+          .children()
+          .filterWhere((node) => {
+            return node.text() === 'View All Items';
+          }).length,
+      ).to.equal(2);
     });
   });
 
@@ -199,13 +212,21 @@ describe('ResultsList', () => {
       expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
     });
 
-    it('should have a table', () => {
-      expect(component.find('table').length).to.equal(1);
+    it('should have a link to view bib', () => {
+      expect(
+        component
+          .find('.nypl-results-item')
+          .children()
+          .filterWhere((node) => {
+            return node.text() === 'View All Items';
+          }).length,
+      ).to.equal(1);
     });
 
-    it('table should only render three rows', () => {
-      expect(component.find('table').find('ItemTableRow').length).to.equal(3);
-    });
+    // TODO: This is not relevant anymore.  When items are greather than 1 a link is displayed instead.
+    // it('table should only render three rows', () => {
+    //   expect(component.find('table').find('ItemTableRow').length).to.equal(3);
+    // });
   });
 
   describe('Rendering with one bib and one item', () => {
@@ -227,8 +248,10 @@ describe('ResultsList', () => {
       expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
     });
 
-    it('should have one table', () => {
-      expect(component.find('table').length).to.equal(1);
+    it('should not have one table', () => {
+      // Due to the bib containing a the prop "numItems: 2" the table will not show
+      // It will only show if the total number of items is less than 2
+      expect(component.find('table').length).to.equal(0);
     });
   });
 

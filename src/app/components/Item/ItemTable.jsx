@@ -29,16 +29,15 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           {includeVolColumn ? <th scope='col'>Vol/Date</th> : null}
           <th scope='col'>Format</th>
           <th scope='col'>Call Number</th>
+          {/* TODO: Valide `Item` prefix. Is it `Item Location` or `Location`? */}
           <th scope='col'>{((!BibPage && `Item `) || '') + `Location`}</th>
-          {!SearchResultsPage ? (
-            <th scope='col'>{`Availability & Access`}</th>
-          ) : null}
+          {BibPage ? <th scope='col'>{`Availability & Access`}</th> : null}
         </tr>
       </thead>
       <tbody>
-        {items.map((item) => (
+        {items.map((item, idx) => (
           <ItemTableRow
-            key={item.id}
+            key={`${item.id}_${idx}`}
             item={item}
             bibId={bibId}
             searchKeywords={searchKeywords}

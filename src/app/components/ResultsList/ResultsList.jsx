@@ -67,7 +67,6 @@ const ResultsList = (
   }
 
   const generateBibLi = (bib, idx) => {
-    // eslint-disable-next-line no-mixed-operators
     if (
       _isEmpty(bib) ||
       (bib.result && (_isEmpty(bib.result) || !bib.result.title))
@@ -130,7 +129,8 @@ const ResultsList = (
           </ul>
         </div>
         {hasRequestTable
-          ? (totalItems < 2 && (
+          ? (totalItems < // TODO: Resolve, Are we to use totalItems or results.items.length?
+              2 && (
               <ItemTable
                 items={items.slice(0, itemTableLimit)}
                 bibId={bibId}
@@ -150,15 +150,13 @@ const ResultsList = (
                 to={bibUrl}
                 className='title'
               >
-                {`View and Request Item`}
+                {`View All Items`}
               </Link>
             )
           : null}
       </li>
     );
   };
-
-  const resultsElm = results.map((bib, idx) => generateBibLi(bib, idx));
 
   return (
     <ul
@@ -167,7 +165,7 @@ const ResultsList = (
         includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''
       }`}
     >
-      {resultsElm}
+      {results.map(generateBibLi)}
     </ul>
   );
 };

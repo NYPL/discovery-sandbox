@@ -1,24 +1,17 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isEmpty as _isEmpty } from 'underscore';
-import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
-import {
-  AeonButton,
-  EddButton,
-  ReCAPButton,
-} from '../Buttons/ItemTableButtons';
+import { AeonButton, EddButton, PhysButton } from '../Buttons/ItemTableButtons';
 
 class ItemTableRow extends React.Component {
   constructor(props) {
     super(props);
     this.getItemRecord = this.getItemRecord.bind(this);
+    this.track = this.track.bind(this);
   }
 
-  getItemRecord(event) {
-    event.preventDefault();
-    const { bibId, item } = this.props;
-
+  track() {
     const { routes } = this.context.router;
 
     const page = routes[routes.length - 1].component.name;
@@ -28,8 +21,16 @@ class ItemTableRow extends React.Component {
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     trackDiscovery('Item Request', gaLabel);
+  }
+
+  getItemRecord(path) {
+    const { searchKeywords } = this.props;
+
+    this.track();
     this.context.router.push(
-      `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`,
+      `${path}${
+        (!!searchKeywords && `?searchKeywords=${searchKeywords}`) || ''
+      }`,
     );
   }
 
@@ -40,14 +41,9 @@ class ItemTableRow extends React.Component {
   }
 
   requestButton() {
-    const { item, bibId, searchKeywords, page } = this.props;
+    const { item, bibId, page } = this.props;
 
-    // Currently Not Used
-    // TODO Determine if we need these.
-    // const isAvailable = item.available;
-    // const isRecap = item.isRecap;
-    // const isRequestable = (item.requestable = true);
-    // const isOffSite = item.isOffsite;
+    // TODO Are we using this?
     // const allClosed = appConfig.closedLocations
     //   .concat(
     //     item.isRecap
@@ -62,62 +58,19 @@ class ItemTableRow extends React.Component {
           page === 'SearchResults' ? 'pan-left' : ''
         }`}
       >
-        {(item.specRequestable && (
-          <AeonButton item={item} onClick={this.getItemRecord} />
-        )) || (
+        {(item.requestable && (
           <>
-            <EddButton
-              display={item.eddRequestable}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
-              onClick={this.getItemRecord}
-            />
-
-            <ReCAPButton
-              display={item.physRequestable}
+            <AeonButton item={item} onClick={this.getItemRecord} />
+            <EddButton item={item} bibId={bibId} onClick={this.getItemRecord} />
+            <PhysButton
               item={item}
-              link={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
+              bibId={bibId}
               onClick={this.getItemRecord}
             />
           </>
-        )}
+        )) || <div>{item.status.prefLabel ?? 'Not Available'}</div>}
       </div>
     );
-
-    // let itemRequestBtn =
-    //   item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-
-    // if (item.aeonUrl && features.includes('aeon-links')) {
-    //   itemRequestBtn = (
-    //     <React.Fragment>
-    //       <a
-    //         href={this.aeonUrl(item)}
-    //         tabIndex='0'
-    //         className='aeonRequestButton'
-    //       >
-    //         Request
-    //       </a>
-    //       <br />
-    //       <span className='aeonRequestText'>Appointment Required</span>
-    //     </React.Fragment>
-    //   );
-    //   return itemRequestBtn;
-    // }
-
-    // if (item.requestable && !allClosed) {
-    //   itemRequestBtn =
-    //     (item.available && (
-    //       <Link
-    //         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
-    //         onClick={(event) => this.getItemRecord(event, bibId, item.id)}
-    //         tabIndex='0'
-    //       >
-    //         Request
-    //       </Link>
-    //     )) ||
-    //     'In Use';
-    // }
-
-    // return itemRequestBtn;
   }
 
   render() {
@@ -162,9 +115,6 @@ class ItemTableRow extends React.Component {
           <td data-th='Format'>
             <span>{item.format || ' '}</span>
           </td>
-          {/* <td data-th='Message'>
-          <span>{this.message()}</span>
-        </td> */}
           <td data-th='Call Number'>
             <span>{itemCallNumber}</span>
           </td>
@@ -188,11 +138,11 @@ class ItemTableRow extends React.Component {
 }
 
 ItemTableRow.propTypes = {
-  item: PropTypes.object,
-  bibId: PropTypes.string,
-  searchKeywords: PropTypes.string,
+  item: PropTypes.object.isRequired,
+  bibId: PropTypes.string.isRequired,
   page: PropTypes.string,
-  includeVolColumn: PropTypes.boolean,
+  searchKeywords: PropTypes.string,
+  includeVolColumn: PropTypes.bool,
 };
 
 ItemTableRow.contextTypes = {

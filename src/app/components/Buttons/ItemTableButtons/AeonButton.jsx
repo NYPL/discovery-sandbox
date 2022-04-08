@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
-import appConfig from '../../../data/appConfig';
+import { Link } from 'react-router';
 import { isAeonLink } from '../../../utils/utils';
+import RequestButton from './RequestButton';
 
 const AeonButton = ({ item, onClick }) => {
   const [aeonUrl] = useState(() => {
@@ -9,7 +10,7 @@ const AeonButton = ({ item, onClick }) => {
       ? item.aeonUrl[0]
       : item.aeonUrl;
 
-    if (!isAeonLink(aeonUrl)) return `${appConfig.baseUrl}/404`;
+    if (!isAeonLink(aeonUrl)) return false;
 
     const searchParams = new URL(aeonUrl).searchParams;
 
@@ -34,25 +35,24 @@ const AeonButton = ({ item, onClick }) => {
     return encodeURI(`${aeonUrl}${params || ''}`);
   });
 
+  if (!item.specRequestable) return null;
+  if (!aeonUrl) return <div>{item.status.prefLabel ?? 'Not Available'}</div>;
+
   return (
-    <div className='nypl-request-btn'>
-      <a href={aeonUrl} onClick={onClick} tabIndex='0'>
-        {`Make Appointment`}
-      </a>
-      <br />
-      <span className='nypl-request-btn-label'>
+    <RequestButton url={aeonUrl} text={`Make Appointment`} onClick={onClick}>
+      <span>
         {`Appointment Required. `}
-        <a>
+        <Link href={'https://www.nypl.org/help/request-research-materials'}>
           <i>{`Details`}</i>
-        </a>
+        </Link>
       </span>
-    </div>
+    </RequestButton>
   );
 };
 
 AeonButton.propTypes = {
-  item: PropTypes.object,
-  onClick: PropTypes.function,
+  item: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default AeonButton;

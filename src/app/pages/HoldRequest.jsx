@@ -388,7 +388,6 @@ export class HoldRequest extends React.Component {
               <legend className='visuallyHidden' id='radiobutton-group1'>
                 Select a pickup location
               </legend>
-              {isEddRequestable && this.renderEDD()}
               {this.renderDeliveryLocation(deliveryLocations)}
             </fieldset>
 
