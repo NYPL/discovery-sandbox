@@ -16,10 +16,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
     <ul className={additional && 'additionalDetails'}>
       {list
         .map((value, idx) => {
-          if (_isObject(value)) {
-            // WIP
-            return;
-          }
+          if (!value) return null;
 
           const element = { value };
 
