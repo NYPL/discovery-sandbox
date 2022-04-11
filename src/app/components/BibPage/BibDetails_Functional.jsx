@@ -4,7 +4,7 @@ import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import { useBib } from '../../context/Bib.Provider';
 import { combineBibDetailsData, groupNotes } from '../../utils/bibDetailsUtils';
 import DefinitionField from './components/DefinitionField';
-import NoteList from './components/NoteList';
+import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
 const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
@@ -27,15 +27,21 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
           resources);
 
       if (field.value === 'note') {
+        // INVESTIGATE:
+        // Can we avoid having to loop here?
+        // Although unlikely what happens at groups of 10, 20, ...100
         const group = groupNotes(origin);
+
         return [
           ...store,
-          ...Object.keys(group).map((type, idx) => {
+          // In order to get the noteType as a label
+          // we need to process this here
+          ...Object.entries(group).map(([label, [note]]) => {
             return {
-              term: type,
-              definition: (
-                <NoteList notes={group[type]} index={idx} type={type} />
-              ),
+              // term is the label of the feild
+              term: label,
+              // definition is the value of the label
+              definition: <DefinitionNoteField value={note} />,
             };
           }),
         ];
