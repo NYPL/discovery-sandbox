@@ -4,7 +4,7 @@ import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const { parallel } = useBibParallel(field.value);
+  const { bib, parallel } = useBibParallel(field.value);
 
   const list = parallel ?? [bibValues];
 
