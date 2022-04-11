@@ -9,16 +9,18 @@ const ParallelsFields = ({
   fieldIndex = 0,
   headingLevel = undefined,
 }) => {
-  const { field = [], parallel = [] } = useBibParallel(pField);
+  const { parallel } = useBibParallel(pField);
 
   return (
     <Heading level={headingLevel}>
       <>
-        {(parallel[fieldIndex] ?? field[fieldIndex]).map((value, idx) => (
-          <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
-            {value}
-          </span>
-        )) || children}
+        {(parallel &&
+          parallel[fieldIndex].map((value, idx) => (
+            <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
+              {value}
+            </span>
+          ))) ||
+          children}
       </>
     </Heading>
   );
@@ -28,8 +30,7 @@ export default ParallelsFields;
 
 ParallelsFields.propTypes = {
   pField: PropTypes.string.isRequired,
-  fieldIndex: PropTypes.number.isRequired,
-  bib: PropTypes.object.isRequired,
+  fieldIndex: PropTypes.number,
   headingLevel: PropTypes.number,
   children: PropTypes.node,
 };

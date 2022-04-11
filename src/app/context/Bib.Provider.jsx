@@ -23,7 +23,7 @@ const BibProvider = ({ bib, children }) => {
 
 BibProvider.propTypes = {
   bib: PropTypes.object,
-  children: PropTypes.elementType,
+  children: PropTypes.node,
 };
 
 const useBib = () => {
