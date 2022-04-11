@@ -56,7 +56,8 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
               <DefinitionField
                 bibValues={origin}
                 field={field}
-                additional={marcs}
+                // TODO: This is not correct
+                additional={!!marcs.length}
               />
             ),
           },
