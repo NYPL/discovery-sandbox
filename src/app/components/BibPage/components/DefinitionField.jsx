@@ -15,6 +15,11 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
         .map((value, idx) => {
           if (!value) return null;
 
+          // WIP
+          if (field.value === 'identifier') {
+            return null;
+          }
+
           const element = { value };
 
           if (field.linkable) {
