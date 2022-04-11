@@ -5,16 +5,14 @@ import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const {
-    hasParallels,
-    field: { mapping = [] },
-  } = useBibParallel(field.value);
+  const { parallel } = useBibParallel(field.value);
 
-  const list = (hasParallels && mapping) || bibValues;
+  const list = parallel ?? [bibValues];
 
   return (
     <ul className={additional && 'additionalDetails'}>
       {list
+        .flat()
         .map((value, idx) => {
           if (!value) return null;
 
