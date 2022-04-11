@@ -38,20 +38,10 @@ const useBib = () => {
 
 const useBibParallel = (field = '') => {
   const { bib, parallels = {} } = useBib();
-  const hasParallels = !!Object.keys(parallels).length && !!parallels[field];
 
-  // WIP
-  // Possible constructs
-
-  // original | parallel
-  // ['a'] ['b'] || ['a', 'b'] ['c', 'd']
-  // ['b', 'a']  || ['c', 'a', 'd', 'b']
-
-  // return [[original, parallel], [original, paralle]]
   return {
     bib,
-    hasParallels,
-    field: parallels[field] ?? {},
+    parallel: (parallels[field] && parallels[field].mapping) || null,
   };
 };
 
@@ -84,9 +74,8 @@ function extractParallels(bib) {
             const pa = bib[key][idx];
             // @seanredmond would like the parallel to show up first
             // https://jira.nypl.org/browse/SCC-2915?focusedCommentId=68727&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-68727
-            const ne = [pa, og];
-
-            return acc.concat(ne);
+            acc.push([pa, og]); // Set a 2D array
+            return acc;
           }, [])
           .filter(Boolean);
 
