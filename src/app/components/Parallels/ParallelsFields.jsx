@@ -4,12 +4,12 @@ import React from 'react';
 import { useBibParallel } from '../../context/Bib.Provider';
 
 const ParallelsFields = ({
-  pfield,
+  pField,
   children,
   fieldIndex = 0,
   headingLevel = undefined,
 }) => {
-  const { field = [], parallel = [] } = useBibParallel(pfield);
+  const { field = [], parallel = [] } = useBibParallel(pField);
 
   return (
     <Heading level={headingLevel}>
@@ -21,7 +21,7 @@ const ParallelsFields = ({
 export default ParallelsFields;
 
 ParallelsFields.propTypes = {
-  pfield: PropTypes.string.isRequired,
+  pField: PropTypes.string.isRequired,
   fieldIndex: PropTypes.number.isRequired,
   bib: PropTypes.object.isRequired,
   headingLevel: PropTypes.number,
