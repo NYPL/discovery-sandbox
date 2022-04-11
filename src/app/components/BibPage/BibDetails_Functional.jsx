@@ -57,6 +57,9 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
                 bibValues={origin}
                 field={field}
                 // TODO: This is not correct
+                // Additional checks for stying changes
+                // It is suppose to style additional marcs
+                // We do not apply the marcs here
                 additional={!!marcs.length}
               />
             ),
