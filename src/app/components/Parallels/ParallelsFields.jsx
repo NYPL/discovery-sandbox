@@ -13,7 +13,13 @@ const ParallelsFields = ({
 
   return (
     <Heading level={headingLevel}>
-      {(parallel[fieldIndex] ?? field[fieldIndex]) || children}
+      <>
+        {(parallel[fieldIndex] ?? field[fieldIndex]).map((value, idx) => (
+          <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
+            {value}
+          </span>
+        )) || children}
+      </>
     </Heading>
   );
 };
