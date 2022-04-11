@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isObject as _isObject } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
@@ -73,7 +72,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
 DefinitionField.propTypes = {
   field: PropTypes.object,
-  additional: PropTypes.boolean,
+  additional: PropTypes.bool,
   bibValues: PropTypes.array,
 };
 
