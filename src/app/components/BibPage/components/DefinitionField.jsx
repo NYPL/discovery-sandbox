@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
@@ -10,8 +11,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
   return (
     <ul className={additional && 'additionalDetails'}>
-      {list
-        .flat()
+      {_flatten(list)
         .map((value, idx) => {
           if (!value) return null;
 
