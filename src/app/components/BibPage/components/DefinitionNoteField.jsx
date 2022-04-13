@@ -1,21 +1,18 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../../context/Bib.Provider';
 
-const DefinitionNoteField = ({ value }) => {
-  const { parallel } = useBibParallel('note');
-
-  const list = parallel ?? [value];
-
+const DefinitionNoteField = ({ values }) => {
+  // type value = Note[]
   return (
     <ul>
-      {list
+      {values
         .map((note, idx) => {
-          // Check by object reference
-          return note[1] === value ? (
+          return note && note.prefLabel ? (
             <>
-              {note[0] ? <li key={(idx - 1).toString()}>{note[0]}</li> : null}
-              <li key={idx.toString()}>{note[1].prefLabel ?? note[1]}</li>
+              {note.parallel ? (
+                <li key={`${note.noteType}_${idx}`}>{note.parallel}</li>
+              ) : null}
+              <li key={idx.toString()}>{note.prefLabel}</li>
             </>
           ) : null;
         })
@@ -25,7 +22,7 @@ const DefinitionNoteField = ({ value }) => {
 };
 
 DefinitionNoteField.propTypes = {
-  value: PropTypes.object,
+  values: PropTypes.array,
 };
 
 export default DefinitionNoteField;

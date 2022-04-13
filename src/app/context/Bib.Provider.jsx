@@ -41,7 +41,8 @@ const useBibParallel = (field = '') => {
 
   return {
     bib,
-    parallel: (parallels[field] && parallels[field].mapping) || null,
+    parallel: (parallels[field] && parallels[field].mapping) || undefined,
+    parallels,
   };
 };
 
