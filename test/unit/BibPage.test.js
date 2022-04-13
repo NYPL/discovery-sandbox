@@ -23,6 +23,7 @@ import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchRe
 import { Link } from 'react-router';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
 import { isAeonLink } from '../../src/app/utils/utils';
+import BibDetails_Functional from '../../src/app/components/BibPage/BibDetails_Functional';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
@@ -51,10 +52,12 @@ describe('BibPage', () => {
     );
 
     it('should have an Aeon link available', () => {
-      const bttBibComp = page.findWhere(
-        (node) =>
-          node.type() === BibDetails && node.prop('additionalData').length,
-      );
+      const bttBibComp = page.findWhere((node) => {
+        return (
+          node.type() === BibDetails_Functional &&
+          node.prop('additionalData').length
+        );
+      });
       // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
       // It can be checked to see if the bib details would have been passed a list with Aeon links.
 
