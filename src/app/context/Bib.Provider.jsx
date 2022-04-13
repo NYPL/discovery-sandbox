@@ -84,7 +84,7 @@ function extractParallels(bib) {
           [field]: {
             mapping,
             original: bib[field],
-            paralell: bib[key],
+            parallel: bib[key],
           },
         };
       }
