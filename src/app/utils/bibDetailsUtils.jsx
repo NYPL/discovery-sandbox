@@ -35,12 +35,44 @@ const combineBibDetailsData = (bibDetails, additionalData) => {
   return bibDetails.concat(filteredAdditionalData);
 };
 
+/**
+ *
+ * Extract the noteType from the note and post fix it with "(note)"
+ * @param note Note object
+ * @return The noteType field postfixed with "(note)"
+ *
+ */
 const getNoteType = (note) => {
   const type = note.noteType || '';
   return type.toLowerCase().includes('note') ? type : `${type} (note)`;
 };
 
-const groupNotes = (note = []) => {
+/**
+ *
+ * Set a new Notes object with a parallel property
+ * @param note Note(object)[ ]
+ * @param parallels string[ ]
+ * @return A list of notes with a parallel property
+ *
+ */
+const setParallelToNote = (note = [], parallels = []) => {
+  return note.map((note, idx) => {
+    // Set new note object to avoid mutation
+    const outNote = { ...note, parallel: null };
+    // The index of note matches the index of parallels
+    if (parallels[idx]) outNote.parallel = parallels[idx];
+    return outNote;
+  });
+};
+
+/**
+ *
+ * Group the notes by their noteType
+ * @param note Note(object)[ ]
+ * @return An object with properties from each noteType with their values set to the list of notes related to noteType
+ * @return ex: { 'Biography (note)' : Note(object)[ ] }
+ */
+const groupNotesBySubject = (note = []) => {
   return (
     note
       // Make sure all notes are blanknodes:
@@ -59,5 +91,6 @@ export {
   definitionMarcs,
   combineBibDetailsData,
   getNoteType,
-  groupNotes,
+  groupNotesBySubject,
+  setParallelToNote,
 };
