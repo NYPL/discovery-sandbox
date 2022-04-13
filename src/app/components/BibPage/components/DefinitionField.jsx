@@ -7,6 +7,9 @@ import LinkableBibField from './LinkableField';
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
   const { bib, parallel } = useBibParallel(field.value);
 
+  // BibValues is an array of various values
+  // Set bibValues as a 2D array becuase parallels is also a 2D array
+  // Keep things in sync.
   const list = parallel ?? [bibValues];
 
   return (
@@ -38,6 +41,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
           return <li key={`${value}-${idx}`}>{definition}</li>;
 
+          // TODO: Handle case below
           // const url = `filters[${field.value}]=${value['@id']}`;
 
           // let itemValue = field.linkable ? (
