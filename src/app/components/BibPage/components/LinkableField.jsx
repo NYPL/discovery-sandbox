@@ -21,7 +21,7 @@ const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
   };
 
   return (
-    <Link onClick={handler} to={url}>
+    <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
       {text}
     </Link>
   );
