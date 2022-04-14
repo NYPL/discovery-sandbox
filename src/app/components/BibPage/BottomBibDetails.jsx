@@ -24,6 +24,7 @@ const BottomBibDetails = ({ bib }) => {
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
     // if the subject heading API call failed for some reason,
+    // TODO: Can this be simpflified so we do not need to pass down the bib?
     bib.subjectHeadingData
       ? { label: 'Subject', value: 'subjectHeadingData' }
       : { label: 'Subject', value: 'subjectLiteral', linkable: true },
