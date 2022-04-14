@@ -4,16 +4,24 @@ import React from 'react';
 import { useBibParallel } from '../../context/Bib.Provider';
 
 const ParallelsFields = ({
-  pfield,
+  pField,
   children,
   fieldIndex = 0,
   headingLevel = undefined,
 }) => {
-  const { field = [], parallel = [] } = useBibParallel(pfield);
+  const { parallel } = useBibParallel(pField);
 
   return (
     <Heading level={headingLevel}>
-      {(parallel[fieldIndex] ?? field[fieldIndex]) || children}
+      <>
+        {(parallel &&
+          parallel[fieldIndex].map((value, idx) => (
+            <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
+              {value}
+            </span>
+          ))) ||
+          children}
+      </>
     </Heading>
   );
 };
@@ -21,9 +29,8 @@ const ParallelsFields = ({
 export default ParallelsFields;
 
 ParallelsFields.propTypes = {
-  pfield: PropTypes.string.isRequired,
-  fieldIndex: PropTypes.number.isRequired,
-  bib: PropTypes.object.isRequired,
+  pField: PropTypes.string.isRequired,
+  fieldIndex: PropTypes.number,
   headingLevel: PropTypes.number,
   children: PropTypes.node,
 };

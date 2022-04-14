@@ -1,16 +1,22 @@
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
-import { useBib } from '../../context/Bib.Provider';
-import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
+import { useBibParallel } from '../../context/Bib.Provider';
+import {
+  combineBibDetailsData,
+  groupNotesBySubject,
+  setParallelToNote,
+} from '../../utils/bibDetailsUtils';
 import DefinitionField from './components/DefinitionField';
+import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
 const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
   const {
     bib,
     bib: { subjectHeadingData },
-  } = useBib();
+    parallels,
+  } = useBibParallel();
 
   // This does not Memoize due to Redux setting a New Bib Item
   // Potential for Improvement
@@ -25,6 +31,31 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
           resources.length &&
           resources);
 
+      if (field.value === 'note') {
+        // INVESTIGATE:
+        // Can we avoid having to loop here?
+        // Although unlikely what happens at groups of 10, 20, ...100
+        const paras = (parallels['note'] && parallels['note'].parallel) || [];
+        const group = groupNotesBySubject(setParallelToNote(origin, paras));
+
+        return [
+          ...store,
+          // In order to get the noteType as a label
+          // we need to process this here
+          ...Object.entries(group).map(([label, notes]) => {
+            // type notes = Note[]
+            return {
+              // term is the label of the feild
+              term: label,
+              // definition is the value of the label
+              definition: <DefinitionNoteField values={notes} />,
+              // TODO: Can we use the DefinitionField instead of DefinitionNoteField?
+              // definition: <DefinitionField bibValues={notes} field={field} />,
+            };
+          }),
+        ];
+      }
+
       if (origin) {
         return [
           ...store,
@@ -34,7 +65,11 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
               <DefinitionField
                 bibValues={origin}
                 field={field}
-                additional={marcs}
+                // TODO: This is not correct
+                // Additional checks for stying changes
+                // It is suppose to style additional marcs
+                // We do not apply the marcs here
+                additional={!!marcs.length}
               />
             ),
           },
@@ -43,7 +78,7 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
 
       return store;
     }, []);
-  }, [marcs, bib, fields, resources]);
+  }, [bib, fields, marcs.length, parallels, resources]);
 
   // Make sure fields is a nonempty array
   if (_isEmpty(fields) || !_isArray(fields)) {

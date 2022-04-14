@@ -1,76 +1,87 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const {
-    hasParallels,
-    field: { mapping = [] },
-  } = useBibParallel(field.value);
+  const { bib, parallel } = useBibParallel(field.value);
 
-  const list = (hasParallels && mapping) || bibValues;
+  // BibValues is an array of various values
+  // Set bibValues as a 2D array becuase parallels is also a 2D array
+  // Keep things in sync.
+  const list = parallel ?? [bibValues];
 
   return (
     <ul className={additional && 'additionalDetails'}>
-      {list.map((value, idx) => {
-        const element = { value };
+      {_flatten(list)
+        .map((value, idx) => {
+          if (!value) return null;
 
-        if (field.linkable) {
-          element.value = (
-            <LinkableBibField
-              label={field.label}
-              field={field.value}
-              bibValue={value}
-              outbound={field.selfLinkable}
-            />
-          );
-        }
+          // WIP
+          if (field.value === 'identifier') {
+            return null;
+          }
 
-        const definition =
-          element.value.prefLabel ?? element.value.label ?? element.value;
+          const element = { value };
 
-        return <li key={`${value}-${idx}`}>{definition}</li>;
+          if (field.linkable) {
+            element.value = (
+              <LinkableBibField
+                label={field.label}
+                field={field.value}
+                bibValue={value}
+                outbound={field.selfLinkable}
+              />
+            );
+          }
 
-        // const url = `filters[${field.value}]=${value['@id']}`;
+          const definition =
+            element.value.prefLabel ?? element.value.label ?? element.value;
 
-        // let itemValue = field.linkable ? (
-        //   <Link
-        //     onClick={(event) =>
-        //       this.newSearch(event, url, field.value, value['@id'], field.label)
-        //     }
-        //     to={`${appConfig.baseUrl}/search?${url}`}
-        //   >
-        //     {value.prefLabel}
-        //   </Link>
-        // ) : (
-        //   <span>{value.prefLabel}</span>
-        // );
-        // if (field.selfLinkable) {
-        //   itemValue = (
-        //     <a
-        //       href={value['@id']}
-        //       onClick={() =>
-        //         trackDiscovery(
-        //           'Bib fields',
-        //           `${field.label} - ${value.prefLabel}`,
-        //         )
-        //       }
-        //     >
-        //       {value.prefLabel}
-        //     </a>
-        //   );
-        // }
+          return <li key={`${value}-${idx}`}>{definition}</li>;
 
-        // return <li key={value.prefLabel}>{itemValue}</li>;
-      })}
+          // TODO: Handle case below
+          // const url = `filters[${field.value}]=${value['@id']}`;
+
+          // let itemValue = field.linkable ? (
+          //   <Link
+          //     onClick={(event) =>
+          //       this.newSearch(event, url, field.value, value['@id'], field.label)
+          //     }
+          //     to={`${appConfig.baseUrl}/search?${url}`}
+          //   >
+          //     {value.prefLabel}
+          //   </Link>
+          // ) : (
+          //   <span>{value.prefLabel}</span>
+          // );
+          // if (field.selfLinkable) {
+          //   itemValue = (
+          //     <a
+          //       href={value['@id']}
+          //       onClick={() =>
+          //         trackDiscovery(
+          //           'Bib fields',
+          //           `${field.label} - ${value.prefLabel}`,
+          //         )
+          //       }
+          //     >
+          //       {value.prefLabel}
+          //     </a>
+          //   );
+          // }
+
+          // return <li key={value.prefLabel}>{itemValue}</li>;
+        })
+        .filter(Boolean)}
     </ul>
   );
 };
 
 DefinitionField.propTypes = {
   field: PropTypes.object,
-  additional: PropTypes.boolean,
+  additional: PropTypes.bool,
   bibValues: PropTypes.array,
 };
 
