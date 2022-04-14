@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
+import IdentifierNode from './IndentifierNode';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
@@ -18,10 +19,9 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
         .map((value, idx) => {
           if (!value) return null;
 
-          // WIP
-          // if (field.value === 'identifier') {
-          //   return null;
-          // }
+          if (field.value === 'identifier') {
+            return <IdentifierNode value={value} />;
+          }
 
           const element = { value };
 

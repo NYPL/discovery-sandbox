@@ -58,9 +58,8 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
         ];
       }
 
-      if (field.value === 'identifier') {
+      if (origin) {
         const ident = validIdentifier(field, origin);
-
         // To avoid adding a label with empty array for identifiers
         if (ident && !ident.length) return store;
 
@@ -69,20 +68,8 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
           {
             term: field.label,
             definition: (
-              <IdentifierNode values={ident} type={field.identifier} />
-            ),
-          },
-        ];
-      }
-
-      if (origin) {
-        return [
-          ...store,
-          {
-            term: field.label,
-            definition: (
               <DefinitionField
-                bibValues={origin}
+                bibValues={ident ?? origin}
                 field={field}
                 // TODO: This is not correct
                 // Additional checks for stying changes
