@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const IdentifierField = ({ value }) => {
-  const mark = value['@value'];
-  const status = value.identifierStatus;
+const IdentifierField = ({ entity }) => {
+  const mark = entity['@value'];
+  const status = entity.identifierStatus;
 
   return (
     <li key={mark}>
@@ -22,8 +22,7 @@ const IdentifierField = ({ value }) => {
 };
 
 IdentifierField.propTypes = {
-  value: PropTypes.array,
-  type: PropTypes.string,
+  entity: PropTypes.array,
 };
 
 export default IdentifierField;

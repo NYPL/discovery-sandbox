@@ -20,7 +20,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
           if (!value) return null;
 
           if (field.value === 'identifier') {
-            return <IdentifierField value={value} />;
+            return <IdentifierField entity={value} />;
           }
 
           const element = { value };
