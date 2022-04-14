@@ -14,17 +14,14 @@ const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
 
   const handler = (event) => {
     if (!outbound) {
-      event.preventDefault();
-      // get context router
-      // this.context.router.push(search);
-      !!onClick && onClick();
+      !!onClick && onClick(event);
     }
 
     trackDiscovery('Bib fields', `${label} - ${text}`);
   };
 
   return (
-    <Link onClick={handler} to={url}>
+    <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
       {text}
     </Link>
   );
