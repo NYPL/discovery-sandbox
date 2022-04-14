@@ -19,9 +19,9 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
           if (!value) return null;
 
           // WIP
-          if (field.value === 'identifier') {
-            return null;
-          }
+          // if (field.value === 'identifier') {
+          //   return null;
+          // }
 
           const element = { value };
 
