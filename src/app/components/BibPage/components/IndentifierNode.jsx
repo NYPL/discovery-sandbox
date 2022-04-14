@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-const IdentifierNode = ({ value }) => {
+const IdentifierField = ({ value }) => {
   const mark = value['@value'];
   const status = value.identifierStatus;
 
@@ -21,9 +21,9 @@ const IdentifierNode = ({ value }) => {
   );
 };
 
-IdentifierNode.propTypes = {
+IdentifierField.propTypes = {
   value: PropTypes.array,
   type: PropTypes.string,
 };
 
-export default IdentifierNode;
+export default IdentifierField;

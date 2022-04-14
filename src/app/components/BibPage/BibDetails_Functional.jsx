@@ -10,7 +10,6 @@ import {
 import LibraryItem from '../../utils/item';
 import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
-import IdentifierNode from './components/IndentifierNode';
 import DefinitionList from './DefinitionList';
 
 const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
