@@ -9,6 +9,7 @@ const ItemsContainer = itemsContainerModule.ItemsContainer;
 const BibItems = ({ items, location, keywords }) => {
   const { bib, bibId } = useBib();
 
+  // TODO: useMemo is useless here
   const display = useMemo(() => {
     return items.length && !items.every(isElectronic);
   }, [items]);
