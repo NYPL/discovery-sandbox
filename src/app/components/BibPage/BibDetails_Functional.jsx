@@ -7,6 +7,7 @@ import {
   groupNotesBySubject,
   setParallelToNote,
 } from '../../utils/bibDetailsUtils';
+import LibraryItem from '../../utils/item';
 import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
@@ -57,13 +58,17 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
       }
 
       if (origin) {
+        const ident = validIdentifier(field, origin);
+        // To avoid adding a label with empty array for identifiers
+        if (ident && !ident.length) return store;
+
         return [
           ...store,
           {
             term: field.label,
             definition: (
               <DefinitionField
-                bibValues={origin}
+                bibValues={ident ?? origin}
                 field={field}
                 // TODO: This is not correct
                 // Additional checks for stying changes
@@ -105,3 +110,9 @@ BibDetails_Functional.contextTypes = {
 };
 
 export default BibDetails_Functional;
+
+function validIdentifier(field, origin) {
+  return field.value === 'identifier'
+    ? LibraryItem.getIdentifierEntitiesByType(origin, field.identifier)
+    : null;
+}

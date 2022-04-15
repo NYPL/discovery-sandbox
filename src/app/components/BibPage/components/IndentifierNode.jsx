@@ -1,43 +1,28 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import LibraryItem from '../../../utils/item';
 
-const IdentifierNode = ({ values, type }) => {
-  const entities = LibraryItem.getIdentifierEntitiesByType(values, type);
+const IdentifierField = ({ entity }) => {
+  const mark = entity['@value'];
+  const status = entity.identifierStatus;
 
-  if (!Array.isArray(entities) || !(entities.length > 0)) {
-    return null;
-  }
-
-  const markup = entities.map((ent) => {
-    const nodes = [<span key={`${ent['@value']}`}>{ent['@value']}</span>];
-
-    if (ent.identifierStatus) {
-      nodes.push(
-        <span key={`${ent['@value']}`}>
-          {' '}
-          <em>({ent.identifierStatus})</em>
-        </span>,
-      );
-    }
-
-    return nodes;
-  });
-
-  return markup.length === 1 ? (
-    markup.pop()
-  ) : (
-    <ul>
-      {markup.map((mark) => (
-        <li key={mark[0].key}>{mark}</li>
-      ))}
-    </ul>
+  return (
+    <li key={mark}>
+      <span>
+        {mark}
+        {(status && (
+          <>
+            {' '}
+            <em>{status}</em>
+          </>
+        )) ||
+          null}
+      </span>
+    </li>
   );
 };
 
-IdentifierNode.propTypes = {
-  values: PropTypes.array,
-  type: PropTypes.string,
+IdentifierField.propTypes = {
+  entity: PropTypes.array,
 };
 
-export default IdentifierNode;
+export default IdentifierField;
