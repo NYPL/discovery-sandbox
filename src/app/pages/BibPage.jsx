@@ -84,8 +84,8 @@ export const BibPage = (
       >
         <BibContainer
           location={location}
-          searched={resultSelection}
-          search={searchKeywords}
+          selection={resultSelection}
+          keywords={searchKeywords}
         />
       </SccContainer>
     </BibProvider>

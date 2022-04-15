@@ -15,7 +15,7 @@ import TopBibDetails from './TopBibDetails';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
-const BibContainer = ({ location, searched, search }) => {
+const BibContainer = ({ location, selection, keywords }) => {
   const { bib, bibId } = useBib();
 
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
@@ -26,7 +26,7 @@ const BibContainer = ({ location, searched, search }) => {
 
   return (
     <>
-      <BibHeading searched={searched} />
+      <BibHeading searched={selection} />
 
       <TopBibDetails
         resources={pluckAeonLinksFromResource(
@@ -43,7 +43,7 @@ const BibContainer = ({ location, searched, search }) => {
             items={items}
             bibId={bibId}
             itemPage={location.search}
-            searchKeywords={search}
+            searchKeywords={keywords}
             holdings={bib.holdings}
           />
         </section>
@@ -65,8 +65,8 @@ const BibContainer = ({ location, searched, search }) => {
 
 BibContainer.propTypes = {
   location: PropTypes.object,
-  search: PropTypes.object,
-  searched: PropTypes.object,
+  keywords: PropTypes.object,
+  selection: PropTypes.object,
 };
 
 export default BibContainer;
