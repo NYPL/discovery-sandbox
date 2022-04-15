@@ -13,7 +13,7 @@ import BibHoldings from './components/BibHoldings';
 import BibItems from './components/BibItems';
 import TopBibDetails from './TopBibDetails';
 
-const BibContainer = ({ location, selection, keywords }) => {
+const BibContainer = ({ location, keywords, selection }) => {
   const { bib, bibId } = useBib();
 
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));

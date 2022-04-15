@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
-import { useBib } from 'src/app/context/Bib.Provider';
-import { isElectronic } from 'src/app/utils/utils';
+import { useBib } from '../../../context/Bib.Provider';
+import { isElectronic } from '../../../utils/utils';
 import itemsContainerModule from '../../Item/ItemsContainer';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;

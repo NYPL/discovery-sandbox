@@ -1,10 +1,11 @@
 import React from 'react';
+import { useBib } from '../../../context/Bib.Provider';
 import LibraryHoldings from '../LibraryHoldings';
 
 const BibHoldings = () => {
   const { bib } = useBib();
 
-  if (!bib.holdings) return null;
+  if (!bib || !bib.holdings) return null;
 
   return (
     <section style={{ marginTop: '20px' }}>

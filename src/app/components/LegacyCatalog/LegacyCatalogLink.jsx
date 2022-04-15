@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { isNyplBnumber } from 'src/app/utils/utils';
+import { isNyplBnumber } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
 const LegacyCatalogLink = ({ recordNumber }) => {
