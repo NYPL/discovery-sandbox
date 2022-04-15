@@ -41,7 +41,7 @@ const BibContainer = ({ location, selection, keywords }) => {
 
       <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
+      <LegacyCatalogLink recordNumber={bibId} />
     </>
   );
 };

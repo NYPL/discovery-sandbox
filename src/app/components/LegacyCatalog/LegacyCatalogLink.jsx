@@ -1,24 +1,23 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { isNyplBnumber } from 'src/app/utils/utils';
 import appConfig from '../../data/appConfig';
 
-const LegacyCatalogLink = ({ recordNumber, display }) => {
+const LegacyCatalogLink = ({ recordNumber }) => {
+  if (!isNyplBnumber(recordNumber)) return null;
+
   return (
-    (display && (
-      <a
-        href={`${appConfig.legacyBaseUrl}/record=${recordNumber}~S1`}
-        id='legacy-catalog-link'
-      >
-        View in Legacy Catalog
-      </a>
-    )) ||
-    null
+    <a
+      href={`${appConfig.legacyBaseUrl}/record=${recordNumber}~S1`}
+      id='legacy-catalog-link'
+    >
+      View in Legacy Catalog
+    </a>
   );
 };
 
 LegacyCatalogLink.propTypes = {
   recordNumber: PropTypes.string,
-  display: PropTypes.bool,
 };
 
 export default LegacyCatalogLink;
