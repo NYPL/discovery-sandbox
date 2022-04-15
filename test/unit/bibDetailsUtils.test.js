@@ -1,13 +1,8 @@
-/* eslint-env mocha */
-
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-
 import {
+  combineBibDetailsData,
   definitionItem,
   definitionMarcs,
-  combineBibDetailsData,
 } from '../../src/app/utils/bibDetailsUtils';
 
 describe('bibDetailsUtils', () => {
@@ -68,6 +63,7 @@ describe('bibDetailsUtils', () => {
   describe('annotatedMarcDetails', () => {
     it('should map fields in annotated marc to term,definition pairs, where term points to field label and definition points to list of definition items populated from field values', () => {
       const mockBib = {
+        uri: 'b123456789',
         annotatedMarc: {
           bib: {
             fields: [
