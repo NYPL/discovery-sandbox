@@ -10,18 +10,14 @@ import itemsContainerModule from '../Item/ItemsContainer';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
+import BibItems from './components/BibItems';
 import LibraryHoldings from './LibraryHoldings';
 import TopBibDetails from './TopBibDetails';
-
-const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const BibContainer = ({ location, selection, keywords }) => {
   const { bib, bibId } = useBib();
 
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every(
-    (item) => item.isElectronicResource,
-  );
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   return (
@@ -35,20 +31,7 @@ const BibContainer = ({ location, selection, keywords }) => {
         )}
       />
 
-      {(items.length && !isElectronicResources && (
-        <section style={{ marginTop: '20px' }}>
-          <ItemsContainer
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={keywords}
-            holdings={bib.holdings}
-          />
-        </section>
-      )) ||
-        null}
+      <BibItems items={items} location={location} keywords={keywords} />
 
       {bib.holdings && (
         <section style={{ marginTop: '20px' }}>

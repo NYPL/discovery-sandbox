@@ -759,7 +759,6 @@ function isNyplBnumber(bnum) {
   return /^b/.test(bnum);
 }
 
-
 /**
  *
  * Capitalize the first letter of a string
@@ -771,7 +770,17 @@ function capitalize(field) {
   return field.charAt(0).toUpperCase() + field.slice(1);
 }
 
+/**
+ *
+ * Check if item is an Electronic Resource
+ * @param item object
+ * @return Boolean
+ *
+ */
+const isElectronic = (item) => Boolean(item.isElectronicResource);
+
 export {
+  isElectronic,
   capitalize,
   trackDiscovery,
   ajaxCall,
