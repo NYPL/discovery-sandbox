@@ -13,46 +13,6 @@ import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
 import { ajaxCall } from '../utils/utils';
 
-const checkForMoreItems = (bib, dispatch) => {
-  // No Need to check if Bib Exists sine useEffect does that for us.
-  if (!bib.items || !bib.items.length) {
-    // nothing to do
-  } else if (bib.items.length < itemBatchSize) {
-    // done
-    // TODO: Do we need a new obj or can we Ref.
-    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
-  } else {
-    // need to fetch more items
-    const baseUrl = appConfig.baseUrl;
-    const itemFrom = bib.itemFrom || itemBatchSize;
-    const bibApi = `${window.location.pathname.replace(
-      baseUrl,
-      `${baseUrl}/api`,
-    )}?itemFrom=${itemFrom}`;
-    ajaxCall(
-      bibApi,
-      (resp) => {
-        // put items in
-        const bibResp = resp.data.bib;
-        const done =
-          !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
-        dispatch(
-          updateBibPage({
-            bib: Object.assign({}, bib, {
-              items: bib.items.concat((bibResp && bibResp.items) || []),
-              done,
-              itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
-            }),
-          }),
-        );
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
-  }
-};
-
 export const BibPage = (
   { bib, location, searchKeywords, dispatch, resultSelection },
   context,
@@ -123,6 +83,50 @@ const mapStateToProps = ({
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));
+
+function checkForMoreItems(bib, dispatch) {
+  // No Need to check if Bib Exists sine useEffect does that for us.
+
+  if (!bib.items || !bib.items.length) return; // nothing to do
+
+  if (bib.items.length < itemBatchSize) {
+    // done
+    // TODO: Do we need a new obj or can we Ref.
+    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
+    return;
+  }
+
+  // need to fetch more items
+  const baseUrl = appConfig.baseUrl;
+  const itemFrom = bib.itemFrom || itemBatchSize;
+  const bibApi = `${window.location.pathname.replace(
+    baseUrl,
+    `${baseUrl}/api`,
+  )}?itemFrom=${itemFrom}`;
+
+  ajaxCall(
+    bibApi,
+    (resp) => {
+      // put items in
+      const bibResp = resp.data.bib;
+      const done =
+        !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+
+      dispatch(
+        updateBibPage({
+          bib: Object.assign({}, bib, {
+            items: bib.items.concat((bibResp && bibResp.items) || []),
+            done,
+            itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
+          }),
+        }),
+      );
+    },
+    (error) => {
+      console.error(error);
+    },
+  );
+}
 
 // NOTE:
 // interface BibPage_Bib {
