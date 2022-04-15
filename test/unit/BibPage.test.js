@@ -21,6 +21,7 @@ import {
 
 describe('BibPage', () => {
   const context = mockRouterContext();
+
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
       bib: {
@@ -46,24 +47,19 @@ describe('BibPage', () => {
     );
 
     it('should have an Aeon link available', () => {
-      const bttBibComp = page.findWhere((node) => {
-        return (
-          node.type() === BibDetails_Functional &&
-          node.prop('additionalData').length
-        );
+      const node = page.findWhere((node) => {
+        const item = node.type() === DefinitionField;
+        const field = node.prop('field') || {};
+        return item && field.label === 'Electronic Resource';
       });
-      // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
-      // It can be checked to see if the bib details would have been passed a list with Aeon links.
 
-      expect(bttBibComp.type()).to.equal(BibDetails);
-      expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
+      expect(node.type()).to.equal(DefinitionField);
+      expect(node.prop('field').label).to.equal('Electronic Resource');
 
-      const [resource] = bttBibComp
-        .prop('electronicResources')
-        .filter(
-          (er) => er.label === 'Request Access to Special Collections Material',
-        );
-      expect(isAeonLink(resource.url)).to.be.true;
+      const resources = node.prop('bibValues');
+
+      expect(resources).to.have.lengthOf(2);
+      expect(isAeonLink(resources[1].url)).to.be.true;
     });
 
     it('should not include an Aeon link in top BibDetails', () => {
