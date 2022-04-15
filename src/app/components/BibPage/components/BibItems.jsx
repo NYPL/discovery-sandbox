@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import React, { useMemo } from 'react';
 import { useBib } from 'src/app/context/Bib.Provider';
 import { isElectronic } from 'src/app/utils/utils';
