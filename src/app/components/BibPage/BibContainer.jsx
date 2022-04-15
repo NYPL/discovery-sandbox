@@ -22,7 +22,7 @@ const BibContainer = ({ location, keywords, selection }) => {
 
       <TopBibDetails resources={pluckAeonLinks(resources, items)} />
 
-      <BibItems items={items} location={location} keywords={keywords} />
+      <BibItems items={items} keywords={keywords} location={location} />
 
       <BibHoldings />
 
@@ -35,7 +35,7 @@ const BibContainer = ({ location, keywords, selection }) => {
 
 BibContainer.propTypes = {
   location: PropTypes.object,
-  keywords: PropTypes.object,
+  keywords: PropTypes.string,
   selection: PropTypes.object,
 };
 

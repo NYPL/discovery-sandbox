@@ -6,7 +6,7 @@ import itemsContainerModule from '../../Item/ItemsContainer';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
-const BibItems = ({ items, location, keywords }) => {
+const BibItems = ({ items, keywords, location }) => {
   const { bib, bibId } = useBib();
 
   // TODO: useMemo is useless here
@@ -33,8 +33,8 @@ const BibItems = ({ items, location, keywords }) => {
 
 BibItems.propTypes = {
   items: PropTypes.array,
+  keywords: PropTypes.string,
   location: PropTypes.object,
-  keywords: PropTypes.object,
 };
 
 export default BibItems;
