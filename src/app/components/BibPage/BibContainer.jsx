@@ -6,7 +6,6 @@ import {
   getAggregatedElectronicResources,
   pluckAeonLinksFromResource,
 } from '../../utils/utils';
-import itemsContainerModule from '../Item/ItemsContainer';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
