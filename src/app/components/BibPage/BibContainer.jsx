@@ -9,8 +9,8 @@ import {
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
+import BibHoldings from './components/BibHoldings';
 import BibItems from './components/BibItems';
-import LibraryHoldings from './LibraryHoldings';
 import TopBibDetails from './TopBibDetails';
 
 const BibContainer = ({ location, selection, keywords }) => {
@@ -32,11 +32,7 @@ const BibContainer = ({ location, selection, keywords }) => {
 
       <BibItems items={items} location={location} keywords={keywords} />
 
-      {bib.holdings && (
-        <section style={{ marginTop: '20px' }}>
-          <LibraryHoldings holdings={bib.holdings} />
-        </section>
-      )}
+      <BibHoldings />
 
       <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
