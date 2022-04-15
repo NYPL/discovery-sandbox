@@ -3,7 +3,6 @@ import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { Link } from 'react-router';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import BibItems from '../../src/app/components/BibPage/components/BibItems';
 import DefinitionField from '../../src/app/components/BibPage/components/DefinitionField';
@@ -205,44 +204,31 @@ describe('BibPage', () => {
   describe('Back to search results Text', () => {
     const bib = { ...mockBibWithHolding, ...annotatedMarc };
 
-    it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
+    it('displays if `result.bibId` matches ID of bib for page', () => {
+      const result = {
+        fromUrl: 'resultsurl.com',
+        bibId: bib['@id'].substring(4),
+      };
+
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => undefined}
-          resultSelection={{
-            fromUrl: 'resultsurl.com',
-            bibId: bib['@id'].substring(4),
-          }}
-        />,
-        { context },
+        <BackToSearchResults bibId={bib['@id'].substring(4)} result={result} />,
       );
 
-      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
-      expect(
-        component.find(BackToSearchResults).first().render().text(),
-      ).to.equal('Back to search results');
+      expect(component.type().displayName).to.equal('Link');
+      expect(component.render().text()).to.equal('Back to search results');
     });
 
-    it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
+    it('does not display if `result.bibId` does not match ID of bib for page', () => {
+      const result = {
+        fromUrl: 'resultsurl.com',
+        bibId: bib['@id'].substring(4),
+      };
+
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => undefined}
-          resultSelection={{
-            fromUrl: 'resultsurl.com',
-            bibId: 'wrongbib',
-          }}
-        />,
-        { context },
+        <BackToSearchResults bibId={'1234'} result={result} />,
       );
 
-      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
-      expect(
-        component.find(BackToSearchResults).first().render().find(Link).length,
-      ).to.equal(0);
+      expect(component.type()).to.be.null;
     });
   });
 });
