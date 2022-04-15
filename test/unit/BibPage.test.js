@@ -80,7 +80,9 @@ describe('BibPage', () => {
         numItems: 0,
       },
     });
+
     let component;
+
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
       component = mount(
@@ -130,12 +132,16 @@ describe('BibPage', () => {
   describe('Serial', () => {
     let itemTable;
     let component;
+
     before(() => {
       mockBibWithHolding.holdings.forEach((holding) =>
         addHoldingDefinition(holding),
       );
+
       addCheckInItems(mockBibWithHolding);
+
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
+
       const testStore = makeTestStore({
         bib: {
           done: true,
@@ -160,6 +166,7 @@ describe('BibPage', () => {
           childContextTypes: { router: PropTypes.object },
         },
       );
+
       itemTable = component.find('ItemTable');
     });
 
