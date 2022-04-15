@@ -372,7 +372,7 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
  * @param {array} items
  * @return {object}
  */
-function getAggregatedElectronicResources(items = []) {
+function getElectronics(items = []) {
   if (!items && !items.length) {
     return [];
   }
@@ -415,7 +415,7 @@ function getAggregatedElectronicResources(items = []) {
  * @param {array} items Items[ ]
  * @return {array}
  */
-function pluckAeonLinksFromResource(resources = [], items = []) {
+function pluckAeonLinks(resources = [], items = []) {
   return (
     (resources.length &&
       featuredAeonList(items) && // Does items list contain an Aeon Request Button
@@ -794,7 +794,7 @@ export {
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
-  getAggregatedElectronicResources,
+  getElectronics,
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
@@ -806,6 +806,6 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
-  pluckAeonLinksFromResource,
+  pluckAeonLinks,
   isAeonLink,
 };

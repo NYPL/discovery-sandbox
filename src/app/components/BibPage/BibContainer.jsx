@@ -2,10 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useBib } from '../../context/Bib.Provider';
 import LibraryItem from '../../utils/item';
-import {
-  getAggregatedElectronicResources,
-  pluckAeonLinksFromResource,
-} from '../../utils/utils';
+import { getElectronics, pluckAeonLinks } from '../../utils/utils';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
@@ -17,13 +14,13 @@ const BibContainer = ({ location, keywords, selection }) => {
   const { bib, bibId } = useBib();
 
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const resources = getAggregatedElectronicResources(items);
+  const resources = getElectronics(items);
 
   return (
     <>
       <BibHeading searched={selection} />
 
-      <TopBibDetails resources={pluckAeonLinksFromResource(resources, items)} />
+      <TopBibDetails resources={pluckAeonLinks(resources, items)} />
 
       <BibItems items={items} location={location} keywords={keywords} />
 
