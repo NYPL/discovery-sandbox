@@ -5,7 +5,7 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import { Link } from 'react-router';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
-import BibDetails from '../../src/app/components/BibPage/BibDetails';
+import BibItems from '../../src/app/components/BibPage/components/BibItems';
 import DefinitionField from '../../src/app/components/BibPage/components/DefinitionField';
 import { isAeonLink } from '../../src/app/utils/utils';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
@@ -62,18 +62,14 @@ describe('BibPage', () => {
       expect(isAeonLink(resources[1].url)).to.be.true;
     });
 
-    it('should not include an Aeon link in top BibDetails', () => {
-      const topBibComp = page.findWhere(
-        (node) =>
-          node.type() === BibDetails && !node.prop('additionalData').length,
-      );
-      expect(topBibComp.type()).to.equal(BibDetails);
-      expect(
-        topBibComp.findWhere(
-          (el) => el.type() === 'dt' && el.text() === 'Electronic Resource',
-        ).length,
-      ).to.equal(1);
-      expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
+    it('should not Render the items table', () => {
+      const node = page.findWhere((node) => {
+        return node.type() === BibItems;
+      });
+
+      expect(node.type()).to.equal(BibItems);
+      expect(node.prop('items')).to.have.lengthOf(1);
+      expect(node.isEmptyRender()).to.be.true;
     });
   });
 
