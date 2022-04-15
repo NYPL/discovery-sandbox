@@ -759,11 +759,20 @@ function isNyplBnumber(bnum) {
   return /^b/.test(bnum);
 }
 
+
+/**
+ *
+ * Capitalize the first letter of a string
+ * @param field string
+ * @return The input string with the first letter capitalized
+ *
+ */
 function capitalize(field) {
   return field.charAt(0).toUpperCase() + field.slice(1);
 }
 
 export {
+  capitalize,
   trackDiscovery,
   ajaxCall,
   getSortQuery,

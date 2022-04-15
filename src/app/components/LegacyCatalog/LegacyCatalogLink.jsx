@@ -18,7 +18,7 @@ const LegacyCatalogLink = ({ recordNumber, display }) => {
 
 LegacyCatalogLink.propTypes = {
   recordNumber: PropTypes.string,
-  display: PropTypes.boolean,
+  display: PropTypes.bool,
 };
 
 export default LegacyCatalogLink;

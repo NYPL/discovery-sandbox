@@ -60,7 +60,7 @@ const SccContainer = (props) => {
 };
 
 SccContainer.propTypes = {
-  children: PropTypes.array,
+  children: PropTypes.node,
   useLoadingLayer: PropTypes.bool,
   activeSection: PropTypes.string,
   className: PropTypes.string,

@@ -1,16 +1,15 @@
 import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
-import { isNyplBnumber } from '../../utils/utils';
-import BibDetails from './BibDetails';
+import { definitionMarcs } from '../../utils/bibDetailsUtils';
+import BibDetails_Functional from './BibDetails_Functional';
 
 // `linkable` means that those values are links inside the app.
 // `selfLinkable` means that those values are external links and should be self-linked,
 // e.g. the prefLabel is the label and the URL is the id.
 
-const BottomBibDetails = ({ bib, resources }) => {
-  const detailsFields = [
+const BottomBibDetails = ({ bib }) => {
+  const fields = [
     {
       label: 'Additional Authors',
       value: 'contributorLiteral',
@@ -25,11 +24,12 @@ const BottomBibDetails = ({ bib, resources }) => {
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
     // if the subject heading API call failed for some reason,
+    // TODO: Can this be simpflified so we do not need to pass down the bib?
     bib.subjectHeadingData
       ? { label: 'Subject', value: 'subjectHeadingData' }
       : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
-    { label: 'Notes', value: 'React Component' },
+    { label: 'Notes', value: 'note' },
     { label: 'Contents', value: 'tableOfContents' },
     { label: 'Bibliography', value: '' },
     { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
@@ -42,19 +42,11 @@ const BottomBibDetails = ({ bib, resources }) => {
     { label: 'Owning Institutions', value: '' },
   ];
 
+  // TODO: Can marcs be moved inside the Functional Component?
   return (
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
-      <BibDetails
-        bib={bib}
-        fields={detailsFields}
-        electronicResources={resources}
-        additionalData={
-          isNyplBnumber(bib.uri) && bib.annotatedMarc
-            ? annotatedMarcDetails(bib)
-            : []
-        }
-      />
+      <BibDetails_Functional fields={fields} marcs={definitionMarcs(bib)} />
     </section>
   );
 };

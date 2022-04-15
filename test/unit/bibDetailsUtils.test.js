@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import {
   definitionItem,
-  annotatedMarcDetails,
+  definitionMarcs,
   combineBibDetailsData,
 } from '../../src/app/utils/bibDetailsUtils';
 
@@ -106,7 +106,7 @@ describe('bibDetailsUtils', () => {
         },
       };
 
-      const mockOutput = annotatedMarcDetails(mockBib);
+      const mockOutput = definitionMarcs(mockBib);
       expect(mockOutput.length).to.equal(2);
       expect(mockOutput[0].term).to.equal('Field1');
       expect(

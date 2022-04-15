@@ -35,7 +35,7 @@ const BibContainer = ({ location, searched, search }) => {
         )}
       />
 
-      {items.length && !isElectronicResources && (
+      {(items.length && !isElectronicResources && (
         <section style={{ marginTop: '20px' }}>
           <ItemsContainer
             key={bibId}
@@ -47,7 +47,8 @@ const BibContainer = ({ location, searched, search }) => {
             holdings={bib.holdings}
           />
         </section>
-      )}
+      )) ||
+        null}
 
       {bib.holdings && (
         <section style={{ marginTop: '20px' }}>
