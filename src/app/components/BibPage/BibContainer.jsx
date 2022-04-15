@@ -2,71 +2,41 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useBib } from '../../context/Bib.Provider';
 import LibraryItem from '../../utils/item';
-import {
-  getAggregatedElectronicResources,
-  pluckAeonLinksFromResource,
-} from '../../utils/utils';
-import itemsContainerModule from '../Item/ItemsContainer';
+import { getElectronics, pluckAeonLinks } from '../../utils/utils';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
-import LibraryHoldings from './LibraryHoldings';
+import BibHoldings from './components/BibHoldings';
+import BibItems from './components/BibItems';
 import TopBibDetails from './TopBibDetails';
 
-const ItemsContainer = itemsContainerModule.ItemsContainer;
-
-const BibContainer = ({ location, searched, search }) => {
+const BibContainer = ({ location, keywords, selection }) => {
   const { bib, bibId } = useBib();
 
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every(
-    (item) => item.isElectronicResource,
-  );
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const resources = getElectronics(items);
 
   return (
     <>
-      <BibHeading searched={searched} />
+      <BibHeading searched={selection} />
 
-      <TopBibDetails
-        resources={pluckAeonLinksFromResource(
-          aggregatedElectronicResources,
-          items,
-        )}
-      />
+      <TopBibDetails resources={pluckAeonLinks(resources, items)} />
 
-      {(items.length && !isElectronicResources && (
-        <section style={{ marginTop: '20px' }}>
-          <ItemsContainer
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={search}
-            holdings={bib.holdings}
-          />
-        </section>
-      )) ||
-        null}
+      <BibItems items={items} location={location} keywords={keywords} />
 
-      {bib.holdings && (
-        <section style={{ marginTop: '20px' }}>
-          <LibraryHoldings holdings={bib.holdings} />
-        </section>
-      )}
+      <BibHoldings />
 
-      <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
+      <BottomBibDetails bib={bib} resources={resources} />
 
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
+      <LegacyCatalogLink recordNumber={bibId} />
     </>
   );
 };
 
 BibContainer.propTypes = {
   location: PropTypes.object,
-  search: PropTypes.object,
-  searched: PropTypes.object,
+  keywords: PropTypes.object,
+  selection: PropTypes.object,
 };
 
 export default BibContainer;

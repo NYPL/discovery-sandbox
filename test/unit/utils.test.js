@@ -16,7 +16,7 @@ import {
   getFieldParam,
   basicQuery,
   getReqParams,
-  getAggregatedElectronicResources,
+  getElectronics,
   truncateStringOnWhitespace,
   hasValidFilters,
   extractNoticePreference,
@@ -803,8 +803,8 @@ describe('getReqParams', () => {
 describe('getAggregatedElectronicResources', () => {
   describe('No input', () => {
     it('should return an empty array with no input or an empty array', () => {
-      expect(getAggregatedElectronicResources()).to.eql([]);
-      expect(getAggregatedElectronicResources([])).to.eql([]);
+      expect(getElectronics()).to.eql([]);
+      expect(getElectronics([])).to.eql([]);
     });
   });
 
@@ -824,7 +824,7 @@ describe('getAggregatedElectronicResources', () => {
           ],
         },
       ];
-      expect(getAggregatedElectronicResources(mockedItems)).to.eql([
+      expect(getElectronics(mockedItems)).to.eql([
         {
           id: 'someId',
           title: 'someTitle',
@@ -853,7 +853,7 @@ describe('getAggregatedElectronicResources', () => {
           ],
         },
       ];
-      expect(getAggregatedElectronicResources(mockedItems)).to.eql([
+      expect(getElectronics(mockedItems)).to.eql([
         {
           id: 'someId',
           title: 'someTitle',
@@ -899,7 +899,7 @@ describe('getAggregatedElectronicResources', () => {
             ],
           },
         ];
-        expect(getAggregatedElectronicResources(mockedItems)).to.eql([
+        expect(getElectronics(mockedItems)).to.eql([
           {
             id: 'someId',
             title: 'someTitle',
