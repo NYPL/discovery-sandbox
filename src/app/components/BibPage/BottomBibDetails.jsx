@@ -20,6 +20,7 @@ const BottomBibDetails = ({ bib, resources }) => {
     { label: 'Publication Date', value: 'serialPublicationDates' },
     { label: 'Description', value: 'extent' },
     { label: 'Donor/Sponsor', value: 'donor' },
+    { label: 'Dimensions', value: 'dimensions'},
     { label: 'Series Statement', value: 'seriesStatement' },
     { label: 'Uniform Title', value: 'uniformTitle' },
     { label: 'Alternative Title', value: 'titleAlt' },
