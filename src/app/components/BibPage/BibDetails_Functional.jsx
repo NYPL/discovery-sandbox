@@ -31,7 +31,7 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
           resources.length &&
           resources);
 
-      if (field.value === 'note') {
+      if (field.value === 'note' && origin) {
         // INVESTIGATE:
         // Can we avoid having to loop here?
         // Although unlikely what happens at groups of 10, 20, ...100
