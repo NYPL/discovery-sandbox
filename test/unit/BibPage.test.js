@@ -1,32 +1,26 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { Provider } from 'react-redux';
-
-// Import Bib helper functions for pre-processing
+import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
+import BibItems from '../../src/app/components/BibPage/components/BibItems';
+import DefinitionField from '../../src/app/components/BibPage/components/DefinitionField';
+import { isAeonLink } from '../../src/app/utils/utils';
+import annotatedMarc from '../fixtures/annotatedMarc.json';
+import bibs from '../fixtures/bibs';
+import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore } from '../helpers/store';
+import { BibPage } from './../../src/app/pages/BibPage';
 import {
   addCheckInItems,
   addHoldingDefinition,
 } from './../../src/server/ApiRoutes/Bib';
 
-// Import the unwrapped component that is going to be tested
-import { BibPage } from './../../src/app/pages/BibPage';
-import bibs from '../fixtures/bibs';
-import annotatedMarc from '../fixtures/annotatedMarc.json';
-import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
-import { makeTestStore } from '../helpers/store';
-import { mockRouterContext } from '../helpers/routing';
-import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
-import { Link } from 'react-router';
-import BibDetails from '../../src/app/components/BibPage/BibDetails';
-import { isAeonLink } from '../../src/app/utils/utils';
-import BibDetails_Functional from '../../src/app/components/BibPage/BibDetails_Functional';
-
 describe('BibPage', () => {
   const context = mockRouterContext();
+
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
       bib: {
@@ -52,38 +46,29 @@ describe('BibPage', () => {
     );
 
     it('should have an Aeon link available', () => {
-      const bttBibComp = page.findWhere((node) => {
-        return (
-          node.type() === BibDetails_Functional &&
-          node.prop('additionalData').length
-        );
+      const node = page.findWhere((node) => {
+        const item = node.type() === DefinitionField;
+        const field = node.prop('field') || {};
+        return item && field.label === 'Electronic Resource';
       });
-      // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
-      // It can be checked to see if the bib details would have been passed a list with Aeon links.
 
-      expect(bttBibComp.type()).to.equal(BibDetails);
-      expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
+      expect(node.type()).to.equal(DefinitionField);
+      expect(node.prop('field').label).to.equal('Electronic Resource');
 
-      const [resource] = bttBibComp
-        .prop('electronicResources')
-        .filter(
-          (er) => er.label === 'Request Access to Special Collections Material',
-        );
-      expect(isAeonLink(resource.url)).to.be.true;
+      const resources = node.prop('bibValues');
+
+      expect(resources).to.have.lengthOf(2);
+      expect(isAeonLink(resources[1].url)).to.be.true;
     });
 
-    it('should not include an Aeon link in top BibDetails', () => {
-      const topBibComp = page.findWhere(
-        (node) =>
-          node.type() === BibDetails && !node.prop('additionalData').length,
-      );
-      expect(topBibComp.type()).to.equal(BibDetails);
-      expect(
-        topBibComp.findWhere(
-          (el) => el.type() === 'dt' && el.text() === 'Electronic Resource',
-        ).length,
-      ).to.equal(1);
-      expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
+    it('should not Render the items table', () => {
+      const node = page.findWhere((node) => {
+        return node.type() === BibItems;
+      });
+
+      expect(node.type()).to.equal(BibItems);
+      expect(node.prop('items')).to.have.lengthOf(1);
+      expect(node.isEmptyRender()).to.be.true;
     });
   });
 
@@ -94,7 +79,9 @@ describe('BibPage', () => {
         numItems: 0,
       },
     });
+
     let component;
+
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
       component = mount(
@@ -144,12 +131,16 @@ describe('BibPage', () => {
   describe('Serial', () => {
     let itemTable;
     let component;
+
     before(() => {
       mockBibWithHolding.holdings.forEach((holding) =>
         addHoldingDefinition(holding),
       );
+
       addCheckInItems(mockBibWithHolding);
+
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
+
       const testStore = makeTestStore({
         bib: {
           done: true,
@@ -174,6 +165,7 @@ describe('BibPage', () => {
           childContextTypes: { router: PropTypes.object },
         },
       );
+
       itemTable = component.find('ItemTable');
     });
 
@@ -212,44 +204,31 @@ describe('BibPage', () => {
   describe('Back to search results Text', () => {
     const bib = { ...mockBibWithHolding, ...annotatedMarc };
 
-    it('displays if `resultSelection.bibId` matches ID of bib for page', () => {
+    it('displays if `result.bibId` matches ID of bib for page', () => {
+      const result = {
+        fromUrl: 'resultsurl.com',
+        bibId: bib['@id'].substring(4),
+      };
+
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => undefined}
-          resultSelection={{
-            fromUrl: 'resultsurl.com',
-            bibId: bib['@id'].substring(4),
-          }}
-        />,
-        { context },
+        <BackToSearchResults bibId={bib['@id'].substring(4)} result={result} />,
       );
 
-      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
-      expect(
-        component.find(BackToSearchResults).first().render().text(),
-      ).to.equal('Back to search results');
+      expect(component.type().displayName).to.equal('Link');
+      expect(component.render().text()).to.equal('Back to search results');
     });
 
-    it('does not display if `resultSelection.bibId` does not match ID of bib for page', () => {
+    it('does not display if `result.bibId` does not match ID of bib for page', () => {
+      const result = {
+        fromUrl: 'resultsurl.com',
+        bibId: bib['@id'].substring(4),
+      };
+
       const component = shallow(
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => undefined}
-          resultSelection={{
-            fromUrl: 'resultsurl.com',
-            bibId: 'wrongbib',
-          }}
-        />,
-        { context },
+        <BackToSearchResults bibId={'1234'} result={result} />,
       );
 
-      expect(component.find(BackToSearchResults)).to.have.lengthOf(1);
-      expect(
-        component.find(BackToSearchResults).first().render().find(Link).length,
-      ).to.equal(0);
+      expect(component.type()).to.be.null;
     });
   });
 });
