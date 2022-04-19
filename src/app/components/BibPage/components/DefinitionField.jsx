@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
+import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IndentifierNode';
 import LinkableBibField from './LinkableField';
 
@@ -23,23 +24,26 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
             return <IdentifierField entity={value} />;
           }
 
-          const element = { value };
-
           if (field.linkable) {
-            element.value = (
-              <LinkableBibField
-                label={field.label}
-                field={field.value}
-                bibValue={value}
-                outbound={field.selfLinkable}
-              />
+            return (
+              <li key={`${value}-${idx}`}>
+                <LinkableBibField
+                  label={field.label}
+                  field={field.value}
+                  bibValue={value}
+                  outbound={field.selfLinkable}
+                />
+              </li>
             );
           }
 
-          const definition =
-            element.value.prefLabel ?? element.value.label ?? element.value;
+          const definition = value.prefLabel ?? value.label ?? value;
 
-          return <li key={`${value}-${idx}`}>{definition}</li>;
+          return (
+            <li key={`${value}-${idx}`}>
+              <ParallelsFields content={definition} />
+            </li>
+          );
 
           // TODO: Handle case below
           // const url = `filters[${field.value}]=${value['@id']}`;

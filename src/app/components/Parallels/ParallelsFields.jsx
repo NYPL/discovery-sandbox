@@ -1,41 +1,39 @@
 import PropTypes from 'prop-types';
-import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import { useBibParallel } from '../../context/Bib.Provider';
 
-const ParallelsFields = ({
-  pField,
-  children,
-  fieldIndex = 0,
-  headingLevel = undefined,
-}) => {
-  const { parallel } = useBibParallel(pField);
+const ParallelsFields = ({ field, content = '', fieldIndex = 0 }) => {
+  const { parallel } = useBibParallel(field);
 
   return (
-    <Heading level={headingLevel}>
-      <>
-        {(parallel &&
-          parallel[fieldIndex].map((value, idx) => (
-            <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
-              {value}
-            </span>
-          ))) ||
-          children}
-      </>
-    </Heading>
+    <>
+      {(parallel &&
+        parallel[fieldIndex].map((value, idx) => (
+          <span
+            dir={unicodeDirection(value)}
+            key={`${field}_${idx}_para`}
+            style={{ display: 'block' }}
+          >
+            {value}
+          </span>
+        ))) || (
+        <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
+          {content}
+        </span>
+      )}
+    </>
   );
 };
 
 export default ParallelsFields;
 
 ParallelsFields.propTypes = {
-  pField: PropTypes.string.isRequired,
+  content: PropTypes.string,
+  field: PropTypes.string,
   fieldIndex: PropTypes.number,
   headingLevel: PropTypes.number,
-  children: PropTypes.node,
 };
 
-ParallelsFields.default = {
-  fieldIndex: 0,
-  headingLevel: undefined,
-};
+function unicodeDirection(text) {
+  return text[0] === '\u200F' ? 'rtl' : 'ltr';
+}
