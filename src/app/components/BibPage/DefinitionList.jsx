@@ -26,18 +26,6 @@ const DefinitionList = ({ data, headings }) => {
           <dd data={`definition-${item.term}`} key={`definition-${item.term}`}>
             {item.definition}
           </dd>,
-          ...((item.transaltions && [
-            // ...((item && [
-            <dt key={`parallel-term-${item.term}`}>{null}</dt>,
-            <dd
-              data={`parallel-definition-${item.term}`}
-              key={`parallel-definition-${item.term}`}
-            >
-              {/* {item.definition} */}
-              {item.transaltions.parallel}
-            </dd>,
-          ]) ||
-            []),
         ];
       })}
     </dl>
