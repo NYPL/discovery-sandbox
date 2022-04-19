@@ -12,7 +12,7 @@ const BibHeading = ({ searched }) => {
 
   return (
     <section className='nypl-item-details__heading'>
-      <ParallelsFields headingLevel={2} pField={'title'}>
+      <ParallelsFields headingLevel={2} field={'title'}>
         {title[0]}
       </ParallelsFields>
 

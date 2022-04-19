@@ -4,19 +4,19 @@ import React from 'react';
 import { useBibParallel } from '../../context/Bib.Provider';
 
 const ParallelsFields = ({
-  pField,
+  field,
   children,
   fieldIndex = 0,
   headingLevel = undefined,
 }) => {
-  const { parallel } = useBibParallel(pField);
+  const { parallel } = useBibParallel(field);
 
   return (
     <Heading level={headingLevel}>
       <>
         {(parallel &&
           parallel[fieldIndex].map((value, idx) => (
-            <span key={`${pField}_${idx}`} style={{ display: 'block' }}>
+            <span key={`${field}_${idx}`} style={{ display: 'block' }}>
               {value}
             </span>
           ))) ||
