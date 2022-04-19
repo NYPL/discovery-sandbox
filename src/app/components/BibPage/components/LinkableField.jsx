@@ -3,6 +3,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
 import { trackDiscovery } from '../../../utils/utils';
+import ParallelsFields from '../../Parallels/ParallelsFields';
 
 const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
   const text = outbound
@@ -22,7 +23,7 @@ const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
 
   return (
     <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      {text}
+      <ParallelsFields content={text} />
     </Link>
   );
 };

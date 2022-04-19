@@ -1,3 +1,4 @@
+import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useBib } from '../../context/Bib.Provider';
@@ -12,9 +13,9 @@ const BibHeading = ({ searched }) => {
 
   return (
     <section className='nypl-item-details__heading'>
-      <ParallelsFields headingLevel={2} field={'title'}>
-        {title[0]}
-      </ParallelsFields>
+      <Heading level={2}>
+        <ParallelsFields field={'title'} content={title[0]} />
+      </Heading>
 
       <BackToSearchResults result={searched} bibId={bibId} />
     </section>
