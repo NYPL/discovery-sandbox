@@ -34,8 +34,3 @@ ParallelsFields.propTypes = {
   headingLevel: PropTypes.number,
   children: PropTypes.node,
 };
-
-ParallelsFields.default = {
-  fieldIndex: 0,
-  headingLevel: undefined,
-};
