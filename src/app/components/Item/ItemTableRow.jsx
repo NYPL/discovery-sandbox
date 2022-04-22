@@ -40,27 +40,24 @@ class ItemTableRow extends React.Component {
   }
 
   aeonUrl(item) {
-    const url = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
-    const searchParams = new URL(url).searchParams;
-    const paramMappings = {
+    const itemUrl = Array.isArray(item.aeonUrl)
+      ? item.aeonUrl[0]
+      : item.aeonUrl;
+
+    const AeonUrl = new URL(itemUrl);
+
+    const paramDict = {
       ItemISxN: 'id',
       itemNumber: 'barcode',
       CallNumber: 'callNumber',
     };
 
-    let params = Object.keys(paramMappings)
-      .map((paramName) => {
-        if (searchParams.has(paramName)) return null;
-        const mappedParamName = paramMappings[paramName];
-        if (!item[mappedParamName]) return null;
-        return `&${paramName}=${item[mappedParamName]}`;
-      })
-      .filter((paramString) => paramString)
-      .join('');
+    // Add/Replace query parameters on AeonURL with item key values
+    Object.entries(paramDict).forEach(([param, key]) => {
+      AeonUrl.searchParams.set(param, item[key]);
+    });
 
-    if (params && !url.includes('?')) params = `?${params}`;
-
-    return encodeURI(`${url}${params || ''}`);
+    return AeonUrl.toString();
   }
 
   requestButton() {
