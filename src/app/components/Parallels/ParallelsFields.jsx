@@ -10,8 +10,8 @@ const ParallelsFields = ({ field, content = '', fieldIndex = 0 }) => {
       {(parallel &&
         parallel[fieldIndex].map((value, idx) => (
           <span
-            dir={unicodeDirection(value)}
             key={`${field}_${idx}_para`}
+            dir={unicodeDirection(value)}
             style={{ display: 'block' }}
           >
             {value}

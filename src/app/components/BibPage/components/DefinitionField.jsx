@@ -3,7 +3,7 @@ import React from 'react';
 import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import ParallelsFields from '../../Parallels/ParallelsFields';
-import IdentifierField from './IndentifierNode';
+import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {

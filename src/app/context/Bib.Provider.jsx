@@ -37,10 +37,10 @@ const useBib = () => {
 };
 
 const useBibParallel = (field = '') => {
-  const { bib, parallels = {} } = useBib();
+  const { parallels = {}, ...rest } = useBib();
 
   return {
-    bib,
+    ...rest,
     parallel: (parallels[field] && parallels[field].mapping) || undefined,
     parallels,
   };
