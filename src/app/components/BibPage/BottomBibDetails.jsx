@@ -18,7 +18,7 @@ const BottomBibDetails = ({ bib, resources }) => {
     },
     { label: 'Found In', value: 'partOf' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
-    { label: 'Description', value: 'extent' },
+    { label: 'Description', value: 'extent'+'dimensions' },
     { label: 'Donor/Sponsor', value: 'donor' },
     { label: 'Series Statement', value: 'seriesStatement' },
     { label: 'Uniform Title', value: 'uniformTitle' },
@@ -39,8 +39,7 @@ const BottomBibDetails = ({ bib, resources }) => {
     { label: 'OCLC', value: 'identifier', identifier: 'nypl:Oclc' },
     { label: 'GPO', value: '' },
     { label: 'Other Titles', value: '' },
-    { label: 'Owning Institutions', value: '' },
-    { label: 'Dimensions', value: 'dimensions'},
+    { label: 'Owning Institutions', value: '' }
   ];
 
   return (
