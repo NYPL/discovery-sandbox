@@ -25,19 +25,19 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
   const definitions = useMemo(() => {
     // Loops through fields and builds the Definition Field Component
     return fields.reduce((store, field) => {
-      const origin =
+      const value =
         bib[field.value] ??
         // Allow origin to be resources
         (field.label === 'Electronic Resource' &&
           resources.length &&
           resources);
 
-      if (field.value === 'note' && origin) {
+      if (field.value === 'note' && value) {
         // INVESTIGATE:
         // Can we avoid having to loop here?
         // Although unlikely what happens at groups of 10, 20, ...100
         const paras = (parallels['note'] && parallels['note'].parallel) || [];
-        const group = groupNotesBySubject(setParallelToNote(origin, paras));
+        const group = groupNotesBySubject(setParallelToNote(value, paras));
 
         return [
           ...store,
@@ -57,8 +57,8 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
         ];
       }
 
-      if (origin) {
-        const ident = validIdentifier(field, origin);
+      if (value) {
+        const ident = validIdentifier(field, value);
         // To avoid adding a label with empty array for identifiers
         if (ident && !ident.length) return store;
 
@@ -68,7 +68,7 @@ const BibDetails_Functional = ({ fields = [], marcs, resources }) => {
             term: field.label,
             definition: (
               <DefinitionField
-                bibValues={ident ?? origin}
+                bibValues={ident ?? value}
                 field={field}
                 // TODO: This is not correct
                 // Additional checks for stying changes
