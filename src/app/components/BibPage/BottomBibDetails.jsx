@@ -31,14 +31,17 @@ const BottomBibDetails = ({ bib }) => {
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'note' },
     { label: 'Contents', value: 'tableOfContents' },
+    // TODO: Is this needed?
     { label: 'Bibliography', value: '' },
     { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
     { label: 'ISBN', value: 'identifier', identifier: 'bf:Isbn' },
     { label: 'ISSN', value: 'identifier', identifier: 'bf:Issn' },
     { label: 'LCCN', value: 'identifier', identifier: 'bf:Lccn' },
     { label: 'OCLC', value: 'identifier', identifier: 'nypl:Oclc' },
+    // TODO: Is this needed?
     { label: 'GPO', value: '' },
     { label: 'Other Titles', value: '' },
+    // Keep
     { label: 'Owning Institutions', value: '' },
   ];
 
