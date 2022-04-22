@@ -54,7 +54,9 @@ class ItemTableRow extends React.Component {
 
     // Add/Replace query parameters on AeonURL with item key values
     Object.entries(paramDict).forEach(([param, key]) => {
-      AeonUrl.searchParams.set(param, item[key]);
+      // If item doesn't have a value use searchParams value
+      const value = item[key] ?? AeonUrl.searchParams.get(param);
+      AeonUrl.searchParams.set(param, value);
     });
 
     return AeonUrl.toString();
