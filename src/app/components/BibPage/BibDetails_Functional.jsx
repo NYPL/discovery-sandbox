@@ -111,8 +111,8 @@ BibDetails_Functional.contextTypes = {
 
 export default BibDetails_Functional;
 
-function validIdentifier(field, origin) {
+function validIdentifier(field, value) {
   return field.value === 'identifier'
-    ? LibraryItem.getIdentifierEntitiesByType(origin, field.identifier)
+    ? LibraryItem.getIdentifierEntitiesByType(value, field.identifier)
     : null;
 }
