@@ -1,17 +1,9 @@
 import PropTypes from 'prop-types';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import BibContext from './Bib.Context';
 
 const BibProvider = ({ bib, children }) => {
-  // This is pointless due to redux.
-  // The redux store bib is updated on the bib page
-  // With an entirley new object. This causes a rerender
-  // with a new bib which causes useMemo to be re-executed.
-  // TODO: Would useState be better here?
-  // Do we care about a single rerender?
-  // As of now there are only two renders.
-  const parallels = useMemo(() => extractParallels(bib), [bib]);
-
+  const parallels = extractParallels(bib);
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
 
   return (
