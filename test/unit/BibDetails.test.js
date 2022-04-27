@@ -1,17 +1,21 @@
-/* eslint-env mocha */
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-
-// Import the component that is going to be tested
-import BibDetails from './../../src/app/components/BibPage/BibDetails';
+import { mount, shallow } from 'enzyme';
+import React from 'react';
 import bibs from '../fixtures/bibs';
+import BibDetails from './../../src/app/components/BibPage/BibDetails';
+import BibProvider from './../../src/app/context/Bib.Provider';
 
 describe('BibDetails', () => {
   describe('Invalid props', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(React.createElement(BibDetails));
-      expect(component.type()).to.equal(null);
+      const component = mount(
+        <BibProvider bib={{}}>
+          <BibDetails />
+        </BibProvider>,
+      );
+
+      const actual = component.find('BibDetails').getDOMNode();
+      expect(actual).to.equal(null);
     });
 
     it('should return null with no bib passed', () => {
@@ -47,12 +51,14 @@ describe('BibDetails', () => {
 
     before(() => {
       component = mount(
-        React.createElement(BibDetails, { bib: bibs[0], fields }),
+        <BibProvider bib={bibs[0]}>
+          <BibDetails fields={fields} />
+        </BibProvider>,
       );
     });
 
     it('should display titles, authors', () => {
-      expect(component.type()).to.equal(BibDetails);
+      expect(component.children().type()).to.equal(BibDetails);
 
       expect(component.find('dd')).to.have.lengthOf(2);
       expect(component.find('dt')).to.have.lengthOf(2);
@@ -240,8 +246,8 @@ describe('BibDetails', () => {
   describe('getDisplayFields', () => {
     it('modifies note fields appropriately', () => {
       const component = mount(
-        React.createElement(BibDetails, {
-          bib: {
+        <BibProvider
+          bib={{
             note: [
               { noteType: 'Language', prefLabel: 'In Urdu' },
               {
@@ -249,11 +255,10 @@ describe('BibDetails', () => {
                 prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE',
               },
             ],
-          },
-          fields: [{ label: 'Notes', value: 'React Component' }],
-          electronicResources: [],
-          additionalData: [],
-        }),
+          }}
+        >
+          <BibDetails fields={[{ label: 'Notes', value: 'note' }]} />
+        </BibProvider>,
       );
 
       expect(component.find('dt').length).to.equal(2);
