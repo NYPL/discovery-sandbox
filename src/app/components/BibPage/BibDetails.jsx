@@ -63,7 +63,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
     }
 
     return store;
-  });
+  }, []);
 
   // Make sure fields is a nonempty array
   if (isEmpty(fields) || !isArray(fields)) {
