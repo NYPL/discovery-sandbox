@@ -10,8 +10,10 @@ const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
     ? bibValue.prefLabel || bibValue.label || bibValue.url
     : bibValue;
 
-  const filter = `filters[${field}]=${bibValue ?? ''}`;
-  const url = outbound ? bibValue.url : `${appConfig.baseUrl}/search?${filter}`;
+  const filter = `filters[${field}]=${bibValue['@id'] ?? bibValue ?? ''}`;
+  const url = outbound
+    ? bibValue['@id'] || bibValue.url
+    : `${appConfig.baseUrl}/search?${filter}`;
 
   const handler = (event) => {
     if (!outbound) {
