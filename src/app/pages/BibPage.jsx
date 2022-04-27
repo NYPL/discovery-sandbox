@@ -21,7 +21,7 @@ export const BibPage = (
     // Server or Client render based on if 'window' is defined.
     if (typeof window !== 'undefined') {
       if (!_isEmpty(bib) && !bib.done) {
-        //  After first render on Client check for more items <-- why?
+        //  After first render on Client check for more items
         checkForMoreItems(bib, dispatch);
       }
     }
