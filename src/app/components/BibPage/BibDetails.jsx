@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
-import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
+import React from 'react';
 import { useBibParallel } from '../../context/Bib.Provider';
 import {
   combineBibDetailsData,
@@ -8,6 +7,7 @@ import {
   setParallelToNote,
 } from '../../utils/bibDetailsUtils';
 import LibraryItem from '../../utils/item';
+import { isArray, isEmpty } from '../../utils/utils';
 import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
@@ -79,7 +79,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
   });
 
   // Make sure fields is a nonempty array
-  if (_isEmpty(fields) || !_isArray(fields)) {
+  if (isEmpty(fields) || !isArray(fields)) {
     return null;
   }
 

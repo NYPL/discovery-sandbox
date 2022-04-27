@@ -15,6 +15,15 @@ import {
 import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
 
+const isEmpty = (obj) => {
+  return (
+    [Object, Array].includes((obj || {}).constructor) &&
+    !Object.entries(obj || {}).length
+  );
+};
+
+const isArray = (array) => Array.isArray(array);
+
 const { features } = appConfig;
 
 /**
@@ -780,6 +789,8 @@ function capitalize(field) {
 const isElectronic = (item) => Boolean(item.isElectronicResource);
 
 export {
+  isEmpty,
+  isArray,
   isElectronic,
   capitalize,
   trackDiscovery,
