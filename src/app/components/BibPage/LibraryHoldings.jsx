@@ -25,7 +25,8 @@ const LibraryHoldings = ({ holdings }) => {
     }));
 
   return (
-    <React.Fragment>
+    // TODO: [SCC-3126] Replace Styles with ClassName or Constant
+    <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Holdings</Heading>
       {holdings.map((holding) => (
         <DefinitionList
@@ -33,7 +34,7 @@ const LibraryHoldings = ({ holdings }) => {
           key={holding.holdingDefinition}
         />
       ))}
-    </React.Fragment>
+    </section>
   );
 };
 

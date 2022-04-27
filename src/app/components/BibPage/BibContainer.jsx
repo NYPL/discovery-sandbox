@@ -6,8 +6,8 @@ import { getElectronics, pluckAeonLinks } from '../../utils/utils';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
-import BibHoldings from './components/BibHoldings';
 import BibItems from './components/BibItems';
+import LibraryHoldings from './LibraryHoldings';
 import TopBibDetails from './TopBibDetails';
 
 const BibContainer = ({ location, keywords, selection }) => {
@@ -24,7 +24,7 @@ const BibContainer = ({ location, keywords, selection }) => {
 
       <BibItems items={items} keywords={keywords} location={location} />
 
-      <BibHoldings />
+      <LibraryHoldings holdings={bib.holdings} />
 
       <BottomBibDetails bib={bib} resources={resources} />
 
