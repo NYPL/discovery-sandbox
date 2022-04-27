@@ -41,8 +41,9 @@ const BottomBibDetails = ({ bib }) => {
     { label: 'Owning Institutions', value: '' },
   ];
 
-  // TODO: Can marcs be moved inside the Functional Component?
+  // TODO: [SCC-3125] Move marcs inside BibDetails
   return (
+    // TODO: [SCC-3124] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
       <BibDetails fields={fields} marcs={definitionMarcs(bib)} />
