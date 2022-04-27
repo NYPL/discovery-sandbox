@@ -59,15 +59,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
         {
           term: field.label,
           definition: (
-            <DefinitionField
-              bibValues={ident ?? value}
-              field={field}
-              // TODO: This is not correct
-              // Additional checks for stying changes
-              // It is suppose to style additional marcs
-              // We do not apply the marcs here
-              additional={!!marcs.length}
-            />
+            <DefinitionField bibValues={ident ?? value} field={field} />
           ),
         },
       ];
