@@ -7,7 +7,7 @@ import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const { bib, parallel } = useBibParallel(field.value);
+  const { parallel } = useBibParallel(field.value);
 
   // BibValues is an array of various values
   // Set bibValues as a 2D array becuase parallels is also a 2D array
@@ -44,39 +44,6 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
               <ParallelsFields content={definition} />
             </li>
           );
-
-          // TODO: Handle case below
-          // const url = `filters[${field.value}]=${value['@id']}`;
-
-          // let itemValue = field.linkable ? (
-          //   <Link
-          //     onClick={(event) =>
-          //       this.newSearch(event, url, field.value, value['@id'], field.label)
-          //     }
-          //     to={`${appConfig.baseUrl}/search?${url}`}
-          //   >
-          //     {value.prefLabel}
-          //   </Link>
-          // ) : (
-          //   <span>{value.prefLabel}</span>
-          // );
-          // if (field.selfLinkable) {
-          //   itemValue = (
-          //     <a
-          //       href={value['@id']}
-          //       onClick={() =>
-          //         trackDiscovery(
-          //           'Bib fields',
-          //           `${field.label} - ${value.prefLabel}`,
-          //         )
-          //       }
-          //     >
-          //       {value.prefLabel}
-          //     </a>
-          //   );
-          // }
-
-          // return <li key={value.prefLabel}>{itemValue}</li>;
         })
         .filter(Boolean)}
     </ul>
