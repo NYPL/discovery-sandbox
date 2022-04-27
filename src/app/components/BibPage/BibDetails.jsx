@@ -44,8 +44,6 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
             term: label,
             // definition is the value of the label
             definition: <DefinitionNoteField values={notes} />,
-            // TODO: Can we use the DefinitionField instead of DefinitionNoteField?
-            // definition: <DefinitionField bibValues={notes} field={field} />,
           };
         }),
       ];
