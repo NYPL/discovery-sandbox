@@ -6,6 +6,7 @@ import { mount } from 'enzyme';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
+import BibProvider from './../../src/app/context/Bib.Provider';
 
 describe('Tabbed', () => {
   const sampleBib = {
@@ -140,24 +141,20 @@ describe('Tabbed', () => {
     </div>
   );
 
-  const bibDetails = (
-    <BibDetails
-      bib={sampleBib}
-      fields={bottomFields}
-      electronicResources={[]}
-    />
-  );
+  const bibDetails = <BibDetails fields={bottomFields} resources={[]} />;
 
   const additionalDetails = <AdditionalDetailsViewer bib={sampleBib} />;
 
   const component = mount(
-    <Tabbed
-      tabs={[
-        { title: 'Availability', content: mockItemsContainer },
-        { title: 'Details', content: bibDetails },
-        { title: 'Full Description', content: additionalDetails },
-      ]}
-    />,
+    <BibProvider bib={sampleBib}>
+      <Tabbed
+        tabs={[
+          { title: 'Availability', content: mockItemsContainer },
+          { title: 'Details', content: bibDetails },
+          { title: 'Full Description', content: additionalDetails },
+        ]}
+      />
+    </BibProvider>,
   );
   const details = component.find('a').at(0);
   const fullDescription = component.find('a').at(1);

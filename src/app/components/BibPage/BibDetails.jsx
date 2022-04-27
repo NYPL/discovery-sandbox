@@ -12,7 +12,7 @@ import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
-const BibDetails = ({ fields = [], marcs, resources }) => {
+const BibDetails = ({ fields = [], resources = [], marcs }) => {
   const {
     bib,
     bib: { subjectHeadingData },
@@ -103,6 +103,8 @@ BibDetails.propTypes = {
 
 BibDetails.defaultProps = {
   marcs: [],
+  resources: [],
+  fields: [],
 };
 
 BibDetails.contextTypes = {
