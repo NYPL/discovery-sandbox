@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import React from 'react';
-import BibDetails_Functional from '../../src/app/components/BibPage/BibDetails_Functional';
+import BibDetails from '../../src/app/components/BibPage/BibDetails';
 import BottomBibDetails from '../../src/app/components/BibPage/BottomBibDetails';
 
 describe('BottomBibDetails', () => {
@@ -23,8 +23,8 @@ describe('BottomBibDetails', () => {
       <BottomBibDetails bib={bibWithHeadings} resources={[]} />,
     );
 
-    let bibDetails1 = component1.find(BibDetails_Functional);
-    let bibDetails2 = component2.find(BibDetails_Functional);
+    let bibDetails1 = component1.find(BibDetails);
+    let bibDetails2 = component2.find(BibDetails);
 
     let subjects1 = bibDetails1
       .props()
