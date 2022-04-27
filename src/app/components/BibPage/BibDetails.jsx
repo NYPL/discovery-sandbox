@@ -27,9 +27,6 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
       (field.label === 'Electronic Resource' && resources.length && resources);
 
     if (field.value === 'note' && value) {
-      // INVESTIGATE:
-      // Can we avoid having to loop here?
-      // Although unlikely what happens at groups of 10, 20, ...100
       const paras = (parallels['note'] && parallels['note'].parallel) || [];
       const group = groupNotesBySubject(setParallelToNote(value, paras));
 
