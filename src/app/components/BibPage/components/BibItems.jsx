@@ -14,6 +14,7 @@ const BibItems = ({ items, keywords, location }) => {
   if (!display) return null;
 
   return (
+    // TODO: [SCC-3127] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <ItemsContainer
         key={bibId}

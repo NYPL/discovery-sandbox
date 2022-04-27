@@ -8,6 +8,7 @@ const BibHoldings = () => {
   if (!bib || !bib.holdings) return null;
 
   return (
+    // TODO: [SCC-3126] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <LibraryHoldings holdings={bib.holdings} />
     </section>

@@ -25,6 +25,7 @@ const topFields = [
 
 const TopBibDetails = ({ resources = [] }) => {
   return (
+    // TODO: [SCC-3128] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <BibDetails fields={topFields} resources={resources} />
     </section>
