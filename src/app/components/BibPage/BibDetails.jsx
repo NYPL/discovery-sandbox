@@ -6,6 +6,7 @@ import {
   groupNotesBySubject,
   setParallelToNote,
 } from '../../utils/bibDetailsUtils';
+import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
 import { isArray, isEmpty } from '../../utils/utils';
 import DefinitionField from './components/DefinitionField';
@@ -22,9 +23,12 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
     const value =
-      bib[field.value] ??
+      bib[field.value] ||
       // Allow origin to be resources
-      (field.label === 'Electronic Resource' && resources.length && resources);
+      (field.label === 'Electronic Resource' &&
+        resources.length &&
+        resources) ||
+      (field.label === 'Owning Institutions' && getOwner(bib));
 
     if (field.value === 'note' && value) {
       const paras = (parallels['note'] && parallels['note'].parallel) || [];
