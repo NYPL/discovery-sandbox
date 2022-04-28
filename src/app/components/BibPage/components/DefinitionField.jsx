@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
@@ -16,7 +15,8 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
   return (
     <ul className={additional && 'additionalDetails'}>
-      {_flatten(list)
+      {list
+        .flat()
         .map((value, idx) => {
           if (!value) return null;
 
