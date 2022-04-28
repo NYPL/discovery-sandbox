@@ -56,7 +56,7 @@ class ItemTableRow extends React.Component {
     Object.entries(paramDict).forEach(([param, key]) => {
       // If item doesn't have a value use searchParams value
       const value = item[key] ?? AeonUrl.searchParams.get(param);
-      AeonUrl.searchParams.set(param, value);
+      if (value) AeonUrl.searchParams.set(param, value);
     });
 
     return AeonUrl.toString();
