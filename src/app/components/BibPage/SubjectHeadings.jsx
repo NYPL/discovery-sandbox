@@ -38,9 +38,7 @@ const generateHeadingLi = (heading, idx) => (
   <li key={heading.uuid}>{constructSubjectHeading(heading, idx)}</li>
 );
 
-const SubjectHeadings = (props) => {
-  const { headings, idx } = props;
-
+const SubjectHeadings = ({ headings, idx }) => {
   if (!headings) return null;
 
   return (
