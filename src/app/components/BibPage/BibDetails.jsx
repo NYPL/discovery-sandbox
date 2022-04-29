@@ -22,13 +22,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
 
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
-    const value =
-      bib[field.value] ||
-      // Allow origin to be resources
-      (field.label === 'Electronic Resource' &&
-        resources.length &&
-        resources) ||
-      (field.label === 'Owning Institutions' && getOwner(bib));
+    const value = buildValue();
 
     if (field.value === 'note' && value) {
       const paras = (parallels['note'] && parallels['note'].parallel) || [];
@@ -67,6 +61,20 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
     }
 
     return store;
+
+    function buildValue() {
+      const val = bib[field.value];
+
+      if (field.label === 'Electronic Resource' && resources.length) {
+        return resources;
+      }
+
+      if (field.label === 'Owning Institutions') {
+        return getOwner(bib);
+      }
+
+      return val;
+    }
   }, []);
 
   // Make sure fields is a nonempty array
