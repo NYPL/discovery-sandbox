@@ -38,7 +38,7 @@ const SubjectHeadings = ({ headings, idx }) => {
   if (!headings) return null;
 
   return (
-    <div>
+    <>
       <dt key={`term-${idx}`}>
         {headings.length > 1 ? 'Subjects' : 'Subject'}
       </dt>
@@ -53,7 +53,7 @@ const SubjectHeadings = ({ headings, idx }) => {
           })}
         </ul>
       </dd>
-    </div>
+    </>
   );
 };
 
