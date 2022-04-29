@@ -69,6 +69,10 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
         return resources;
       }
 
+      if (field.value === 'subjectLiteral') {
+        return compressSubjectLiteral(val);
+      }
+
       if (field.label === 'Owning Institutions') {
         return getOwner(bib);
       }
@@ -109,4 +113,21 @@ function validIdentifier(field, value) {
   return field.value === 'identifier'
     ? LibraryItem.getIdentifierEntitiesByType(value, field.identifier)
     : null;
+}
+
+/**
+ * compressSubjectLiteral(subjectLiteralArray)
+ * Updates the string structure of subject literals.
+ *
+ * @param {array} subjectLiteralArray
+ * @return {array}
+ */
+function compressSubjectLiteral(subjectLiteralArray) {
+  if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
+    subjectLiteralArray = subjectLiteralArray.map((item) =>
+      item.replace(/\.$/, '').replace(/--/g, '>'),
+    );
+  }
+
+  return subjectLiteralArray;
 }
