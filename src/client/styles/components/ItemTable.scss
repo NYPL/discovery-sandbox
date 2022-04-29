@@ -79,13 +79,11 @@ dl dd.multi-item-list .nypl-basic-table a,
       display: none;
     }
 
-    tr,
-    .nypl-results-item .nypl-basic-table tbody tr:last-child {
+    tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
       border: 1px solid var(--ui-gray-light);
     }
 
-    .nypl-basic-table,
-    .nypl-results-item .nypl-basic-table {
+    .nypl-basic-table, .nypl-results-item .nypl-basic-table {
       display: revert;
 
       td {
@@ -113,7 +111,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       margin-bottom: 0;
     }
 
-    td[data-th]:before {
+    td[data-th]:before  {
       content: attr(data-th);
       display: inline-block;
       font-weight: 500;

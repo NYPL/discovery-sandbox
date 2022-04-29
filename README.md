@@ -178,12 +178,6 @@ Visit `localhost:3001` to see the UI locally.
 
 Formatting is not automatic unless you've installed the [prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) (assuming you're using [vscode](https://code.visualstudio.com/)) in your editor.
 
-To run the formatter:
-
-```
-npm run format
-```
-
 WIP: Unfortunately we do not have a hook set up to run the formatter prior to commiting. If you do not have prettier installed and running on a document save you'll have to run it manually.
 
 ```
@@ -195,7 +189,6 @@ npx prettier --write path/to/file
 This app has an unusual Git Workflow / deployment scheme:
 
 - Cut feature branches off of the `development` branch
-- After an approved PR to `development`,
 - Tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
 - Merge your feature branch into `production` to deploy to production
 
@@ -227,7 +220,7 @@ To run the tests continuously for active development, run
 
 To run a specific test file, run
 
-    $ npm run test-file -- path/to/test/file
+    $ npm run test-file test/unit/SearchResultsPage.test.js
 
 ### Code Coverage
 

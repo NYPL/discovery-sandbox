@@ -6,7 +6,7 @@ const LegacyCatalogLink = ({ recordNumber, display }) => {
     (display && (
       <a
         href={`${appConfig.legacyBaseUrl}/record=${recordNumber}~S1`}
-        id='legacy-catalog-link'
+        id="legacy-catalog-link"
       >
         View in Legacy Catalog
       </a>

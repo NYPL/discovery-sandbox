@@ -11,15 +11,13 @@ const Preview = (props) => {
   if (topHeadings[3]) groupedHeadings[1].push(topHeadings[3]);
 
   return (
-    <tr className='preview subjectHeadingRow'>
-      <td colSpan='4'>
-        <div className='previewDiv'>
+    <tr className="preview subjectHeadingRow">
+      <td colSpan="4">
+        <div className="previewDiv">
           <em>Most common subheadings:</em>
-          <div className='previewInner'>
-            <ul className='previewUl'>
-              {groupedHeadings.map((headings, i) => (
-                <PreviewColumn key={i} column={headings} />
-              ))}
+          <div className="previewInner">
+            <ul className="previewUl">
+              {groupedHeadings.map((headings, i) => <PreviewColumn key={i} column={headings} />)}
             </ul>
           </div>
         </div>
@@ -32,11 +30,8 @@ const PreviewColumn = (props) => {
   const { column } = props;
   return (
     <li>
-      <ul className='previewColumn'>
-        {column.map(
-          (heading) =>
-            heading && <PreviewItem heading={heading} key={heading.uuid} />,
-        )}
+      <ul className="previewColumn">
+        {column.map(heading => heading && <PreviewItem heading={heading} key={heading.uuid} />)}
       </ul>
     </li>
   );
@@ -45,19 +40,19 @@ const PreviewColumn = (props) => {
 const PreviewItem = (props) => {
   const { heading } = props;
 
-  const displayLabel = heading.label.split(' -- ').slice(1).join(' -- ');
+  const displayLabel = heading.label.split(" -- ").slice(1).join(" -- ");
 
   const path = `${appConfig.baseUrl}/subjectHeadings/subject_headings/${heading.uuid}`;
 
   return (
     <li>
-      <Link to={path}>
-        <ul className='details'>
+      <Link
+        to={path}
+      >
+        <ul className="details">
           <li>{displayLabel}</li>
-          <li className='bibCount'>[{heading.bib_count} bibs]</li>
-          <li className='fullLabel'>
-            <em>{heading.label}</em>
-          </li>
+          <li className="bibCount">[{heading.bib_count} bibs]</li>
+          <li className="fullLabel"><em>{heading.label}</em></li>
         </ul>
       </Link>
     </li>
@@ -70,7 +65,7 @@ Preview.propTypes = {
 
 Preview.defaultProps = {
   topHeadings: [],
-};
+}
 
 PreviewColumn.propTypes = {
   column: PropTypes.array,

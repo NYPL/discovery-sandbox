@@ -1,9 +1,0 @@
-# Ignore artifacts:
-
-**node_modules**
-./build
-./coverage
-./dist
-./.nyc_output
-./.ebextensions
-./log

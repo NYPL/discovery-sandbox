@@ -1,20 +1,21 @@
 #advanced-search-link-container {
   a {
-    color: #0271cc;
+    color: #0271CC;
   }
 }
 
-.advancedSearchContainer.content-primary {
-  min-height: 650px;
 
-  .page-title {
-    padding-top: var(--space-l);
-  }
+.advancedSearchContainer.content-primary {
+    min-height: 650px;
+
+    .page-title {
+      padding-top: var(--space-l);
+    }
 }
 
 #advancedSearchAside {
-  color: #a4241e;
-  background-color: #f9f9f9;
+  color: #A4241E;
+  background-color: #F9F9F9;
   width: 100%;
   font-weight: 500;
   font-size: 18px;
@@ -44,7 +45,7 @@
 
   hr {
     width: 100%;
-    color: #c4c4c4;
+    color: #C4C4C4;
   }
 
   #fields {
@@ -80,6 +81,7 @@
       display: block;
     }
   }
+
 }
 
 .advancedSearchColumnLeft {

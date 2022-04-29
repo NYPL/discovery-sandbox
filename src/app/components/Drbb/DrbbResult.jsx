@@ -5,28 +5,33 @@ import { Link } from 'react-router';
 import DownloadIcon from '../../../client/icons/Download';
 
 import appConfig from '../../data/appConfig';
-import { authorQuery, formatUrl } from '../../utils/researchNowUtils';
-import { truncateStringOnWhitespace, addSource } from '../../utils/utils';
+import {
+  authorQuery,
+  formatUrl,
+} from '../../utils/researchNowUtils';
+import {
+  truncateStringOnWhitespace,
+  addSource,
+} from '../../utils/utils';
 
 // TODO: When the EDD integration is turned on in DRB we will need to handle application/edd+html media types as well
-const readOnlineMediaTypes = [
-  'application/epub+xml',
-  'application/webpub+json',
-  'text/html',
-];
-const downloadMediaTypes = ['application/epub+zip', 'application/pdf'];
+const readOnlineMediaTypes = ['application/epub+xml', 'application/webpub+json', 'text/html']
+const downloadMediaTypes = ['application/epub+zip', 'application/pdf']
 
 const DrbbResult = (props) => {
   const { work } = props;
   if (!work || !work.uuid || !work.title) return null;
 
-  const { title, editions } = work;
+  const {
+    title,
+    editions,
+  } = work;
   // Get authors from `authors` property (DRB v4) or `agents` property (DRB v3)
-  const authors = work.authors
-    ? work.authors
-    : work.agents.filter((agent) => agent.roles.includes('author'));
+  const authors = work.authors ? work.authors : work.agents.filter(agent => agent.roles.includes('author'));
 
-  const { environment } = appConfig;
+  const {
+    environment,
+  } = appConfig;
 
   const drbbFrontEnd = appConfig.drbbFrontEnd[environment];
   const eReader = appConfig.drbbEreader[environment];
@@ -34,32 +39,29 @@ const DrbbResult = (props) => {
   const authorship = () => {
     if (!authors || !authors.length) return null;
     const authorLinks = authors.map((agent, i) => [
-      i > 0 ? ', ' : null,
+      (i > 0 ? ', ' : null),
       <Link
         to={{
           pathname: `${drbbFrontEnd}/search`,
           query: authorQuery(agent),
         }}
-        className='drbb-result-author'
+        className="drbb-result-author"
         key={`author-${agent.name}`}
-        target='_blank'
+        target="_blank"
       >
         {agent.name}
-      </Link>,
-    ]);
+      </Link>]);
 
-    return <div className='drbb-authorship'>By {authorLinks}</div>;
+    return (
+      <div className="drbb-authorship">
+        By {authorLinks}
+      </div>
+    );
   };
 
-  const selectEdition = () =>
-    editions.find(
-      (edition) =>
-        edition &&
-        edition.items &&
-        edition.items.length &&
-        edition.items[0].links &&
-        edition.items[0].links.length,
-    ) || editions[0];
+  const selectEdition = () => (editions.find(edition => (
+    edition && edition.items && edition.items.length && edition.items[0].links && edition.items[0].links.length
+  ))) || editions[0];
 
   const edition = selectEdition();
   const { items } = edition;
@@ -71,24 +73,22 @@ const DrbbResult = (props) => {
     editionWithTitle.title = edition.title || work.title;
 
     let selectedLink;
-    const selectedItem = items.find((item) =>
-      item.links.find((link) => {
-        selectedLink = link;
-        // See above for media types that are used for "Read Online" links
-        return readOnlineMediaTypes.indexOf(link.mediaType) > -1;
-      }),
-    );
+    const selectedItem = items.find(item => item.links.find((link) => {
+      selectedLink = link;
+      // See above for media types that are used for "Read Online" links
+      return readOnlineMediaTypes.indexOf(link.mediaType) > -1
+    }));
 
     if (!selectedItem || !selectedLink || !selectedLink.url) return null;
 
     // NOTE: All read online links now use a /read/link_id structure. The DRB read page loads the necessary files for the reader
     return (
       <Link
-        target='_blank'
+        target="_blank"
         to={{
           pathname: addSource(`${drbbFrontEnd}/read/${selectedLink.link_id}`),
         }}
-        className='drbb-read-online'
+        className="drbb-read-online"
       >
         Read Online
       </Link>
@@ -99,25 +99,21 @@ const DrbbResult = (props) => {
     if (!items) return null;
 
     let downloadLink;
-    edition.items.find((item) =>
-      item.links.find((link) => {
-        downloadLink = link;
-        // See above for downloadable media types
-        return downloadMediaTypes.indexOf(link.mediaType) > -1;
-      }),
-    );
+    edition.items.find(item => item.links.find((link) => {
+      downloadLink = link;
+      // See above for downloadable media types
+      return downloadMediaTypes.indexOf(link.mediaType) > -1
+    }));
 
     if (!downloadLink || !downloadLink.download) return null;
 
-    const mediaType = downloadLink.mediaType
-      .replace(/(application|text)\/|\+zip/gi, '')
-      .toUpperCase();
+    const mediaType = downloadLink.mediaType.replace(/(application|text)\/|\+zip/gi, '').toUpperCase();
 
     return (
       <Link
-        target='_blank'
+        target="_blank"
         to={formatUrl(downloadLink.url)}
-        className='drbb-download-pdf'
+        className="drbb-download-pdf"
       >
         <DownloadIcon />
         Download{mediaType ? ` ${mediaType}` : ''}
@@ -126,17 +122,17 @@ const DrbbResult = (props) => {
   };
 
   return (
-    <li className='drbb-result'>
+    <li className="drbb-result">
       <Link
-        target='_blank'
+        target="_blank"
         to={addSource(`${drbbFrontEnd}/work/${work.uuid}`)}
-        className='drbb-result-title'
+        className="drbb-result-title"
       >
         {truncateStringOnWhitespace(title, 92)}
       </Link>
       {authors && authors.length ? authorship() : null}
-      {readOnlineLinkElement()}
-      {downloadLinkElement()}
+      { readOnlineLinkElement() }
+      { downloadLinkElement() }
     </li>
   );
 };

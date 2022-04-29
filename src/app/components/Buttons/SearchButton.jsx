@@ -8,12 +8,16 @@ import {
   IconNames,
 } from '@nypl/design-system-react-components';
 
-const SearchButton = ({ id, onClick, value }) => (
+const SearchButton = ({
+  id,
+  onClick,
+  value,
+}) => (
   <Button
     id={id}
     buttonType={ButtonTypes.Primary}
-    type='submit'
-    aria-controls='results-description'
+    type="submit"
+    aria-controls="results-description"
     onClick={onClick}
   >
     <Icon
