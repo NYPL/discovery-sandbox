@@ -34,6 +34,8 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
           if (field.linkable) {
             if (field.value === 'subjectLiteral') {
+              // This will only be processed if SubjectHeadingData on Bib is undefined
+              // and if subjectLiterals is defined.
               return (
                 <li>
                   {value
@@ -49,6 +51,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
                           outbound={field.selfLinkable}
                           filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
                         />,
+                        // Add span if there are additional literals
                         idx < orgArr.length - 1 && (
                           <span key={`divider-${idx}-${literal}`}> &gt; </span>
                         ),
