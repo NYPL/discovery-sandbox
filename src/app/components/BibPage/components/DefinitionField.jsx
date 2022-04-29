@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useBibParallel } from '../../../context/Bib.Provider';
+import { normalizeLiteral } from '../../../utils/utils';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
@@ -17,7 +18,14 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
     <ul className={additional && 'additionalDetails'}>
       {list
         .flat()
-        .map((value, idx) => {
+        .map((value) => {
+          if (field.value === 'subjectLiteral') {
+            return normalizeLiteral(value);
+          }
+
+          return value;
+        })
+        .map((value, idx, list) => {
           if (!value) return null;
 
           if (field.value === 'identifier') {

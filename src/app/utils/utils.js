@@ -15,6 +15,23 @@ import {
 import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
 
+/**
+ * normalizeLiteral(subjectLiteralArray)
+ * Updates the string structure of subject literals by removing " -- " and replacing it with " > "
+ *
+ * @param {string | string[]} literal
+ * @return {string | string[] | undefined} {string | string[] | undefined}
+ */
+function normalizeLiteral(literal) {
+  if (!literal) return literal;
+
+  if (Array.isArray(literal) && literal.length) {
+    return literal.map(normalizeLiteral);
+  }
+
+  return literal.replace(/\.$/, '').replace(/--/g, '>');
+}
+
 const isEmpty = (obj) => {
   return (
     [Object, Array].includes((obj || {}).constructor) &&
@@ -789,6 +806,7 @@ function capitalize(field) {
 const isElectronic = (item) => Boolean(item.isElectronicResource);
 
 export {
+  normalizeLiteral,
   isEmpty,
   isArray,
   isElectronic,
