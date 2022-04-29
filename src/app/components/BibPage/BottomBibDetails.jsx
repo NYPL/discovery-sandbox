@@ -2,7 +2,7 @@ import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { definitionMarcs } from '../../utils/bibDetailsUtils';
-import BibDetails_Functional from './BibDetails_Functional';
+import BibDetails from './BibDetails';
 
 // `linkable` means that those values are links inside the app.
 // `selfLinkable` means that those values are external links and should be self-linked,
@@ -24,32 +24,29 @@ const BottomBibDetails = ({ bib }) => {
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
     // if the subject heading API call failed for some reason,
-    // TODO: Can this be simpflified so we do not need to pass down the bib?
     bib.subjectHeadingData
       ? { label: 'Subject', value: 'subjectHeadingData' }
       : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'note' },
     { label: 'Contents', value: 'tableOfContents' },
-    // TODO: Is this needed?
     { label: 'Bibliography', value: '' },
     { label: 'Call Number', value: 'identifier', identifier: 'bf:ShelfMark' },
     { label: 'ISBN', value: 'identifier', identifier: 'bf:Isbn' },
     { label: 'ISSN', value: 'identifier', identifier: 'bf:Issn' },
     { label: 'LCCN', value: 'identifier', identifier: 'bf:Lccn' },
     { label: 'OCLC', value: 'identifier', identifier: 'nypl:Oclc' },
-    // TODO: Is this needed?
     { label: 'GPO', value: '' },
     { label: 'Other Titles', value: '' },
-    // Keep
     { label: 'Owning Institutions', value: '' },
   ];
 
-  // TODO: Can marcs be moved inside the Functional Component?
+  // TODO: [SCC-3125] Move marcs inside BibDetails
   return (
+    // TODO: [SCC-3124] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
-      <BibDetails_Functional fields={fields} marcs={definitionMarcs(bib)} />
+      <BibDetails fields={fields} marcs={definitionMarcs(bib)} />
     </section>
   );
 };

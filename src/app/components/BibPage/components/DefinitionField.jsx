@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { flatten as _flatten } from 'underscore';
 import { useBibParallel } from '../../../context/Bib.Provider';
+import { normalizeLiteral } from '../../../utils/utils';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
 const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const { bib, parallel } = useBibParallel(field.value);
+  const { parallel } = useBibParallel(field.value);
 
   // BibValues is an array of various values
   // Set bibValues as a 2D array becuase parallels is also a 2D array
@@ -16,7 +16,15 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
   return (
     <ul className={additional && 'additionalDetails'}>
-      {_flatten(list)
+      {list
+        .flat()
+        .map((value) => {
+          if (field.value === 'subjectLiteral') {
+            return normalizeLiteral(value);
+          }
+
+          return value;
+        })
         .map((value, idx) => {
           if (!value) return null;
 
@@ -25,6 +33,34 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
           }
 
           if (field.linkable) {
+            if (field.value === 'subjectLiteral') {
+              // This will only be processed if SubjectHeadingData on Bib is undefined
+              // and if subjectLiterals is defined.
+              return (
+                <li>
+                  {value
+                    .split(' > ')
+                    .reduce((literalList, literal, idx, orgArr) => {
+                      return [
+                        ...literalList,
+                        <LinkableBibField
+                          key={`${literal}-${idx}`}
+                          label={field.label}
+                          field={field.value}
+                          bibValue={literal}
+                          outbound={field.selfLinkable}
+                          filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
+                        />,
+                        // Add span if there are additional literals
+                        idx < orgArr.length - 1 && (
+                          <span key={`divider-${idx}-${literal}`}> &gt; </span>
+                        ),
+                      ].filter(Boolean);
+                    }, [])}
+                </li>
+              );
+            }
+
             return (
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
@@ -44,39 +80,6 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
               <ParallelsFields content={definition} />
             </li>
           );
-
-          // TODO: Handle case below
-          // const url = `filters[${field.value}]=${value['@id']}`;
-
-          // let itemValue = field.linkable ? (
-          //   <Link
-          //     onClick={(event) =>
-          //       this.newSearch(event, url, field.value, value['@id'], field.label)
-          //     }
-          //     to={`${appConfig.baseUrl}/search?${url}`}
-          //   >
-          //     {value.prefLabel}
-          //   </Link>
-          // ) : (
-          //   <span>{value.prefLabel}</span>
-          // );
-          // if (field.selfLinkable) {
-          //   itemValue = (
-          //     <a
-          //       href={value['@id']}
-          //       onClick={() =>
-          //         trackDiscovery(
-          //           'Bib fields',
-          //           `${field.label} - ${value.prefLabel}`,
-          //         )
-          //       }
-          //     >
-          //       {value.prefLabel}
-          //     </a>
-          //   );
-          // }
-
-          // return <li key={value.prefLabel}>{itemValue}</li>;
         })
         .filter(Boolean)}
     </ul>

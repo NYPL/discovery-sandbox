@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useBib } from '../../../context/Bib.Provider';
 import { isElectronic } from '../../../utils/utils';
 import itemsContainerModule from '../../Item/ItemsContainer';
@@ -9,14 +9,12 @@ const ItemsContainer = itemsContainerModule.ItemsContainer;
 const BibItems = ({ items, keywords, location }) => {
   const { bib, bibId } = useBib();
 
-  // TODO: useMemo is useless here
-  const display = useMemo(() => {
-    return items.length && !items.every(isElectronic);
-  }, [items]);
+  const display = items.length && !items.every(isElectronic);
 
   if (!display) return null;
 
   return (
+    // TODO: [SCC-3127] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <ItemsContainer
         key={bibId}

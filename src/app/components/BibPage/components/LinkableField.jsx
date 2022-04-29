@@ -5,13 +5,25 @@ import appConfig from '../../../data/appConfig';
 import { trackDiscovery } from '../../../utils/utils';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 
-const LinkableBibField = ({ bibValue, field, label, outbound, onClick }) => {
+const LinkableBibField = ({
+  bibValue,
+  field,
+  label,
+  outbound,
+  onClick,
+  filterPath,
+}) => {
   const text = outbound
     ? bibValue.prefLabel || bibValue.label || bibValue.url
     : bibValue;
 
-  const filter = `filters[${field}]=${bibValue ?? ''}`;
-  const url = outbound ? bibValue.url : `${appConfig.baseUrl}/search?${filter}`;
+  const filter = `filters[${field}]=${
+    filterPath ?? bibValue['@id'] ?? bibValue ?? ''
+  }`;
+
+  const url = outbound
+    ? bibValue['@id'] || bibValue.url
+    : `${appConfig.baseUrl}/search?${filter}`;
 
   const handler = (event) => {
     if (!outbound) {
@@ -34,6 +46,7 @@ LinkableBibField.propTypes = {
   label: PropTypes.string,
   outbound: PropTypes.bool,
   onClick: PropTypes.func,
+  filterPath: PropTypes.string,
 };
 
 export default LinkableBibField;

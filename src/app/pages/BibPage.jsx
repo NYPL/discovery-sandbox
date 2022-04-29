@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-import { isEmpty as _isEmpty } from 'underscore';
 import { updateBibPage } from '../actions/Actions';
 import BibContainer from '../components/BibPage/BibContainer';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
@@ -11,7 +10,7 @@ import SccContainer from '../components/SccContainer/SccContainer';
 import BibProvider from '../context/Bib.Provider';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-import { ajaxCall } from '../utils/utils';
+import { ajaxCall, isEmpty } from '../utils/utils';
 
 export const BibPage = (
   { bib, location, searchKeywords, dispatch, resultSelection },
@@ -20,8 +19,8 @@ export const BibPage = (
   useEffect(() => {
     // Server or Client render based on if 'window' is defined.
     if (typeof window !== 'undefined') {
-      if (!_isEmpty(bib) && !bib.done) {
-        //  After first render on Client check for more items <-- why?
+      if (!isEmpty(bib) && !bib.done) {
+        //  After first render on Client check for more items
         checkForMoreItems(bib, dispatch);
       }
     }
@@ -31,7 +30,7 @@ export const BibPage = (
     return <BibNotFound404 context={context} />;
   }
 
-  if (_isEmpty(bib)) {
+  if (isEmpty(bib)) {
     return <LoadingLayer loading />;
   }
 

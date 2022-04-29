@@ -3,55 +3,26 @@ import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../data/appConfig';
 
-const constructSubjectHeading = (heading, idx) => {
-  const { uuid, parent, label } = heading;
-  let subjectComponent;
-  if (label) subjectComponent = label.split(' -- ').pop();
-  if (!parent) {
-    return (
-      <Link
-        key={`${uuid} ${idx}`}
-        to={`${
-          appConfig.baseUrl
-        }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
-      >
-        {subjectComponent}
-      </Link>
-    );
-  }
-
-  return [
-    constructSubjectHeading(parent),
-    <span key={`${uuid} ${idx}`}> {'>'} </span>,
-    <Link
-      key={uuid}
-      to={`${
-        appConfig.baseUrl
-      }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
-    >
-      {subjectComponent}
-    </Link>,
-  ];
-};
-
-const generateHeadingLi = (heading, idx) => (
-  <li key={heading.uuid}>{constructSubjectHeading(heading, idx)}</li>
-);
-
-const SubjectHeadings = (props) => {
-  const { headings, idx } = props;
-
+const SubjectHeadings = ({ headings, idx }) => {
   if (!headings) return null;
 
   return (
-    <div>
+    <>
       <dt key={`term-${idx}`}>
         {headings.length > 1 ? 'Subjects' : 'Subject'}
       </dt>
       <dd data={`definition-${idx}`} key={`definition-${idx}`}>
-        <ul>{headings.map(generateHeadingLi)}</ul>
+        <ul>
+          {headings.map((heading, idx) => {
+            return (
+              <li key={heading.uuid}>
+                {constructSubjectHeading(heading, idx)}
+              </li>
+            );
+          })}
+        </ul>
       </dd>
-    </div>
+    </>
   );
 };
 
@@ -65,3 +36,23 @@ SubjectHeadings.defaultProps = {
 };
 
 export default SubjectHeadings;
+
+function constructSubjectHeading({ uuid, parent, label }, idx) {
+  let subjectComponent;
+
+  if (label) subjectComponent = label.split(' -- ').pop();
+
+  return [
+    // If Parent is undefined, undefined is set in index position
+    parent && constructSubjectHeading(parent),
+    parent && <span key={`${uuid} ${idx}`}> {'>'} </span>,
+    <Link
+      key={uuid}
+      to={`${
+        appConfig.baseUrl
+      }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
+    >
+      {subjectComponent}
+    </Link>,
+  ].filter(Boolean); // Remove all undefineds
+}
