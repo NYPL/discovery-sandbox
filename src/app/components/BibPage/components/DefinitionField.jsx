@@ -25,7 +25,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
           return value;
         })
-        .map((value, idx, list) => {
+        .map((value, idx) => {
           if (!value) return null;
 
           if (field.value === 'identifier') {
@@ -33,6 +33,31 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
           }
 
           if (field.linkable) {
+            if (field.value === 'subjectLiteral') {
+              return (
+                <li>
+                  {value
+                    .split(' > ')
+                    .reduce((literalList, literal, idx, orgArr) => {
+                      return [
+                        ...literalList,
+                        <LinkableBibField
+                          key={`${literal}-${idx}`}
+                          label={field.label}
+                          field={field.value}
+                          bibValue={literal}
+                          outbound={field.selfLinkable}
+                          filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
+                        />,
+                        idx < orgArr.length - 1 && (
+                          <span key={`divider-${idx}-${literal}`}> &gt; </span>
+                        ),
+                      ].filter(Boolean);
+                    }, [])}
+                </li>
+              );
+            }
+
             return (
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
