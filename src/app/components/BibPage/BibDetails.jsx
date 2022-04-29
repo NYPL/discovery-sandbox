@@ -109,6 +109,12 @@ BibDetails.contextTypes = {
 
 export default BibDetails;
 
+/**
+ *
+ * @param {object} field A Single Field Object Set in Bottom or Top Bib Details
+ * @param {array} value The Identifier Values from the Bib
+ * @returns An Array with the appropriate Identifier Object
+ */
 function validIdentifier(field, value) {
   return field.value === 'identifier'
     ? LibraryItem.getIdentifierEntitiesByType(value, field.identifier)
