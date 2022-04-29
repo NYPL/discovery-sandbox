@@ -34,10 +34,6 @@ const constructSubjectHeading = (heading, idx) => {
   ];
 };
 
-const generateHeadingLi = (heading, idx) => (
-  <li key={heading.uuid}>{constructSubjectHeading(heading, idx)}</li>
-);
-
 const SubjectHeadings = ({ headings, idx }) => {
   if (!headings) return null;
 
@@ -47,7 +43,15 @@ const SubjectHeadings = ({ headings, idx }) => {
         {headings.length > 1 ? 'Subjects' : 'Subject'}
       </dt>
       <dd data={`definition-${idx}`} key={`definition-${idx}`}>
-        <ul>{headings.map(generateHeadingLi)}</ul>
+        <ul>
+          {headings.map((heading, idx) => {
+            return (
+              <li key={heading.uuid}>
+                {constructSubjectHeading(heading, idx)}
+              </li>
+            );
+          })}
+        </ul>
       </dd>
     </div>
   );
