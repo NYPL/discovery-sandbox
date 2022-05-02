@@ -96,7 +96,7 @@ describe('manipulateAccountPage', () => {
       // Check that the linked bibs that remain are not OTF records:
       const linkedBibTitles = Array.from(
         dom.querySelectorAll('.patFuncBibTitle a'),
-      ).map((a) => a.textContent);
+      ).map((tag) => tag.textContent);
       expect(linkedBibTitles).to.have.members([
         'Toast / by Raquel Pelzel ; photographs by Evan Sung.',
         '-2 +3 Stefano Arienti, Massimo Bartolini : la Collezione di Museion = die Sammlung Museion = the Museion collection. Minus 2 plus 3 Minus two plus three Stefano Arienti, Massimo Bartolini',
@@ -125,7 +125,7 @@ describe('manipulateAccountPage', () => {
       const links = dom.querySelectorAll('.patFuncTitle a');
       expect(links).to.have.lengthOf(1);
       // Check that the linked bibs that remain are not OTF records:
-      const linkedBibTitles = Array.from(links).map((a) => a.textContent);
+      const linkedBibTitles = Array.from(links).map((link) => link.textContent);
       expect(linkedBibTitles).to.have.members(['A table / Jean Follain.']);
     });
 

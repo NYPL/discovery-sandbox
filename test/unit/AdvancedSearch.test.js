@@ -1,12 +1,9 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
-import PropTypes from 'prop-types';
 import { expect } from 'chai';
-// import { mount } from 'enzyme';
-import { mountTestRender, makeTestStore } from '../helpers/store';
-import { mockRouterContext } from '../helpers/routing';
+import PropTypes from 'prop-types';
+import React from 'react';
 import AdvancedSearch from '../../src/app/components/AdvancedSearch/AdvancedSearch';
+import { mockRouterContext } from '../helpers/routing';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const aggregations = require('../../advancedSearchAggregations.json');
 
@@ -139,9 +136,9 @@ describe('AdvancedSearch', () => {
       expect(component.find('Label').at(8).prop('htmlFor')).to.eql('formats');
 
       expect(component.find('Checkbox').length).to.eql(8);
-      for (let i = 0; i < materialTypes.length; i += 1) {
-        const materialType = materialTypes[i];
-        expect(component.find('Checkbox').at(i).props()).to.eql({
+      for (let _i = 0; _i < materialTypes.length; _i += 1) {
+        const materialType = materialTypes[_i];
+        expect(component.find('Checkbox').at(_i).props()).to.eql({
           labelOptions: {
             id: materialType.value,
             labelContent: materialType.label,

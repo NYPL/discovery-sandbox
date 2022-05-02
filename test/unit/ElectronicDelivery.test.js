@@ -29,7 +29,7 @@ describe('ElectronicDeliveryForm', () => {
       expect(
         component
           .find('input')
-          .findWhere((n) => n.props().name === 'pickupLocation').length,
+          .findWhere((_n) => _n.props().name === 'pickupLocation').length,
       ).to.equal(1);
     });
 

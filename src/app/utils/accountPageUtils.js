@@ -68,8 +68,8 @@ export const formatPatronExpirationDate = (expirationDate) => {
     return expirationDate;
   }
 
-  const [y, m, d] = expirationDate.split('-');
-  return [m, d, y].join('-');
+  const [_y, _m, _d] = expirationDate.split('-');
+  return [_m, _d, _y].join('-');
 };
 
 export const manipulateAccountPage = (
@@ -143,8 +143,8 @@ export const manipulateAccountPage = (
             else if (isClosed(option.innerText)) option.remove();
           });
           locationData[locationProp] = locationValue;
-          const locationChangeCb = (e) => {
-            locationData[locationProp] = e.target.value.replace('+++', '');
+          const locationChangeCb = (event) => {
+            locationData[locationProp] = event.target.value.replace('+++', '');
             eventListenerCb(buildReqBody(contentType, {}, locationData));
           };
           locationSelect.addEventListener('change', locationChangeCb);
@@ -207,8 +207,8 @@ export const manipulateAccountPage = (
           input.value = 'off';
         }
         button.className = 'button button--outline';
-        const eventCb = (e) => {
-          e.preventDefault();
+        const eventCb = (event) => {
+          event.preventDefault();
           eventListenerCb(
             buildReqBody(
               contentType,
@@ -222,8 +222,8 @@ export const manipulateAccountPage = (
           const titleTd = el.querySelectorAll('.patFuncTitleMain');
           const title = titleTd && titleTd[0] ? titleTd[0].textContent : null;
 
-          button.addEventListener('click', (e) => {
-            e.preventDefault();
+          button.addEventListener('click', (event) => {
+            event.preventDefault();
             setItemToCancel({
               name: input.name,
               value: input.value,
@@ -315,8 +315,8 @@ export const manipulateAccountPage = (
           isFirstRenewAll = false;
           const button = document.createElement('button');
           button.textContent = 'Renew All';
-          const renewAllCb = (e) => {
-            e.preventDefault();
+          const renewAllCb = (event) => {
+            event.preventDefault();
             eventListenerCb({ renewall: 'YES' });
           };
           button.addEventListener('click', renewAllCb);

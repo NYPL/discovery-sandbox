@@ -59,8 +59,8 @@ class ElectronicDeliveryForm extends React.Component {
     }
   }
 
-  submit(e) {
-    e.preventDefault();
+  submit(event) {
+    event.preventDefault();
 
     const errorCb = (error) => {
       this.setState({ error });
@@ -76,13 +76,13 @@ class ElectronicDeliveryForm extends React.Component {
     }
   }
 
-  handleUpdate(e, input) {
+  handleUpdate(event, input) {
     // Kind of hard to read. Basically, the `form` property is being updated
     // and all the values are being retained. If we don't `extend` the object
     // value for `form`, then only the last value in the form gets updated
     // and the rest are gone.
     this.setState({
-      form: _extend(this.state.form, { [input]: e.target.value }),
+      form: _extend(this.state.form, { [input]: event.target.value }),
     });
     // Capture and save user input as it's being updated
 
@@ -123,7 +123,7 @@ class ElectronicDeliveryForm extends React.Component {
         className='place-hold-form form electronic-delivery-form'
         action={`${appConfig.baseUrl}/edd`}
         method='POST'
-        onSubmit={(e) => this.submit(e)}
+        onSubmit={(event) => this.submit(event)}
       >
         <fieldset className='nypl-fieldset'>
           <legend>
@@ -143,7 +143,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-required='true'
                   name='emailAddress'
                   value={this.state.form.emailAddress}
-                  onChange={(e) => this.handleUpdate(e, 'emailAddress')}
+                  onChange={(event) => this.handleUpdate(event, 'emailAddress')}
                 />
                 <span
                   className='nypl-field-status'
@@ -177,7 +177,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='startPage-label startPage-status'
                   name='startPage'
                   value={this.state.form.startPage}
-                  onChange={(e) => this.handleUpdate(e, 'startPage')}
+                  onChange={(event) => this.handleUpdate(event, 'startPage')}
                 />
                 <span
                   className='nypl-field-status'
@@ -206,7 +206,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='endPage-label endPage-status'
                   name='endPage'
                   value={this.state.form.endPage}
-                  onChange={(e) => this.handleUpdate(e, 'endPage')}
+                  onChange={(event) => this.handleUpdate(event, 'endPage')}
                 />
                 <span
                   className='nypl-field-status'
@@ -234,7 +234,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='chapterTitle-label chapterTitle-status'
                   name='chapterTitle'
                   value={this.state.form.chapterTitle}
-                  onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
+                  onChange={(event) => this.handleUpdate(event, 'chapterTitle')}
                 />
                 <span
                   className='nypl-field-status'
@@ -269,7 +269,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='author-label'
                   name='author'
                   value={this.state.form.author}
-                  onChange={(e) => this.handleUpdate(e, 'author')}
+                  onChange={(event) => this.handleUpdate(event, 'author')}
                 />
               </div>
 
@@ -283,7 +283,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='date-label'
                   name='date'
                   value={this.state.form.date}
-                  onChange={(e) => this.handleUpdate(e, 'date')}
+                  onChange={(event) => this.handleUpdate(event, 'date')}
                 />
               </div>
 
@@ -297,7 +297,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='volume-label'
                   name='volume'
                   value={this.state.form.volume}
-                  onChange={(e) => this.handleUpdate(e, 'volume')}
+                  onChange={(event) => this.handleUpdate(event, 'volume')}
                 />
               </div>
 
@@ -311,7 +311,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='issue-label'
                   name='issue'
                   value={this.state.form.issue}
-                  onChange={(e) => this.handleUpdate(e, 'issue')}
+                  onChange={(event) => this.handleUpdate(event, 'issue')}
                 />
               </div>
               <div className='nypl-text-area-with-label'>
@@ -335,7 +335,7 @@ class ElectronicDeliveryForm extends React.Component {
                   aria-labelledby='requestNotes-label'
                   name='requestNotes'
                   value={this.state.form.requestNotes}
-                  onChange={(e) => this.handleUpdate(e, 'requestNotes')}
+                  onChange={(event) => this.handleUpdate(event, 'requestNotes')}
                 />
               </div>
               <div className='edd-copyright-notice'>

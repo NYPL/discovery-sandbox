@@ -25,9 +25,9 @@ describe('SubjectHeadings', () => {
         },
       },
     ];
-    const i = 1;
+    const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} i={i} />);
+    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
 
     it('should have a div', () => {
       expect(component.find('div').length).to.equal(1);
@@ -82,9 +82,9 @@ describe('SubjectHeadings', () => {
         label: 'Heading+&',
       },
     ];
-    const i = 1;
+    const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} i={i} />);
+    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
 
     it('should have a div', () => {
       expect(component.find('div').length).to.equal(1);
