@@ -27,9 +27,9 @@ describe('SubjectHeadings', () => {
     ];
     const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
+    const component = mount(<SubjectHeadings headings={headings} idx={pos} />);
 
-    it("should have a dt with text 'Subject' and key i", () => {
+    it("should have a dt with text 'Subject' and key idx", () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subject');
       expect(component.find('dt').at(0).key()).to.equal('term-1');
@@ -80,9 +80,9 @@ describe('SubjectHeadings', () => {
     ];
     const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
+    const component = mount(<SubjectHeadings headings={headings} idx={pos} />);
 
-    it("should have a dt with text 'Subjects' and key i", () => {
+    it("should have a dt with text 'Subjects' and key idx", () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subjects');
       expect(component.find('dt').at(0).key()).to.equal('term-1');
