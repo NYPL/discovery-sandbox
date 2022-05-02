@@ -65,8 +65,6 @@ function extractParallels(bib) {
           .reduce((acc, curr, idx) => {
             const og = curr;
             const pa = bib[key][idx];
-            // @seanredmond would like the parallel to show up first
-            // https://jira.nypl.org/browse/SCC-2915?focusedCommentId=68727&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-68727
             acc.push([pa, og]); // Set a 2D array
             return acc;
           }, [])
