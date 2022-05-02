@@ -21,7 +21,6 @@ describe('Application', () => {
     window.matchMedia().addListener = stub();
     component = shallow(
       <Application
-        children={{}}
         route={{
           history: { listen: stub() },
         }}
@@ -106,7 +105,6 @@ describe('Application', () => {
       };
       component = shallow(
         <Application
-          children={{}}
           router={context.router}
           updateFeatures={() => undefined}
           features={[]}
