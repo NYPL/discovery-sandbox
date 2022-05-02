@@ -1,11 +1,8 @@
-/* eslint import/prefer-default-export: "off" */
 import { isEmpty as _isEmpty } from 'underscore';
-
-import nyplApiClient from '../nyplApiClient';
 import logger from '../../../../logger';
-
 import { updatePatronData } from '../../../app/actions/Actions';
 import { extractNoticePreference } from '../../../app/utils/utils';
+import nyplApiClient from '../nyplApiClient';
 
 export function getPatronData(req, res, next) {
   const { dispatch } = req.store;

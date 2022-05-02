@@ -73,7 +73,7 @@ const bibsAjax = (req, res) => {
       });
   };
 
-  const useDiscoveryResults = (discoveryApiBibCount) => {
+  const discoveryResults = (discoveryApiBibCount) => {
     if (shepApiBibCount === 0) return true;
     if (discoveryApiBibCount === 0) return false;
     const discrepancy = Math.abs(shepApiBibCount - discoveryApiBibCount);
@@ -83,7 +83,7 @@ const bibsAjax = (req, res) => {
 
   const processData = (data) => {
     const { totalResults } = data;
-    if (bibsSource === 'discoveryApi' || useDiscoveryResults(totalResults)) {
+    if (bibsSource === 'discoveryApi' || discoveryResults(totalResults)) {
       return res.json({
         results: data.itemListElement,
         page,

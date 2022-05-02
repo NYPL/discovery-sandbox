@@ -673,8 +673,8 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v,
+  return Object.values(selectedFilters || {}).some((_v) =>
+    Array.isArray(_v) ? _v.length > 0 : _v,
   );
 };
 
