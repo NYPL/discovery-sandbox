@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { gaUtils } from 'dgx-react-ga';
-import { createHistory, createMemoryHistory, useQueries } from 'history';
+import axios from "axios";
+import { gaUtils } from "dgx-react-ga";
+import { createHistory, createMemoryHistory, useQueries } from "history";
 import {
   chain as _chain,
   extend as _extend,
@@ -11,9 +11,9 @@ import {
   isEmpty as _isEmpty,
   mapObject as _mapObject,
   sortBy as _sortBy,
-} from 'underscore';
-import appConfig from '../data/appConfig';
-import { noticePreferenceMapping } from '../data/constants';
+} from "underscore";
+import appConfig from "../data/appConfig";
+import { noticePreferenceMapping } from "../data/constants";
 
 const { features } = appConfig;
 
@@ -27,7 +27,7 @@ const { features } = appConfig;
 const ajaxCall = (
   endpoint,
   cb = () => {},
-  errorcb = (error) => console.error('Error making ajaxCall', error),
+  errorcb = (error) => console.error("Error making ajaxCall", error)
 ) => {
   if (!endpoint) return null;
 
@@ -46,7 +46,7 @@ const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
  * Create a history in the browser or server that coincides with react-router.
  */
 const createAppHistory = () => {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return useQueries(createHistory)();
   }
 
@@ -70,12 +70,12 @@ function destructureFilters(filters, apiFilters) {
 
   _forEach(filters, (value, key) => {
     const id =
-      key.indexOf('date') !== -1
+      key.indexOf("date") !== -1
         ? // Because filters are in the form of `filters[language][0]`;
           key.substring(8, key.length - 1)
         : key.substring(8, key.length - 4);
 
-    if (id === 'dateAfter' || id === 'dateBefore') {
+    if (id === "dateAfter" || id === "dateBefore") {
       selectedFilters[id] = value;
     } else if (_isArray(value) && value.length) {
       if (!selectedFilters[id]) {
@@ -99,7 +99,7 @@ function destructureFilters(filters, apiFilters) {
           }
         }
       });
-    } else if (typeof value === 'string') {
+    } else if (typeof value === "string") {
       const filterObjFromApi = _findWhere(filterArrayfromAPI, { id });
       if (
         filterObjFromApi &&
@@ -127,12 +127,12 @@ function destructureFilters(filters, apiFilters) {
  * Get the sort type and order and pass it in URL query form.
  * @param {string} sortBy URL parameter with sort type and order.
  */
-const getSortQuery = (sortBy = '') => {
-  const reset = sortBy === 'relevance';
-  let sortQuery = '';
+const getSortQuery = (sortBy = "") => {
+  const reset = sortBy === "relevance";
+  let sortQuery = "";
 
   if (sortBy && !reset) {
-    const [sort, order] = sortBy.split('_');
+    const [sort, order] = sortBy.split("_");
     sortQuery = `&sort=${sort}&sort_direction=${order}`;
   }
 
@@ -145,26 +145,26 @@ const getSortQuery = (sortBy = '') => {
  * @param {object} filters Key/value pair of filter and the selected value.
  */
 const getFilterParam = (filters) => {
-  let strSearch = '';
+  let strSearch = "";
 
   if (!_isEmpty(filters)) {
     _mapObject(filters, (val, key) => {
       // Property contains an array of its selected filter values:
       if (val && val.length && _isArray(val)) {
         _forEach(val, (filter, index) => {
-          if (filter.value && filter.value !== '') {
+          if (filter.value && filter.value !== "") {
             strSearch += `&filters[${key}][${index}]=${encodeURIComponent(
-              filter.value,
+              filter.value
             )}`;
-          } else if (typeof filter === 'string') {
+          } else if (typeof filter === "string") {
             strSearch += `&filters[${key}][${index}]=${encodeURIComponent(
-              filter,
+              filter
             )}`;
           }
         });
-      } else if (val && val.value && val.value !== '') {
+      } else if (val && val.value && val.value !== "") {
         strSearch += `&filters[${key}]=${encodeURIComponent(val.value)}`;
-      } else if (val && typeof val === 'string') {
+      } else if (val && typeof val === "string") {
         strSearch += `&filters[${key}]=${encodeURIComponent(val)}`;
       }
     });
@@ -178,17 +178,17 @@ const getFilterParam = (filters) => {
  * Get the search param from the field selected.
  * @param {string} field Value of field to query against.
  */
-const getFieldParam = (field = '') => {
-  if (!field || field.trim() === 'all') {
-    return '';
+const getFieldParam = (field = "") => {
+  if (!field || field.trim() === "all") {
+    return "";
   }
   return `&search_scope=${field}`;
 };
 
 const getIdentifierQuery = (identifierNumbers = {}) =>
   Object.entries(identifierNumbers)
-    .map(([key, value]) => (value ? `&${key}=${value}` : ''))
-    .join('');
+    .map(([key, value]) => (value ? `&${key}=${value}` : ""))
+    .join("");
 
 /**
  * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
@@ -197,7 +197,7 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
  * @param {string} action The GA action.
  * @param {string} label The GA label.
  */
-const trackDiscovery = gaUtils.trackEvent('Discovery');
+const trackDiscovery = gaUtils.trackEvent("Discovery");
 
 /**
  * basicQuery
@@ -231,31 +231,31 @@ const basicQuery = (props = {}) => {
     const sortQuery = getSortQuery(sortBy || props.sortBy);
     const fieldQuery = getFieldParam(field || props.field);
     const filterQuery = getFilterParam(
-      selectedFilters || props.selectedFilters,
+      selectedFilters || props.selectedFilters
     );
     const identifierQuery = getIdentifierQuery(
-      identifierNumbers || props.identifierNumbers,
+      identifierNumbers || props.identifierNumbers
     );
     // `searchKeywords` can be an empty string, so check if it's undefined instead.
     const query =
       searchKeywords !== undefined ? searchKeywords : props.searchKeywords;
-    const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : '';
+    const searchKeywordsQuery = query ? `${encodeURIComponent(query)}` : "";
     let pageQuery =
-      props.page && props.page !== '1' ? `&page=${props.page}` : '';
-    pageQuery = page && page !== '1' ? `&page=${page}` : pageQuery;
-    pageQuery = page === '1' ? '' : pageQuery;
+      props.page && props.page !== "1" ? `&page=${props.page}` : "";
+    pageQuery = page && page !== "1" ? `&page=${page}` : pageQuery;
+    pageQuery = page === "1" ? "" : pageQuery;
     const contributorQuery =
       (contributor || props.contributor) && !clearContributor
         ? `&contributor=${contributor || props.contributor}`
-        : '';
+        : "";
     const titleQuery =
       (title || props.title) && !clearTitle
         ? `&title=${title || props.title}`
-        : '';
+        : "";
     const subjectQuery =
       (subject || props.subject) && !clearSubject
         ? `&subject=${subject || props.subject}`
-        : '';
+        : "";
     const advancedQuery = `${contributorQuery}${titleQuery}${subjectQuery}`;
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
@@ -272,13 +272,13 @@ const basicQuery = (props = {}) => {
  * @param {object} query The request query object from Express.
  */
 function getReqParams(query = {}) {
-  const page = query.page || '1';
-  const perPage = query.per_page || '50';
-  const q = query.q || '';
-  const sort = query.sort || '';
-  const order = query.sort_direction || '';
-  const sortQuery = query.sort_scope || '';
-  const fieldQuery = query.search_scope || '';
+  const page = query.page || "1";
+  const perPage = query.per_page || "50";
+  const q = query.q || "";
+  const sort = query.sort || "";
+  const order = query.sort_direction || "";
+  const sortQuery = query.sort_scope || "";
+  const fieldQuery = query.search_scope || "";
   const filters = query.filters || {};
   const contributor = query.contributor;
   const title = query.title;
@@ -343,7 +343,7 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
       // Each incoming filter is in JSON string format so it needs to be parsed first.
       .map((filter) => JSON.parse(filter))
       // Group selected filters into arrays according to their field.
-      .groupBy('field')
+      .groupBy("field")
       // Created the needed data structure.
       .mapObject((filterArray, key) => {
         if (key) {
@@ -435,7 +435,7 @@ function pluckAeonLinksFromResource(resources = [], items = []) {
  * @return {boolean}
  */
 function featuredAeonList(items) {
-  const featured = features.includes('aeon-links');
+  const featured = features.includes("aeon-links");
 
   // Does a single item in the list have an aeon url
   return items.some((item) => {
@@ -457,8 +457,8 @@ function featuredAeonList(items) {
 function isAeonLink(url) {
   if (!url) return false;
   const aeonLinks = [
-    'https://specialcollections.nypl.org/aeon/Aeon.dll',
-    'https://nypl-aeon-test.aeon.atlas-sys.com',
+    "https://specialcollections.nypl.org/aeon/Aeon.dll",
+    "https://nypl-aeon-test.aeon.atlas-sys.com",
   ];
   const link = Array.isArray(url) ? url[0] : url;
   return Boolean(aeonLinks.some((path) => link.startsWith(path)));
@@ -477,7 +477,7 @@ const getUpdatedFilterValues = (props) => {
     filter && filter.values && filter.values.length ? filter.values : [];
   // Just want to add the `selected` property here.
   const defaultFilterValues = filterValues.map((value) =>
-    _extend({ selected: false }, value),
+    _extend({ selected: false }, value)
   );
   let updatedFilterValues = defaultFilterValues;
 
@@ -522,14 +522,14 @@ function displayContext({
 }) {
   const keyMapping = {
     // Currently from links on the bib page:
-    creatorLiteral: 'author',
-    contributorLiteral: 'author',
-    titleDisplay: 'title',
+    creatorLiteral: "author",
+    contributorLiteral: "author",
+    titleDisplay: "title",
     // From the search field dropdown:
-    contributor: 'author/contributor',
-    title: 'title',
-    standard_number: 'standard number',
-    journal_title: 'journal title',
+    contributor: "author/contributor",
+    title: "title",
+    standard_number: "standard number",
+    journal_title: "journal title",
   };
 
   // Build up an array of human-readable "clauses" representing the query:
@@ -545,7 +545,7 @@ function displayContext({
       }
       return map;
     },
-    {},
+    {}
   );
 
   // Are there any filters at work?
@@ -556,7 +556,7 @@ function displayContext({
     clauses.push(
       Object.keys(activeFilters)
         .map((label) => `${label} "${activeFilters[label]}"`)
-        .join(', '),
+        .join(", ")
     );
   }
 
@@ -566,14 +566,14 @@ function displayContext({
     // "field") and the number of results.
 
     // By default, call it 'keywords':
-    const plural = /\s/.test(searchKeywords) ? 's' : '';
+    const plural = /\s/.test(searchKeywords) ? "s" : "";
     let fieldLabel = `keyword${plural}`;
     // Special case 1: If 0 results, call it "the keywords":
     if (count === 0) {
       fieldLabel = `the ${fieldLabel}`;
     }
     // Special case 2: if a search_scope used, use a friendly name for that:
-    if (field && field !== 'all') {
+    if (field && field !== "all") {
       fieldLabel = keyMapping[field];
     }
     clauses.push(`${fieldLabel} "${searchKeywords}"`);
@@ -593,7 +593,7 @@ function displayContext({
 
   // Now join the accumlated (0-2) "clauses" together into a phrase like:
   // 'for author "Shakespeare" and keywords "romeo and juliet"'
-  return clauses.length ? `for ${clauses.join(' and ')}` : '';
+  return clauses.length ? `for ${clauses.join(" and ")}` : "";
 }
 
 /**
@@ -614,7 +614,7 @@ const truncateStringOnWhitespace = (str, maxLength) => {
   if (truncArray.length === 0) {
     return `${truncStr}...`;
   }
-  return `${truncArray.join(' ')}...`;
+  return `${truncArray.join(" ")}...`;
 };
 
 /**
@@ -674,7 +674,7 @@ const isOptionSelected = (filterValue, itemValue) => {
  */
 const hasValidFilters = (selectedFilters) => {
   return Object.values(selectedFilters || {}).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v,
+    Array.isArray(v) ? v.length > 0 : v
   );
 };
 
@@ -685,9 +685,9 @@ const hasValidFilters = (selectedFilters) => {
  */
 function encodeHTML(str) {
   return str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/"/g, '&quot;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/"/g, "&quot;");
 }
 
 /**
@@ -696,10 +696,10 @@ function encodeHTML(str) {
  * @param {string} fixedFields - Object coming from patron object `fixedFields` property
  */
 function extractNoticePreference(fixedFields) {
-  if (!fixedFields) return 'None';
-  const noticePreferenceField = fixedFields['268'];
-  if (!noticePreferenceField || !noticePreferenceField.value) return 'None';
-  return noticePreferenceMapping[noticePreferenceField.value] || 'None';
+  if (!fixedFields) return "None";
+  const noticePreferenceField = fixedFields["268"];
+  if (!noticePreferenceField || !noticePreferenceField.value) return "None";
+  return noticePreferenceMapping[noticePreferenceField.value] || "None";
 }
 
 /**
@@ -716,7 +716,7 @@ function camelToShishKabobCase(s) {
       // Change capital letters into "-{lowercase letter}"
       .replace(/([A-Z])/g, (c, p1, i) => {
         // If capital letter is not first character, precede with '-':
-        return (i > 0 ? '-' : '') + c.toLowerCase();
+        return (i > 0 ? "-" : "") + c.toLowerCase();
       })
   );
 }
@@ -727,10 +727,10 @@ function camelToShishKabobCase(s) {
  */
 function institutionNameByNyplSource(nyplSource) {
   return {
-    'recap-pul': 'Princeton',
-    'recap-cul': 'Columbia',
-    'recap-hl': 'Harvard',
-    'sierra-nypl': 'NYPL',
+    "recap-pul": "Princeton",
+    "recap-cul": "Columbia",
+    "recap-hl": "Harvard",
+    "sierra-nypl": "NYPL",
   }[nyplSource];
 }
 
@@ -743,7 +743,7 @@ function addSource(url) {
   try {
     const parsedUrl = new URL(url);
     const searchParams = parsedUrl.searchParams;
-    if (!searchParams.has('source')) searchParams.append('source', 'catalog');
+    if (!searchParams.has("source")) searchParams.append("source", "catalog");
     return parsedUrl.toString();
   } catch (error) {
     return url;

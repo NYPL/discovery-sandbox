@@ -1,222 +1,208 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
-import nock from 'nock';
-import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import React from "react";
+import nock from "nock";
+import { expect } from "chai";
+import { shallow, mount } from "enzyme";
 
-import BibsList from '../../src/app/components/SubjectHeading/BibsList';
-import Sorter from '@Sorter';
-import appConfig from '../../src/app/data/appConfig';
+import BibsList from "../../src/app/components/SubjectHeading/BibsList";
+import Sorter from "@Sorter";
+import appConfig from "../../src/app/data/appConfig";
 
-describe('BibsList', () => {
+describe("BibsList", () => {
   let component;
   let savedBaseUrl;
 
   before(() => {
     // set up mock api
     savedBaseUrl = appConfig.baseUrl;
-    appConfig.baseUrl = 'http://test-server.com';
+    appConfig.baseUrl = "http://test-server.com";
   });
 
   after(() => {
     appConfig.baseUrl = savedBaseUrl;
   });
 
-
-  it('should have correct heading for one result', () => {
+  it("should have correct heading for one result", () => {
     // set up component
-    component = mount(
-      <BibsList />,
-      {
-        context: {
-          router: {
-            location: {
-              query: {},
-            },
+    component = mount(<BibsList />, {
+      context: {
+        router: {
+          location: {
+            query: {},
           },
         },
       },
-    );
+    });
 
     return new Promise((resolve) => {
-      nock('http://test-server.com')
+      nock("http://test-server.com")
         .defaultReplyHeaders({
-          'access-control-allow-origin': '*',
-          'access-control-allow-credentials': 'true',
+          "access-control-allow-origin": "*",
+          "access-control-allow-credentials": "true",
         })
         .get(/\/api/)
         .reply(200, () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.find('h3').at(0).text()).to.equal('Viewing 1 - 1 of 1 item');
+              expect(component.find("h3").at(0).text()).to.equal(
+                "Viewing 1 - 1 of 1 item"
+              );
             });
             setImmediate(() => resolve());
           }, 100);
           return {
             page: 1,
-            totalResults: '1',
-            bibsSource: 'discoveryApi',
+            totalResults: "1",
+            bibsSource: "discoveryApi",
           };
         });
     });
   });
 
-  it('should have correct heading for multiple results', () => {
-
+  it("should have correct heading for multiple results", () => {
     // set up component
-    component = mount(
-      <BibsList />,
-      {
-        context: {
-          router: {
-            location: {
-              query: {},
-            },
+    component = mount(<BibsList />, {
+      context: {
+        router: {
+          location: {
+            query: {},
           },
         },
       },
-    );
+    });
 
     return new Promise((resolve) => {
-      nock('http://test-server.com')
+      nock("http://test-server.com")
         .defaultReplyHeaders({
-          'access-control-allow-origin': '*',
-          'access-control-allow-credentials': 'true',
+          "access-control-allow-origin": "*",
+          "access-control-allow-credentials": "true",
         })
         .get(/\/api/)
         .reply(200, () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.find('h3').at(0).text()).to.equal('Viewing 1 - 10 of 10 items');
+              expect(component.find("h3").at(0).text()).to.equal(
+                "Viewing 1 - 10 of 10 items"
+              );
             });
             setImmediate(() => resolve());
           }, 100);
           return {
             page: 1,
-            totalResults: '10',
-            bibsSource: 'discoveryApi',
+            totalResults: "10",
+            bibsSource: "discoveryApi",
           };
         });
     });
   });
 
-  it('should have heading and sorter in correct order', () => {
-
+  it("should have heading and sorter in correct order", () => {
     // set up component
-    component = mount(
-      <BibsList />,
-      {
-        context: {
-          router: {
-            location: {
-              query: {},
-            },
+    component = mount(<BibsList />, {
+      context: {
+        router: {
+          location: {
+            query: {},
           },
         },
       },
-    );
+    });
 
     return new Promise((resolve) => {
-      nock('http://test-server.com')
+      nock("http://test-server.com")
         .defaultReplyHeaders({
-          'access-control-allow-origin': '*',
-          'access-control-allow-credentials': 'true',
+          "access-control-allow-origin": "*",
+          "access-control-allow-credentials": "true",
         })
         .get(/\/api/)
         .reply(200, () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.childAt(0).childAt(0).type()).to.equal('h3');
-              expect(component.childAt(0).childAt(1).name()).to.equal('Sorter');
+              expect(component.childAt(0).childAt(0).type()).to.equal("h3");
+              expect(component.childAt(0).childAt(1).name()).to.equal("Sorter");
             });
             setImmediate(() => resolve());
           }, 100);
           return {
             page: 1,
-            totalResults: '10',
-            bibsSource: 'discoveryApi',
+            totalResults: "10",
+            bibsSource: "discoveryApi",
           };
         });
     });
   });
 
-  describe('api calls', () => {
-    it('should make correct api call when mounted', () => {
+  describe("api calls", () => {
+    it("should make correct api call when mounted", () => {
       // set up component
-      component = mount(
-        <BibsList
-          label="abcdefg"
-        />,
-        {
-          context: {
-            router: {
-              location: {
-                query: {},
-              },
+      component = mount(<BibsList label="abcdefg" />, {
+        context: {
+          router: {
+            location: {
+              query: {},
             },
           },
         },
-      );
+      });
 
       return new Promise((resolve) => {
-        nock('http://test-server.com')
+        nock("http://test-server.com")
           .defaultReplyHeaders({
-            'access-control-allow-origin': '*',
-            'access-control-allow-credentials': 'true',
+            "access-control-allow-origin": "*",
+            "access-control-allow-credentials": "true",
           })
           .get(/\/api/)
           .reply(200, (uri) => {
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
-                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined');
+                expect(uri).to.equal(
+                  "/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined"
+                );
               });
               setImmediate(() => resolve());
             }, 100);
             return {
               page: 1,
-              totalResults: '10',
-              bibsSource: 'discoveryApi',
+              totalResults: "10",
+              bibsSource: "discoveryApi",
             };
           });
       });
     });
 
-    it('should use configured shepBibsLimit when mounting, if configured', () => {
+    it("should use configured shepBibsLimit when mounting, if configured", () => {
       const oldShepBibsLimit = appConfig.shepBibsLimit;
       appConfig.shepBibsLimit = 10;
       // set up component
-      component = mount(
-        <BibsList
-          label="abcdefg"
-        />,
-        {
-          context: {
-            router: {
-              location: {
-                query: {},
-              },
+      component = mount(<BibsList label="abcdefg" />, {
+        context: {
+          router: {
+            location: {
+              query: {},
             },
           },
         },
-      );
+      });
 
       return new Promise((resolve) => {
-        nock('http://test-server.com')
+        nock("http://test-server.com")
           .defaultReplyHeaders({
-            'access-control-allow-origin': '*',
-            'access-control-allow-credentials': 'true',
+            "access-control-allow-origin": "*",
+            "access-control-allow-credentials": "true",
           })
           .get(/\/api/)
           .reply(200, (uri) => {
             setTimeout(() => {
               component.setProps({});
               setImmediate(() => {
-                expect(uri).to.equal('/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined');
+                expect(uri).to.equal(
+                  "/api/subjectHeading/abcdefg?&sort=date&sort_direction=desc&per_page=10&shep_bib_count=undefined&shep_uuid=undefined"
+                );
               });
               setImmediate(() => {
                 appConfig.shepBibsLimit = oldShepBibsLimit;
@@ -225,8 +211,8 @@ describe('BibsList', () => {
             }, 100);
             return {
               page: 1,
-              totalResults: '10',
-              bibsSource: 'discoveryApi',
+              totalResults: "10",
+              bibsSource: "discoveryApi",
             };
           });
       });

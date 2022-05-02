@@ -1,12 +1,12 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Link } from 'react-router';
-import appConfig from '../../data/appConfig';
+import PropTypes from "prop-types";
+import React from "react";
+import { Link } from "react-router";
+import appConfig from "../../data/appConfig";
 
 const constructSubjectHeading = (heading, i) => {
   const { uuid, parent, label } = heading;
   let subjectComponent;
-  if (label) subjectComponent = label.split(' -- ').pop();
+  if (label) subjectComponent = label.split(" -- ").pop();
   if (!parent) {
     return (
       <Link
@@ -22,7 +22,7 @@ const constructSubjectHeading = (heading, i) => {
 
   return [
     constructSubjectHeading(parent),
-    <span key={`${uuid} ${i}`}> {'>'} </span>,
+    <span key={`${uuid} ${i}`}> {">"} </span>,
     <Link
       key={uuid}
       to={`${
@@ -45,7 +45,7 @@ const SubjectHeadings = (props) => {
 
   return (
     <div>
-      <dt key={`term-${i}`}>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
+      <dt key={`term-${i}`}>{headings.length > 1 ? "Subjects" : "Subject"}</dt>
       <dd data={`definition-${i}`} key={`definition-${i}`}>
         <ul>{headings.map(generateHeadingLi)}</ul>
       </dd>

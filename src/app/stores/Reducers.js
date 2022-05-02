@@ -1,6 +1,6 @@
-import { Actions } from '../actions/Actions';
-import initialState from './InitialState';
-import appConfig from '../data/appConfig';
+import { Actions } from "../actions/Actions";
+import initialState from "./InitialState";
+import appConfig from "../data/appConfig";
 
 function appReducer(state = initialState, action) {
   switch (action.type) {

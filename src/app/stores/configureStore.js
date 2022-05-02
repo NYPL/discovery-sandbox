@@ -1,7 +1,7 @@
 /* eslint-env browser */
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
-import { rootReducer } from './Reducers';
+import { createStore, applyMiddleware, compose } from "redux";
+import thunk from "redux-thunk";
+import { rootReducer } from "./Reducers";
 
 /**
  * Provides a configurable store object that uses enhancers
@@ -18,9 +18,10 @@ export default function configureStore(preloadedState) {
 
   const enhancers = [middlewareEnhancer];
   /* eslint-disable no-underscore-dangle */
-  const composedEnhancers = global.window && global.window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
-    ? global.window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(...enhancers)
-    : compose(...enhancers);
+  const composedEnhancers =
+    global.window && global.window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+      ? global.window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(...enhancers)
+      : compose(...enhancers);
   /* eslint-enable */
 
   const store = createStore(rootReducer, preloadedState, composedEnhancers);

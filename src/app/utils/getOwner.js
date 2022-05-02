@@ -13,8 +13,8 @@ export default function getOwner(bib) {
       .filter(
         (item) =>
           item.idNyplSourceId &&
-          item.idNyplSourceId['@type'] &&
-          /^Recap/.test(item.idNyplSourceId['@type']),
+          item.idNyplSourceId["@type"] &&
+          /^Recap/.test(item.idNyplSourceId["@type"])
       )
       // Only consider items with an `owner` (should be all, in practice)
       .filter(
@@ -22,7 +22,7 @@ export default function getOwner(bib) {
           item.owner &&
           item.owner.length &&
           item.owner[0] &&
-          item.owner[0].prefLabel,
+          item.owner[0].prefLabel
       )
       // Map to owner `prefLabel`
       .map((item) => item.owner[0].prefLabel)[0]

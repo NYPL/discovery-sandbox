@@ -1,7 +1,7 @@
-import { stub } from 'sinon';
-import PropTypes from 'prop-types';
+import { stub } from "sinon";
+import PropTypes from "prop-types";
 
-const mockRouter = push => ({
+const mockRouter = (push) => ({
   push,
   createHref: stub(),
   replace: stub(),
@@ -12,11 +12,9 @@ const mockRouter = push => ({
   isActive: stub(),
   location: {
     query: {},
-    pathname: '',
+    pathname: "",
   },
-  routes: [
-    { component: { name: 'default' } },
-  ],
+  routes: [{ component: { name: "default" } }],
 });
 
 const mockRouterContext = (push = stub()) => ({

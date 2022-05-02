@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
 
 class AdditionalSubjectHeadingsButton extends React.Component {
   constructor(props) {
@@ -19,37 +19,25 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   render() {
-    const {
-      indentation,
-      text,
-      linkUrl,
-      noEllipse,
-      marginSize,
-    } = this.props;
+    const { indentation, text, linkUrl, noEllipse, marginSize } = this.props;
 
     if (this.state.hidden) return null;
 
-    const previous = this.props.button === 'previous';
+    const previous = this.props.button === "previous";
 
-    const seeMoreText = text || 'See more';
+    const seeMoreText = text || "See more";
 
     let button;
 
     if (linkUrl) {
       button = (
-        <Link
-          to={linkUrl}
-          className="seeMoreButton toIndex"
-        >
+        <Link to={linkUrl} className="seeMoreButton toIndex">
           {seeMoreText}
         </Link>
       );
-    } else if (this.props.button === 'contextMore') {
+    } else if (this.props.button === "contextMore") {
       button = (
-        <span
-          data={`${text}-${linkUrl}`}
-          className="contextMore"
-        >
+        <span data={`${text}-${linkUrl}`} className="contextMore">
           {seeMoreText}
         </span>
       );
@@ -60,8 +48,8 @@ class AdditionalSubjectHeadingsButton extends React.Component {
           onClick={this.onClick}
           className="seeMoreButton"
         >
-          {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
-          {previous ? null : <br /> }
+          {previous ? "↑" : "↓"} <em key="seeMoreText">{seeMoreText}</em>
+          {previous ? null : <br />}
           {previous || noEllipse ? null : <VerticalEllipse />}
         </button>
       );
@@ -75,13 +63,16 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     return (
       <tr
-        className={`subjectHeadingRow seeMore ${previous || noEllipse ? '' : 'ellipse'}`}
+        className={`subjectHeadingRow seeMore ${
+          previous || noEllipse ? "" : "ellipse"
+        }`}
       >
         <td className="subjectHeadingsTableCell" colSpan="4">
-          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${marginSize * indentation}px` }}>
-            {
-              content
-            }
+          <div
+            className="subjectHeadingLabelInner"
+            style={{ marginLeft: `${marginSize * indentation}px` }}
+          >
+            {content}
           </div>
         </td>
       </tr>

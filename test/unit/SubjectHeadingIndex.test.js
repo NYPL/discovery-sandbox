@@ -1,77 +1,76 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
-import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import React from "react";
+import { expect } from "chai";
+import { mount, shallow } from "enzyme";
 
-import SubjectHeadingsIndex from '@SubjectHeadingsIndex';
-import { Heading } from '@nypl/design-system-react-components';
-import SubjectHeadingsIndexPage from './../../src/app/pages/SubjectHeadingsIndexPage';
-import { mockRouterContext } from '../helpers/routing';
+import SubjectHeadingsIndex from "@SubjectHeadingsIndex";
+import { Heading } from "@nypl/design-system-react-components";
+import SubjectHeadingsIndexPage from "./../../src/app/pages/SubjectHeadingsIndexPage";
+import { mockRouterContext } from "../helpers/routing";
 
-describe('SubjectHeadingsIndexPage', () => {
+describe("SubjectHeadingsIndexPage", () => {
   let component;
   before(() => {
     component = shallow(
       <SubjectHeadingsIndexPage
         location={{
-          search: '',
+          search: "",
           query: {
-            filter: '',
+            filter: "",
           },
         }}
-      />);
+      />
+    );
   });
-  it('should render `SubjectHeadingSearch`', () => {
-    expect(component.find('SubjectHeadingSearch').length).to.equal(1);
+  it("should render `SubjectHeadingSearch`", () => {
+    expect(component.find("SubjectHeadingSearch").length).to.equal(1);
   });
 
-  describe('when filter is present', () => {
+  describe("when filter is present", () => {
     before(() => {
       component = shallow(
         <SubjectHeadingsIndexPage
           location={{
-            search: '',
+            search: "",
             query: {
-              filter: 'Kermit the Frog',
+              filter: "Kermit the Frog",
             },
           }}
-        />);
+        />
+      );
     });
 
-    it('should have a heading announcing the filter', () => {
-      expect(component.find(Heading).prop('children')).to.equal('Subject Headings matching "Kermit the Frog"');
+    it("should have a heading announcing the filter", () => {
+      expect(component.find(Heading).prop("children")).to.equal(
+        'Subject Headings matching "Kermit the Frog"'
+      );
     });
   });
 });
 
-describe('SubjectHeadingsIndex', () => {
+describe("SubjectHeadingsIndex", () => {
   const context = mockRouterContext();
   let component;
-  describe('Unfiltered index', () => {
+  describe("Unfiltered index", () => {
     before(() => {
-      component = mount(
-        <SubjectHeadingsIndex />,
-        { context });
+      component = mount(<SubjectHeadingsIndex />, { context });
     });
-    it('should render `Alphabetical Pagination`', () => {
-      expect(component.find('AlphabeticalPagination').length).to.equal(1);
+    it("should render `Alphabetical Pagination`", () => {
+      expect(component.find("AlphabeticalPagination").length).to.equal(1);
     });
   });
 
-  describe('Filtered index', () => {
+  describe("Filtered index", () => {
     before(() => {
-      context.router.location.query.filter = 'pottery';
-      component = mount(
-        <SubjectHeadingsIndex />,
-        { context },
-      );
+      context.router.location.query.filter = "pottery";
+      component = mount(<SubjectHeadingsIndex />, { context });
     });
     after(() => {
       context.router.location.query.filter = undefined;
     });
-    it('should not render `Alphabetical Pagination`', () => {
-      expect(component.find('AlphabeticalPagination').length).to.equal(0);
+    it("should not render `Alphabetical Pagination`", () => {
+      expect(component.find("AlphabeticalPagination").length).to.equal(0);
     });
   });
 });

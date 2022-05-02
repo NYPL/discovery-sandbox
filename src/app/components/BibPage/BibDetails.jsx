@@ -1,17 +1,17 @@
-import PropTypes from 'prop-types';
-import React from 'react';
-import { Link } from 'react-router';
+import PropTypes from "prop-types";
+import React from "react";
+import { Link } from "react-router";
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   isObject as _isObject,
-} from 'underscore';
-import appConfig from '../../data/appConfig';
-import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
-import getOwner from '../../utils/getOwner';
-import LibraryItem from '../../utils/item';
-import { trackDiscovery } from '../../utils/utils';
-import DefinitionList from './DefinitionList';
+} from "underscore";
+import appConfig from "../../data/appConfig";
+import { combineBibDetailsData } from "../../utils/bibDetailsUtils";
+import getOwner from "../../utils/getOwner";
+import LibraryItem from "../../utils/item";
+import { trackDiscovery } from "../../utils/utils";
+import DefinitionList from "./DefinitionList";
 
 class BibDetails extends React.Component {
   constructor(props) {
@@ -53,18 +53,18 @@ class BibDetails extends React.Component {
     fieldValue,
     fieldLinkable,
     fieldSelfLinkable,
-    fieldLabel,
+    fieldLabel
   ) {
     // If there's only one value, we just want that value and not a list.
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
-      const url = `filters[${fieldValue}]=${bibValue['@id']}`;
+      const url = `filters[${fieldValue}]=${bibValue["@id"]}`;
 
       if (fieldLinkable) {
         return (
           <Link
             onClick={(e) =>
-              this.newSearch(e, url, fieldValue, bibValue['@id'], fieldLabel)
+              this.newSearch(e, url, fieldValue, bibValue["@id"], fieldLabel)
             }
             to={`${appConfig.baseUrl}/search?${url}`}
           >
@@ -76,11 +76,11 @@ class BibDetails extends React.Component {
       if (fieldSelfLinkable) {
         return (
           <a
-            href={bibValue['@id']}
+            href={bibValue["@id"]}
             onClick={() =>
               trackDiscovery(
-                'Bib fields',
-                `${fieldLabel} - ${bibValue.prefLabel}`,
+                "Bib fields",
+                `${fieldLabel} - ${bibValue.prefLabel}`
               )
             }
           >
@@ -95,11 +95,11 @@ class BibDetails extends React.Component {
     return (
       <ul className="additionalDetails">
         {bibValues.map((value) => {
-          const url = `filters[${fieldValue}]=${value['@id']}`;
+          const url = `filters[${fieldValue}]=${value["@id"]}`;
           let itemValue = fieldLinkable ? (
             <Link
               onClick={(e) =>
-                this.newSearch(e, url, fieldValue, value['@id'], fieldLabel)
+                this.newSearch(e, url, fieldValue, value["@id"], fieldLabel)
               }
               to={`${appConfig.baseUrl}/search?${url}`}
             >
@@ -111,11 +111,11 @@ class BibDetails extends React.Component {
           if (fieldSelfLinkable) {
             itemValue = (
               <a
-                href={value['@id']}
+                href={value["@id"]}
                 onClick={() =>
                   trackDiscovery(
-                    'Bib fields',
-                    `${fieldLabel} - ${value.prefLabel}`,
+                    "Bib fields",
+                    `${fieldLabel} - ${value.prefLabel}`
                   )
                 }
               >
@@ -140,17 +140,17 @@ class BibDetails extends React.Component {
   getIdentifiers(bibValues, identifierType) {
     const entities = LibraryItem.getIdentifierEntitiesByType(
       bibValues,
-      identifierType,
+      identifierType
     );
     if (Array.isArray(entities) && entities.length > 0) {
       const markup = entities.map((ent) => {
-        const nodes = [<span key={`${ent['@value']}`}>{ent['@value']}</span>];
+        const nodes = [<span key={`${ent["@value"]}`}>{ent["@value"]}</span>];
         if (ent.identifierStatus)
           nodes.push(
-            <span key={`${ent['@value']}`}>
-              {' '}
+            <span key={`${ent["@value"]}`}>
+              {" "}
               <em>({ent.identifierStatus})</em>
-            </span>,
+            </span>
           );
         return nodes;
       });
@@ -187,9 +187,9 @@ class BibDetails extends React.Component {
     fieldLinkable,
     fieldIdentifier,
     fieldSelfLinkable,
-    fieldLabel,
+    fieldLabel
   ) {
-    if (fieldValue === 'identifier') {
+    if (fieldValue === "identifier") {
       return this.getIdentifiers(bibValues, fieldIdentifier);
     }
 
@@ -204,7 +204,7 @@ class BibDetails extends React.Component {
         fieldLinkable,
         fieldIdentifier,
         fieldSelfLinkable,
-        fieldLabel,
+        fieldLabel
       );
     }
 
@@ -215,7 +215,7 @@ class BibDetails extends React.Component {
           return (
             <li
               key={`filter${fieldValue}${
-                typeof value === 'string' ? value : value.label
+                typeof value === "string" ? value : value.label
               }`}
             >
               {this.getDefinitionOneItem(
@@ -226,7 +226,7 @@ class BibDetails extends React.Component {
                 fieldLinkable,
                 fieldIdentifier,
                 fieldSelfLinkable,
-                fieldLabel,
+                fieldLabel
               )}
             </li>
           );
@@ -258,14 +258,14 @@ class BibDetails extends React.Component {
     fieldLinkable,
     fieldIdentifier,
     fieldSelfLinkable,
-    fieldLabel,
+    fieldLabel
   ) {
-    if (fieldValue === 'subjectLiteral') {
+    if (fieldValue === "subjectLiteral") {
       return this.constructSubjectHeading(
         bibValue,
         url,
         fieldValue,
-        fieldLabel,
+        fieldLabel
       );
     }
 
@@ -288,8 +288,8 @@ class BibDetails extends React.Component {
           href={bibValue.url}
           onClick={() =>
             trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
+              "Bib fields",
+              `${fieldLabel} - ${bibValue.prefLabel}`
             )
           }
         >
@@ -310,8 +310,8 @@ class BibDetails extends React.Component {
    */
 
   getNoteType(note) {
-    const type = note.noteType || '';
-    return type.toLowerCase().includes('note') ? type : `${type} (note)`;
+    const type = note.noteType || "";
+    return type.toLowerCase().includes("note") ? type : `${type} (note)`;
   }
 
   /**
@@ -335,7 +335,7 @@ class BibDetails extends React.Component {
       const fieldIdentifier = field.identifier;
       let bibValues = bib[fieldValue];
 
-      if (fieldValue === 'subjectLiteral') {
+      if (fieldValue === "subjectLiteral") {
         bibValues = this.compressSubjectLiteral(bib[fieldValue]);
       }
 
@@ -345,7 +345,7 @@ class BibDetails extends React.Component {
         const firstFieldValue = bibValues[0];
 
         // Each value is an object with @id and prefLabel properties.
-        if (firstFieldValue['@id']) {
+        if (firstFieldValue["@id"]) {
           fieldsToRender.push({
             term: fieldLabel,
             definition: this.getDefinitionObject(
@@ -353,7 +353,7 @@ class BibDetails extends React.Component {
               fieldValue,
               fieldLinkable,
               fieldSelfLinkable,
-              fieldLabel,
+              fieldLabel
             ),
           });
         } else {
@@ -363,7 +363,7 @@ class BibDetails extends React.Component {
             fieldLinkable,
             fieldIdentifier,
             fieldSelfLinkable,
-            fieldLabel,
+            fieldLabel
           );
           if (definition) {
             fieldsToRender.push({
@@ -375,7 +375,7 @@ class BibDetails extends React.Component {
       }
 
       // The Owner is complicated too.
-      if (fieldLabel === 'Owning Institutions') {
+      if (fieldLabel === "Owning Institutions") {
         const owner = getOwner(this.props.bib);
         if (owner) {
           fieldsToRender.push({
@@ -393,14 +393,14 @@ class BibDetails extends React.Component {
       //     'prefLabel': 'string',
       //     '@type': 'bf:Note'},
       //    {...}]
-      if (fieldLabel === 'Notes') {
+      if (fieldLabel === "Notes") {
         const note = this.getNote(this.props.bib);
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
           // Group notes by noteType:
           const notesGroupedByNoteType = note
             // Make sure all notes are blanknodes:
-            .filter((n) => typeof n === 'object')
+            .filter((n) => typeof n === "object")
             .reduce((groups, n) => {
               const noteType = this.getNoteType(n);
               if (!groups[noteType]) groups[noteType] = [];
@@ -426,7 +426,7 @@ class BibDetails extends React.Component {
       }
 
       if (
-        fieldLabel === 'Electronic Resource' &&
+        fieldLabel === "Electronic Resource" &&
         this.props.electronicResources.length
       ) {
         const electronicResources = this.props.electronicResources;
@@ -440,8 +440,8 @@ class BibDetails extends React.Component {
               target="_blank"
               onClick={() =>
                 trackDiscovery(
-                  'Bib fields',
-                  `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`,
+                  "Bib fields",
+                  `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`
                 )
               }
             >
@@ -458,8 +458,8 @@ class BibDetails extends React.Component {
                     target="_blank"
                     onClick={() =>
                       trackDiscovery(
-                        'Bib fields',
-                        `Electronic Resource - ${e.label} - ${e.url}`,
+                        "Bib fields",
+                        `Electronic Resource - ${e.label} - ${e.url}`
                       )
                     }
                   >
@@ -491,7 +491,7 @@ class BibDetails extends React.Component {
   compressSubjectLiteral(subjectLiteralArray) {
     if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
       subjectLiteralArray = subjectLiteralArray.map((item) =>
-        item.replace(/\.$/, '').replace(/--/g, '>'),
+        item.replace(/\.$/, "").replace(/--/g, ">")
       );
     }
 
@@ -509,16 +509,16 @@ class BibDetails extends React.Component {
    * @return {HTML element}
    */
   constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
-    let currentArrayString = '';
-    const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
-    const singleSubjectHeadingArray = bibValue.split(' > ');
+    let currentArrayString = "";
+    const filterQueryForSubjectHeading = "filters[subjectLiteral]=";
+    const singleSubjectHeadingArray = bibValue.split(" > ");
     const returnArray = [];
 
     const urlArray = url
-      .replace(filterQueryForSubjectHeading, '')
-      .split(' > ')
+      .replace(filterQueryForSubjectHeading, "")
+      .split(" > ")
       .map((urlString, index) => {
-        const dashDivided = index !== 0 ? ' -- ' : '';
+        const dashDivided = index !== 0 ? " -- " : "";
         currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
 
         return currentArrayString;
@@ -535,7 +535,7 @@ class BibDetails extends React.Component {
               urlWithFilterQuery,
               fieldValue,
               urlArray[index],
-              fieldLabel,
+              fieldLabel
             )
           }
           to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
@@ -600,7 +600,7 @@ class BibDetails extends React.Component {
   newSearch(e, query, field, value, label) {
     e.preventDefault();
 
-    trackDiscovery('Bib fields', `${label} - ${value}`);
+    trackDiscovery("Bib fields", `${label} - ${value}`);
     this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
   }
 

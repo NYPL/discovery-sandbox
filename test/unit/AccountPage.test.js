@@ -1,16 +1,16 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
-import React from 'react';
-import { expect } from 'chai';
-import sinon from 'sinon';
+import React from "react";
+import { expect } from "chai";
+import sinon from "sinon";
 
-import AccountPage from './../../src/app/pages/AccountPage';
+import AccountPage from "./../../src/app/pages/AccountPage";
 
-import patron from '../fixtures/patron';
+import patron from "../fixtures/patron";
 
-import { mountTestRender, makeTestStore } from '../helpers/store';
+import { mountTestRender, makeTestStore } from "../helpers/store";
 
-describe('AccountPage', () => {
+describe("AccountPage", () => {
   let sandbox;
 
   before(() => {
@@ -18,97 +18,112 @@ describe('AccountPage', () => {
     // the test from ever terminating.
     // This disables the clock.
     sandbox = sinon.sandbox.create();
-    sandbox.stub(global, 'setTimeout').callsFake(() => {});
+    sandbox.stub(global, "setTimeout").callsFake(() => {});
   });
 
   after(() => {
     sandbox.restore();
   });
 
-  describe('default', () => {
+  describe("default", () => {
     let mockStore;
     let component;
     let linkTabSet;
     before(() => {
       mockStore = makeTestStore({});
-      component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+      component = mountTestRender(<AccountPage params={{}} />, {
+        store: mockStore,
+      });
     });
 
-    it('should render a `Search` component', () => {
-      expect(component.find('Search').length).to.equal(1);
+    it("should render a `Search` component", () => {
+      expect(component.find("Search").length).to.equal(1);
     });
 
-    it('should render a <div> with class .nypl-patron-page', () => {
-      expect(component.find('.nypl-patron-page').hostNodes()).to.have.length(1);
+    it("should render a <div> with class .nypl-patron-page", () => {
+      expect(component.find(".nypl-patron-page").hostNodes()).to.have.length(1);
     });
 
     it('should render an <h2> with text "My Account"', () => {
-      expect(component.find('h2').first().text()).to.equal('My Account');
+      expect(component.find("h2").first().text()).to.equal("My Account");
     });
 
-    it('should render a `LinkTabSet`', () => {
-      linkTabSet = component.find('LinkTabSet');
+    it("should render a `LinkTabSet`", () => {
+      linkTabSet = component.find("LinkTabSet");
       expect(linkTabSet).to.have.length(1);
     });
   });
 
-  describe('with patron data', () => {
+  describe("with patron data", () => {
     let mockStore;
     let component;
     let nyplPatronDetails;
     before(() => {
       mockStore = makeTestStore({ patron });
-      component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
-      nyplPatronDetails = component.find('.nypl-patron-details');
+      component = mountTestRender(<AccountPage params={{}} />, {
+        store: mockStore,
+      });
+      nyplPatronDetails = component.find(".nypl-patron-details");
     });
 
-    it('should render a <div> with class .nypl-patron-details', () => {
+    it("should render a <div> with class .nypl-patron-details", () => {
       expect(nyplPatronDetails).to.have.length(1);
     });
 
-    it('should format date in MM-DD-YYYY format', () => {
-      expect(nyplPatronDetails.find('div').at(0).childAt(2).text()).to.equal('Expiration Date: 08-20-2022');
+    it("should format date in MM-DD-YYYY format", () => {
+      expect(nyplPatronDetails.find("div").at(0).childAt(2).text()).to.equal(
+        "Expiration Date: 08-20-2022"
+      );
     });
 
-    it('should display fines amount in third tab', () => {
-      const linkTabSet = component.find('LinkTabSet');
-      expect(linkTabSet.find('a').at(2).text()).to.equal('Fines ($19.00)');
+    it("should display fines amount in third tab", () => {
+      const linkTabSet = component.find("LinkTabSet");
+      expect(linkTabSet.find("a").at(2).text()).to.equal("Fines ($19.00)");
     });
   });
 
-  describe('Account Settings section', () => {
+  describe("Account Settings section", () => {
     let mockStore;
     let component;
     before(() => {
       mockStore = makeTestStore({});
       component = mountTestRender(
-        <AccountPage
-          params={{ content: 'settings' }}
-        />, { store: mockStore });
+        <AccountPage params={{ content: "settings" }} />,
+        { store: mockStore }
+      );
     });
     it('should render an h3 with text "Personal Information"', () => {
-      expect(component.find('h3').first().text()).to.equal('Personal Information');
+      expect(component.find("h3").first().text()).to.equal(
+        "Personal Information"
+      );
     });
   });
 
-  describe('redirect loop check', () => {
-    describe('when cookie not set', () => {
+  describe("redirect loop check", () => {
+    describe("when cookie not set", () => {
       let component;
       let clock;
 
       before(() => {
         clock = sinon.useFakeTimers();
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          "nyplAccountRedirectTracker=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
-      after(() => { clock.restore(); });
+      after(() => {
+        clock.restore();
+      });
 
-      it('should set the cookie', () => {
-        const iframe = document.getElementById('logoutIframe');
+      it("should set the cookie", () => {
+        const iframe = document.getElementById("logoutIframe");
         iframe.onload();
-        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
+        const nyplAccountRedirectTracker = document.cookie
+          .split(";")
+          .find((el) => el.includes("nyplAccountRedirectTracker"));
         expect(!!nyplAccountRedirectTracker).to.equal(true);
         expect(nyplAccountRedirectTracker).to.match(/\d+exp.*/);
         const match = nyplAccountRedirectTracker.match(/\d+exp(.*)/)[1];
@@ -116,47 +131,62 @@ describe('AccountPage', () => {
       });
     });
 
-    describe('when cookie is set but below threshold', () => {
+    describe("when cookie is set but below threshold", () => {
       let component;
       let clock;
 
       before(() => {
         clock = sinon.useFakeTimers();
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=2expMon, 05 Apr 2021 20:06:13 GMT';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          "nyplAccountRedirectTracker=2expMon, 05 Apr 2021 20:06:13 GMT";
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
       after(() => {
         clock.restore();
       });
 
-
-      it('should update the cookie', () => {
-        const iframe = document.getElementById('logoutIframe');
+      it("should update the cookie", () => {
+        const iframe = document.getElementById("logoutIframe");
         iframe.onload();
-        const nyplAccountRedirectTracker = document.cookie.split(';').find(el => el.includes('nyplAccountRedirectTracker'));
-        expect(nyplAccountRedirectTracker).to.match(/\d+expMon, 05 Apr 2021 20:06:13 GMT/);
-        expect(parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10)).to.be.closeTo(4, 1);
+        const nyplAccountRedirectTracker = document.cookie
+          .split(";")
+          .find((el) => el.includes("nyplAccountRedirectTracker"));
+        expect(nyplAccountRedirectTracker).to.match(
+          /\d+expMon, 05 Apr 2021 20:06:13 GMT/
+        );
+        expect(
+          parseInt(nyplAccountRedirectTracker.match(/(\d+).*/)[1], 10)
+        ).to.be.closeTo(4, 1);
       });
     });
 
-    describe('when cookie is above threshold', () => {
+    describe("when cookie is above threshold", () => {
       let component;
       let replaceSpy;
       let clock;
       before(() => {
         clock = sinon.useFakeTimers();
-        replaceSpy = sandbox.stub(window.location, 'replace').callsFake(() => {});
+        replaceSpy = sandbox
+          .stub(window.location, "replace")
+          .callsFake(() => {});
         const mockStore = makeTestStore({ accountHtml: { error: true } });
-        document.cookie = 'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';
-        component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
+        document.cookie =
+          "nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT";
+        component = mountTestRender(<AccountPage params={{}} />, {
+          store: mockStore,
+        });
       });
 
-      after(() => { clock.restore(); });
+      after(() => {
+        clock.restore();
+      });
 
-      it('should redirect', () => {
-        const iframe = document.getElementById('logoutIframe');
+      it("should redirect", () => {
+        const iframe = document.getElementById("logoutIframe");
         iframe.onload();
         expect(replaceSpy.called).to.equal(true);
       });

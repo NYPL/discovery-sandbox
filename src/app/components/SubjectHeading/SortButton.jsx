@@ -1,37 +1,34 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import AscendingIcon from '../../../client/icons/Ascending';
-import DescendingIcon from '../../../client/icons/Descending';
-import DefaultIcon from '../../../client/icons/DefaultSort';
+import AscendingIcon from "../../../client/icons/Ascending";
+import DescendingIcon from "../../../client/icons/Descending";
+import DefaultIcon from "../../../client/icons/DefaultSort";
 
 const SortButton = (props) => {
-  const {
-    type,
-    calculateDirection,
-    handler,
-    interactive,
-    numberOpen,
-    active,
-  } = props;
+  const { type, calculateDirection, handler, interactive, numberOpen, active } =
+    props;
 
   const defaultSort = {
-    alphabetical: 'ASC',
-    bibs: 'DESC',
-    descendants: 'DESC',
-  }[type]
+    alphabetical: "ASC",
+    bibs: "DESC",
+    descendants: "DESC",
+  }[type];
 
-  const nextDirection = calculateDirection ? calculateDirection(type) : defaultSort;
+  const nextDirection = calculateDirection
+    ? calculateDirection(type)
+    : defaultSort;
 
-  const columnText = () => ({
-    bibs: 'Titles',
-    descendants: 'Subheadings',
-    alphabetical: 'Heading',
-  }[type]);
+  const columnText = () =>
+    ({
+      bibs: "Titles",
+      descendants: "Subheadings",
+      alphabetical: "Heading",
+    }[type]);
 
   const icon = () => {
     if (!active) return <DefaultIcon />;
-    else if (nextDirection === 'ASC') return <DescendingIcon />;
+    else if (nextDirection === "ASC") return <DescendingIcon />;
     return <AscendingIcon />;
   };
 
@@ -42,8 +39,11 @@ const SortButton = (props) => {
       disabled={!handler || !interactive || numberOpen < 2}
     >
       <span className="emph">
-        <span className="noEmph">{columnText()}
-          {(handler && interactive) ? <span className="sortCharacter">{ icon() }</span> : null}
+        <span className="noEmph">
+          {columnText()}
+          {handler && interactive ? (
+            <span className="sortCharacter">{icon()}</span>
+          ) : null}
         </span>
       </span>
     </button>

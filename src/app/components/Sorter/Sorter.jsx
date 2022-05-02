@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 class Sorter extends React.Component {
   constructor(props) {
@@ -31,9 +31,9 @@ class Sorter extends React.Component {
     e.preventDefault();
     const sortValue = e.target.value;
 
-    const sortParams = sortValue.split("_")
-    sortParams.sort = sortParams[0]
-    sortParams.sortDirection = sortParams[1]
+    const sortParams = sortValue.split("_");
+    sortParams.sort = sortParams[0];
+    sortParams.sortDirection = sortParams[1];
 
     this.setState({ sortValue }, this.props.updateResults(sortParams));
   }
@@ -45,7 +45,7 @@ class Sorter extends React.Component {
    * @return {HTML Element}
    */
   generateSortOptions() {
-    return this.props.sortOptions.map(d => (
+    return this.props.sortOptions.map((d) => (
       <option value={d.val} key={d.val}>
         {d.label}
       </option>

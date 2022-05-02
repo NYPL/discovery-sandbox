@@ -1,15 +1,22 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import FocusTrap from 'focus-trap-react';
-import axios from 'axios';
-import { Button, ButtonTypes, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
+import React from "react";
+import PropTypes from "prop-types";
+import FocusTrap from "focus-trap-react";
+import axios from "axios";
+import {
+  Button,
+  ButtonTypes,
+  Input,
+  Label,
+  HelperErrorText,
+  Link,
+} from "@nypl/design-system-react-components";
 
-import { trackDiscovery } from '../../utils/utils';
-import appConfig from '../../data/appConfig';
+import { trackDiscovery } from "../../utils/utils";
+import appConfig from "../../data/appConfig";
 
 const initialFields = () => ({
-  email: '',
-  feedback: '',
+  email: "",
+  feedback: "",
 });
 
 class Feedback extends React.Component {
@@ -36,40 +43,44 @@ class Feedback extends React.Component {
     e.preventDefault();
     const { fields } = this.state;
     if (!fields.feedback && !fields.feedback.length) {
-      this.setState({ commentInputError: true }, () => this.commentText.current.focus())
+      this.setState({ commentInputError: true }, () =>
+        this.commentText.current.focus()
+      );
     } else {
       this.postForm();
-      trackDiscovery('Feedback', 'Submit');
+      trackDiscovery("Feedback", "Submit");
     }
   }
 
   postForm() {
     const { fields } = this.state;
     axios({
-      method: 'POST',
+      method: "POST",
       url: `${appConfig.baseUrl}/api/feedback`,
       data: {
         fields,
       },
-    }).then((res) => {
-      if (res.data.error) {
-        console.error(res.data.error);
-        return;
-      };
-      this.setState({
-        fields: initialFields(),
-        success: true,
-      });
-    }).catch(error => console.log('Feedback error', error));
+    })
+      .then((res) => {
+        if (res.data.error) {
+          console.error(res.data.error);
+          return;
+        }
+        this.setState({
+          fields: initialFields(),
+          success: true,
+        });
+      })
+      .catch((error) => console.log("Feedback error", error));
   }
 
   toggleForm() {
-    trackDiscovery('Feedback', 'Open');
-    this.setState(prevState => ({ showForm: !prevState.showForm }));
+    trackDiscovery("Feedback", "Open");
+    this.setState((prevState) => ({ showForm: !prevState.showForm }));
   }
 
   deactivateForm() {
-    trackDiscovery('Feedback', 'Close');
+    trackDiscovery("Feedback", "Close");
     this.setState({ showForm: false, success: false });
   }
 
@@ -78,18 +89,13 @@ class Feedback extends React.Component {
     const value = target.value;
     const name = target.name;
 
-    this.setState(prevState => ({
+    this.setState((prevState) => ({
       fields: Object.assign(prevState.fields, { [name]: value }),
     }));
   }
 
   render() {
-    const {
-      showForm,
-      fields,
-      success,
-      commentInputError,
-    } = this.state;
+    const { showForm, fields, success, commentInputError } = this.state;
     const { submit } = this.props;
 
     return (
@@ -98,9 +104,9 @@ class Feedback extends React.Component {
           className="feedback-button"
           onClick={() => this.toggleForm()}
           attributes={{
-            'aria-haspopup': 'true',
-            'aria-expanded': showForm,
-            'aria-controls': 'feedback-menu',
+            "aria-haspopup": "true",
+            "aria-expanded": showForm,
+            "aria-controls": "feedback-menu",
           }}
           buttonType={ButtonTypes.Secondary}
         >
@@ -115,7 +121,7 @@ class Feedback extends React.Component {
         >
           <div
             role="menu"
-            className={showForm ? 'active' : ''}
+            className={showForm ? "active" : ""}
             id="feedback-menu"
           >
             {!success && (
@@ -126,9 +132,7 @@ class Feedback extends React.Component {
                   onSubmit={this.onSubmitForm}
                 >
                   <div>
-                    <Label htmlFor="feedback-textarea-comment">
-                      Comments*
-                    </Label>
+                    <Label htmlFor="feedback-textarea-comment">Comments*</Label>
                     <textarea
                       id="feedback-textarea-comment"
                       name="feedback"
@@ -143,17 +147,20 @@ class Feedback extends React.Component {
                       id="helper-text"
                       isError={commentInputError}
                     >
-                      {commentInputError ? 'Please fill out this field' : ''}
+                      {commentInputError ? "Please fill out this field" : ""}
                     </HelperErrorText>
                   </div>
                   <div>
                     <Label htmlFor="feedback-input-email">
-                      Email <span>(required if you would like a response from us)</span>
+                      Email{" "}
+                      <span>
+                        (required if you would like a response from us)
+                      </span>
                     </Label>
                     <Input
                       required
                       attributes={{
-                        name: 'email',
+                        name: "email",
                         onChange: this.handleInputChange,
                         ref: this.emailInput,
                       }}
@@ -166,16 +173,17 @@ class Feedback extends React.Component {
                     <Link
                       href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
                       target="_blank"
-                    >Privacy Policy
+                    >
+                      Privacy Policy
                     </Link>
                   </div>
                   <Button
                     type="reset"
-                    className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-                    onClick={e => this.deactivateForm(e)}
+                    className={`cancel-button ${!showForm ? "hidden" : ""}`}
+                    onClick={(e) => this.deactivateForm(e)}
                     attributes={{
-                      'aria-expanded': !showForm,
-                      'aria-controls': 'feedback-menu',
+                      "aria-expanded": !showForm,
+                      "aria-controls": "feedback-menu",
                     }}
                     buttonType={ButtonTypes.Secondary}
                   >
@@ -186,16 +194,17 @@ class Feedback extends React.Component {
                     type="submit"
                     buttonType={ButtonTypes.Primary}
                     className="submit-button"
-                  >Submit
+                  >
+                    Submit
                   </Button>
                 </form>
               </>
             )}
             {success && (
               <p>
-                Thank you for submitting your comments.
-                If you requested a response, our service staff
-                will get back to you as soon as possible.
+                Thank you for submitting your comments. If you requested a
+                response, our service staff will get back to you as soon as
+                possible.
               </p>
             )}
           </div>

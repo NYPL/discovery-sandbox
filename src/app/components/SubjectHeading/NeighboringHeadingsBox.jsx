@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router';
-import PropTypes from 'prop-types';
-import LocalLoadingLayer from './LocalLoadingLayer';
-import SubjectHeadingsTable from './SubjectHeadingsTable';
+import React from "react";
+import { Link } from "react-router";
+import PropTypes from "prop-types";
+import LocalLoadingLayer from "./LocalLoadingLayer";
+import SubjectHeadingsTable from "./SubjectHeadingsTable";
 
 class NeighboringHeadingsBox extends React.Component {
   constructor(props) {
@@ -21,9 +21,9 @@ class NeighboringHeadingsBox extends React.Component {
     } = this.props;
 
     if (contextError) {
-      return (<div>Error loading neighboring headings</div>);
+      return <div>Error loading neighboring headings</div>;
     } else if (contextIsLoading) {
-      return (<LocalLoadingLayer message="Loading More Subject Headings" />);
+      return <LocalLoadingLayer message="Loading More Subject Headings" />;
     }
     return (
       <SubjectHeadingsTable
@@ -37,10 +37,7 @@ class NeighboringHeadingsBox extends React.Component {
         tfootContent={
           <tr>
             <td colSpan="4">
-              <Link
-                to={linkUrl}
-                className="toIndex"
-              >
+              <Link to={linkUrl} className="toIndex">
                 Explore more in Subject Heading index
               </Link>
             </td>

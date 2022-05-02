@@ -1,4 +1,4 @@
-import appConfig from '../data/appConfig';
+import appConfig from "../data/appConfig";
 
 export const initialSelectedFiltersState = {
   materialType: [],
@@ -11,18 +11,18 @@ export const initialSelectedFiltersState = {
 const initialState = {
   searchResults: {},
   bib: {},
-  searchKeywords: '',
+  searchKeywords: "",
   filters: [],
-  page: '1',
-  sortBy: 'relevance',
+  page: "1",
+  sortBy: "relevance",
   loading: true,
-  field: 'all',
+  field: "all",
   deliveryLocations: [],
   isEddRequestable: false,
   subjectHeading: null,
   drbbResults: {},
   patron: {
-    id: '',
+    id: "",
     names: [],
     barcodes: [],
     emails: [],
@@ -30,15 +30,15 @@ const initialState = {
   },
   appConfig,
   lastLoaded: appConfig.baseUrl,
-  accountHtml: '',
+  accountHtml: "",
   features: appConfig.features || [],
   resultSelection: {
-    fromUrl: '',
-    bibId: '',
+    fromUrl: "",
+    bibId: "",
   },
-  contributor: '',
-  title: '',
-  subject: '',
+  contributor: "",
+  title: "",
+  subject: "",
 };
 
 export default initialState;

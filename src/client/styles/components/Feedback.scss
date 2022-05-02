@@ -4,7 +4,7 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: #FFF;
+  background: #fff;
   color: #000;
 
   @include min-screen($tablet-portrait) {
@@ -19,32 +19,31 @@
   background: $dsresearchprimary;
   border: 1px solid $dsresearchprimary;
   box-sizing: border-box;
-  color: #FFF;
+  color: #fff;
   display: inline-block;
   font-size: 1rem;
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   position: relative;
   text-align: center;
 
   &:hover {
-    background: #FFF;
+    background: #fff;
     color: $dsresearchprimary;
   }
 }
 
 .cancel-button {
-  border: 1px solid #E0E0E0;
+  border: 1px solid #e0e0e0;
   font-size: 1rem;
   margin-right: 15px;
   text-align: center;
 }
 
-
 #feedback-menu {
   display: none;
-  background: #FFF;
+  background: #fff;
   border: 1px solid $border-color;
-  box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
+  box-shadow: -1px 0 1px 0 rgba(0, 0, 0, 0.3);
   padding: 50px 42px;
   text-align: left;
   height: 472px;
@@ -69,7 +68,7 @@
 
   label {
     display: block;
-    font-size: .875rem;
+    font-size: 0.875rem;
     margin-bottom: 6px;
 
     small {
@@ -77,7 +76,7 @@
     }
 
     span {
-      font-size: .75rem;
+      font-size: 0.75rem;
       font-weight: 300;
     }
   }
@@ -128,7 +127,7 @@
   a {
     color: var(--ui-link-primary);
     float: right;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -158,9 +157,8 @@
       margin-top: 13px;
       width: 98px;
       height: 25px;
-      font-size: .875rem;
+      font-size: 0.875rem;
       padding: 0;
     }
   }
-
 }

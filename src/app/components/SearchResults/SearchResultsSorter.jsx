@@ -1,18 +1,16 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import {
-  trackDiscovery,
-} from '../../utils/utils';
-import appConfig from '../../data/appConfig';
+import { trackDiscovery } from "../../utils/utils";
+import appConfig from "../../data/appConfig";
 
 const sortingOpts = [
-  { val: 'relevance', label: 'relevance' },
-  { val: 'title_asc', label: 'title (a - z)' },
-  { val: 'title_desc', label: 'title (z - a)' },
-  { val: 'date_asc', label: 'date (old to new)' },
-  { val: 'date_desc', label: 'date (new to old)' },
+  { val: "relevance", label: "relevance" },
+  { val: "title_asc", label: "title (a - z)" },
+  { val: "title_desc", label: "title (z - a)" },
+  { val: "date_asc", label: "date (old to new)" },
+  { val: "date_desc", label: "date (new to old)" },
 ];
 
 export class SearchResultsSorter extends React.Component {
@@ -20,7 +18,7 @@ export class SearchResultsSorter extends React.Component {
     super(props);
 
     this.state = {
-      sortValue: this.props.sortBy || 'relevance',
+      sortValue: this.props.sortBy || "relevance",
       js: false,
     };
 
@@ -46,7 +44,9 @@ export class SearchResultsSorter extends React.Component {
     e.preventDefault();
     const value = e.target.value;
 
-    this.setState({ sortValue: value }, () => this.sortResultsBy(this.state.sortValue));
+    this.setState({ sortValue: value }, () =>
+      this.sortResultsBy(this.state.sortValue)
+    );
   }
 
   /**
@@ -58,7 +58,7 @@ export class SearchResultsSorter extends React.Component {
   sortResultsBy(sortBy) {
     // const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
     const apiQuery = this.props.createAPIQuery({ sortBy });
-    trackDiscovery('Sort by', sortBy);
+    trackDiscovery("Sort by", sortBy);
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
@@ -69,7 +69,7 @@ export class SearchResultsSorter extends React.Component {
    * @return {HTML Element}
    */
   renderResultsSort() {
-    return sortingOpts.map(d => (
+    return sortingOpts.map((d) => (
       <option value={d.val} key={d.val}>
         {d.label}
       </option>
@@ -77,13 +77,8 @@ export class SearchResultsSorter extends React.Component {
   }
 
   render() {
-    const {
-      searchKeywords,
-      field,
-    } = this.props;
-    const {
-      sortValue,
-    } = this.state;
+    const { searchKeywords, field } = this.props;
+    const { sortValue } = this.state;
 
     return (
       <div className="nypl-results-sorting-controls">
@@ -92,8 +87,9 @@ export class SearchResultsSorter extends React.Component {
             <label htmlFor="sort-by-label">Sort by</label>
             <form
               action={
-                `${appConfig.baseUrl}/search${searchKeywords ? `?q=${searchKeywords}` : ''}` +
-                `${field ? `&search_scope=${field}` : ''}`
+                `${appConfig.baseUrl}/search${
+                  searchKeywords ? `?q=${searchKeywords}` : ""
+                }` + `${field ? `&search_scope=${field}` : ""}`
               }
               method="POST"
             >
@@ -126,14 +122,14 @@ SearchResultsSorter.propTypes = {
 };
 
 SearchResultsSorter.defaultProps = {
-  searchKeywords: '',
+  searchKeywords: "",
 };
 
 SearchResultsSorter.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   sortBy: state.sortBy,
   searchKeywords: state.searchKeywords,
   field: state.field,

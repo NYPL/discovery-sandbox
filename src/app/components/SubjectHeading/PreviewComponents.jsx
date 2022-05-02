@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import appConfig from '../../data/appConfig';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router";
+import appConfig from "../../data/appConfig";
 
 const Preview = (props) => {
   const { topHeadings } = props;
@@ -17,7 +17,9 @@ const Preview = (props) => {
           <em>Most common subheadings:</em>
           <div className="previewInner">
             <ul className="previewUl">
-              {groupedHeadings.map((headings, i) => <PreviewColumn key={i} column={headings} />)}
+              {groupedHeadings.map((headings, i) => (
+                <PreviewColumn key={i} column={headings} />
+              ))}
             </ul>
           </div>
         </div>
@@ -31,7 +33,10 @@ const PreviewColumn = (props) => {
   return (
     <li>
       <ul className="previewColumn">
-        {column.map(heading => heading && <PreviewItem heading={heading} key={heading.uuid} />)}
+        {column.map(
+          (heading) =>
+            heading && <PreviewItem heading={heading} key={heading.uuid} />
+        )}
       </ul>
     </li>
   );
@@ -46,13 +51,13 @@ const PreviewItem = (props) => {
 
   return (
     <li>
-      <Link
-        to={path}
-      >
+      <Link to={path}>
         <ul className="details">
           <li>{displayLabel}</li>
           <li className="bibCount">[{heading.bib_count} bibs]</li>
-          <li className="fullLabel"><em>{heading.label}</em></li>
+          <li className="fullLabel">
+            <em>{heading.label}</em>
+          </li>
         </ul>
       </Link>
     </li>
@@ -65,7 +70,7 @@ Preview.propTypes = {
 
 Preview.defaultProps = {
   topHeadings: [],
-}
+};
 
 PreviewColumn.propTypes = {
   column: PropTypes.array,

@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
+import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
 
-import { displayContext } from '../../utils/utils';
+import { displayContext } from "../../utils/utils";
 
 export class ResultsCount extends React.Component {
   /*
@@ -12,8 +12,10 @@ export class ResultsCount extends React.Component {
   checkSelectedFilters() {
     const selectedFilters = this.props.selectedFilters;
 
-    if ((selectedFilters.materialType && selectedFilters.materialType.length) ||
-      (selectedFilters.language && selectedFilters.language.length)) {
+    if (
+      (selectedFilters.materialType && selectedFilters.materialType.length) ||
+      (selectedFilters.language && selectedFilters.language.length)
+    ) {
       return true;
     }
 
@@ -33,13 +35,19 @@ export class ResultsCount extends React.Component {
       subject,
     } = this.props;
 
-    const countF = count ? count.toLocaleString() : '';
-    const start = ((page - 1) * 50) + 1;
-    const end = (page) * 50 > count ? count : (page * 50);
+    const countF = count ? count.toLocaleString() : "";
+    const start = (page - 1) * 50 + 1;
+    const end = page * 50 > count ? count : page * 50;
     const currentResultDisplay = `${start}-${end}`;
 
     const displayContextString = displayContext({
-      searchKeywords, contributor, title, subject, selectedFilters, field, count,
+      searchKeywords,
+      contributor,
+      title,
+      subject,
+      selectedFilters,
+      field,
+      count,
     });
 
     if (count !== 0) {
@@ -55,16 +63,15 @@ export class ResultsCount extends React.Component {
 
   render() {
     const results = this.displayCount();
-    const {
-      count,
-      features,
-    } = this.props;
-    const includeDrbb = features.includes('drb-integration');
+    const { count, features } = this.props;
+    const includeDrbb = features.includes("drb-integration");
     if (includeDrbb && count === 0) return null;
 
     return (
       <div
-        className={`nypl-results-summary${count === 0 ? ' no-scc-results' : ''}${includeDrbb ? ' drbb-integration' : ''}`}
+        className={`nypl-results-summary${
+          count === 0 ? " no-scc-results" : ""
+        }${includeDrbb ? " drbb-integration" : ""}`}
       >
         <h2
           id="results-description"
@@ -92,9 +99,9 @@ ResultsCount.propTypes = {
 };
 
 ResultsCount.defaultProps = {
-  searchKeywords: '',
+  searchKeywords: "",
   count: 0,
-  page: '1',
+  page: "1",
   selectedFilters: {
     materialType: [],
     language: [],
@@ -104,7 +111,14 @@ ResultsCount.defaultProps = {
   features: [],
 };
 
-const mapStateToProps = ({ searchKeywords, contributor, title, subject, page, features }) => ({
+const mapStateToProps = ({
+  searchKeywords,
+  contributor,
+  title,
+  subject,
+  page,
+  features,
+}) => ({
   features,
   searchKeywords,
   contributor,

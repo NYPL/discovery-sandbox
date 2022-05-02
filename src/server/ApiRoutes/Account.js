@@ -1,19 +1,18 @@
-import axios from 'axios';
+import axios from "axios";
 
-import nyplApiClient from '../routes/nyplApiClient';
-import User from './User';
-import logger from '../../../logger';
-import appConfig from '../../app/data/appConfig';
+import nyplApiClient from "../routes/nyplApiClient";
+import User from "./User";
+import logger from "../../../logger";
+import appConfig from "../../app/data/appConfig";
 
-const nyplApiClientGet = endpoint => (
-  nyplApiClient()
-    .then(client => client.get(endpoint, { cache: false }))
-);
+const nyplApiClientGet = (endpoint) =>
+  nyplApiClient().then((client) => client.get(endpoint, { cache: false }));
 
 function getHomeLibrary(code) {
   return nyplApiClientGet(`/locations?location_codes=${code}`)
     .then((resp) => {
-      if (!resp || !resp[code] || !resp[code][0] || !resp[code][0].label) return { code };
+      if (!resp || !resp[code] || !resp[code][0] || !resp[code][0].label)
+        return { code };
       return {
         code,
         label: resp[code][0].label,
@@ -27,13 +26,16 @@ function getHomeLibrary(code) {
 
 function getAccountPage(res, req) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
-  const content = req.params.content || 'items';
+  const content = req.params.content || "items";
 
-  return axios.get(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
-    headers: {
-      Cookie: req.headers.cookie,
-    },
-  });
+  return axios.get(
+    `${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
+    {
+      headers: {
+        Cookie: req.headers.cookie,
+      },
+    }
+  );
 }
 
 /**
@@ -42,9 +44,12 @@ function getAccountPage(res, req) {
  *  bunch of erroneous 404s or worse.
  */
 function preprocessAccountHtml(html) {
-  html = html.replace(/<link [^>]+\/>/g, '')
-  html = html.replace(/<script type="text\/javascript" src=[^>]+>\s*<\/script>/g, '')
-  return html
+  html = html.replace(/<link [^>]+\/>/g, "");
+  html = html.replace(
+    /<script type="text\/javascript" src=[^>]+>\s*<\/script>/g,
+    ""
+  );
+  return html;
 }
 
 function fetchAccountPage(req, res, resolve) {
@@ -55,21 +60,20 @@ function fetchAccountPage(req, res, resolve) {
     return;
   }
 
-  const content = req.params.content || 'items';
+  const content = req.params.content || "items";
   // no need to fetch from Webpac for this tab
-  if (content === 'settings') {
+  if (content === "settings") {
     const patron = req.store.getState().patron;
     if (patron.homeLibraryCode && !patron.homeLibraryName) {
-      getHomeLibrary(patron.homeLibraryCode)
-        .then((resp) => {
-          resolve({
-            patron: {
-              ...patron,
-              homeLibraryName: resp.label,
-            },
-            accountHtml: {}
-          });
+      getHomeLibrary(patron.homeLibraryCode).then((resp) => {
+        resolve({
+          patron: {
+            ...patron,
+            homeLibraryName: resp.label,
+          },
+          accountHtml: {},
         });
+      });
       return;
     }
     resolve({ patron, accountHtml: {} });
@@ -77,26 +81,25 @@ function fetchAccountPage(req, res, resolve) {
     return;
   }
 
-  if (!['items', 'holds', 'overdues'].includes(content)) {
+  if (!["items", "holds", "overdues"].includes(content)) {
     res.redirect(`${appConfig.baseUrl}/account`);
     return;
   }
-
 
   getAccountPage(res, req)
     .then((resp) => {
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
-      if (resp.request && resp.request.path.includes('/login?')) {
+      if (resp.request && resp.request.path.includes("/login?")) {
         // need to implement
-        console.log('Encountered login redirect while fetching account page');
-        throw new Error('detected state mismatch, throwing error');
+        console.log("Encountered login redirect while fetching account page");
+        throw new Error("detected state mismatch, throwing error");
       }
 
       resolve({ accountHtml: preprocessAccountHtml(resp.data) });
     })
     .catch((resp) => {
-      console.error('Account page response error: ', resp);
+      console.error("Account page response error: ", resp);
       resolve({ accountHtml: { error: resp } });
     });
 }
@@ -106,21 +109,26 @@ function postToAccountPage(req, res) {
   const { redirect } = requireUser;
   if (redirect) res.json({ redirect });
   const patronId = req.patronTokenResponse.decodedPatron.sub;
-  const content = req.params.content || 'items';
-  const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
-  axios.post(
-    `${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
-    reqBodyString, {
-      headers: {
-        Cookie: req.headers.cookie,
-      },
-    })
-    .then(resp => res.json(resp.data))
-    .catch(resp => res.json({ error: resp }));
+  const content = req.params.content || "items";
+  const reqBodyString = Object.keys(req.body)
+    .map((key) => `${key}=${req.body[key]}`)
+    .join("&");
+  axios
+    .post(
+      `${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
+      reqBodyString,
+      {
+        headers: {
+          Cookie: req.headers.cookie,
+        },
+      }
+    )
+    .then((resp) => res.json(resp.data))
+    .catch((resp) => res.json({ error: resp }));
 }
 
 function logError(req) {
-  logger.error('Account Error', req.url.replace(/\w+:\/\//g, ''));
+  logger.error("Account Error", req.url.replace(/\w+:\/\//g, ""));
 }
 
 export default {

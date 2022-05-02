@@ -1,11 +1,11 @@
-const request = require('supertest');
-const sinon = require('sinon');
-import { expect } from 'chai';
-import DocumentTitle from 'react-document-title';
+const request = require("supertest");
+const sinon = require("sinon");
+import { expect } from "chai";
+import DocumentTitle from "react-document-title";
 
-let app = require('./../../server');
+let app = require("./../../server");
 
-describe('server', () => {
+describe("server", () => {
   let sandbox;
 
   before(() => {
@@ -19,41 +19,51 @@ describe('server', () => {
     // `DocumentTitle.rewind()` throws an error.
     // The important thing is that our template uses the value that
     // `DocumentTitle.rewind()` returns, so let's stub it:
-    sandbox.stub(DocumentTitle, 'rewind').callsFake(() => process.env.DISPLAY_TITLE);
+    sandbox
+      .stub(DocumentTitle, "rewind")
+      .callsFake(() => process.env.DISPLAY_TITLE);
   });
 
   after(() => {
     sandbox.restore();
   });
 
-  describe('Base Url Paths', () => {
-    it('redirects to baseurl', (done) => {
+  describe("Base Url Paths", () => {
+    it("redirects to baseurl", (done) => {
       request(app)
-      .get('/')
-      .expect('Content-Type', /text/)
-      .expect('Location', `${process.env.BASE_URL}/`)
-      .expect(302)
-      .then((response) => {
-        done();
-      })
-      .catch(err => done(err));
-      ;
+        .get("/")
+        .expect("Content-Type", /text/)
+        .expect("Location", `${process.env.BASE_URL}/`)
+        .expect(302)
+        .then((response) => {
+          done();
+        })
+        .catch((err) => done(err));
     });
-    
-    it('serves meta tags with DISPLAY_TITLE', (done) => {
+
+    it("serves meta tags with DISPLAY_TITLE", (done) => {
       request(app)
-      .get(`${process.env.BASE_URL}/`)
-      .expect(200)
-      .then((response) => {
-        expect(response.text).to.include(`<title>${process.env.DISPLAY_TITLE}</title>`)
-        expect(response.text).to.include(`<meta property="og:title" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta property="og:site_name" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta name="twitter:title" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta property="og:url" content="https://www.nypl.org${process.env.BASE_URL}">`)
-        done();
-      })
-      .catch(err => done(err));
-      ;
+        .get(`${process.env.BASE_URL}/`)
+        .expect(200)
+        .then((response) => {
+          expect(response.text).to.include(
+            `<title>${process.env.DISPLAY_TITLE}</title>`
+          );
+          expect(response.text).to.include(
+            `<meta property="og:title" content="${process.env.DISPLAY_TITLE}">`
+          );
+          expect(response.text).to.include(
+            `<meta property="og:site_name" content="${process.env.DISPLAY_TITLE}">`
+          );
+          expect(response.text).to.include(
+            `<meta name="twitter:title" content="${process.env.DISPLAY_TITLE}">`
+          );
+          expect(response.text).to.include(
+            `<meta property="og:url" content="https://www.nypl.org${process.env.BASE_URL}">`
+          );
+          done();
+        })
+        .catch((err) => done(err));
     });
-  })
+  });
 });

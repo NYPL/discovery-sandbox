@@ -1,4 +1,4 @@
-@import 'toolkit';
+@import "toolkit";
 
 .view-all-items-container {
   margin-top: 1.5rem;
@@ -22,7 +22,7 @@ div .tabbed {
     list-style-type: none;
   }
 
-  ul[role="tablist"] >  li {
+  ul[role="tablist"] > li {
     border-bottom: 1px solid black;
     display: table-cell;
     margin-bottom: 0;
@@ -46,7 +46,7 @@ div .tabbed {
     color: black;
   }
 
-  ul[role="tablist"] > li > a[aria-selected='true'] {
+  ul[role="tablist"] > li > a[aria-selected="true"] {
     color: black;
     font-weight: 500;
   }
@@ -54,7 +54,7 @@ div .tabbed {
   .blank {
     border-bottom: 1px solid black;
     color: white;
-    content: '';
+    content: "";
     width: 100%;
   }
 
@@ -184,7 +184,8 @@ div .tabbed {
 
 @media (max-width: 600px) {
   div .tabbed {
-    ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
+    ul[role="tablist"] > li,
+    ul[role="tablist"] > li.activeTab {
       border: 1px solid black;
       border-bottom: none;
       display: block;
@@ -194,7 +195,7 @@ div .tabbed {
     ul[role="tablist"] > li > a {
       display: block;
 
-      &[aria-selected='true'] {
+      &[aria-selected="true"] {
         font-weight: 600;
       }
     }

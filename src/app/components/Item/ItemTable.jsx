@@ -1,21 +1,21 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { isArray as _isArray } from 'underscore';
+import React from "react";
+import PropTypes from "prop-types";
+import { isArray as _isArray } from "underscore";
 
-import ItemTableRow from './ItemTableRow';
+import ItemTableRow from "./ItemTableRow";
 
 const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
-    items.every(item => item.isElectronicResource)
+    items.every((item) => item.isElectronicResource)
   ) {
     return null;
   }
 
-  const includeVolColumn = (
-    items.some(item => item.volume && item.volume.length) && page !== 'SearchResults'
-  );
+  const includeVolColumn =
+    items.some((item) => item.volume && item.volume.length) &&
+    page !== "SearchResults";
 
   return (
     <table className="nypl-basic-table" id={id}>
@@ -23,7 +23,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
       <thead>
         <tr>
           {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
-          {page !== 'SearchResults' ? <th scope="col">Format</th> : null}
+          {page !== "SearchResults" ? <th scope="col">Format</th> : null}
           <th scope="col">Access</th>
           <th scope="col">Status</th>
           <th scope="col">Call Number</th>
@@ -31,18 +31,16 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
         </tr>
       </thead>
       <tbody>
-        {
-          items.map(item =>
-            (<ItemTableRow
-              key={item.id}
-              item={item}
-              bibId={bibId}
-              searchKeywords={searchKeywords}
-              includeVolColumn={includeVolColumn}
-              page={page}
-            />),
-          )
-        }
+        {items.map((item) => (
+          <ItemTableRow
+            key={item.id}
+            item={item}
+            bibId={bibId}
+            searchKeywords={searchKeywords}
+            includeVolColumn={includeVolColumn}
+            page={page}
+          />
+        ))}
       </tbody>
     </table>
   );
@@ -58,7 +56,7 @@ ItemTable.propTypes = {
 };
 
 ItemTable.defaultProps = {
-  id: '',
+  id: "",
 };
 
 export default ItemTable;

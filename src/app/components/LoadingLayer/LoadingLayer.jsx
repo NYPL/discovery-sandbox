@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import FocusTrap from 'focus-trap-react';
+import React from "react";
+import PropTypes from "prop-types";
+import FocusTrap from "focus-trap-react";
 
 const LoadingLayer = ({ loading, title, focus }) => {
   if (loading === false) {
@@ -26,7 +26,10 @@ const LoadingLayer = ({ loading, title, focus }) => {
       >
         <div className="loadingLayer-layer" />
         <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+          <span
+            id="loading-animation"
+            className="loadingLayer-texts-loadingWord"
+          >
             Loading...
           </span>
           <div className="loadingDots">

@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
 
-import SubjectHeadingsTable from './SubjectHeadingsTable';
-import NeighboringHeadingsBox from './NeighboringHeadingsBox';
-import BibsList from './BibsList';
-import Range from '../../models/Range';
-import appConfig from '../../data/appConfig';
+import SubjectHeadingsTable from "./SubjectHeadingsTable";
+import NeighboringHeadingsBox from "./NeighboringHeadingsBox";
+import BibsList from "./BibsList";
+import Range from "../../models/Range";
+import appConfig from "../../data/appConfig";
 
 class SubjectHeadingShow extends React.Component {
   constructor(props) {
@@ -31,40 +31,43 @@ class SubjectHeadingShow extends React.Component {
   componentDidMount() {
     const { uuid } = this.state.mainHeading;
 
-    axios(`${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`)
+    axios(
+      `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`
+    )
       .then((res) => {
         const {
           data: {
             subject_headings,
-            main_heading: {
-              label,
-              bib_count,
-            },
+            main_heading: { label, bib_count },
           },
         } = res;
 
-        this.setState({
-          contextHeadings: this.processContextHeadings(subject_headings, uuid),
-          mainHeading: {
-            label,
-            uuid,
-          },
-          totalBibs: bib_count,
-          contextIsLoading: false,
-        }, () => {
-          this.props.setBannerText(this.state.mainHeading.label);
-        });
-      })
-      .catch(
-        (err) => {
-          console.error('error: ', err);
-          this.setState({
+        this.setState(
+          {
+            contextHeadings: this.processContextHeadings(
+              subject_headings,
+              uuid
+            ),
+            mainHeading: {
+              label,
+              uuid,
+            },
+            totalBibs: bib_count,
             contextIsLoading: false,
-            contextError: true,
-            contextHeadings: [],
-          });
-        },
-      );
+          },
+          () => {
+            this.props.setBannerText(this.state.mainHeading.label);
+          }
+        );
+      })
+      .catch((err) => {
+        console.error("error: ", err);
+        this.setState({
+          contextIsLoading: false,
+          contextError: true,
+          contextHeadings: [],
+        });
+      });
 
     axios({
       url: `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/related`,
@@ -74,17 +77,13 @@ class SubjectHeadingShow extends React.Component {
           relatedHeadings: res.data.related_headings,
         });
       })
-      .catch(
-        (err) => {
-          console.error('error: ', err);
-        },
-      );
+      .catch((err) => {
+        console.error("error: ", err);
+      });
   }
 
   getTopLevelLabel() {
-    const {
-      contextHeadings,
-    } = this.state;
+    const { contextHeadings } = this.state;
     let indexOfTopLevelAncestor = contextHeadings.findIndex(this.hasUuid);
     indexOfTopLevelAncestor = Math.max(indexOfTopLevelAncestor - 1, 0);
     return contextHeadings[indexOfTopLevelAncestor].label;
@@ -92,13 +91,17 @@ class SubjectHeadingShow extends React.Component {
 
   hasUuid(headings) {
     const uuid = this.props.params.subjectHeadingUuid;
-    if (Array.isArray(headings)) return headings.some(heading => this.hasUuid(heading));
+    if (Array.isArray(headings))
+      return headings.some((heading) => this.hasUuid(heading));
     return headings.uuid === uuid || this.hasUuid(headings.children || []);
   }
 
   generateFullContextUrl() {
     const uuid = this.props.params.subjectHeadingUuid;
-    const path = this.props.location.pathname.replace(/\/subject_headings.*/, '');
+    const path = this.props.location.pathname.replace(
+      /\/subject_headings.*/,
+      ""
+    );
     return `${path}/subject_headings?linked=${uuid}`;
   }
 
@@ -108,8 +111,9 @@ class SubjectHeadingShow extends React.Component {
     const onMainPath =
       heading.uuid === uuid ||
       (heading.children &&
-        heading.children.some(child => this.removeChildrenOffMainPath(child, uuid))
-      );
+        heading.children.some((child) =>
+          this.removeChildrenOffMainPath(child, uuid)
+        ));
     if (!onMainPath) heading.children = null;
     if (onMainPath) heading.onMainPath = true;
     return onMainPath;
@@ -119,10 +123,10 @@ class SubjectHeadingShow extends React.Component {
     if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
-      Range.addRangeData(heading, uuid, 'show');
+      Range.addRangeData(heading, uuid, "show");
     });
-    const mainHeadingIndex = headings.findIndex(heading =>
-      heading.children || heading.uuid === uuid,
+    const mainHeadingIndex = headings.findIndex(
+      (heading) => heading.children || heading.uuid === uuid
     );
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
@@ -144,26 +148,26 @@ class SubjectHeadingShow extends React.Component {
 
     const { location } = this.props;
 
-    const linkUrl = contextHeadings && contextHeadings.length ? this.generateFullContextUrl() : '#';
+    const linkUrl =
+      contextHeadings && contextHeadings.length
+        ? this.generateFullContextUrl()
+        : "#";
 
     if (error) {
-      return (<div>Not a subject heading</div>);
+      return <div>Not a subject heading</div>;
     }
 
     return (
       <React.Fragment>
-        {
-          label &&
+        {label && (
           <BibsList
             uuid={uuid}
             key={this.context.router.location.search}
             shepBibCount={totalBibs}
             label={label}
           />
-        }
-        <div
-          className="nypl-column-half subjectHeadingsSideBar"
-        >
+        )}
+        <div className="nypl-column-half subjectHeadingsSideBar">
           <NeighboringHeadingsBox
             contextHeadings={contextHeadings}
             contextIsLoading={contextIsLoading}
@@ -172,7 +176,7 @@ class SubjectHeadingShow extends React.Component {
             linkUrl={linkUrl}
             contextError={contextError}
           />
-          {relatedHeadings ?
+          {relatedHeadings ? (
             <SubjectHeadingsTable
               subjectHeadings={relatedHeadings}
               location={location}
@@ -180,8 +184,7 @@ class SubjectHeadingShow extends React.Component {
               container="related"
               tableHeaderText="Related Headings"
             />
-            : null
-          }
+          ) : null}
         </div>
       </React.Fragment>
     );
@@ -197,6 +200,5 @@ SubjectHeadingShow.propTypes = {
 SubjectHeadingShow.contextTypes = {
   router: PropTypes.object,
 };
-
 
 export default SubjectHeadingShow;

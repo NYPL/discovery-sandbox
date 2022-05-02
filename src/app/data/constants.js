@@ -4,38 +4,40 @@ import appConfig from "@appConfig";
 const breakpoints = [
   {
     maxValue: 490,
-    media: 'mobile',
+    media: "mobile",
   },
   {
     maxValue: 600,
-    media: 'tabletPortrait',
+    media: "tabletPortrait",
   },
   {
     maxValue: 870,
-    media: 'tablet',
+    media: "tablet",
   },
 ];
 
 const itemFilters = [
   {
-    type: 'location',
-    retrieveOption: item => ({
+    type: "location",
+    retrieveOption: (item) => ({
       label: item.location,
-      id: item.holdingLocationCode.startsWith('loc:rc') ? 'offsite' : item.holdingLocationCode,
+      id: item.holdingLocationCode.startsWith("loc:rc")
+        ? "offsite"
+        : item.holdingLocationCode,
     }),
   },
   {
-    type: 'format',
-    retrieveOption: item => ({
-      label: item.format || '',
-      id: item.format || '',
+    type: "format",
+    retrieveOption: (item) => ({
+      label: item.format || "",
+      id: item.format || "",
     }),
   },
   {
-    type: 'status',
-    retrieveOption: item => ({
-      label: item.requestable ? 'Requestable' : item.status.prefLabel,
-      id: item.requestable ? 'requestable' : item.status['@id'],
+    type: "status",
+    retrieveOption: (item) => ({
+      label: item.requestable ? "Requestable" : item.status.prefLabel,
+      id: item.requestable ? "requestable" : item.status["@id"],
     }),
   },
 ];
@@ -45,12 +47,13 @@ const searchResultItemsListLimit = 3;
 const itemBatchSize = appConfig.itemBatchSize;
 
 const noticePreferenceMapping = {
-  'z': 'Email',
-  'p': 'Telephone',
-  '-': 'None',
+  z: "Email",
+  p: "Telephone",
+  "-": "None",
 };
 
-const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|^[^a-z]+$/;
+const CLOSED_LOCATION_REGEX =
+  /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|^[^a-z]+$/;
 
 export {
   breakpoints,

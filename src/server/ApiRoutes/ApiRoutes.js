@@ -1,22 +1,20 @@
-import express from 'express';
+import express from "express";
 
-import User from './User';
-import Hold from './Hold';
-import Search from './Search';
-import Feedback from './Feedback';
-import appConfig from '../../app/data/appConfig';
-import SubjectHeading from './SubjectHeading';
-import SubjectHeadings from './SubjectHeadings';
-import Account from './Account';
-import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
-import routeMethods from './RouteMethods';
+import User from "./User";
+import Hold from "./Hold";
+import Search from "./Search";
+import Feedback from "./Feedback";
+import appConfig from "../../app/data/appConfig";
+import SubjectHeading from "./SubjectHeading";
+import SubjectHeadings from "./SubjectHeadings";
+import Account from "./Account";
+import dataLoaderUtil from "../../app/utils/dataLoaderUtil";
+import routeMethods from "./RouteMethods";
 
 const router = express.Router();
 const { routes, successCb } = dataLoaderUtil;
 
-router
-  .route(`${appConfig.baseUrl}/search`)
-  .post(Search.searchServerPost);
+router.route(`${appConfig.baseUrl}/search`).post(Search.searchServerPost);
 
 router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
@@ -30,9 +28,7 @@ router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
 
-router
-  .route(`${appConfig.baseUrl}/edd`)
-  .post(Hold.eddServer);
+router.route(`${appConfig.baseUrl}/edd`).post(Hold.eddServer);
 
 // Add the paths configured in dataLoaderUtil and RouteMethods. This covers two scenarios:
 // 1. Server side navigation, the / path is hit, we directly call the relevant method
@@ -42,24 +38,27 @@ router
 
 Object.keys(routes).forEach((routeName) => {
   const { path, params } = routes[routeName];
-  ['/', '/api/'].forEach((pathType) => {
-    const api = pathType === '/api/';
+  ["/", "/api/"].forEach((pathType) => {
+    const api = pathType === "/api/";
     router
       .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
-      .get((req, res, next) => new Promise(
-        resolve => routeMethods[routeName](req, res, resolve),
-      )
-        .then(data => (
-          api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })))
-        .then(() => (api ? null : next()))
-        .catch(console.error)
+      .get((req, res, next) =>
+        new Promise((resolve) => routeMethods[routeName](req, res, resolve))
+          .then((data) =>
+            api
+              ? res.json(data)
+              : successCb(routeName, req.store.dispatch)({ data })
+          )
+          .then(() => (api ? null : next()))
+          .catch(console.error)
       );
   });
 });
 
-router
-  .route(`${appConfig.baseUrl}/404/redirect`)
-  .get((req, res, next) => { res.status(404); next(); });
+router.route(`${appConfig.baseUrl}/404/redirect`).get((req, res, next) => {
+  res.status(404);
+  next();
+});
 
 router
   .route(`${appConfig.baseUrl}/api/account/:content?`)
@@ -83,12 +82,8 @@ router
   .route(`${appConfig.baseUrl}/api/subjectHeadings*`)
   .get(SubjectHeadings.proxyRequest);
 
-router
-  .route(`${appConfig.baseUrl}/api/feedback*`)
-  .post(Feedback.post);
+router.route(`${appConfig.baseUrl}/api/feedback*`).post(Feedback.post);
 
-router
-  .route(`${appConfig.baseUrl}/api/accountError`)
-  .get(Account.logError);
+router.route(`${appConfig.baseUrl}/api/accountError`).get(Account.logError);
 
 export default router;

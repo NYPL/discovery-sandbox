@@ -1,7 +1,7 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Heading, Link, LinkTypes } from '@nypl/design-system-react-components';
+import { Heading, Link, LinkTypes } from "@nypl/design-system-react-components";
 
 const AccountSettings = ({ patron, legacyBaseUrl }) => (
   <div className="account-settings">
@@ -12,7 +12,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
         type={LinkTypes.Default}
         className="edit-link settings"
         attributes={{
-          target: '_blank',
+          target: "_blank",
         }}
       >
         Edit
@@ -21,11 +21,11 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
     <hr />
     <dl>
       <dt>Telephone</dt>
-      <dd>{patron.phones ? patron.phones[0].number : 'None'}</dd>
+      <dd>{patron.phones ? patron.phones[0].number : "None"}</dd>
       <dt>Email</dt>
-      <dd>{patron.emails ? patron.emails[0] : 'None'}</dd>
+      <dd>{patron.emails ? patron.emails[0] : "None"}</dd>
       <dt>Preferred Pick Up Location</dt>
-      <dd>{patron.homeLibraryName || patron.homeLibraryCode || 'None'}</dd>
+      <dd>{patron.homeLibraryName || patron.homeLibraryCode || "None"}</dd>
       <dt>Preferred Contact Method</dt>
       <dd>{patron.noticePreference}</dd>
     </dl>
@@ -33,13 +33,15 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
     <div className="pin">
       <dl>
         <dt>Pin/Password</dt>
-        <dd><span>&middot;&middot;&middot;&middot;</span></dd>
+        <dd>
+          <span>&middot;&middot;&middot;&middot;</span>
+        </dd>
         <Link
           href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
           type={LinkTypes.Default}
           className="edit-link"
           attributes={{
-            target: '_blank',
+            target: "_blank",
           }}
         >
           Edit

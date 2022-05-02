@@ -7,8 +7,8 @@ Import style rules from NYPL Design Toolkit
 /*
 Import style rules from NYPL Design System
 */
-@import '~@nypl/design-system-react-components/dist/styles.css';
-@import '~@nypl/design-system-react-components/dist/resources.scss';
+@import "~@nypl/design-system-react-components/dist/styles.css";
+@import "~@nypl/design-system-react-components/dist/resources.scss";
 
 /*
 App-specific utilities and defaults
@@ -74,17 +74,18 @@ header #skip {
   line-height: 15px !important;
 }
 
-li, p {
+li,
+p {
   max-width: 100%;
 }
 
 button,
-html input[type=button],
-input[type=reset],
-input[type=submit] {
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
   -moz-appearance: button;
 }
-input[type=submit]:focus {
+input[type="submit"]:focus {
   outline-style: solid;
   outline-width: 3px;
 }
@@ -117,7 +118,8 @@ select {
 .nypl-basic-table {
   margin-top: 20px;
 
-  th, td {
+  th,
+  td {
     overflow: inherit;
     padding-right: 15px;
     width: 16%;
@@ -165,7 +167,7 @@ select {
   padding-top: 25vh;
 
   div {
-    background-color: #F9F8F7;
+    background-color: #f9f8f7;
     margin: auto;
     opacity: 100%;
     width: 472px;
@@ -197,10 +199,9 @@ select {
   }
 }
 
-
 .research-modal__content {
   align-items: flex-start;
-  background: #F9F8F7;
+  background: #f9f8f7;
   border: 1px solid var(--ui-gray-light);
   border-radius: 5px;
   flex-flow: column wrap;

@@ -1,5 +1,5 @@
-import React from 'react';
-import appConfig from '../../data/appConfig';
+import React from "react";
+import appConfig from "../../data/appConfig";
 
 const LegacyCatalogLink = ({ recordNumber, display }) => {
   return (

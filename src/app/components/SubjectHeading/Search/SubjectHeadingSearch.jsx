@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import axios from 'axios';
-import Autosuggest from 'react-autosuggest';
+import React from "react";
+import PropTypes from "prop-types";
+import axios from "axios";
+import Autosuggest from "react-autosuggest";
 
-import appConfig from '../../../data/appConfig';
+import appConfig from "../../../data/appConfig";
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class SubjectHeadingSearch extends React.Component {
 
     this.state = {
       suggestions: [],
-      userInput: '',
+      userInput: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -33,10 +33,14 @@ class SubjectHeadingSearch extends React.Component {
   makeApiCallWithThrottle() {
     const apiCall = () => {
       if (this.state.userInput) {
-        return axios(`${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`)
+        return axios(
+          `${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`
+        )
           .then((res) => {
             const numberOfResults = res.data.autosuggest.length;
-            this.props.setContentPrimaryStyle({ 'min-height': `${Math.max(numberOfResults, 12) * 50}px` });
+            this.props.setContentPrimaryStyle({
+              "min-height": `${Math.max(numberOfResults, 12) * 50}px`,
+            });
             if (res.data.request.query.trim() === this.state.userInput.trim()) {
               this.setState({
                 suggestions: res.data.autosuggest,
@@ -62,7 +66,7 @@ class SubjectHeadingSearch extends React.Component {
   }
 
   generatePath(item) {
-    const subjectComponent = item.class === 'subject_component';
+    const subjectComponent = item.class === "subject_component";
     const base = appConfig.baseUrl;
     let path;
 
@@ -80,41 +84,37 @@ class SubjectHeadingSearch extends React.Component {
       makeApiCallWithThrottle,
       onChange,
       onSubmit,
-      state: {
-        suggestions,
-        userInput,
-      },
+      state: { suggestions, userInput },
     } = this;
 
     return (
       /*
-        * if you need style the open state
-        * add the `alwaysRenderSuggestions` prop
-      */
+       * if you need style the open state
+       * add the `alwaysRenderSuggestions` prop
+       */
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={() => makeApiCallWithThrottle()}
         onSuggestionsClearRequested={() => this.setState({ suggestions: [] })}
         onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
-        getSuggestionValue={suggestion => suggestion.label}
+        getSuggestionValue={(suggestion) => suggestion.label}
         inputProps={{
-          placeholder: 'Enter a Subject Heading Term',
+          placeholder: "Enter a Subject Heading Term",
           value: userInput,
           onChange,
         }}
         renderSuggestion={(suggestion) => {
-          const subjectComponent = suggestion.class === 'subject_component';
+          const subjectComponent = suggestion.class === "subject_component";
 
           return (
             <div>
               <span>
-                {subjectComponent ? null : (<em>Subject: </em>) }
-                <span>
-                  {suggestion.label}
-                </span>
+                {subjectComponent ? null : <em>Subject: </em>}
+                <span>{suggestion.label}</span>
               </span>
               <div className="aggregateBibCount">
-                {suggestion.aggregate_bib_count} title{suggestion.aggregate_bib_count > 1 ? 's' : ''}
+                {suggestion.aggregate_bib_count} title
+                {suggestion.aggregate_bib_count > 1 ? "s" : ""}
               </div>
             </div>
           );

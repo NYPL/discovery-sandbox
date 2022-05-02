@@ -1,18 +1,18 @@
-const fs = require('fs');
+const fs = require("fs");
 
 const IGNORE = [
-  '.ebextensions',
-  '.elasticbeanstalk',
-  '.git',
-  '.nyc_output',
-  'coverage',
-  'log',
-  'node_modules',
-  '.env',
+  ".ebextensions",
+  ".elasticbeanstalk",
+  ".git",
+  ".nyc_output",
+  "coverage",
+  "log",
+  "node_modules",
+  ".env",
 ];
 
 function getExportStatement(file) {
-  const text = fs.readFileSync(file, 'utf8');
+  const text = fs.readFileSync(file, "utf8");
   const match = text.match(/.*export(.*)/);
   return match ? match[1] : match;
 }
@@ -44,8 +44,8 @@ function getFileNames(file) {
 }
 
 function shortenName(fileName, files) {
-  const split = fileName.split('/');
-  let shortened = split.pop().replace(/\..*/, '');
+  const split = fileName.split("/");
+  let shortened = split.pop().replace(/\..*/, "");
   while (files[shortened]) {
     shortened = split.pop() + shortened;
   }
@@ -56,27 +56,27 @@ function mapNames(files) {
   const withoutAt = files.reduce(
     (mapped, file) =>
       Object.assign(mapped, { [shortenName(file, mapped)]: file }),
-    {},
+    {}
   );
   return Object.keys(withoutAt).reduce(
     (mapped, key) => Object.assign(mapped, { [`@${key}`]: withoutAt[key] }),
-    {},
+    {}
   );
 }
 
 function modifyNestedKey(object, key, value) {
-  if (typeof object === 'string') return object;
+  if (typeof object === "string") return object;
   if (Array.isArray(object)) {
     return object.map((el) => modifyNestedKey(el, key, value));
   }
-  if (typeof object === 'object') {
+  if (typeof object === "object") {
     if (!object[key]) {
       return Object.keys(object).reduce(
         (mapped, nestedKey) =>
           Object.assign(mapped, {
             [nestedKey]: modifyNestedKey(object[nestedKey], key, value),
           }),
-        {},
+        {}
       );
     }
     return Object.keys(object).reduce(
@@ -87,25 +87,25 @@ function modifyNestedKey(object, key, value) {
               ? value
               : modifyNestedKey(object[nestedKey], key, value),
         }),
-      {},
+      {}
     );
   }
   return null;
 }
 
 function write() {
-  const mapped = mapNames(getFileNames('.'));
+  const mapped = mapNames(getFileNames("."));
   fs.writeFileSync(
-    '.babelrcExp',
+    ".babelrcExp",
     JSON.stringify(
       modifyNestedKey(
-        JSON.parse(fs.readFileSync('.babelrc', 'utf8')),
-        'alias',
-        mapped,
+        JSON.parse(fs.readFileSync(".babelrc", "utf8")),
+        "alias",
+        mapped
       ),
       null,
-      2,
-    ),
+      2
+    )
   );
 }
 

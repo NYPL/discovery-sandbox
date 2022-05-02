@@ -1,12 +1,12 @@
-import LibraryItem from './../../src/app/utils/item';
-import { expect } from 'chai';
-import items from '../fixtures/mocked-item';
+import LibraryItem from "./../../src/app/utils/item";
+import { expect } from "chai";
+import items from "../fixtures/mocked-item";
 
-describe('utils/item', () => {
-  describe('LibraryItem', () => {
-    describe('mapItem', () => {
+describe("utils/item", () => {
+  describe("LibraryItem", () => {
+    describe("mapItem", () => {
       it('interprets status "Available" as available', () => {
-        const libraryItem = LibraryItem.mapItem(items[0])
+        const libraryItem = LibraryItem.mapItem(items[0]);
         expect(libraryItem.available).to.eq(true);
       });
 
@@ -14,12 +14,12 @@ describe('utils/item', () => {
         const unavailableItem = Object.assign({}, items[0], {
           status: [
             {
-              '@id': 'status:co',
-              prefLabel: 'Loaned',
+              "@id": "status:co",
+              prefLabel: "Loaned",
             },
-          ]
+          ],
         });
-        const libraryItem = LibraryItem.mapItem(unavailableItem)
+        const libraryItem = LibraryItem.mapItem(unavailableItem);
         expect(libraryItem.available).to.eq(false);
       });
 
@@ -27,12 +27,12 @@ describe('utils/item', () => {
         const unavailableItem = Object.assign({}, items[0], {
           status: [
             {
-              '@id': 'status:o',
-              prefLabel: 'Use in Library',
+              "@id": "status:o",
+              prefLabel: "Use in Library",
             },
-          ]
+          ],
         });
-        const libraryItem = LibraryItem.mapItem(unavailableItem)
+        const libraryItem = LibraryItem.mapItem(unavailableItem);
         expect(libraryItem.available).to.eq(true);
       });
     });

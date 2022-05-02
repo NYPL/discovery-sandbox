@@ -1,8 +1,8 @@
-import React from 'react';
-import DocumentTitle from 'react-document-title';
-import { Link } from 'react-router';
+import React from "react";
+import DocumentTitle from "react-document-title";
+import { Link } from "react-router";
 
-import appConfig from '../../data/appConfig';
+import appConfig from "../../data/appConfig";
 
 const AccountError = () => (
   <DocumentTitle title={`AccountError | ${appConfig.displayTitle} | NYPL`}>

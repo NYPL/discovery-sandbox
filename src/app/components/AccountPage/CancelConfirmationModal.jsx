@@ -1,11 +1,11 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   ButtonTypes,
   Modal,
   Card,
-} from '@nypl/design-system-react-components';
+} from "@nypl/design-system-react-components";
 
 const CancelConfirmationModal = ({
   itemToCancel,
@@ -20,12 +20,11 @@ const CancelConfirmationModal = ({
         <Button
           buttonType={ButtonTypes.Secondary}
           onClick={() => setItemToCancel(null)}
-        >Back
+        >
+          Back
         </Button>
-        <Button
-          buttonType={ButtonTypes.Primary}
-          onClick={cancelItem}
-        >Confirm
+        <Button buttonType={ButtonTypes.Primary} onClick={cancelItem}>
+          Confirm
         </Button>
       </div>
     </div>

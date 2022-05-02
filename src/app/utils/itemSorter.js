@@ -28,22 +28,25 @@ ItemSorter.sortableShelfMark = (shelfMark) => {
   // NodeJS doesn't have lookbehinds, so fake it with replace callback:
   const reg = /(\d+$|((^|\s)(box|v\.|no\.|r\.|box|tube) )(\d+))/i;
   // This callback will receive all matches:
-  const replace = (m0, fullMatch, label, labelWhitespace, labelText, number) => (
+  const replace = (m0, fullMatch, label, labelWhitespace, labelText, number) =>
     // If we matched a label, build string from label and then pad number
-    label ? `${label.toLowerCase()}${ItemSorter.zeroPadString(number)}`
-    // Otherwise just pad whole match (presumably it's a line terminating num):
-      : ItemSorter.zeroPadString(fullMatch)
+    label
+      ? `${label.toLowerCase()}${ItemSorter.zeroPadString(number)}`
+      : // Otherwise just pad whole match (presumably it's a line terminating num):
+        ItemSorter.zeroPadString(fullMatch);
+  return (
+    shelfMark
+      .replace(reg, replace)
+      // Collapse redundant whitespace:
+      .replace(/\s{2,}/g, " ")
   );
-  return shelfMark
-    .replace(reg, replace)
-    // Collapse redundant whitespace:
-    .replace(/\s{2,}/g, ' ');
 };
 
 /**
  * Returns a '0' left-padded string to default length of 6
  */
-ItemSorter.zeroPadString = (s, padLen = 6) => (new Array(Math.max(0, (padLen - s.length) + 1))).join('0') + s;
+ItemSorter.zeroPadString = (s, padLen = 6) =>
+  new Array(Math.max(0, padLen - s.length + 1)).join("0") + s;
 
 /**
  * Add sortableShelfMark
@@ -56,7 +59,7 @@ ItemSorter.itemWithSortableShelfMark = (item) => {
     if (item.uri) {
       shelfMarkSort = `b${item.uri}`;
     } else {
-      shelfMarkSort = 'c';
+      shelfMarkSort = "c";
     }
   } else {
     // order by call number, put these items first
@@ -66,9 +69,10 @@ ItemSorter.itemWithSortableShelfMark = (item) => {
   return { item, shelfMarkSort };
 };
 
-ItemSorter.sortItems = items => items
-  .map(ItemSorter.itemWithSortableShelfMark)
-  .sort((i1, i2) => (i1.shelfMarkSort > i2.shelfMarkSort ? 1 : -1))
-  .map(i => i.item);
+ItemSorter.sortItems = (items) =>
+  items
+    .map(ItemSorter.itemWithSortableShelfMark)
+    .sort((i1, i2) => (i1.shelfMarkSort > i2.shelfMarkSort ? 1 : -1))
+    .map((i) => i.item);
 
 export default ItemSorter;
