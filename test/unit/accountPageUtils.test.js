@@ -96,7 +96,12 @@ describe('manipulateAccountPage', () => {
       // Check that the linked bibs that remain are not OTF records:
       const linkedBibTitles = Array.from(
         dom.querySelectorAll('.patFuncBibTitle a'),
-      ).map((tag) => tag.textContent);
+      ).map((tag) => {
+        return tag.textContent
+          .split('\n')
+          .map((str) => str.trim())
+          .join(' ');
+      });
       expect(linkedBibTitles).to.have.members([
         'Toast / by Raquel Pelzel ; photographs by Evan Sung.',
         '-2 +3 Stefano Arienti, Massimo Bartolini : la Collezione di Museion = die Sammlung Museion = the Museion collection. Minus 2 plus 3 Minus two plus three Stefano Arienti, Massimo Bartolini',
