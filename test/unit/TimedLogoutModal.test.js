@@ -20,7 +20,7 @@ describe('TimedLogoutModal', () => {
       sandbox = sinon.sandbox.create();
       clock = sinon.useFakeTimers();
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie = 'accountPageExp=1615496302599';
       sandbox.stub(window.location, 'replace').callsFake(() => {
         callRecord.push({ replace: true });
@@ -40,7 +40,10 @@ describe('TimedLogoutModal', () => {
       });
 
       component = mount(
-        <TimedLogoutModal stayLoggedIn={() => {}} baseUrl='fakeBaseUrl' />,
+        <TimedLogoutModal
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
+        />,
       );
     });
 
@@ -73,7 +76,7 @@ describe('TimedLogoutModal', () => {
     before(() => {
       sandbox = sinon.sandbox.create();
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie = `accountPageExp=${(60 + 3) * 1000}`;
       sandbox.stub(window.location, 'replace').callsFake(() => {
         callRecord.push({ replace: true });
@@ -96,7 +99,10 @@ describe('TimedLogoutModal', () => {
       });
 
       component = mount(
-        <TimedLogoutModal stayLoggedIn={() => {}} baseUrl='fakeBaseUrl' />,
+        <TimedLogoutModal
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
+        />,
       );
     });
 
@@ -151,7 +157,7 @@ describe('TimedLogoutModal', () => {
         iframes[index].parentNode.removeChild(iframes[index]);
       }
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie =
         'accountPageExp=;expires=Thu, 01-Jan-1970 00:00:01 GMT;';
       sandbox.stub(window.location, 'replace').callsFake((arg) => {
@@ -173,7 +179,10 @@ describe('TimedLogoutModal', () => {
       });
 
       component = mount(
-        <TimedLogoutModal stayLoggedIn={() => {}} baseUrl='fakeBaseUrl' />,
+        <TimedLogoutModal
+          stayLoggedIn={() => undefined}
+          baseUrl='fakeBaseUrl'
+        />,
       );
     });
 
@@ -214,12 +223,12 @@ describe('TimedLogoutModal', () => {
         iframes[index].parentNode.removeChild(iframes[index]);
       }
 
-      window.location = { replace: () => {} };
+      window.location = { replace: () => undefined };
       global.document.cookie = 'accountPageExp=63000;';
       sandbox.stub(window.location, 'replace').callsFake((arg) => {
         replace = arg;
       });
-      sandbox.stub(global, 'setTimeout').callsFake(() => {});
+      sandbox.stub(global, 'setTimeout').callsFake(() => undefined);
       sandbox.stub(Date.prototype, 'getTime').callsFake(function () {
         return this.toString().includes('63000') ? 63000 : 0;
       });

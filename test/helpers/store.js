@@ -16,8 +16,8 @@ function testRender(ui, renderFunc, { store, ...otherOpts }) {
     context: {
       router: {
         location: {},
-        createHref: () => {},
-        push: () => {},
+        createHref: () => undefined,
+        push: () => undefined,
       },
     },
     ...otherOpts,

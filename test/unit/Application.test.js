@@ -20,7 +20,7 @@ describe('Application', () => {
   const context = mockRouterContext();
 
   before(() => {
-    window.matchMedia = () => ({ addListener: () => {} });
+    window.matchMedia = () => ({ addListener: () => undefined });
     window.matchMedia().addListener = stub();
     component = shallow(
       <Application
@@ -28,7 +28,7 @@ describe('Application', () => {
         route={{
           history: { listen: stub() },
         }}
-        addFeatures={() => {}}
+        addFeatures={() => undefined}
       />,
       { context },
     );
@@ -97,7 +97,7 @@ describe('Application', () => {
   describe('url-enabled feature flag', () => {
     let content;
     before(() => {
-      window.matchMedia = () => ({ addListener: () => {} });
+      window.matchMedia = () => ({ addListener: () => undefined });
       window.matchMedia().addListener = stub();
       context.router = {
         location: {
@@ -111,7 +111,7 @@ describe('Application', () => {
         <Application
           children={{}}
           router={context.router}
-          updateFeatures={() => {}}
+          updateFeatures={() => undefined}
           features={[]}
         >
           <a href='/subject_headings'>link</a>

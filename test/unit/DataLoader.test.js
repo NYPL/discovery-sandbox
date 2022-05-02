@@ -21,7 +21,7 @@ describe('DataLoader', () => {
         lastLoaded='/pathname'
         location={location}
         children={children}
-        dispatch={() => {}}
+        dispatch={() => undefined}
       />,
     );
   });

@@ -243,7 +243,11 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(<ResultsList results={resultsBibs} />, {
           context: {
-            router: { createHref: () => {}, push: () => {}, replace: () => {} },
+            router: {
+              createHref: () => undefined,
+              push: () => undefined,
+              replace: () => undefined,
+            },
           },
         });
         mock = new MockAdapter(axios);
@@ -256,6 +260,7 @@ describe('ResultsList', () => {
 
       after(() => {
         mock.restore();
+        component.unmount();
       });
     });
   });
@@ -266,7 +271,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       });
       mock = new MockAdapter(axios);
       mock
@@ -278,6 +285,7 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
+      component.unmount();
     });
   });
 
@@ -363,7 +371,9 @@ describe('ResultsList', () => {
 
     before(() => {
       component = mount(<ResultsList results={resultsBibs} />, {
-        context: { router: { createHref: () => {}, push: () => {} } },
+        context: {
+          router: { createHref: () => undefined, push: () => undefined },
+        },
       });
       mock = new MockAdapter(axios);
       mock

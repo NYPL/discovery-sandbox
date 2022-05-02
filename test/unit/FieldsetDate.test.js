@@ -91,7 +91,10 @@ describe('FieldsetDate', () => {
       let event = new Event('custom');
       const el = document.createElement('input');
 
-      event = Object.assign({}, event, { target: el, persist: () => {} });
+      event = Object.assign({}, event, {
+        target: el,
+        persist: () => undefined,
+      });
       event.target = el;
       el.value = value;
       el.name = name;

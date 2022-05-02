@@ -40,7 +40,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: '',
             bibId: '',
@@ -99,7 +99,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={() => undefined}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -159,7 +159,7 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => {}}
+            dispatch={() => undefined}
             resultSelection={{
               fromUrl: '',
               bibId: '',
@@ -213,7 +213,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
@@ -233,7 +233,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => {}}
+          dispatch={() => undefined}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',

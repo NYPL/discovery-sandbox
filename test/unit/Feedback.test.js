@@ -124,7 +124,7 @@ describe('Feedback', () => {
             'access-control-allow-credentials': 'true',
           })
           .post(/\/api\/feedback/)
-          .reply(200, () => {});
+          .reply(200, () => undefined);
 
         const submitButton = component.find('Button').at(2).find('button');
         submitButton.simulate('submit');
