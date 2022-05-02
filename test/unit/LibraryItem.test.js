@@ -17,7 +17,10 @@ describe('LibraryItem', () => {
 
   describe('getIdentifierValueByType', () => {
     it('should get an identifier by rdf type', () => {
-      const output = LibraryItem.getIdentifierEntitiesByType(['urn:barcode:1234'], 'bf:Barcode');
+      const output = LibraryItem.getIdentifierEntitiesByType(
+        ['urn:barcode:1234'],
+        'bf:Barcode',
+      );
 
       expect(output).to.be.a('array');
       expect(output[0]).to.be.a('object');
@@ -25,7 +28,6 @@ describe('LibraryItem', () => {
       expect(output[0]['@type']).to.equal('bf:Barcode');
     });
   });
-
 
   describe('getIdentifiers', () => {
     const neededTagsArray = [{ name: 'barcode', value: 'bf:Barcode' }];
@@ -39,7 +41,10 @@ describe('LibraryItem', () => {
     });
 
     it('should extract barcode from array of entity encoded identifiers', () => {
-      const input = [{ '@type': 'bf:Barcode', '@value': '1234' }, { '@type': 'nypl:Oclc', '@value': 'abcd' }];
+      const input = [
+        { '@type': 'bf:Barcode', '@value': '1234' },
+        { '@type': 'nypl:Oclc', '@value': 'abcd' },
+      ];
       const output = LibraryItem.getIdentifiers(input, neededTagsArray);
 
       expect(output).to.be.a('object');

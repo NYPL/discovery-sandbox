@@ -1,20 +1,26 @@
-/* eslint-env mocha */
-import React from 'react';
-import sinon from 'sinon';
+import dataLoaderUtil from '@dataLoaderUtil';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
-
-import WrappedDataLoader, { DataLoader } from './../../src/app/components/DataLoader/DataLoader';
-import dataLoaderUtil from '@dataLoaderUtil';
+import React from 'react';
+import sinon from 'sinon';
+import { DataLoader } from './../../src/app/components/DataLoader/DataLoader';
 
 describe('DataLoader', () => {
   let dataLoaderUtilSpy;
   const location = { pathname: '', search: '' };
   let wrapper;
   before(() => {
-    const children = (<div />);
+    const children = <div />;
     dataLoaderUtilSpy = sinon.spy(dataLoaderUtil, 'loadDataForRoutes');
-    wrapper = shallow(<DataLoader lastLoaded="/pathname" location={location} children={children} dispatch={() => {}}/>);
+    wrapper = shallow(
+      <DataLoader
+        lastLoaded='/pathname'
+        location={location}
+        dispatch={() => undefined}
+      >
+        {children}
+      </DataLoader>,
+    );
   });
   after(() => {
     dataLoaderUtilSpy.restore();

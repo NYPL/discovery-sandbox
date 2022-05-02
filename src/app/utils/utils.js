@@ -26,7 +26,7 @@ const { features } = appConfig;
  */
 const ajaxCall = (
   endpoint,
-  cb = () => {},
+  cb = () => undefined,
   errorcb = (error) => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
@@ -496,7 +496,7 @@ const getUpdatedFilterValues = (props) => {
     });
   }
 
-  updatedFilterValues = _sortBy(updatedFilterValues, (f) => f.label);
+  updatedFilterValues = _sortBy(updatedFilterValues, (_f) => _f.label);
 
   return updatedFilterValues;
 };
@@ -673,8 +673,8 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((v) =>
-    Array.isArray(v) ? v.length > 0 : v,
+  return Object.values(selectedFilters || {}).some((_v) =>
+    Array.isArray(_v) ? _v.length > 0 : _v,
   );
 };
 
@@ -710,13 +710,13 @@ function extractNoticePreference(fixedFields) {
  *      camelToShishKabobCase("firstCharCanBeLowerCase")
  *        => "first-char-can-be-lower-case"
  */
-function camelToShishKabobCase(s) {
+function camelToShishKabobCase(_s) {
   return (
-    s
+    _s
       // Change capital letters into "-{lowercase letter}"
-      .replace(/([A-Z])/g, (c, p1, i) => {
+      .replace(/([A-Z])/g, (_c, p1, _i) => {
         // If capital letter is not first character, precede with '-':
-        return (i > 0 ? '-' : '') + c.toLowerCase();
+        return (_i > 0 ? '-' : '') + _c.toLowerCase();
       })
   );
 }

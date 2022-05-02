@@ -14,7 +14,7 @@
 }
 
 div .tabbed {
-  ul[role="tablist"] {
+  ul[role='tablist'] {
     margin: 0;
     margin-bottom: 20px;
     padding-left: 0px;
@@ -22,19 +22,19 @@ div .tabbed {
     list-style-type: none;
   }
 
-  ul[role="tablist"] >  li {
+  ul[role='tablist'] > li {
     border-bottom: 1px solid black;
     display: table-cell;
     margin-bottom: 0;
     white-space: nowrap;
   }
 
-  ul[role="tablist"] > li.activeTab {
+  ul[role='tablist'] > li.activeTab {
     border: 1px solid black;
     border-bottom: none;
   }
 
-  ul[role="tablist"] > li > a {
+  ul[role='tablist'] > li > a {
     color: $nypl-gray-brown;
     padding: 5px 8px;
     display: table-cell;
@@ -42,11 +42,11 @@ div .tabbed {
     text-decoration: none;
   }
 
-  ul[role="tablist"] > li:target > a {
+  ul[role='tablist'] > li:target > a {
     color: black;
   }
 
-  ul[role="tablist"] > li > a[aria-selected='true'] {
+  ul[role='tablist'] > li > a[aria-selected='true'] {
     color: black;
     font-weight: 500;
   }
@@ -58,7 +58,7 @@ div .tabbed {
     width: 100%;
   }
 
-  ul[role="tablist"] {
+  ul[role='tablist'] {
     li:target ~ .default {
       display: none;
     }
@@ -184,14 +184,15 @@ div .tabbed {
 
 @media (max-width: 600px) {
   div .tabbed {
-    ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
+    ul[role='tablist'] > li,
+    ul[role='tablist'] > li.activeTab {
       border: 1px solid black;
       border-bottom: none;
       display: block;
       width: 100%;
     }
 
-    ul[role="tablist"] > li > a {
+    ul[role='tablist'] > li > a {
       display: block;
 
       &[aria-selected='true'] {

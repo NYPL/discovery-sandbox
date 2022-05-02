@@ -27,10 +27,14 @@ class SubjectHeadingsTable extends React.Component {
     } = this.props;
 
     return (
-      <table className={
-        `subjectHeadingsTable
+      <table
+        className={`subjectHeadingsTable
         ${container}
-        ${['context', 'related'].includes(container) ? ' nypl-column-half subjectHeadingInfoBox' : ''}`}
+        ${
+          ['context', 'related'].includes(container)
+            ? ' nypl-column-half subjectHeadingInfoBox'
+            : ''
+        }`}
       >
         <SubjectHeadingsTableHeader
           updateSort={updateSort}
@@ -53,12 +57,7 @@ class SubjectHeadingsTable extends React.Component {
             preOpen={preOpen}
           />
         </tbody>
-        { tfootContent ?
-          <tfoot>
-            {tfootContent}
-          </tfoot>
-          : null
-        }
+        {tfootContent ? <tfoot>{tfootContent}</tfoot> : null}
       </table>
     );
   }

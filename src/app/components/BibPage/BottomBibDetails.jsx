@@ -24,7 +24,9 @@ const BottomBibDetails = ({ bib, resources }) => {
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
     // if the subject heading API call failed for some reason,
-    bib.subjectHeadingData ? { label: 'Subject', value: 'subjectHeadingData' } : { label: 'Subject', value: 'subjectLiteral', linkable: true },
+    bib.subjectHeadingData
+      ? { label: 'Subject', value: 'subjectHeadingData' }
+      : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'React Component' },
     { label: 'Contents', value: 'tableOfContents' },

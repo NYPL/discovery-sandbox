@@ -1,9 +1,6 @@
 import React from 'react';
 import { isEmail } from 'validator';
-import {
-  mapObject as _mapObject,
-  isEmpty as _isEmpty,
-} from 'underscore';
+import { mapObject as _mapObject, isEmpty as _isEmpty } from 'underscore';
 
 function isDate(input, minYear = 1902, maxYear = new Date().getFullYear()) {
   // regular expression to match required date format
@@ -18,10 +15,10 @@ function isDate(input, minYear = 1902, maxYear = new Date().getFullYear()) {
     const dateFromInput = new Date(`${temp[2]}/${temp[0]}/${temp[1]}`);
 
     return (
-      dateFromInput.getDate() === Number(temp[1])
-      && (dateFromInput.getMonth() + 1) === Number(temp[0])
-      && Number(temp[2]) > minYear
-      && Number(temp[2]) < maxYear
+      dateFromInput.getDate() === Number(temp[1]) &&
+      dateFromInput.getMonth() + 1 === Number(temp[0]) &&
+      Number(temp[2]) > minYear &&
+      Number(temp[2]) < maxYear
     );
   }
 
@@ -36,9 +33,11 @@ function isDate(input, minYear = 1902, maxYear = new Date().getFullYear()) {
  * return {object} {anchorText, restText}
  */
 function createAnchorText(wholeText) {
-  const anchorText = (wholeText && typeof wholeText === 'string') ?
-    wholeText.split(' field')[0] : '';
-  const restText = (!anchorText) ? '' : ` field ${wholeText.split(' field')[1]}`;
+  const anchorText =
+    wholeText && typeof wholeText === 'string'
+      ? wholeText.split(' field')[0]
+      : '';
+  const restText = !anchorText ? '' : ` field ${wholeText.split(' field')[1]}`;
 
   return { anchorText, restText };
 }
@@ -51,10 +50,14 @@ function createAnchorText(wholeText) {
  * return {string}
  */
 function createAnchorID(key) {
-  const hashElement = (key && typeof key === 'string') ?
-    `${key.charAt(0).toUpperCase()}${key.substr(1)}` : '';
+  const hashElement =
+    key && typeof key === 'string'
+      ? `${key.charAt(0).toUpperCase()}${key.substr(1)}`
+      : '';
 
-  if (!hashElement) { return null; }
+  if (!hashElement) {
+    return null;
+  }
 
   return `#patron${hashElement}`;
 }
@@ -78,13 +81,21 @@ function renderServerValidationError(object) {
         const anchorText = createAnchorText(object[key]).anchorText || '';
         const restText = createAnchorText(object[key]).restText || '';
 
-        errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
-          <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
+        errorMessage =
+          !anchorText && !anchorText ? (
+            <li>One of the fields is incorrect.</li>
+          ) : (
+            <li key={index}>
+              <a href={createAnchorID(key)}>{anchorText}</a>
+              {restText}
+            </li>
+          );
       } else {
         if (key === 'email') {
           errorMessage = (
             <li key={index}>
-              Please enter a valid <a href={createAnchorID(key)}>email address</a>.
+              Please enter a valid{' '}
+              <a href={createAnchorID(key)}>email address</a>.
             </li>
           );
         }
@@ -107,27 +118,31 @@ function renderServerValidationError(object) {
 function validate(form, cb) {
   const fieldsToCheck = {
     emailAddress: {
-      validate: val => (val.trim().length && isEmail('' + val)),
-      errorMsg: 'Enter a valid email address. Your request will be delivered to ' +
+      validate: (val) => val.trim().length && isEmail('' + val),
+      errorMsg:
+        'Enter a valid email address. Your request will be delivered to ' +
         'the email address you enter above.',
     },
     chapterTitle: {
-      validate: val => !!(val.trim().length),
-      errorMsg: 'Indicate the title of the chapter or article you are requesting. ',
+      validate: (val) => !!val.trim().length,
+      errorMsg:
+        'Indicate the title of the chapter or article you are requesting. ',
     },
     startPage: {
-      validate: val => !!(val.trim().length),
+      validate: (val) => !!val.trim().length,
       errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
     endPage: {
-      validate: val => !!(val.trim().length),
+      validate: (val) => !!val.trim().length,
       errorMsg: 'Enter a page number. You may request a maximum of 50 pages.',
     },
   };
 
   const error = {};
   _mapObject(form, (val, key) => {
-    const isValid = (fieldsToCheck[key]) ? fieldsToCheck[key].validate(val) : true;
+    const isValid = fieldsToCheck[key]
+      ? fieldsToCheck[key].validate(val)
+      : true;
 
     if (!isValid) {
       error[key] = fieldsToCheck[key].errorMsg;
@@ -143,8 +158,4 @@ function validate(form, cb) {
   return true;
 }
 
-export {
-  isDate,
-  renderServerValidationError,
-  validate,
-};
+export { isDate, renderServerValidationError, validate };
