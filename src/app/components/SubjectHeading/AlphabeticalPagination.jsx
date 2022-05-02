@@ -1,9 +1,9 @@
-import React from "react";
-import { Link } from "react-router";
-import appConfig from "../../data/appConfig";
+import React from 'react';
+import { Link } from 'react-router';
+import appConfig from '../../data/appConfig';
 
 const AlphabeticalPagination = () => {
-  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const letterButtons = alphabet.map((character) => (
     <Link
       key={character}
@@ -14,14 +14,14 @@ const AlphabeticalPagination = () => {
   ));
 
   const allButton = (
-    <Link key="all" to={`${appConfig.baseUrl}/subject_headings`}>
+    <Link key='all' to={`${appConfig.baseUrl}/subject_headings`}>
       Home
     </Link>
   );
 
   const punctuationButton = (
     <Link
-      key="punctuation"
+      key='punctuation'
       to={`${appConfig.baseUrl}/subject_headings?fromLabel=!`}
     >
       !"*,-
@@ -30,7 +30,7 @@ const AlphabeticalPagination = () => {
 
   const numericalButton = (
     <Link
-      key="numerical"
+      key='numerical'
       to={`${appConfig.baseUrl}/subject_headings?fromLabel=0`}
     >
       0-9
@@ -40,7 +40,7 @@ const AlphabeticalPagination = () => {
   const buttons = [allButton].concat(letterButtons);
   buttons.push(punctuationButton, numericalButton);
 
-  return <div className="alphabeticalPagination">{buttons}</div>;
+  return <div className='alphabeticalPagination'>{buttons}</div>;
 };
 
 export default AlphabeticalPagination;

@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import React from "react";
-import SubjectHeadings from "./SubjectHeadings";
+import PropTypes from 'prop-types';
+import React from 'react';
+import SubjectHeadings from './SubjectHeadings';
 
 /*
  * DefinitionList
@@ -13,8 +13,8 @@ const DefinitionList = ({ data, headings }) => {
         return null;
       }
 
-      if (item.term === "Subject" && headings)
-        return <SubjectHeadings key="subjects" headings={headings} />;
+      if (item.term === 'Subject' && headings)
+        return <SubjectHeadings key='subjects' headings={headings} />;
 
       return [
         <dt key={`term-${item.term}`}>{item.term}</dt>,

@@ -1,5 +1,5 @@
 /* global window */
-import { ajaxCall } from "@utils";
+import { ajaxCall } from '@utils';
 import {
   updateBibPage,
   updateSearchResultsPage,
@@ -7,9 +7,9 @@ import {
   resetState,
   updateLastLoaded,
   updateAccountPage,
-} from "@Actions";
-import appConfig from "@appConfig";
-import { updateLoadingStatus } from "../actions/Actions";
+} from '@Actions';
+import appConfig from '@appConfig';
+import { updateLoadingStatus } from '../actions/Actions';
 
 const baseUrl = appConfig.baseUrl;
 
@@ -22,23 +22,23 @@ const baseUrl = appConfig.baseUrl;
 const routes = {
   bib: {
     action: updateBibPage,
-    path: "bib",
-    params: "/:bibId",
+    path: 'bib',
+    params: '/:bibId',
   },
   search: {
     action: updateSearchResultsPage,
-    path: "search",
-    params: "",
+    path: 'search',
+    params: '',
   },
   holdRequest: {
     action: updateHoldRequestPage,
-    path: "hold/request",
-    params: "/:bibId-:itemId",
+    path: 'hold/request',
+    params: '/:bibId-:itemId',
   },
   account: {
     action: updateAccountPage,
-    path: "account",
-    params: "/:content?",
+    path: 'account',
+    params: '/:content?',
   },
 };
 
@@ -66,7 +66,7 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname, search } = location;
-  if (pathname === `${baseUrl}/` || pathname.includes("/account")) {
+  if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
   }
 
@@ -75,7 +75,7 @@ function loadDataForRoutes(location, dispatch) {
     return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!matchingPath || pathname.match("edd"))
+  if (!matchingPath || pathname.match('edd'))
     return new Promise(() => dispatch(updateLoadingStatus(false)));
 
   const pathType = matchingPath[0];
@@ -83,7 +83,7 @@ function loadDataForRoutes(location, dispatch) {
   const errorCb = (error) => {
     console.error(
       `Error attempting to make ajax request for ${pathType}`,
-      error
+      error,
     );
   };
 
@@ -94,7 +94,7 @@ function loadDataForRoutes(location, dispatch) {
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
-    errorCb
+    errorCb,
   )
     .then((resp) => {
       if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));

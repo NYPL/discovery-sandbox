@@ -1,25 +1,25 @@
-const path = require("path");
-const webpack = require("webpack");
-const merge = require("webpack-merge");
-const CleanBuild = require("clean-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const sassPaths = require("@nypl/design-toolkit").includePaths;
-const globImporter = require("node-sass-glob-importer");
-const Visualizer = require("webpack-visualizer-plugin");
+const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const CleanBuild = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const sassPaths = require('@nypl/design-toolkit').includePaths;
+const globImporter = require('node-sass-glob-importer');
+const Visualizer = require('webpack-visualizer-plugin');
 // TODO: This would ideally not be set in this file
 // Add this to a ticket for future refactor
 // The purpose of this is to allow for a local run of npm run dist
 // In order to test a production build on a local machine.
-require("dotenv").config();
+require('dotenv').config();
 // const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 // References the applications root path
 const ROOT_PATH = path.resolve(__dirname);
 
 // Sets the variable as either development or production
-const ENV = process.env.NODE_ENV || "development";
+const ENV = process.env.NODE_ENV || 'development';
 // Sets appEnv so the the header component will point to the search app on either Dev or Prod
-const appEnv = process.env.APP_ENV ? process.env.APP_ENV : "production";
+const appEnv = process.env.APP_ENV ? process.env.APP_ENV : 'production';
 
 // Holds the common settings for any environment
 const commonSettings = {
@@ -28,42 +28,42 @@ const commonSettings = {
   // React App that is to be rendered.
   entry: {
     app: [
-      "core-js/stable",
-      "regenerator-runtime/runtime",
-      path.resolve(ROOT_PATH, "src/client/App.jsx"),
+      'core-js/stable',
+      'regenerator-runtime/runtime',
+      path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: ['.js', '.jsx'],
   },
   output: {
     // Sets the output path to ROOT_PATH/dist
-    path: path.resolve(ROOT_PATH, "dist"),
+    path: path.resolve(ROOT_PATH, 'dist'),
     // Sets the name of the bundled application files
     // Additionally we can isolate vendor files as well
-    filename: "bundle.js",
+    filename: 'bundle.js',
   },
   plugins: [
     // Cleans the Dist folder after every build.
     // Alternately, we can run rm -rf dist/ as
     // part of the package.json scripts.
-    new CleanBuild(["dist"]),
+    new CleanBuild(['dist']),
     new MiniCssExtractPlugin({
-      filename: "styles.css",
+      filename: 'styles.css',
     }),
     new webpack.DefinePlugin({
-      loadA11y: process.env.loadA11y || false,
-      appEnv: JSON.stringify(appEnv),
-      "process.env": {
+      'loadA11y': process.env.loadA11y || false,
+      'appEnv': JSON.stringify(appEnv),
+      'process.env': {
         SHEP_API: JSON.stringify(process.env.SHEP_API),
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
         LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
         CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
         RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.RECAP_CLOSED_LOCATIONS
+          process.env.RECAP_CLOSED_LOCATIONS,
         ),
         NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
-          process.env.NON_RECAP_CLOSED_LOCATIONS
+          process.env.NON_RECAP_CLOSED_LOCATIONS,
         ),
         OPEN_LOCATIONS: JSON.stringify(process.env.OPEN_LOCATIONS),
         DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
@@ -112,8 +112,8 @@ const commonSettings = {
     // is set (default false)
   ].concat(
     process.env.BUNDLE_ANALYZER
-      ? new Visualizer({ filename: "./bundle-analysis.html" })
-      : []
+      ? new Visualizer({ filename: './bundle-analysis.html' })
+      : [],
   ),
 };
 
@@ -127,26 +127,26 @@ const commonSettings = {
  */
 // Need to configure webpack-dev-server and hot-reload
 // module correctly.
-if (ENV === "development") {
+if (ENV === 'development') {
   // Load dev depencies:
-  console.log("webpack dev");
+  console.log('webpack dev');
 
   module.exports = merge(commonSettings, {
-    mode: "development",
-    devtool: "inline-source-map",
+    mode: 'development',
+    devtool: 'inline-source-map',
     entry: {
       app: [
-        "webpack-dev-server/client?http://localhost:3000",
-        "webpack/hot/only-dev-server",
+        'webpack-dev-server/client?http://localhost:3000',
+        'webpack/hot/only-dev-server',
       ],
     },
     output: {
-      publicPath: "http://localhost:3000/",
+      publicPath: 'http://localhost:3000/',
     },
     plugins: [new webpack.HotModuleReplacementPlugin()],
     resolve: {
-      modules: ["node_modules"],
-      extensions: [".js", ".jsx", ".scss", ".png"],
+      modules: ['node_modules'],
+      extensions: ['.js', '.jsx', '.scss', '.png'],
     },
     module: {
       rules: [
@@ -154,36 +154,36 @@ if (ENV === "development") {
           test: /\.(png|jpe?g|gif)$/i,
           use: [
             {
-              loader: "file-loader",
+              loader: 'file-loader',
             },
           ],
-          include: path.resolve(ROOT_PATH, "src"),
+          include: path.resolve(ROOT_PATH, 'src'),
           exclude: /node_modules/,
         },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
           use: {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ["@babel/preset-env"],
+              presets: ['@babel/preset-env'],
             },
           },
         },
         {
           test: /\.scss?$/,
           use: [
-            "style-loader",
-            "css-loader",
+            'style-loader',
+            'css-loader',
             {
-              loader: "sass-loader",
+              loader: 'sass-loader',
               options: {
                 includePaths: sassPaths,
                 importer: globImporter(),
               },
             },
           ],
-          include: path.resolve(ROOT_PATH, "src"),
+          include: path.resolve(ROOT_PATH, 'src'),
         },
       ],
     },
@@ -198,10 +198,10 @@ if (ENV === "development") {
  * additional production specific settings.
  *
  */
-if (ENV === "production") {
+if (ENV === 'production') {
   module.exports = merge(commonSettings, {
-    mode: "production",
-    devtool: "source-map",
+    mode: 'production',
+    devtool: 'source-map',
     optimization: {
       minimize: true,
     },
@@ -209,26 +209,26 @@ if (ENV === "production") {
       rules: [
         {
           test: /\.(png|jpe?g|gif)$/i,
-          include: path.resolve(ROOT_PATH, "src"),
+          include: path.resolve(ROOT_PATH, 'src'),
           use: [
             {
-              loader: "file-loader",
+              loader: 'file-loader',
             },
           ],
         },
         {
           test: /\.jsx?$/,
           exclude: /(node_modules|bower_components)/,
-          use: "babel-loader",
+          use: 'babel-loader',
         },
         {
           test: /\.scss$/,
-          include: path.resolve(ROOT_PATH, "src"),
+          include: path.resolve(ROOT_PATH, 'src'),
           use: [
             MiniCssExtractPlugin.loader,
-            "css-loader",
+            'css-loader',
             {
-              loader: "sass-loader",
+              loader: 'sass-loader',
               options: {
                 sourceMap: true,
                 includePaths: sassPaths,
@@ -241,18 +241,18 @@ if (ENV === "production") {
     },
     plugins: [
       new webpack.DefinePlugin({
-        "process.env": {
-          NODE_ENV: JSON.stringify("production"),
+        'process.env': {
+          NODE_ENV: JSON.stringify('production'),
           GA_ENV: JSON.stringify(process.env.GA_ENV),
           SHEP_API: process.env.SHEP_API,
           LOGIN_URL: process.env.LOGIN_URL,
           LEGACY_BASE_URL: process.env.LEGACY_BASE_URL,
           CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
           RECAP_CLOSED_LOCATIONS: JSON.stringify(
-            process.env.RECAP_CLOSED_LOCATIONS
+            process.env.RECAP_CLOSED_LOCATIONS,
           ),
           NON_RECAP_CLOSED_LOCATIONS: JSON.stringify(
-            process.env.NON_RECAP_CLOSED_LOCATIONS
+            process.env.NON_RECAP_CLOSED_LOCATIONS,
           ),
           DISPLAY_TITLE: JSON.stringify(process.env.DISPLAY_TITLE),
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),

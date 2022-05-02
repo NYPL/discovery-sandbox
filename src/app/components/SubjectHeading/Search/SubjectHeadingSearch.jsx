@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
-import Autosuggest from "react-autosuggest";
+import React from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import Autosuggest from 'react-autosuggest';
 
-import appConfig from "../../../data/appConfig";
+import appConfig from '../../../data/appConfig';
 
 class SubjectHeadingSearch extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class SubjectHeadingSearch extends React.Component {
 
     this.state = {
       suggestions: [],
-      userInput: "",
+      userInput: '',
     };
 
     this.onChange = this.onChange.bind(this);
@@ -34,12 +34,12 @@ class SubjectHeadingSearch extends React.Component {
     const apiCall = () => {
       if (this.state.userInput) {
         return axios(
-          `${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`
+          `${appConfig.baseUrl}/api/subjectHeadings/autosuggest?query=${this.state.userInput}`,
         )
           .then((res) => {
             const numberOfResults = res.data.autosuggest.length;
             this.props.setContentPrimaryStyle({
-              "min-height": `${Math.max(numberOfResults, 12) * 50}px`,
+              'min-height': `${Math.max(numberOfResults, 12) * 50}px`,
             });
             if (res.data.request.query.trim() === this.state.userInput.trim()) {
               this.setState({
@@ -66,7 +66,7 @@ class SubjectHeadingSearch extends React.Component {
   }
 
   generatePath(item) {
-    const subjectComponent = item.class === "subject_component";
+    const subjectComponent = item.class === 'subject_component';
     const base = appConfig.baseUrl;
     let path;
 
@@ -99,12 +99,12 @@ class SubjectHeadingSearch extends React.Component {
         onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
         getSuggestionValue={(suggestion) => suggestion.label}
         inputProps={{
-          placeholder: "Enter a Subject Heading Term",
+          placeholder: 'Enter a Subject Heading Term',
           value: userInput,
           onChange,
         }}
         renderSuggestion={(suggestion) => {
-          const subjectComponent = suggestion.class === "subject_component";
+          const subjectComponent = suggestion.class === 'subject_component';
 
           return (
             <div>
@@ -112,9 +112,9 @@ class SubjectHeadingSearch extends React.Component {
                 {subjectComponent ? null : <em>Subject: </em>}
                 <span>{suggestion.label}</span>
               </span>
-              <div className="aggregateBibCount">
+              <div className='aggregateBibCount'>
                 {suggestion.aggregate_bib_count} title
-                {suggestion.aggregate_bib_count > 1 ? "s" : ""}
+                {suggestion.aggregate_bib_count > 1 ? 's' : ''}
               </div>
             </div>
           );

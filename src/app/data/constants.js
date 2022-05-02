@@ -1,43 +1,43 @@
-import appConfig from "@appConfig";
+import appConfig from '@appConfig';
 
 // breakpoints ordered by `maxValue` ascending
 const breakpoints = [
   {
     maxValue: 490,
-    media: "mobile",
+    media: 'mobile',
   },
   {
     maxValue: 600,
-    media: "tabletPortrait",
+    media: 'tabletPortrait',
   },
   {
     maxValue: 870,
-    media: "tablet",
+    media: 'tablet',
   },
 ];
 
 const itemFilters = [
   {
-    type: "location",
+    type: 'location',
     retrieveOption: (item) => ({
       label: item.location,
-      id: item.holdingLocationCode.startsWith("loc:rc")
-        ? "offsite"
+      id: item.holdingLocationCode.startsWith('loc:rc')
+        ? 'offsite'
         : item.holdingLocationCode,
     }),
   },
   {
-    type: "format",
+    type: 'format',
     retrieveOption: (item) => ({
-      label: item.format || "",
-      id: item.format || "",
+      label: item.format || '',
+      id: item.format || '',
     }),
   },
   {
-    type: "status",
+    type: 'status',
     retrieveOption: (item) => ({
-      label: item.requestable ? "Requestable" : item.status.prefLabel,
-      id: item.requestable ? "requestable" : item.status["@id"],
+      label: item.requestable ? 'Requestable' : item.status.prefLabel,
+      id: item.requestable ? 'requestable' : item.status['@id'],
     }),
   },
 ];
@@ -47,9 +47,9 @@ const searchResultItemsListLimit = 3;
 const itemBatchSize = appConfig.itemBatchSize;
 
 const noticePreferenceMapping = {
-  z: "Email",
-  p: "Telephone",
-  "-": "None",
+  'z': 'Email',
+  'p': 'Telephone',
+  '-': 'None',
 };
 
 const CLOSED_LOCATION_REGEX =

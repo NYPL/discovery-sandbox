@@ -38,7 +38,7 @@ ItemSorter.sortableShelfMark = (shelfMark) => {
     shelfMark
       .replace(reg, replace)
       // Collapse redundant whitespace:
-      .replace(/\s{2,}/g, " ")
+      .replace(/\s{2,}/g, ' ')
   );
 };
 
@@ -46,7 +46,7 @@ ItemSorter.sortableShelfMark = (shelfMark) => {
  * Returns a '0' left-padded string to default length of 6
  */
 ItemSorter.zeroPadString = (s, padLen = 6) =>
-  new Array(Math.max(0, padLen - s.length + 1)).join("0") + s;
+  new Array(Math.max(0, padLen - s.length + 1)).join('0') + s;
 
 /**
  * Add sortableShelfMark
@@ -59,7 +59,7 @@ ItemSorter.itemWithSortableShelfMark = (item) => {
     if (item.uri) {
       shelfMarkSort = `b${item.uri}`;
     } else {
-      shelfMarkSort = "c";
+      shelfMarkSort = 'c';
     }
   } else {
     // order by call number, put these items first

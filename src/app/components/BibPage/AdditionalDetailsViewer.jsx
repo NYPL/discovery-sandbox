@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import DefinitionList from "./DefinitionList";
+import React from 'react';
+import PropTypes from 'prop-types';
+import DefinitionList from './DefinitionList';
 
 class AdditionalDetailsViewer extends React.Component {
   constructor(props) {
@@ -38,15 +38,15 @@ class AdditionalDetailsViewer extends React.Component {
       (field) => ({
         term: field.label,
         definition: field.values.map(this.definitionItem),
-      })
+      }),
     );
 
     return (
       <div>
         {this.state.display && annotatedMarcDetails ? (
           <div
-            className="additionalDetails"
-            style={{ padding: "5px 20px", position: "relative", left: "-20px" }}
+            className='additionalDetails'
+            style={{ padding: '5px 20px', position: 'relative', left: '-20px' }}
           >
             <DefinitionList data={annotatedMarcDetails} />
           </div>

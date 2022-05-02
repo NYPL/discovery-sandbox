@@ -1,12 +1,12 @@
-import { getReqParams } from "../../app/utils/utils";
-import nyplApiClient from "../routes/nyplApiClient";
-import logger from "../../../logger";
-import SubjectHeadings from "./SubjectHeadings";
+import { getReqParams } from '../../app/utils/utils';
+import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
+import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = (query) =>
   nyplApiClient()
     .then((client) =>
-      client.get(`/discovery/resources${query}`, { cache: false })
+      client.get(`/discovery/resources${query}`, { cache: false }),
     )
     .catch(console.error);
 
@@ -18,29 +18,29 @@ function fetchBibs(
   subjectLiteral,
   shepApiBibCount,
   cb,
-  errorcb
+  errorcb,
 ) {
   const bibResultsQuery = `?filters[subjectLiteral]=${encodeURIComponent(
-    subjectLiteral
+    subjectLiteral,
   )}&sort=${sortBy}&sort_direction=${order}&page=${page}&per_page=${perPage}`;
 
   return nyplApiClientCall(bibResultsQuery)
     .then((response) => {
       const results = response;
       if (
-        page === "1" &&
+        page === '1' &&
         parseInt(shepApiBibCount, 10) !== results.totalResults
       ) {
         logger.warning(
-          `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`
+          `SHEP/Discovery bib count discrepancy for subject heading ${subjectLiteral}: SHEP API- ${shepApiBibCount}, Discovery API- ${results.totalResults}`,
         );
       }
       cb(results);
     })
     .catch((error) => {
       logger.error(
-        "Error making ajax SubjectHeading bibs call in fetchBibs function",
-        error
+        'Error making ajax SubjectHeading bibs call in fetchBibs function',
+        error,
       );
       errorcb(error);
     });
@@ -62,14 +62,14 @@ const bibsAjax = (req, res) => {
         return res.json({
           newResults,
           next_url: response.data.next_url,
-          bibsSource: "shepApi",
+          bibsSource: 'shepApi',
           page,
           totalResults: shepApiBibCount,
         });
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.error("error: ", err);
+        console.error('error: ', err);
       });
   };
 
@@ -83,12 +83,12 @@ const bibsAjax = (req, res) => {
 
   const processData = (data) => {
     const { totalResults } = data;
-    if (bibsSource === "discoveryApi" || useDiscoveryResults(totalResults)) {
+    if (bibsSource === 'discoveryApi' || useDiscoveryResults(totalResults)) {
       return res.json({
         results: data.itemListElement,
         page,
         totalResults,
-        bibsSource: "discoveryApi",
+        bibsSource: 'discoveryApi',
       });
     }
 
@@ -103,7 +103,7 @@ const bibsAjax = (req, res) => {
     subjectLiteral,
     shepApiBibCount,
     (data) => processData(data),
-    (error) => res.json(error)
+    (error) => res.json(error),
   );
 };
 

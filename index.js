@@ -1,6 +1,6 @@
-require("rootpath")();
-require("@babel/register");
+require('rootpath')();
+require('@babel/register');
 
-require("dotenv").config({ path: ".env" });
+require('dotenv').config({ path: '.env' });
 
-module.exports = require("./server");
+module.exports = require('./server');

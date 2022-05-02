@@ -1,15 +1,15 @@
 /* global window, document */
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Button,
   ButtonTypes,
   Modal,
   Card,
-} from "@nypl/design-system-react-components";
+} from '@nypl/design-system-react-components';
 
-import { logOutFromEncoreAndCatalogIn } from "../../utils/logoutUtils";
-import { deleteCookie } from "../../utils/cookieUtils";
+import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
+import { deleteCookie } from '../../utils/cookieUtils';
 
 const TimedLogoutModal = (props) => {
   const { stayLoggedIn, baseUrl } = props;
@@ -18,7 +18,7 @@ const TimedLogoutModal = (props) => {
 
   const logOutAndRedirect = () => {
     logOutFromEncoreAndCatalogIn(() => {
-      deleteCookie("accountPageExp");
+      deleteCookie('accountPageExp');
       window.location.replace(baseUrl);
     });
   };
@@ -27,15 +27,15 @@ const TimedLogoutModal = (props) => {
   let seconds = 0;
 
   if (
-    typeof document !== "undefined" &&
-    !document.cookie.includes("accountPageExp")
+    typeof document !== 'undefined' &&
+    !document.cookie.includes('accountPageExp')
   ) {
     logOutAndRedirect();
-  } else if (typeof document !== "undefined") {
+  } else if (typeof document !== 'undefined') {
     const expTime = document.cookie
-      .split(";")
-      .find((el) => el.includes("accountPageExp"))
-      .split("=")[1];
+      .split(';')
+      .find((el) => el.includes('accountPageExp'))
+      .split('=')[1];
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
 
@@ -57,27 +57,27 @@ const TimedLogoutModal = (props) => {
   if (!open) return null;
 
   return (
-    <Modal open className="research-modal timed-logout">
-      <div className="research-modal__content">
+    <Modal open className='research-modal timed-logout'>
+      <div className='research-modal__content'>
         <p>
           Your session is about to expire
-          <span className="time-display">
-            {`${minutes}:${seconds < 10 ? "0" : ""}${seconds}`}
+          <span className='time-display'>
+            {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
           </span>
         </p>
         <hr />
         Do you want to stay logged in?
-        <div className="button-container">
+        <div className='button-container'>
           <Button
             buttonType={ButtonTypes.Secondary}
-            className="button"
+            className='button'
             onClick={logOutAndRedirect}
           >
             Log off
           </Button>
           <Button
             buttonType={ButtonTypes.Primary}
-            className="button"
+            className='button'
             onClick={stayLoggedIn}
           >
             Stay logged in

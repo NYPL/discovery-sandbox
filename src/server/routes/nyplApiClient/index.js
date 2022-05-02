@@ -1,22 +1,22 @@
-import NyplApiClient from "@nypl/nypl-data-api-client";
-import aws from "aws-sdk";
+import NyplApiClient from '@nypl/nypl-data-api-client';
+import aws from 'aws-sdk';
 
-import config from "../../../app/data/appConfig";
-import logger from "../../../../logger";
+import config from '../../../app/data/appConfig';
+import logger from '../../../../logger';
 
-const appEnvironment = process.env.APP_ENV || "production";
-const kmsEnvironment = process.env.KMS_ENV || "encrypted";
+const appEnvironment = process.env.APP_ENV || 'production';
+const kmsEnvironment = process.env.KMS_ENV || 'encrypted';
 let decryptKMS;
 let kms;
 
-if (kmsEnvironment === "encrypted") {
+if (kmsEnvironment === 'encrypted') {
   kms = new aws.KMS({
-    region: "us-east-1",
+    region: 'us-east-1',
   });
 
   decryptKMS = (key) => {
     const params = {
-      CiphertextBlob: new Buffer(key, "base64"),
+      CiphertextBlob: new Buffer(key, 'base64'),
     };
 
     return new Promise((resolve, reject) => {
@@ -38,7 +38,7 @@ const clientSecret =
 const keys = [clientId, clientSecret];
 const CACHE = { clients: [] };
 
-function nyplApiClient(options = { apiName: "discovery" }) {
+function nyplApiClient(options = { apiName: 'discovery' }) {
   const { apiName } = options;
   if (CACHE.clients[apiName]) {
     return Promise.resolve(CACHE.clients[apiName]);
@@ -46,7 +46,7 @@ function nyplApiClient(options = { apiName: "discovery" }) {
 
   const baseUrl = config.api[apiName][appEnvironment];
 
-  if (kmsEnvironment === "encrypted") {
+  if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {
       Promise.all(keys.map(decryptKMS))
         .then(([decryptedClientId, decryptedClientSecret]) => {
@@ -64,8 +64,8 @@ function nyplApiClient(options = { apiName: "discovery" }) {
           resolve(nyplApiClient);
         })
         .catch((error) => {
-          logger.error("ERROR trying to decrypt using KMS.", error);
-          reject("ERROR trying to decrypt using KMS.", error);
+          logger.error('ERROR trying to decrypt using KMS.', error);
+          reject('ERROR trying to decrypt using KMS.', error);
         });
     });
   }

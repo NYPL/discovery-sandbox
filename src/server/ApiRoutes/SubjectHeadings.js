@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios from 'axios';
 
-import Bib from "./Bib";
-import logger from "../../../logger";
-import appConfig from "../../app/data/appConfig";
+import Bib from './Bib';
+import logger from '../../../logger';
+import appConfig from '../../app/data/appConfig';
 
 const convertShepBibsToDiscoveryBibs = (response) =>
   Promise.all(
@@ -10,17 +10,17 @@ const convertShepBibsToDiscoveryBibs = (response) =>
       // Determine relevant id prefix
       const institutionCode =
         {
-          "recap-pul": "pb",
-          "recap-cul": "cb",
-          "recap-hl": "hb",
-        }[bib.institution] || "b";
+          'recap-pul': 'pb',
+          'recap-cul': 'cb',
+          'recap-hl': 'hb',
+        }[bib.institution] || 'b';
 
-      const prefixedIdentifier = [institutionCode, bib.bnumber].join("");
+      const prefixedIdentifier = [institutionCode, bib.bnumber].join('');
 
       return Bib.nyplApiClientCall(prefixedIdentifier).then((resp) =>
-        resp.status === 404 ? bib : resp
+        resp.status === 404 ? bib : resp,
       );
-    })
+    }),
   ).then((bibs) => {
     // Build "next" pagination URL based on SHEP API next_url..
     // SHEP API next_url will be of form:
@@ -30,7 +30,7 @@ const convertShepBibsToDiscoveryBibs = (response) =>
     const nextUrl = response.data.next_url
       ? response.data.next_url.replace(
           /.*?subject_headings\//,
-          `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/`
+          `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/`,
         )
       : null;
 
@@ -56,7 +56,7 @@ const shepApiCall = (path, queryParams) => {
   logger.debug(`Making shep api call: ${appConfig.shepApi}${path}`);
 
   return axios({
-    method: "GET",
+    method: 'GET',
     url: `${appConfig.shepApi}${path}`,
     params: queryParams,
   }).then((response) => {
@@ -86,7 +86,7 @@ const proxyRequest = (req, res) => {
       if (
         error.data &&
         error.headers &&
-        /application\/json/i.test(error.headers["content-type"])
+        /application\/json/i.test(error.headers['content-type'])
       ) {
         payload = Object.assign(payload, error.data);
       }

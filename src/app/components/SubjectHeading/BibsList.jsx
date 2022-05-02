@@ -1,13 +1,13 @@
 /* global window */
-import React from "react";
-import PropTypes from "prop-types";
-import Pagination from "../Pagination/Pagination";
-import ResultsList from "../ResultsList/ResultsList";
-import LocalLoadingLayer from "./LocalLoadingLayer";
+import React from 'react';
+import PropTypes from 'prop-types';
+import Pagination from '../Pagination/Pagination';
+import ResultsList from '../ResultsList/ResultsList';
+import LocalLoadingLayer from './LocalLoadingLayer';
 /* eslint-disable import/first, import/no-unresolved, import/extensions */
-import Sorter from "@Sorter";
-import appConfig from "@appConfig";
-import CachedAxios from "../../utils/CachedAxios";
+import Sorter from '@Sorter';
+import appConfig from '@appConfig';
+import CachedAxios from '../../utils/CachedAxios';
 /* eslint-enable import/first, import/no-unresolved, import/extensions */
 
 class BibsList extends React.Component {
@@ -19,8 +19,8 @@ class BibsList extends React.Component {
       componentLoading: true,
       bibsSource: null,
     };
-    this.sort = context.router.location.query.sort || "date";
-    this.sortDirection = context.router.location.query.sort_direction || "desc";
+    this.sort = context.router.location.query.sort || 'date';
+    this.sortDirection = context.router.location.query.sort_direction || 'desc';
     this.fetchBibsFromShep = this.fetchBibsFromShep.bind(this);
     this.updateBibPage = this.updateBibPage.bind(this);
     this.lastBib = this.lastBib.bind(this);
@@ -44,8 +44,8 @@ class BibsList extends React.Component {
     return this.cachedAxios
       .call(
         `${appConfig.baseUrl}/api/subjectHeading/${encodeURIComponent(
-          label
-        )}?&${stringifiedSortParams}`
+          label,
+        )}?&${stringifiedSortParams}`,
       )
       .then((res) => {
         const { results, bibsSource, page } = res.data;
@@ -56,10 +56,10 @@ class BibsList extends React.Component {
           componentLoading: false,
           totalResults,
         };
-        if (bibsSource === "discoveryApi") {
+        if (bibsSource === 'discoveryApi') {
           newState.results = results;
           this.setState(newState, cb);
-        } else if (bibsSource === "shepApi") {
+        } else if (bibsSource === 'shepApi') {
           newState.nextUrl = res.data.next_url;
           this.setState((prevState) => {
             newState.results = prevState.results.concat(res.data.newResults);
@@ -69,7 +69,7 @@ class BibsList extends React.Component {
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.error("error: ", err);
+        console.error('error: ', err);
         this.setState({
           componentLoading: false,
         });
@@ -92,7 +92,7 @@ class BibsList extends React.Component {
     const { bibsSource, results, totalResults } = this.state;
     const { perPage } = this;
     const fetchedBibsLength = results.length;
-    if (bibsSource === "shepApi") {
+    if (bibsSource === 'shepApi') {
       if (
         fetchedBibsLength < totalResults &&
         newPage * perPage > fetchedBibsLength
@@ -103,7 +103,7 @@ class BibsList extends React.Component {
           {
             bibPage: newPage,
           },
-          () => window.scrollTo(0, 300)
+          () => window.scrollTo(0, 300),
         );
       }
       return;
@@ -114,7 +114,8 @@ class BibsList extends React.Component {
       {
         componentLoading: true,
       },
-      () => this.fetchBibs(stringifiedSortParams, () => window.scrollTo(0, 300))
+      () =>
+        this.fetchBibs(stringifiedSortParams, () => window.scrollTo(0, 300)),
     );
   }
 
@@ -132,12 +133,12 @@ class BibsList extends React.Component {
             componentLoading: false,
             bibPage: newPage,
           },
-          () => window.scrollTo(0, 300)
+          () => window.scrollTo(0, 300),
         );
       })
       .catch((err) => {
         // eslint-disable-next-line no-console
-        console.error("error: ", err);
+        console.error('error: ', err);
         this.setState({
           componentLoading: false,
         });
@@ -148,7 +149,7 @@ class BibsList extends React.Component {
     const { router } = this.context;
 
     router.push(
-      `${router.location.pathname}?sort=${sort}&sort_direction=${sortDirection}`
+      `${router.location.pathname}?sort=${sort}&sort_direction=${sortDirection}`,
     );
   }
 
@@ -159,7 +160,7 @@ class BibsList extends React.Component {
 
     const paginationProps = {
       perPage: this.perPage,
-      ariaControls: "nypl-results-list",
+      ariaControls: 'nypl-results-list',
       updatePage: this.updateBibPage,
       total: parseInt(totalResults, 10),
       page: bibPage,
@@ -180,13 +181,13 @@ class BibsList extends React.Component {
     if (this.state.componentLoading) {
       return (
         <LocalLoadingLayer
-          message="Loading More Titles"
-          classNames="bibsList"
+          message='Loading More Titles'
+          classNames='bibsList'
         />
       );
     }
     const bibResults =
-      bibsSource === "discoveryApi"
+      bibsSource === 'discoveryApi'
         ? results
         : results.slice(this.firstBib(), this.lastBib());
 
@@ -195,24 +196,24 @@ class BibsList extends React.Component {
     const h3Text = `Viewing ${this.firstBib() + 1} - ${
       Number.isInteger(numberOfResults)
         ? `${this.lastBib()} of ${numberOfResults} item${
-            numberOfResults === 1 ? "" : "s"
+            numberOfResults === 1 ? '' : 's'
           }`
-        : ""
+        : ''
     }`;
 
     return (
       <div
-        className="nypl-column-half bibsList"
-        aria-label="Titles related to this Subject Heading"
+        className='nypl-column-half bibsList'
+        aria-label='Titles related to this Subject Heading'
       >
-        <h3 id="titles">{h3Text}</h3>
+        <h3 id='titles'>{h3Text}</h3>
         <Sorter
-          page="shepBibs"
+          page='shepBibs'
           sortOptions={[
-            { val: "date_desc", label: "date (new to old)" },
-            { val: "date_asc", label: "date (old to new)" },
-            { val: "title_asc", label: "title (a - z)" },
-            { val: "title_desc", label: "title (z - a)" },
+            { val: 'date_desc', label: 'date (new to old)' },
+            { val: 'date_asc', label: 'date (old to new)' },
+            { val: 'title_asc', label: 'title (a - z)' },
+            { val: 'title_desc', label: 'title (z - a)' },
           ]}
           sortBy={`${sort}_${sortDirection}`}
           updateResults={this.changeBibSorting}
@@ -220,7 +221,7 @@ class BibsList extends React.Component {
         {bibResults ? (
           <ResultsList results={bibResults} subjectHeadingShow />
         ) : (
-          <div className="nypl-column-half bibsList">
+          <div className='nypl-column-half bibsList'>
             There are no titles for this subject heading.
           </div>
         )}

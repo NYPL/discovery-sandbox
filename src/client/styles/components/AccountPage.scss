@@ -82,12 +82,12 @@
     }
   }
 
-  .tabbed ul[role="tablist"] {
+  .tabbed ul[role='tablist'] {
     & > li {
       border-color: #0576d3;
     }
 
-    & > li > a[aria-selected="true"] {
+    & > li > a[aria-selected='true'] {
       color: #0576d3;
     }
 
@@ -268,7 +268,7 @@
 }
 
 @media (max-width: 600px) {
-  .nypl-patron-page .tabbed ul[role="tablist"] {
+  .nypl-patron-page .tabbed ul[role='tablist'] {
     & > li:last-of-type {
       border-bottom: 1px solid #0576d3;
     }
@@ -317,31 +317,31 @@
 
   .items {
     td:nth-of-type(1):before {
-      content: "Title";
+      content: 'Title';
     }
     td:nth-of-type(2):before {
-      content: "Barcode";
+      content: 'Barcode';
     }
     td:nth-of-type(3):before {
-      content: "Status";
+      content: 'Status';
     }
     td:nth-of-type(4):before {
-      content: "Call Number";
+      content: 'Call Number';
     }
   }
 
   .holds {
     td:nth-of-type(1):before {
-      content: "Title";
+      content: 'Title';
     }
     td:nth-of-type(2):before {
-      content: "Status";
+      content: 'Status';
     }
     td:nth-of-type(3):before {
-      content: "Pickup Location";
+      content: 'Pickup Location';
     }
     td:nth-of-type(4):before {
-      content: "Cancle If Not Filled By";
+      content: 'Cancle If Not Filled By';
     }
   }
 

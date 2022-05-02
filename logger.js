@@ -1,4 +1,4 @@
-import winston from "winston";
+import winston from 'winston';
 // Supress error handling
 winston.emitErrs = false;
 // Set default NYPL agreed upon log levels
@@ -17,24 +17,24 @@ const nyplLogLevels = {
 
 const getLogLevelCode = (levelString) => {
   switch (levelString) {
-    case "emergency":
+    case 'emergency':
       return 0;
-    case "alert":
+    case 'alert':
       return 1;
-    case "critical":
+    case 'critical':
       return 2;
-    case "error":
+    case 'error':
       return 3;
-    case "warning":
+    case 'warning':
       return 4;
-    case "notice":
+    case 'notice':
       return 5;
-    case "info":
+    case 'info':
       return 6;
-    case "debug":
+    case 'debug':
       return 7;
     default:
-      return "n/a";
+      return 'n/a';
   }
 };
 
@@ -71,11 +71,11 @@ const formatter = (options) => {
 
 const loggerTransports = [
   new winston.transports.File({
-    filename: "./log/discovery-ui.log",
+    filename: './log/discovery-ui.log',
     // winston should not attempt to catch and log uncaught exceptions when
     // running test suite, as that causes them to be hidden (and causes mocha
     // to return exit code 0, causing the test suite to appear as passed).
-    handleExceptions: process.env.NODE_ENV !== "test",
+    handleExceptions: process.env.NODE_ENV !== 'test',
     maxsize: 5242880, // 5MB
     maxFiles: 5,
     colorize: false,
@@ -86,7 +86,7 @@ const loggerTransports = [
 ];
 
 // spewing logs while running tests is annoying
-if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== 'test') {
   loggerTransports.push(
     new winston.transports.Console({
       handleExceptions: true,
@@ -95,7 +95,7 @@ if (process.env.NODE_ENV !== "test") {
       colorize: true,
       timestamp,
       formatter,
-    })
+    }),
   );
 }
 

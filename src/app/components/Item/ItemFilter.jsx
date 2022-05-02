@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { Checkbox, Button, Icon } from "@nypl/design-system-react-components";
-import FocusTrap from "focus-trap-react";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
+import FocusTrap from 'focus-trap-react';
 
-import { isOptionSelected } from "../../utils/utils";
+import { isOptionSelected } from '../../utils/utils';
 
 export const parseDistinctOptions = (options) =>
   Array.from(
@@ -12,8 +12,8 @@ export const parseDistinctOptions = (options) =>
         if (Array.isArray(option.label))
           return optionLabels.concat(option.label);
         return optionLabels.concat([option.label]);
-      }, [])
-    )
+      }, []),
+    ),
   ).map((label) => ({
     id: label,
     label,
@@ -55,7 +55,7 @@ const ItemFilter = ({
       const previousSelection = updatedSelectedFilters[filter];
       updatedSelectedFilters[filter] = Array.isArray(previousSelection)
         ? previousSelection.filter(
-            (prevSelection) => prevSelection !== value.id
+            (prevSelection) => prevSelection !== value.id,
           )
         : [];
       return updatedSelectedFilters;
@@ -81,7 +81,7 @@ const ItemFilter = ({
   const thisFilterSelections = initialFilters ? initialFilters[filter] : null;
   const determineNumOfSelections = () => {
     if (!thisFilterSelections) return null;
-    return typeof thisFilterSelections === "string"
+    return typeof thisFilterSelections === 'string'
       ? 1
       : thisFilterSelections.length;
   };
@@ -107,25 +107,25 @@ const ItemFilter = ({
       focusTrapOptions={{
         clickOutsideDeactivates: true,
         onDeactivate: () => {
-          if (!mobile) manageFilterDisplay("none");
+          if (!mobile) manageFilterDisplay('none');
         },
         returnFocusOnDeactivate: false,
       }}
       active={isOpen}
-      className="item-filter"
+      className='item-filter'
     >
       <Button
-        className={`item-filter-button ${open ? " open" : ""}`}
-        buttonType="outline"
+        className={`item-filter-button ${open ? ' open' : ''}`}
+        buttonType='outline'
         onClick={clickHandler}
-        type="button"
+        type='button'
       >
         {filter}
-        {numOfSelections ? ` (${numOfSelections})` : null}{" "}
-        <Icon name={open ? "minus" : "plus"} />
+        {numOfSelections ? ` (${numOfSelections})` : null}{' '}
+        <Icon name={open ? 'minus' : 'plus'} />
       </Button>
       {open ? (
-        <div className="item-filter-content">
+        <div className='item-filter-content'>
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
@@ -141,9 +141,9 @@ const ItemFilter = ({
             ))}
           </fieldset>
           {!mobile ? (
-            <div className="item-filter-buttons">
+            <div className='item-filter-buttons'>
               <Button
-                buttonType="link"
+                buttonType='link'
                 onClick={() => clear()}
                 disabled={!selectedFilters[filter].length}
               >

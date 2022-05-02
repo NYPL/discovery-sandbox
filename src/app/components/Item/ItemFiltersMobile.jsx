@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { Button, Modal, Icon } from "@nypl/design-system-react-components";
-import ItemFilter from "./ItemFilter";
+import { Button, Modal, Icon } from '@nypl/design-system-react-components';
+import ItemFilter from './ItemFilter';
 
-import { itemFilters } from "../../data/constants";
+import { itemFilters } from '../../data/constants';
 
 const ItemFiltersMobile = ({
   options,
@@ -21,8 +21,8 @@ const ItemFiltersMobile = ({
     return (
       <Button
         onClick={() => toggleFilterDisplay(true)}
-        buttonType="outline"
-        className="item-table-filters"
+        buttonType='outline'
+        className='item-table-filters'
       >
         Filters
       </Button>
@@ -40,21 +40,21 @@ const ItemFiltersMobile = ({
   };
 
   return (
-    <Modal buttonType="outline" className="scc-item-filters nypl-ds">
+    <Modal buttonType='outline' className='scc-item-filters nypl-ds'>
       <Button
-        buttonType="link"
+        buttonType='link'
         onClick={goBackAction}
-        className="go-back-button"
-        type="reset"
+        className='go-back-button'
+        type='reset'
       >
-        <Icon name="arrow" iconRotation="rotate-90" />
+        <Icon name='arrow' iconRotation='rotate-90' />
         Go Back
       </Button>
-      <Button className="show-results-button" onClick={showResultsAction}>
+      <Button className='show-results-button' onClick={showResultsAction}>
         Show Results
       </Button>
       <h1>Filters</h1>
-      <div id="item-filters" className="item-table-filters">
+      <div id='item-filters' className='item-table-filters'>
         {itemFilters.map((filter) => (
           <ItemFilter
             filter={filter.type}

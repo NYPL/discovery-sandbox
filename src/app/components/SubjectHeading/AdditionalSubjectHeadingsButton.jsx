@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Link } from "react-router";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
 class AdditionalSubjectHeadingsButton extends React.Component {
   constructor(props) {
@@ -23,21 +23,21 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     if (this.state.hidden) return null;
 
-    const previous = this.props.button === "previous";
+    const previous = this.props.button === 'previous';
 
-    const seeMoreText = text || "See more";
+    const seeMoreText = text || 'See more';
 
     let button;
 
     if (linkUrl) {
       button = (
-        <Link to={linkUrl} className="seeMoreButton toIndex">
+        <Link to={linkUrl} className='seeMoreButton toIndex'>
           {seeMoreText}
         </Link>
       );
-    } else if (this.props.button === "contextMore") {
+    } else if (this.props.button === 'contextMore') {
       button = (
-        <span data={`${text}-${linkUrl}`} className="contextMore">
+        <span data={`${text}-${linkUrl}`} className='contextMore'>
           {seeMoreText}
         </span>
       );
@@ -46,9 +46,9 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         <button
           data={`${text}-${linkUrl}`}
           onClick={this.onClick}
-          className="seeMoreButton"
+          className='seeMoreButton'
         >
-          {previous ? "↑" : "↓"} <em key="seeMoreText">{seeMoreText}</em>
+          {previous ? '↑' : '↓'} <em key='seeMoreText'>{seeMoreText}</em>
           {previous ? null : <br />}
           {previous || noEllipse ? null : <VerticalEllipse />}
         </button>
@@ -64,12 +64,12 @@ class AdditionalSubjectHeadingsButton extends React.Component {
     return (
       <tr
         className={`subjectHeadingRow seeMore ${
-          previous || noEllipse ? "" : "ellipse"
+          previous || noEllipse ? '' : 'ellipse'
         }`}
       >
-        <td className="subjectHeadingsTableCell" colSpan="4">
+        <td className='subjectHeadingsTableCell' colSpan='4'>
           <div
-            className="subjectHeadingLabelInner"
+            className='subjectHeadingLabelInner'
             style={{ marginLeft: `${marginSize * indentation}px` }}
           >
             {content}
@@ -81,10 +81,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 }
 
 const VerticalEllipse = () => (
-  <div className="verticalEllipse">
-    <div className="dot">.</div>
-    <div className="dot">.</div>
-    <div className="dot">.</div>
+  <div className='verticalEllipse'>
+    <div className='dot'>.</div>
+    <div className='dot'>.</div>
+    <div className='dot'>.</div>
   </div>
 );
 

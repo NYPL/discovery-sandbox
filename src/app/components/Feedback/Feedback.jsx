@@ -1,7 +1,7 @@
-import React from "react";
-import PropTypes from "prop-types";
-import FocusTrap from "focus-trap-react";
-import axios from "axios";
+import React from 'react';
+import PropTypes from 'prop-types';
+import FocusTrap from 'focus-trap-react';
+import axios from 'axios';
 import {
   Button,
   ButtonTypes,
@@ -9,14 +9,14 @@ import {
   Label,
   HelperErrorText,
   Link,
-} from "@nypl/design-system-react-components";
+} from '@nypl/design-system-react-components';
 
-import { trackDiscovery } from "../../utils/utils";
-import appConfig from "../../data/appConfig";
+import { trackDiscovery } from '../../utils/utils';
+import appConfig from '../../data/appConfig';
 
 const initialFields = () => ({
-  email: "",
-  feedback: "",
+  email: '',
+  feedback: '',
 });
 
 class Feedback extends React.Component {
@@ -44,18 +44,18 @@ class Feedback extends React.Component {
     const { fields } = this.state;
     if (!fields.feedback && !fields.feedback.length) {
       this.setState({ commentInputError: true }, () =>
-        this.commentText.current.focus()
+        this.commentText.current.focus(),
       );
     } else {
       this.postForm();
-      trackDiscovery("Feedback", "Submit");
+      trackDiscovery('Feedback', 'Submit');
     }
   }
 
   postForm() {
     const { fields } = this.state;
     axios({
-      method: "POST",
+      method: 'POST',
       url: `${appConfig.baseUrl}/api/feedback`,
       data: {
         fields,
@@ -71,16 +71,16 @@ class Feedback extends React.Component {
           success: true,
         });
       })
-      .catch((error) => console.log("Feedback error", error));
+      .catch((error) => console.log('Feedback error', error));
   }
 
   toggleForm() {
-    trackDiscovery("Feedback", "Open");
+    trackDiscovery('Feedback', 'Open');
     this.setState((prevState) => ({ showForm: !prevState.showForm }));
   }
 
   deactivateForm() {
-    trackDiscovery("Feedback", "Close");
+    trackDiscovery('Feedback', 'Close');
     this.setState({ showForm: false, success: false });
   }
 
@@ -99,14 +99,14 @@ class Feedback extends React.Component {
     const { submit } = this.props;
 
     return (
-      <div className="feedback nypl-ds">
+      <div className='feedback nypl-ds'>
         <Button
-          className="feedback-button"
+          className='feedback-button'
           onClick={() => this.toggleForm()}
           attributes={{
-            "aria-haspopup": "true",
-            "aria-expanded": showForm,
-            "aria-controls": "feedback-menu",
+            'aria-haspopup': 'true',
+            'aria-expanded': showForm,
+            'aria-controls': 'feedback-menu',
           }}
           buttonType={ButtonTypes.Secondary}
         >
@@ -120,39 +120,39 @@ class Feedback extends React.Component {
           active={showForm}
         >
           <div
-            role="menu"
-            className={showForm ? "active" : ""}
-            id="feedback-menu"
+            role='menu'
+            className={showForm ? 'active' : ''}
+            id='feedback-menu'
           >
             {!success && (
               <>
                 <h1>We are here to help!</h1>
                 <form
-                  target="hidden_feedback_iframe"
+                  target='hidden_feedback_iframe'
                   onSubmit={this.onSubmitForm}
                 >
                   <div>
-                    <Label htmlFor="feedback-textarea-comment">Comments*</Label>
+                    <Label htmlFor='feedback-textarea-comment'>Comments*</Label>
                     <textarea
-                      id="feedback-textarea-comment"
-                      name="feedback"
+                      id='feedback-textarea-comment'
+                      name='feedback'
                       value={fields.feedback}
                       ref={this.commentText}
-                      rows="8"
-                      aria-required="true"
-                      tabIndex="0"
+                      rows='8'
+                      aria-required='true'
+                      tabIndex='0'
                       onChange={this.handleInputChange}
                     />
                     <HelperErrorText
-                      id="helper-text"
+                      id='helper-text'
                       isError={commentInputError}
                     >
-                      {commentInputError ? "Please fill out this field" : ""}
+                      {commentInputError ? 'Please fill out this field' : ''}
                     </HelperErrorText>
                   </div>
                   <div>
-                    <Label htmlFor="feedback-input-email">
-                      Email{" "}
+                    <Label htmlFor='feedback-input-email'>
+                      Email{' '}
                       <span>
                         (required if you would like a response from us)
                       </span>
@@ -160,30 +160,30 @@ class Feedback extends React.Component {
                     <Input
                       required
                       attributes={{
-                        name: "email",
+                        name: 'email',
                         onChange: this.handleInputChange,
                         ref: this.emailInput,
                       }}
-                      id="feedback-input-email"
-                      type="email"
+                      id='feedback-input-email'
+                      type='email'
                       value={fields.email}
                     />
                   </div>
-                  <div className="privacy-policy">
+                  <div className='privacy-policy'>
                     <Link
-                      href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
-                      target="_blank"
+                      href='https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy'
+                      target='_blank'
                     >
                       Privacy Policy
                     </Link>
                   </div>
                   <Button
-                    type="reset"
-                    className={`cancel-button ${!showForm ? "hidden" : ""}`}
+                    type='reset'
+                    className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={(e) => this.deactivateForm(e)}
                     attributes={{
-                      "aria-expanded": !showForm,
-                      "aria-controls": "feedback-menu",
+                      'aria-expanded': !showForm,
+                      'aria-controls': 'feedback-menu',
                     }}
                     buttonType={ButtonTypes.Secondary}
                   >
@@ -191,9 +191,9 @@ class Feedback extends React.Component {
                   </Button>
 
                   <Button
-                    type="submit"
+                    type='submit'
                     buttonType={ButtonTypes.Primary}
-                    className="submit-button"
+                    className='submit-button'
                   >
                     Submit
                   </Button>

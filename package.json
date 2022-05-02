@@ -29,25 +29,14 @@
     "type": "git",
     "url": ""
   },
-  "keywords": [
-    "react",
-    "webpack",
-    "boilerplate",
-    "sass",
-    "hot",
-    "reload"
-  ],
+  "keywords": ["react", "webpack", "boilerplate", "sass", "hot", "reload"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com//issues"
   },
   "nyc": {
-    "extension": [
-      ".jsx"
-    ],
-    "require": [
-      "babel-register"
-    ]
+    "extension": [".jsx"],
+    "require": ["babel-register"]
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.1",

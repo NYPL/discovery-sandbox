@@ -1,4 +1,4 @@
-const includeDomain = process.env.NODE_ENV !== "test";
+const includeDomain = process.env.NODE_ENV !== 'test';
 /**
  * setCookieWithExpiration(sKey, expiration, value)
  * set a cookie
@@ -7,11 +7,11 @@ const includeDomain = process.env.NODE_ENV !== "test";
  * @param {string} value - The value of the cookie, defaults to an empty string
  */
 
-const setCookieWithExpiration = (sKey, expiration, value = "") => {
+const setCookieWithExpiration = (sKey, expiration, value = '') => {
   document.cookie =
     `${sKey}=${value}; expires=${
-      expiration || "Thu, 01 Jan 1970 00:00:00 UTC"
-    }; ` + (includeDomain ? "path=/; domain=.nypl.org;" : "");
+      expiration || 'Thu, 01 Jan 1970 00:00:00 UTC'
+    }; ` + (includeDomain ? 'path=/; domain=.nypl.org;' : '');
 };
 
 /**

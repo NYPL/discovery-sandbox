@@ -1,48 +1,48 @@
 export default [
   {
-    "@id": "res:i10000003",
-    uri: "i10000003",
-    status: [
+    '@id': 'res:i10000003',
+    'uri': 'i10000003',
+    'status': [
       {
-        "@id": "status:a",
-        prefLabel: "Available",
+        '@id': 'status:a',
+        'prefLabel': 'Available',
       },
     ],
-    owner: [
+    'owner': [
       {
-        "@id": "orgs:1000",
-        prefLabel: "Stephen A. Schwarzman Building",
+        '@id': 'orgs:1000',
+        'prefLabel': 'Stephen A. Schwarzman Building',
       },
     ],
-    catalogItemType: [
+    'catalogItemType': [
       {
-        "@id": "catalogItemType:55",
-        prefLabel: "book, limited circ, MaRLI",
+        '@id': 'catalogItemType:55',
+        'prefLabel': 'book, limited circ, MaRLI',
       },
       {
-        "@id": "catalogItemType:55",
-        prefLabel: "book, limited circ, MaRLI",
-      },
-    ],
-    identifier: ["urn:barcode:33433014514719", "urn:SierraNypl:10000003"],
-    holdingLocation: [
-      {
-        "@id": "loc:rcma2",
-        prefLabel: "Offsite",
+        '@id': 'catalogItemType:55',
+        'prefLabel': 'book, limited circ, MaRLI',
       },
     ],
-    requestable: [true],
-    accessMessage: [
+    'identifier': ['urn:barcode:33433014514719', 'urn:SierraNypl:10000003'],
+    'holdingLocation': [
       {
-        "@id": "accessMessage:2",
-        prefLabel: "Request in advance",
+        '@id': 'loc:rcma2',
+        'prefLabel': 'Offsite',
       },
     ],
-    shelfMark: ["*OFS 84-1997"],
-    idBarcode: ["33433014514719"],
-    idNyplSourceId: {
-      "@type": "SierraNypl",
-      "@value": "10000003",
+    'requestable': [true],
+    'accessMessage': [
+      {
+        '@id': 'accessMessage:2',
+        'prefLabel': 'Request in advance',
+      },
+    ],
+    'shelfMark': ['*OFS 84-1997'],
+    'idBarcode': ['33433014514719'],
+    'idNyplSourceId': {
+      '@type': 'SierraNypl',
+      '@value': '10000003',
     },
   },
 ];

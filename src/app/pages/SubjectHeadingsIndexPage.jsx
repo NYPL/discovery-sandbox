@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
-import { Heading } from "@nypl/design-system-react-components";
+import { Heading } from '@nypl/design-system-react-components';
 
-import SccContainer from "../components/SccContainer/SccContainer";
-import SubjectHeadingsIndex from "../components/SubjectHeading/SubjectHeadingsIndex";
-import SubjectHeadingSearch from "../components/SubjectHeading/Search/SubjectHeadingSearch";
-import { basicQuery } from "../utils/utils";
+import SccContainer from '../components/SccContainer/SccContainer';
+import SubjectHeadingsIndex from '../components/SubjectHeading/SubjectHeadingsIndex';
+import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
+import { basicQuery } from '../utils/utils';
 
 const SubjectHeadingsIndexPage = (props) => {
   const {
@@ -24,11 +24,11 @@ const SubjectHeadingsIndexPage = (props) => {
     breadcrumbUrls.bibUrl = `/bib/${props.bib.uri}`;
 
   const bannerInnerHtml = filter ? (
-    <span key="bannerText">
+    <span key='bannerText'>
       Subject Headings containing <em>{filter}</em>
     </span>
   ) : (
-    <span key="bannerText">Subject Headings</span>
+    <span key='bannerText'>Subject Headings</span>
   );
 
   const [contentPrimaryStyle, setContentPrimaryStyle] = useState({});
@@ -37,17 +37,17 @@ const SubjectHeadingsIndexPage = (props) => {
     <SccContainer
       key={componentKey}
       useLoadingLayer={false}
-      activeSection="shep"
-      pageTitle="Subject Headings"
-      className="subject-heading-page"
+      activeSection='shep'
+      pageTitle='Subject Headings'
+      className='subject-heading-page'
       contentPrimaryStyle={contentPrimaryStyle}
-      primaryId="subject-heading-content-primary"
+      primaryId='subject-heading-content-primary'
     >
-      <div className="subject-heading-page-header">
-        <Heading level={2} className="page-title">
+      <div className='subject-heading-page-header'>
+        <Heading level={2} className='page-title'>
           {filter
             ? `Subject Headings matching "${filter}"`
-            : "Subject Heading Index"}
+            : 'Subject Heading Index'}
         </Heading>
         <SubjectHeadingSearch setContentPrimaryStyle={setContentPrimaryStyle} />
       </div>

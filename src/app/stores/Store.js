@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import configureStore from "./configureStore";
+import configureStore from './configureStore';
 
 const preloadedState =
   global && global.window && global.window.__PRELOADED_STATE__;

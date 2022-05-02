@@ -1,11 +1,11 @@
 /* eslint import/prefer-default-export: "off" */
-import { isEmpty as _isEmpty } from "underscore";
+import { isEmpty as _isEmpty } from 'underscore';
 
-import nyplApiClient from "../nyplApiClient";
-import logger from "../../../../logger";
+import nyplApiClient from '../nyplApiClient';
+import logger from '../../../../logger';
 
-import { updatePatronData } from "../../../app/actions/Actions";
-import { extractNoticePreference } from "../../../app/utils/utils";
+import { updatePatronData } from '../../../app/actions/Actions';
+import { extractNoticePreference } from '../../../app/utils/utils';
 
 export function getPatronData(req, res, next) {
   const { dispatch } = req.store;
@@ -23,7 +23,7 @@ export function getPatronData(req, res, next) {
           if (_isEmpty(response)) {
             // Data is empty for the Patron
             const patron = {
-              id: "",
+              id: '',
               names: [],
               barcodes: [],
               emails: [],
@@ -44,7 +44,7 @@ export function getPatronData(req, res, next) {
             } = response.data;
             const barcodes = response.data.barCodes;
             const noticePreference = extractNoticePreference(
-              response.data.fixedFields
+              response.data.fixedFields,
             );
             // Data exists for the Patron
             const patron = {
@@ -69,12 +69,12 @@ export function getPatronData(req, res, next) {
         })
         .catch((error) => {
           logger.error(
-            "Error attemping to make server side fetch call to patrons in getPatronData" +
+            'Error attemping to make server side fetch call to patrons in getPatronData' +
               `, /patrons/${userId}`,
-            error
+            error,
           );
           const patron = {
-            id: "",
+            id: '',
             names: [],
             barcodes: [],
             emails: [],
@@ -84,12 +84,12 @@ export function getPatronData(req, res, next) {
           dispatch(updatePatronData(patron));
           // Continue next function call
           next();
-        })
+        }),
     );
   }
 
   const patron = {
-    id: "",
+    id: '',
     names: [],
     barcodes: [],
     emails: [],

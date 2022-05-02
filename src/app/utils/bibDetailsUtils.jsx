@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const definitionItem = (value, index = 0) => {
   const link = (
@@ -24,7 +24,7 @@ const annotatedMarcDetails = (bib) =>
 const combineBibDetailsData = (bibDetails, additionalData) => {
   const bibDetailsTerms = new Set(bibDetails.map((item) => item.term));
   const filteredAdditionalData = additionalData.filter(
-    (item) => !bibDetailsTerms.has(item.term)
+    (item) => !bibDetailsTerms.has(item.term),
   );
   return bibDetails.concat(filteredAdditionalData);
 };

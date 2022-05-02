@@ -1,46 +1,46 @@
-import { isArray as _isArray, pick as _pick } from "underscore";
-import appConfig from "../../app/data/appConfig";
+import { isArray as _isArray, pick as _pick } from 'underscore';
+import appConfig from '../../app/data/appConfig';
 import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
-} from "../../app/utils/utils";
-import extractFeatures from "../../app/utils/extractFeatures";
-import { buildQueryDataFromForm } from "../../app/utils/advancedSearchUtils";
-import nyplApiClient from "../routes/nyplApiClient";
-import logger from "../../../logger";
-import ResearchNow from "./ResearchNow";
-import createSelectedFiltersHash from "../../app/utils/createSelectedFiltersHash";
-import { searchResultItemsListLimit as itemTableLimit } from "../../app/data/constants";
+} from '../../app/utils/utils';
+import extractFeatures from '../../app/utils/extractFeatures';
+import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
+import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
+import ResearchNow from './ResearchNow';
+import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
+import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
 import {
   addHoldingDefinition,
   addCheckInItems,
   fetchLocationUrls,
   findUrl,
-} from "./Bib";
+} from './Bib';
 
 const createAPIQuery = basicQuery({
-  searchKeywords: "",
-  sortBy: "relevance",
-  field: "all",
+  searchKeywords: '',
+  sortBy: 'relevance',
+  field: 'all',
   selectedFilters: {},
   identifierNumbers: {},
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
   const requestOptions =
-    appConfig.features.includes("on-site-edd") ||
-    urlEnabledFeatures.includes("on-site-edd")
-      ? { headers: { "X-Features": "on-site-edd" } }
+    appConfig.features.includes('on-site-edd') ||
+    urlEnabledFeatures.includes('on-site-edd')
+      ? { headers: { 'X-Features': 'on-site-edd' } }
       : {};
 
   return nyplApiClient().then((client) =>
-    client.get(`/discovery/resources${query}`, requestOptions)
+    client.get(`/discovery/resources${query}`, requestOptions),
   );
 };
 
 function fetchResults(
-  searchKeywords = "",
+  searchKeywords = '',
   contributor,
   title,
   subject,
@@ -53,14 +53,14 @@ function fetchResults(
   expressRes,
   cb,
   errorcb,
-  features
+  features,
 ) {
   const encodedResultsQueryString = createAPIQuery({
     searchKeywords,
     contributor,
     title,
     subject,
-    sortBy: sortBy ? `${sortBy}_${order}` : "",
+    sortBy: sortBy ? `${sortBy}_${order}` : '',
     selectedFilters: filters,
     field,
     page,
@@ -83,11 +83,11 @@ function fetchResults(
   };
 
   let drbRequesting = true;
-  const drbPromise = appConfig.features.includes("drb-integration")
+  const drbPromise = appConfig.features.includes('drb-integration')
     ? Promise.race([
         new Promise((resolve) => {
           setTimeout(() => {
-            if (drbRequesting) logger.error("Drb timeout");
+            if (drbRequesting) logger.error('Drb timeout');
             return resolve([]);
           }, 5000);
         }),
@@ -98,7 +98,7 @@ function fetchResults(
           })
           .catch((e) => {
             drbRequesting = false;
-            logger.error("Drb error: ", e);
+            logger.error('Drb error: ', e);
             return [];
           }),
       ])
@@ -140,18 +140,18 @@ function fetchResults(
               .forEach((item) => {
                 if (item.holdingLocation)
                   item.holdingLocation.forEach((holdingLocation) => {
-                    locationCodes.add(holdingLocation["@id"]);
+                    locationCodes.add(holdingLocation['@id']);
                   });
               });
           }
         } else if (result.items) {
           result.items.slice(0, itemTableLimit).forEach((item) => {
             if (item.holdingLocation)
-              locationCodes.add(item.holdingLocation[0]["@id"]);
+              locationCodes.add(item.holdingLocation[0]['@id']);
           });
         }
       });
-      const codes = Array.from(locationCodes).join(",");
+      const codes = Array.from(locationCodes).join(',');
       return fetchLocationUrls(codes)
         .then((resp) => {
           itemListElement.forEach((resultObj) => {
@@ -161,25 +161,25 @@ function fetchResults(
               if (!item) return;
               if (item.holdingLocation)
                 item.holdingLocation[0].url = findUrl(
-                  { code: item.holdingLocation[0]["@id"] },
-                  resp
+                  { code: item.holdingLocation[0]['@id'] },
+                  resp,
                 );
               if (item.location)
                 item.locationUrl = findUrl(
                   { code: item.holdingLocationCode },
-                  resp
+                  resp,
                 );
             });
           });
           return results;
         })
         .then((processedResults) =>
-          cb(aggregations, processedResults, page, drbbResults)
+          cb(aggregations, processedResults, page, drbbResults),
         )
         .catch((error) => {
           logger.error(
-            "Error making server search call in search function",
-            error
+            'Error making server search call in search function',
+            error,
           );
           errorcb(error);
         });
@@ -208,17 +208,17 @@ function search(req, res, resolve) {
   const identifierNumbers = { issn, isbn, oclc, lccn, redirectOnMatch };
 
   const sortBy = sort.length
-    ? [sort, order].filter((field) => field.length).join("_")
-    : "relevance";
+    ? [sort, order].filter((field) => field.length).join('_')
+    : 'relevance';
 
   // If user is making a search for periodicals,
   // add an issuance filter on the serial field and
   // switch field from 'journal_title' to 'title'
   let apiQueryField = fieldQuery;
   const additionalFilters = {};
-  if (fieldQuery === "journal_title") {
-    additionalFilters.issuance = ["urn:biblevel:s"];
-    apiQueryField = "title";
+  if (fieldQuery === 'journal_title') {
+    additionalFilters.issuance = ['urn:biblevel:s'];
+    apiQueryField = 'title';
   }
   const apiQueryFilters = { ...filters, ...additionalFilters };
   const urlEnabledFeatures = extractFeatures(req.query.features);
@@ -250,7 +250,7 @@ function search(req, res, resolve) {
         subject,
       }),
     (error) => resolve(error),
-    urlEnabledFeatures
+    urlEnabledFeatures,
   );
 }
 
@@ -258,8 +258,8 @@ function searchServerPost(req, res) {
   if (req.body.advancedSearch) {
     return res.redirect(
       `${appConfig.baseUrl}/search?${createAPIQuery(
-        buildQueryDataFromForm(Object.entries(req.body))
-      )}`
+        buildQueryDataFromForm(Object.entries(req.body)),
+      )}`,
     );
   }
 
@@ -272,7 +272,7 @@ function searchServerPost(req, res) {
   const selectedFilters = parseServerSelectedFilters(
     reqFilters,
     dateAfter,
-    dateBefore
+    dateBefore,
   );
   let searchKeywords = q;
   let field = fieldQuery;
@@ -286,7 +286,7 @@ function searchServerPost(req, res) {
     if (Number(dateAfter) > Number(dateBefore)) {
       return res.redirect(
         `${appConfig.baseUrl}/search?q=${searchKeywords}&` +
-          "error=dateFilterError#popup-no-js"
+          'error=dateFilterError#popup-no-js',
       );
     }
   }

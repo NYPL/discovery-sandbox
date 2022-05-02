@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 /* eslint-disable import/no-unresolved, import/extensions */
-import SearchResultsSorter from "@SearchResultsSorter";
-import SearchResultsContainer from "@SearchResultsContainer";
+import SearchResultsSorter from '@SearchResultsSorter';
+import SearchResultsContainer from '@SearchResultsContainer';
 /* eslint-enable */
-import SccContainer from "../components/SccContainer/SccContainer";
-import Search from "../components/Search/Search";
-import FilterPopup from "../components/FilterPopup/FilterPopup";
-import SelectedFilters from "../components/Filters/SelectedFilters";
-import ResultsCount from "../components/ResultsCount/ResultsCount";
-import Notification from "../components/Notification/Notification";
+import SccContainer from '../components/SccContainer/SccContainer';
+import Search from '../components/Search/Search';
+import FilterPopup from '../components/FilterPopup/FilterPopup';
+import SelectedFilters from '../components/Filters/SelectedFilters';
+import ResultsCount from '../components/ResultsCount/ResultsCount';
+import Notification from '../components/Notification/Notification';
 
-import { basicQuery, hasValidFilters } from "../utils/utils";
+import { basicQuery, hasValidFilters } from '../utils/utils';
 
 const SearchResults = (props, context) => {
   const {
@@ -58,11 +58,11 @@ const SearchResults = (props, context) => {
   });
   const dateFilterErrors = [];
   const searchError =
-    location.query && location.query.error ? location.query.error : "";
-  if (searchError === "dateFilterError") {
+    location.query && location.query.error ? location.query.error : '';
+  if (searchError === 'dateFilterError') {
     dateFilterErrors.push({
-      name: "date",
-      value: "Date",
+      name: 'date',
+      value: 'Date',
     });
   }
 
@@ -73,11 +73,11 @@ const SearchResults = (props, context) => {
   return (
     <SccContainer
       useLoadingLayer
-      activeSection="search"
-      pageTitle="Search Results"
+      activeSection='search'
+      pageTitle='Search Results'
     >
-      <div className="content-header research-search">
-        <div className="research-search__inner-content">
+      <div className='content-header research-search'>
+        <div className='research-search__inner-content'>
           <Search createAPIQuery={createAPIQuery} router={router} />
           <FilterPopup
             createAPIQuery={createAPIQuery}
@@ -86,7 +86,7 @@ const SearchResults = (props, context) => {
           />
         </div>
       </div>
-      <Notification notificationType="searchResultsNotification" />
+      <Notification notificationType='searchResultsNotification' />
       {selectedFiltersAvailable ? (
         <SelectedFilters
           selectedFilters={selectedFilters}
@@ -94,7 +94,7 @@ const SearchResults = (props, context) => {
           selectedFiltersAvailable={selectedFiltersAvailable}
         />
       ) : null}
-      <div className="nypl-sorter-row">
+      <div className='nypl-sorter-row'>
         <ResultsCount
           count={totalResults}
           selectedFilters={selectedFilters}

@@ -1,5 +1,5 @@
-import jwt from "jsonwebtoken";
-import config from "../../../app/data/appConfig";
+import jwt from 'jsonwebtoken';
+import config from '../../../app/data/appConfig';
 
 function initializePatronTokenAuth(req, res, next) {
   const nyplIdentityCookieString = req.cookies.nyplIdentityPatron;
@@ -29,13 +29,13 @@ function initializePatronTokenAuth(req, res, next) {
         };
         // Continue next function call
         return next();
-      }
+      },
     );
   }
   // Token is undefined from the cookie
   req.patronTokenResponse = {
     isTokenValid: false,
-    errorCode: "token undefined",
+    errorCode: 'token undefined',
   };
   return next();
 }

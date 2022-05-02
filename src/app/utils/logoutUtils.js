@@ -1,5 +1,5 @@
-import { deleteCookie } from "./cookieUtils";
-import appConfig from "../data/appConfig";
+import { deleteCookie } from './cookieUtils';
+import appConfig from '../data/appConfig';
 
 /**
  * loadLogoutIframe(isTest)
@@ -9,23 +9,23 @@ import appConfig from "../data/appConfig";
  * since III does not want to provide us a real log out API URI.
  */
 const loadLogoutIframe = (onload) => {
-  const logoutIframe = document.createElement("iframe");
-  const [body] = document.getElementsByTagName("body");
+  const logoutIframe = document.createElement('iframe');
+  const [body] = document.getElementsByTagName('body');
 
   // Determine whether to use Production or Test logout pages based on whether
   // 'dev-' appears in login URL
-  const isProduction = !appConfig.loginUrl.includes("//dev-");
+  const isProduction = !appConfig.loginUrl.includes('//dev-');
   const encoreDomain = isProduction
-    ? "browse.nypl.org"
-    : "nypl-encore-test.nypl.org";
+    ? 'browse.nypl.org'
+    : 'nypl-encore-test.nypl.org';
 
   logoutIframe.setAttribute(
     // The endpoint is the URL for logging out from Encore
-    "src",
-    `https://${encoreDomain}/iii/encore/logoutFilterRedirect?suite=def`
+    'src',
+    `https://${encoreDomain}/iii/encore/logoutFilterRedirect?suite=def`,
   );
   // Assigns the ID for CSS ussage
-  logoutIframe.setAttribute("id", "logoutIframe");
+  logoutIframe.setAttribute('id', 'logoutIframe');
   if (onload) {
     logoutIframe.onload = onload;
   }
@@ -38,8 +38,8 @@ const loadLogoutIframe = (onload) => {
  * and Catalog. It is called by setEncoreLoggedInTimer.
  */
 export const logOutFromEncoreAndCatalogIn = (onload) => {
-  deleteCookie("PAT_LOGGED_IN");
-  deleteCookie("VALID_DOMAIN_LAST_VISITED");
-  deleteCookie("nyplIdentityPatron");
+  deleteCookie('PAT_LOGGED_IN');
+  deleteCookie('VALID_DOMAIN_LAST_VISITED');
+  deleteCookie('nyplIdentityPatron');
   loadLogoutIframe(onload);
 };

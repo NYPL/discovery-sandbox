@@ -1,7 +1,7 @@
 const subjectFilterUtil = {
   getSubjectLiteralFilters(apiFilters) {
     const apiSubjectLiteralFilters = apiFilters.filter(
-      (apiFilter) => apiFilter.field === "subjectLiteral"
+      (apiFilter) => apiFilter.field === 'subjectLiteral',
     );
     return apiSubjectLiteralFilters.length ? apiSubjectLiteralFilters[0] : null;
   },
@@ -9,7 +9,7 @@ const subjectFilterUtil = {
   subjectFilterIsSelected(selectedSubjectLiteralFilters) {
     return (subjectLiteralFilter) =>
       selectedSubjectLiteralFilters.some(
-        (selectedFilter) => subjectLiteralFilter.value === selectedFilter.value
+        (selectedFilter) => subjectLiteralFilter.value === selectedFilter.value,
       );
   },
 

@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import NumberFormat from "react-number-format";
+import React from 'react';
+import PropTypes from 'prop-types';
+import NumberFormat from 'react-number-format';
 
 class FieldsetDate extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class FieldsetDate extends React.Component {
     const displayValue = e.target.name;
 
     if (displayValue) {
-      if (displayValue === "dateAfter" || displayValue === "dateBefore") {
+      if (displayValue === 'dateAfter' || displayValue === 'dateBefore') {
         this.props.onDateFilterChange(displayValue, value);
       }
     }
@@ -41,14 +41,14 @@ class FieldsetDate extends React.Component {
 
   render() {
     let errorMessage =
-      "The end year should be the same year as or later than the start year.";
-    let errorClass = "";
+      'The end year should be the same year as or later than the start year.';
+    let errorClass = '';
 
     if (this.props.submitError) {
       errorMessage =
-        "Enter a valid range in the Start Year and End Year fields or remove what " +
+        'Enter a valid range in the Start Year and End Year fields or remove what ' +
         "you've entered from those fields.";
-      errorClass = "nypl-field-error";
+      errorClass = 'nypl-field-error';
     }
 
     const defaultValueDateAfter = this.state.dateAfter
@@ -59,46 +59,46 @@ class FieldsetDate extends React.Component {
       : null;
 
     return (
-      <fieldset className="nypl-fieldset inner date-fieldset">
+      <fieldset className='nypl-fieldset inner date-fieldset'>
         <legend>
           <h3>Date</h3>
         </legend>
         <div
-          id="input-container"
+          id='input-container'
           className={`nypl-name-field nypl-filter-date-field ${errorClass}`}
         >
-          <label htmlFor="dateAfter" id="dateAfter-label">
+          <label htmlFor='dateAfter' id='dateAfter-label'>
             Start Year
             <NumberFormat
-              id="dateAfter"
-              name="dateAfter"
-              className="form-text"
+              id='dateAfter'
+              name='dateAfter'
+              className='form-text'
               onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateAfter-label dateInput-status"
+              format='####'
+              aria-labelledby='dateAfter-label dateInput-status'
               value={defaultValueDateAfter}
-              placeholder="Ex: 1901"
+              placeholder='Ex: 1901'
             />
           </label>
-          <span className="date-divider">to</span>
-          <label htmlFor="dateBefore" id="dateBefore-label">
+          <span className='date-divider'>to</span>
+          <label htmlFor='dateBefore' id='dateBefore-label'>
             End Year
             <NumberFormat
-              id="dateBefore"
-              name="dateBefore"
-              className="form-text"
+              id='dateBefore'
+              name='dateBefore'
+              className='form-text'
               onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateBefore-label dateInput-status"
+              format='####'
+              aria-labelledby='dateBefore-label dateInput-status'
               value={defaultValueDateBefore}
-              placeholder="Ex: 2001"
+              placeholder='Ex: 2001'
             />
           </label>
           <span
-            id="dateInput-status"
-            className="nypl-field-status"
-            aria-live="assertive"
-            aria-atomic="true"
+            id='dateInput-status'
+            className='nypl-field-status'
+            aria-live='assertive'
+            aria-atomic='true'
           >
             <span>{errorMessage}</span>
           </span>
@@ -116,8 +116,8 @@ FieldsetDate.propTypes = {
 
 FieldsetDate.defaultProps = {
   selectedFilters: {
-    dateAfter: "",
-    dateBefore: "",
+    dateAfter: '',
+    dateBefore: '',
   },
 };
 

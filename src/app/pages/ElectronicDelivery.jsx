@@ -1,24 +1,24 @@
 /* global window document */
-import React from "react";
-import ReactDOM from "react-dom";
-import PropTypes from "prop-types";
-import axios from "axios";
-import { Link, withRouter } from "react-router";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
+import axios from 'axios';
+import { Link, withRouter } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   extend as _extend,
   mapObject as _mapObject,
-} from "underscore";
-import { connect } from "react-redux";
+} from 'underscore';
+import { connect } from 'react-redux';
 
-import SccContainer from "../components/SccContainer/SccContainer";
-import appConfig from "../data/appConfig";
-import ElectronicDeliveryForm from "../components/ElectronicDeliveryForm/ElectronicDeliveryForm";
-import Notification from "../components/Notification/Notification";
-import LibraryItem from "../utils/item";
-import { trackDiscovery, institutionNameByNyplSource } from "../utils/utils";
-import { updateLoadingStatus } from "../actions/Actions";
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
+import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
+import Notification from '../components/Notification/Notification';
+import LibraryItem from '../utils/item';
+import { trackDiscovery, institutionNameByNyplSource } from '../utils/utils';
+import { updateLoadingStatus } from '../actions/Actions';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -27,17 +27,17 @@ class ElectronicDelivery extends React.Component {
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const title =
-      bib && _isArray(bib.title) && bib.title.length ? bib.title[0] : "";
+      bib && _isArray(bib.title) && bib.title.length ? bib.title[0] : '';
     let bibId;
     if (this.props.params.bibId) {
       bibId = this.props.params.bibId;
-    } else if (bib && bib["@id"]) {
-      bibId = bib["@id"].substring(4);
+    } else if (bib && bib['@id']) {
+      bibId = bib['@id'].substring(4);
     }
     const itemId =
       this.props.params && this.props.params.itemId
         ? this.props.params.itemId
-        : "";
+        : '';
     const selectedItem = bib && itemId ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource =
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
@@ -77,8 +77,8 @@ class ElectronicDelivery extends React.Component {
    */
   componentDidUpdate(prevProps, prevState) {
     if (prevState.raiseError !== this.state.raiseError) {
-      if (this.refs["nypl-form-error"]) {
-        ReactDOM.findDOMNode(this.refs["nypl-form-error"]).focus();
+      if (this.refs['nypl-form-error']) {
+        ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
       }
     }
   }
@@ -94,10 +94,10 @@ class ElectronicDelivery extends React.Component {
    */
   getRaisedErrors(raiseError) {
     const headlineError = {
-      emailAddress: "Email Address",
-      chapterTitle: "Chapter / Article Title",
-      startPage: "Starting Page Number",
-      endPage: "Ending Page Number",
+      emailAddress: 'Email Address',
+      chapterTitle: 'Chapter / Article Title',
+      startPage: 'Starting Page Number',
+      endPage: 'Ending Page Number',
     };
 
     const raisedErrors = [];
@@ -110,7 +110,7 @@ class ElectronicDelivery extends React.Component {
       raisedErrors.push(
         <li key={key}>
           <a href={`#${key}`}>{headlineError[key]}</a>
-        </li>
+        </li>,
       );
     });
 
@@ -129,7 +129,7 @@ class ElectronicDelivery extends React.Component {
 
     return query && query.fromUrl
       ? `&fromUrl=${encodeURIComponent(query.fromUrl)}`
-      : "";
+      : '';
   }
 
   /**
@@ -141,18 +141,18 @@ class ElectronicDelivery extends React.Component {
     const { bibId, itemId, itemSource, title } = this.state;
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const { searchKeywords } = this.props;
-    const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : "";
+    const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
     const partnerEvent =
-      itemSource !== "sierra-nypl"
+      itemSource !== 'sierra-nypl'
         ? ` - Partner item - ${institutionNameByNyplSource(itemSource)}`
-        : "";
+        : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
     const formData = new FormData(
-      document.getElementById("place-edd-hold-form")
+      document.getElementById('place-edd-hold-form'),
     );
     axios
       .post(`${appConfig.baseUrl}/edd`, Object.fromEntries(formData.entries()))
@@ -161,12 +161,12 @@ class ElectronicDelivery extends React.Component {
       })
       .catch((error) => {
         console.error(
-          "Error attempting to submit an ajax EDD request at ElectronicDelivery",
-          error
+          'Error attempting to submit an ajax EDD request at ElectronicDelivery',
+          error,
         );
 
         this.context.router.push(
-          `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`
+          `${path}?errorMessage=${error}${searchKeywordsQuery}${this.fromUrl()}`,
         );
       });
   }
@@ -179,7 +179,7 @@ class ElectronicDelivery extends React.Component {
    */
   raiseError(error) {
     this.setState({ raiseError: error });
-    trackDiscovery("Error", "EDD");
+    trackDiscovery('Error', 'EDD');
   }
 
   /**
@@ -211,28 +211,28 @@ class ElectronicDelivery extends React.Component {
       _isArray(this.props.patron.emails) &&
       this.props.patron.emails.length
         ? this.props.patron.emails[0]
-        : "";
+        : '';
     const searchKeywords = this.props.searchKeywords;
     const { closedLocations, holdRequestNotification } = appConfig;
 
     return (
       <SccContainer
-        className="edd-request"
-        activeSection="search"
-        pageTitle="Electronic Delivery Request"
+        className='edd-request'
+        activeSection='search'
+        pageTitle='Electronic Delivery Request'
       >
-        <Notification notificationType="holdRequestNotification" />
-        <div className="nypl-request-item-summary">
+        <Notification notificationType='holdRequestNotification' />
+        <div className='nypl-request-item-summary'>
           <h2>
             <Link
               to={`${appConfig.baseUrl}/bib/${bibId}`}
-              onClick={() => trackDiscovery("EDD - Bib", title)}
+              onClick={() => trackDiscovery('EDD - Bib', title)}
             >
               {title}
             </Link>
           </h2>
           {callNo && (
-            <div className="call-number">
+            <div className='call-number'>
               <span>Call Number:</span>
               <br />
               {callNo}
@@ -242,7 +242,7 @@ class ElectronicDelivery extends React.Component {
 
         <div>
           {!_isEmpty(raiseError) && (
-            <div className="nypl-form-error" ref="nypl-form-error">
+            <div className='nypl-form-error' ref='nypl-form-error'>
               <h2>Error</h2>
               <p>
                 Please check the following required fields and resubmit your
@@ -251,7 +251,7 @@ class ElectronicDelivery extends React.Component {
               <ul>{this.getRaisedErrors(raiseError)}</ul>
             </div>
           )}
-          {!closedLocations.includes("") ? (
+          {!closedLocations.includes('') ? (
             <ElectronicDeliveryForm
               bibId={bibId}
               itemId={itemId}
@@ -264,7 +264,7 @@ class ElectronicDelivery extends React.Component {
               searchKeywords={searchKeywords}
               serverRedirect={serverRedirect}
               fromUrl={this.fromUrl()}
-              onSiteEddEnabled={this.props.features.includes("on-site-edd")}
+              onSiteEddEnabled={this.props.features.includes('on-site-edd')}
             />
           ) : null}
         </div>
@@ -290,7 +290,7 @@ ElectronicDelivery.propTypes = {
 };
 
 ElectronicDelivery.defaultProps = {
-  searchKeywords: "",
+  searchKeywords: '',
 };
 
 const mapStateToProps = (state) => ({
@@ -305,5 +305,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery)
+  connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery),
 );

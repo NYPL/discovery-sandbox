@@ -1,15 +1,15 @@
-import React from "react";
-import { Link } from "react-router";
-import { Link as DSLink } from "@nypl/design-system-react-components";
-import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import React from 'react';
+import { Link } from 'react-router';
+import { Link as DSLink } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
-import appConfig from "../../data/appConfig";
+import appConfig from '../../data/appConfig';
 
 const SubNavLink = ({ type, activeSection, href, children }) => (
   <DSLink
     className={`sub-nav__link${
-      type === activeSection ? " active-section" : ""
+      type === activeSection ? ' active-section' : ''
     }`}
   >
     <Link to={href}>{children}</Link>
@@ -27,19 +27,19 @@ const SubNav = (props) => {
   const features = useSelector((state) => state.features);
   const { baseUrl } = appConfig;
   return (
-    <nav className="sub-nav" aria-label="sub-nav">
-      <ul className="sub-nav__list">
-        <SubNavLink type="search" href={`${baseUrl}/`} {...props}>
+    <nav className='sub-nav' aria-label='sub-nav'>
+      <ul className='sub-nav__list'>
+        <SubNavLink type='search' href={`${baseUrl}/`} {...props}>
           Search
         </SubNavLink>
         &nbsp;|&nbsp;
-        <SubNavLink type="shep" href={`${baseUrl}/subject_headings`} {...props}>
+        <SubNavLink type='shep' href={`${baseUrl}/subject_headings`} {...props}>
           Subject Heading Explorer
         </SubNavLink>
-        {features.includes("my-account") ? (
+        {features.includes('my-account') ? (
           <>
             &nbsp;|&nbsp;
-            <SubNavLink type="account" href={`${baseUrl}/account`} {...props}>
+            <SubNavLink type='account' href={`${baseUrl}/account`} {...props}>
               My Account
             </SubNavLink>
           </>

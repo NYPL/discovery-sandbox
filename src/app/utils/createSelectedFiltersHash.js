@@ -4,22 +4,22 @@ import {
   forEach as _forEach,
   isEmpty as _isEmpty,
   isArray as _isArray,
-} from "underscore";
+} from 'underscore';
 
 const createSelectedFiltersHash = (filters, apiFilters) => {
   const selectedFilters = {
     materialType: [],
     language: [],
-    dateAfter: "",
-    dateBefore: "",
+    dateAfter: '',
+    dateBefore: '',
     subjectLiteral: [],
   };
   if (!_isEmpty(filters)) {
     _mapObject(filters, (value, key) => {
       let filterObj;
-      if (key === "dateAfter" || key === "dateBefore") {
+      if (key === 'dateAfter' || key === 'dateBefore') {
         selectedFilters[key] = value;
-      } else if (key === "subjectLiteral") {
+      } else if (key === 'subjectLiteral') {
         const subjectLiteralValues = _isArray(value) ? value : [value];
         subjectLiteralValues.forEach((subjectLiteralValue) => {
           selectedFilters[key].push({
@@ -50,7 +50,7 @@ const createSelectedFiltersHash = (filters, apiFilters) => {
             });
           }
         });
-      } else if (typeof value === "string") {
+      } else if (typeof value === 'string') {
         filterObj = _findWhere(apiFilters.itemListElement, { field: key });
         const foundFilter = _isEmpty(filterObj)
           ? {}

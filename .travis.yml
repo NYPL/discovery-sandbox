@@ -10,8 +10,8 @@ before_deploy:
 deploy:
   - provider: elasticbeanstalk
     skip_cleanup: true
-    access_key_id: "$AWS_ACCESS_KEY_ID_DEVELOPMENT"
-    secret_access_key: "$AWS_SECRET_ACCESS_KEY_DEVELOPMENT"
+    access_key_id: '$AWS_ACCESS_KEY_ID_DEVELOPMENT'
+    secret_access_key: '$AWS_SECRET_ACCESS_KEY_DEVELOPMENT'
     region: us-east-1
     app: discovery-ui
     env: discovery-ui-shep-development
@@ -22,8 +22,8 @@ deploy:
       branch: development
   - provider: elasticbeanstalk
     skip_cleanup: false
-    access_key_id: "$AWS_ACCESS_KEY_ID_QA"
-    secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
+    access_key_id: '$AWS_ACCESS_KEY_ID_QA'
+    secret_access_key: '$AWS_SECRET_ACCESS_KEY_QA'
     region: us-east-1
     app: discovery-ui
     env: DiscoveryUi-production
@@ -34,8 +34,8 @@ deploy:
       branch: production
   - provider: elasticbeanstalk
     skip_cleanup: false
-    access_key_id: "$AWS_ACCESS_KEY_ID_QA"
-    secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
+    access_key_id: '$AWS_ACCESS_KEY_ID_QA'
+    secret_access_key: '$AWS_SECRET_ACCESS_KEY_QA'
     region: us-east-1
     app: discovery-ui
     env: DiscoveryUi-10-17-qa

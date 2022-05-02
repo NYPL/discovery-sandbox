@@ -1,15 +1,15 @@
-import express from "express";
+import express from 'express';
 
-import User from "./User";
-import Hold from "./Hold";
-import Search from "./Search";
-import Feedback from "./Feedback";
-import appConfig from "../../app/data/appConfig";
-import SubjectHeading from "./SubjectHeading";
-import SubjectHeadings from "./SubjectHeadings";
-import Account from "./Account";
-import dataLoaderUtil from "../../app/utils/dataLoaderUtil";
-import routeMethods from "./RouteMethods";
+import User from './User';
+import Hold from './Hold';
+import Search from './Search';
+import Feedback from './Feedback';
+import appConfig from '../../app/data/appConfig';
+import SubjectHeading from './SubjectHeading';
+import SubjectHeadings from './SubjectHeadings';
+import Account from './Account';
+import dataLoaderUtil from '../../app/utils/dataLoaderUtil';
+import routeMethods from './RouteMethods';
 
 const router = express.Router();
 const { routes, successCb } = dataLoaderUtil;
@@ -38,8 +38,8 @@ router.route(`${appConfig.baseUrl}/edd`).post(Hold.eddServer);
 
 Object.keys(routes).forEach((routeName) => {
   const { path, params } = routes[routeName];
-  ["/", "/api/"].forEach((pathType) => {
-    const api = pathType === "/api/";
+  ['/', '/api/'].forEach((pathType) => {
+    const api = pathType === '/api/';
     router
       .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
       .get((req, res, next) =>
@@ -47,10 +47,10 @@ Object.keys(routes).forEach((routeName) => {
           .then((data) =>
             api
               ? res.json(data)
-              : successCb(routeName, req.store.dispatch)({ data })
+              : successCb(routeName, req.store.dispatch)({ data }),
           )
           .then(() => (api ? null : next()))
-          .catch(console.error)
+          .catch(console.error),
       );
   });
 });

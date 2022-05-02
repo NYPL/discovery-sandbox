@@ -1,34 +1,34 @@
 /*
 Import style rules from NYPL Design Toolkit
 */
-@import "nypl-normalize";
-@import "toolkit";
+@import 'nypl-normalize';
+@import 'toolkit';
 
 /*
 Import style rules from NYPL Design System
 */
-@import "~@nypl/design-system-react-components/dist/styles.css";
-@import "~@nypl/design-system-react-components/dist/resources.scss";
+@import '~@nypl/design-system-react-components/dist/styles.css';
+@import '~@nypl/design-system-react-components/dist/resources.scss';
 
 /*
 App-specific utilities and defaults
 */
-@import "utils/mixins.scss";
-@import "utils/utils.scss";
+@import 'utils/mixins.scss';
+@import 'utils/utils.scss';
 // @import "utils/fonts.scss";
-@import "utils/variables.scss";
-@import "utils/base.scss";
-@import "utils/colors.scss";
+@import 'utils/variables.scss';
+@import 'utils/base.scss';
+@import 'utils/colors.scss';
 
 /*
 Import style rules from NYPL React module components
 */
-@import "~@nypl/dgx-header-component/dist/styles/main";
-@import "~@nypl/dgx-react-footer/dist/styles/styles";
+@import '~@nypl/dgx-header-component/dist/styles/main';
+@import '~@nypl/dgx-react-footer/dist/styles/styles';
 
-@import "components/**/*.scss";
+@import 'components/**/*.scss';
 
-@import "style-v2.scss";
+@import 'style-v2.scss';
 
 html {
   @include font-settings;
@@ -80,12 +80,12 @@ p {
 }
 
 button,
-html input[type="button"],
-input[type="reset"],
-input[type="submit"] {
+html input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   -moz-appearance: button;
 }
-input[type="submit"]:focus {
+input[type='submit']:focus {
   outline-style: solid;
   outline-width: 3px;
 }
@@ -138,7 +138,7 @@ select {
   display: inline-block;
   margin-right: 1rem;
   color: #080807;
-  font-size: "";
+  font-size: '';
   font-weight: 400;
 }
 

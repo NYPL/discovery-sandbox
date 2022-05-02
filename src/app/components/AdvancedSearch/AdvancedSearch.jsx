@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 import {
   Checkbox,
   Input,
@@ -6,50 +6,50 @@ import {
   Button,
   ButtonTypes,
   Select,
-} from "@nypl/design-system-react-components";
-import appConfig from "@appConfig";
-import React from "react";
-import { basicQuery } from "../../utils/utils";
-import { buildQueryDataFromForm } from "../../utils/advancedSearchUtils";
-import SccContainer from "../SccContainer/SccContainer";
+} from '@nypl/design-system-react-components';
+import appConfig from '@appConfig';
+import React from 'react';
+import { basicQuery } from '../../utils/utils';
+import { buildQueryDataFromForm } from '../../utils/advancedSearchUtils';
+import SccContainer from '../SccContainer/SccContainer';
 
-const aggregations = require("../../../../advancedSearchAggregations.json");
+const aggregations = require('../../../../advancedSearchAggregations.json');
 
 const materialTypes = aggregations.materialType.sort((a, b) =>
-  a.label > b.label ? 1 : -1
+  a.label > b.label ? 1 : -1,
 );
 const languages = [
   {
-    value: "",
-    label: "-- Any -- ",
+    value: '',
+    label: '-- Any -- ',
   },
 ].concat(aggregations.language.sort((a, b) => (a.label > b.label ? 1 : -1)));
 
-const leftInputs = ["searchKeywords", "title", "contributor", "subject"];
+const leftInputs = ['searchKeywords', 'title', 'contributor', 'subject'];
 
-const rightInputs = ["dateAfter", "dateBefore"];
+const rightInputs = ['dateAfter', 'dateBefore'];
 
 const labelsForFields = {
-  searchKeywords: "Keyword",
-  contributor: "Author",
-  subject: "Subject",
-  title: "Title",
-  language: "Language",
-  dateAfter: "From",
-  dateBefore: "To",
-  materialType: "Format",
+  searchKeywords: 'Keyword',
+  contributor: 'Author',
+  subject: 'Subject',
+  title: 'Title',
+  language: 'Language',
+  dateAfter: 'From',
+  dateBefore: 'To',
+  materialType: 'Format',
 };
 
 const clearFields = (e) => {
   e.preventDefault();
 
-  Array.from(document.getElementsByTagName("input")).forEach((input) => {
-    input.value = "";
+  Array.from(document.getElementsByTagName('input')).forEach((input) => {
+    input.value = '';
     input.checked = false;
   });
 
-  Array.from(document.getElementsByTagName("select")).forEach((select) => {
-    select.value = "";
+  Array.from(document.getElementsByTagName('select')).forEach((select) => {
+    select.value = '';
   });
 };
 
@@ -72,7 +72,7 @@ class AdvancedSearch extends React.Component {
 
   submitForm(e) {
     e.preventDefault();
-    const form = document.getElementsByTagName("form")[0];
+    const form = document.getElementsByTagName('form')[0];
     const formData = new FormData(form);
     const queryData = buildQueryDataFromForm(Array.from(formData.entries()));
 
@@ -85,33 +85,33 @@ class AdvancedSearch extends React.Component {
   render() {
     return (
       <SccContainer
-        activeSection="search"
-        pageTitle="Advanced Search"
-        className="advancedSearchContainer"
+        activeSection='search'
+        pageTitle='Advanced Search'
+        className='advancedSearchContainer'
       >
         {this.state.alarm && (
           <aside
-            id="advancedSearchAside"
-            aria-label="alert-enter-at-least-one-field"
+            id='advancedSearchAside'
+            aria-label='alert-enter-at-least-one-field'
           >
             <img
-              src="./src/client/assets/Alert_Icon.svg"
-              alt="Exclamation mark in a triangle"
+              src='./src/client/assets/Alert_Icon.svg'
+              alt='Exclamation mark in a triangle'
             />
             Please enter at least one field to submit an advanced search.
           </aside>
         )}
-        <h2 id="advancedSearchHeading" className="page-title">
+        <h2 id='advancedSearchHeading' className='page-title'>
           Advanced Search
         </h2>
         <form
-          id="advancedSearchForm"
+          id='advancedSearchForm'
           onSubmit={this.submitForm}
-          method="POST"
+          method='POST'
           action={`${appConfig.baseUrl}/search`}
         >
-          <div id="fields">
-            <div className="advancedSearchColumnLeft">
+          <div id='fields'>
+            <div className='advancedSearchColumnLeft'>
               <ul>
                 {leftInputs.map((key) => (
                   <li key={key}>
@@ -120,20 +120,20 @@ class AdvancedSearch extends React.Component {
                     </Label>
                     <Input
                       id={key}
-                      type="text"
+                      type='text'
                       attributes={{ name: key }}
                       ariaLabelledBy={`${key}-input-label`}
                     />
                   </li>
                 ))}
                 <li>
-                  <Label htmlFor="languageSelect" id="languageSelect-label">
+                  <Label htmlFor='languageSelect' id='languageSelect-label'>
                     Language
                   </Label>
                   <Select
-                    id="languageSelect"
-                    name="language"
-                    aria-labelledby="languageSelect-label"
+                    id='languageSelect'
+                    name='language'
+                    aria-labelledby='languageSelect-label'
                   >
                     {languages.map((language) => {
                       return (
@@ -146,13 +146,13 @@ class AdvancedSearch extends React.Component {
                 </li>
               </ul>
             </div>
-            <div className="advancedSearchColumnRight">
+            <div className='advancedSearchColumnRight'>
               <ul>
-                <Label htmlFor="dates" id="dates-label">
+                <Label htmlFor='dates' id='dates-label'>
                   Date
                 </Label>
-                <li id="dates" aria-labelledby="dates-label">
-                  <ul id="dateList">
+                <li id='dates' aria-labelledby='dates-label'>
+                  <ul id='dateList'>
                     {rightInputs.map((key) => (
                       <li key={key} id={`${key}-li`}>
                         <Label htmlFor={key} id={`${key}-li-label`}>
@@ -160,7 +160,7 @@ class AdvancedSearch extends React.Component {
                         </Label>
                         <Input
                           id={key}
-                          type="text"
+                          type='text'
                           attributes={{ name: key }}
                           ariaLabelledBy={`${key}-li-label`}
                         />
@@ -169,11 +169,11 @@ class AdvancedSearch extends React.Component {
                   </ul>
                 </li>
                 <li>
-                  <Label htmlFor="formats" id="formats-label">
+                  <Label htmlFor='formats' id='formats-label'>
                     Format
                   </Label>
-                  <fieldset id="formats" aria-labelledby="formats-label">
-                    <ul id="formatListLeft">
+                  <fieldset id='formats' aria-labelledby='formats-label'>
+                    <ul id='formatListLeft'>
                       {materialTypes.slice(0, 4).map((materialType) => {
                         return (
                           <Checkbox
@@ -190,7 +190,7 @@ class AdvancedSearch extends React.Component {
                         );
                       })}
                     </ul>
-                    <ul id="formatListRight">
+                    <ul id='formatListRight'>
                       {materialTypes.slice(4).map((materialType) => {
                         return (
                           <Checkbox
@@ -210,18 +210,18 @@ class AdvancedSearch extends React.Component {
                   </fieldset>
                 </li>
               </ul>
-              <input type="hidden" name="advancedSearch" value="true" />
+              <input type='hidden' name='advancedSearch' value='true' />
             </div>
           </div>
           <hr />
-          <div id="advancedSearchButtons">
-            <Button buttonType={ButtonTypes.Primary} type="submit">
+          <div id='advancedSearchButtons'>
+            <Button buttonType={ButtonTypes.Primary} type='submit'>
               Submit
             </Button>
             <Button
               buttonType={ButtonTypes.Secondary}
-              className="clearButton"
-              type="button"
+              className='clearButton'
+              type='button'
               onClick={clearFields}
             >
               Clear

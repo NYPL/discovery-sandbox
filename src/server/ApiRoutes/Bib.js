@@ -1,44 +1,44 @@
-import axios from "axios";
+import axios from 'axios';
 
-import nyplApiClient from "../routes/nyplApiClient";
-import logger from "../../../logger";
-import appConfig from "../../app/data/appConfig";
-import extractFeatures from "../../app/utils/extractFeatures";
-import { itemBatchSize } from "../../app/data/constants";
-import { isNyplBnumber } from "../../app/utils/utils";
+import nyplApiClient from '../routes/nyplApiClient';
+import logger from '../../../logger';
+import appConfig from '../../app/data/appConfig';
+import extractFeatures from '../../app/utils/extractFeatures';
+import { itemBatchSize } from '../../app/data/constants';
+import { isNyplBnumber } from '../../app/utils/utils';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage =
-    typeof itemFrom !== "undefined"
+    typeof itemFrom !== 'undefined'
       ? `?items_size=${itemBatchSize}&items_from=${itemFrom}`
-      : "";
+      : '';
   const requestOptions =
-    appConfig.features.includes("on-site-edd") ||
-    (urlEnabledFeatures || []).includes("on-site-edd")
-      ? { headers: { "X-Features": "on-site-edd" } }
+    appConfig.features.includes('on-site-edd') ||
+    (urlEnabledFeatures || []).includes('on-site-edd')
+      ? { headers: { 'X-Features': 'on-site-edd' } }
       : {};
   return nyplApiClient().then((client) =>
     client.get(
       `/discovery/resources/${query}${queryForItemPage}`,
-      requestOptions
-    )
+      requestOptions,
+    ),
   );
 };
 
 const shepApiCall = (bibId) =>
   axios({
-    method: "get",
+    method: 'get',
     url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
     timeout: 5000,
   });
 
 const holdingsMappings = {
-  Location: "location",
-  Format: "format",
-  "Call Number": "shelfMark",
-  "Library Has": "holdingStatement",
-  Notes: "notes",
+  'Location': 'location',
+  'Format': 'format',
+  'Call Number': 'shelfMark',
+  'Library Has': 'holdingStatement',
+  'Notes': 'notes',
 };
 
 export const addHoldingDefinition = (holding) => {
@@ -51,22 +51,22 @@ export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
   const longestMatch = matches.reduce(
     (acc, el) => (el.code.length > acc.code.length ? el : acc),
-    matches[0]
+    matches[0],
   );
   if (!longestMatch || !longestMatch.url) return undefined;
   return longestMatch.url;
 };
 
 const checkInItemsForHolding = (holding) => {
-  let location = "";
-  let holdingLocationCode = "";
+  let location = '';
+  let holdingLocationCode = '';
   let locationUrl;
   if (holding.location && holding.location.length) {
     holdingLocationCode = holding.location[0].code;
     location = holding.location[0].label;
     locationUrl = holding.location[0].url;
   }
-  const format = holding.format || "";
+  const format = holding.format || '';
   if (!holding.checkInBoxes) return [];
   return holding.checkInBoxes.map((box) => ({
     location,
@@ -74,10 +74,10 @@ const checkInItemsForHolding = (holding) => {
     holdingLocationCode,
     format,
     position: box.position || 0,
-    status: { prefLabel: box.status || "" },
-    accessMessage: { "@id": "accessMessage: 1", prefLabel: "Use in library" },
-    volume: box.coverage || "",
-    callNumber: box.shelfMark || "",
+    status: { prefLabel: box.status || '' },
+    accessMessage: { '@id': 'accessMessage: 1', 'prefLabel': 'Use in library' },
+    volume: box.coverage || '',
+    callNumber: box.shelfMark || '',
     available: true,
     isSerial: true,
     requestable: false,
@@ -89,14 +89,14 @@ export const addCheckInItems = (bib) => {
     .map((holding) => checkInItemsForHolding(holding))
     .reduce((acc, el) => acc.concat(el), [])
     .filter(
-      (box) => !["Expected", "Late", "Removed"].includes(box.status.prefLabel)
+      (box) => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel),
     )
     .sort((box1, box2) => box2.position - box1.position);
 };
 
 export const fetchLocationUrls = (codes) =>
   nyplApiClient().then((client) =>
-    client.get(`/locations?location_codes=${codes}`)
+    client.get(`/locations?location_codes=${codes}`),
   );
 
 const addLocationUrls = (bib) => {
@@ -104,7 +104,7 @@ const addLocationUrls = (bib) => {
   const holdingCodes = holdings
     ? holdings
         .map((holding) =>
-          (holding.location || []).map((location) => location.code)
+          (holding.location || []).map((location) => location.code),
         )
         .reduce((acc, el) => acc.concat(el), [])
     : [];
@@ -113,13 +113,13 @@ const addLocationUrls = (bib) => {
     ? bib.items
         .map((item) =>
           (item.holdingLocation || []).map(
-            (location) => location["@id"] || location.code
-          )
+            (location) => location['@id'] || location.code,
+          ),
         )
         .reduce((acc, el) => acc.concat(el), [])
     : [];
 
-  const codes = holdingCodes.concat(itemCodes).join(",");
+  const codes = holdingCodes.concat(itemCodes).join(',');
   // get locations data by codes
   return fetchLocationUrls(codes)
     .then((resp) => {
@@ -138,10 +138,10 @@ const addLocationUrls = (bib) => {
         bib.items.forEach((item) => {
           if (item.holdingLocation) {
             item.holdingLocation.forEach((holdingLocation) => {
-              if (holdingLocation["@id"]) {
+              if (holdingLocation['@id']) {
                 holdingLocation.url = findUrl(
-                  { code: holdingLocation["@id"] },
-                  resp
+                  { code: holdingLocation['@id'] },
+                  resp,
                 );
               }
             });
@@ -151,7 +151,7 @@ const addLocationUrls = (bib) => {
       return bib;
     })
     .catch((err) => {
-      console.log("catching nypl client ", err);
+      console.log('catching nypl client ', err);
     });
 };
 
@@ -161,7 +161,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       fetchSubjectHeadingData: true,
       features: [],
     },
-    reqOptions
+    reqOptions,
   );
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
@@ -185,21 +185,21 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       const status =
-        !bib || !bib.uri || !bibId.includes(bib.uri) ? "404" : "200";
-      if (status === "404") {
+        !bib || !bib.uri || !bibId.includes(bib.uri) ? '404' : '200';
+      if (status === '404') {
         return nyplApiClient()
           .then((client) => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
           .then((resp) => {
             const classic = appConfig.legacyBaseUrl;
             if (resp.statusCode === 200) {
               res.redirect(
-                `${appConfig.circulatingCatalog}/iii/encore/record/C__R${bibId}`
+                `${appConfig.circulatingCatalog}/iii/encore/record/C__R${bibId}`,
               );
             }
           })
           .catch((err) => {
-            console.log("error: ", err);
-            console.log("bib not found");
+            console.log('error: ', err);
+            console.log('bib not found');
           })
           .then(() => {
             res.status(404);
@@ -232,7 +232,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
           .catch((error) => {
             logger.error(
               `Error in shepApiCall API error, bib_id: ${bibId}`,
-              error
+              error,
             );
             return { bib };
           });
@@ -243,7 +243,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     .catch((error) => {
       logger.error(
         `Error attemping to fetch a Bib in fetchBib, id: ${bibId}`,
-        error
+        error,
       );
 
       errorcb(error);
@@ -264,7 +264,7 @@ function bibSearch(req, res, resolve) {
       fetchSubjectHeadingData: true,
       itemFrom,
     },
-    res
+    res,
   );
 }
 

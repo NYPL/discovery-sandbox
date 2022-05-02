@@ -2,17 +2,17 @@ const buildQueryDataFromForm = (formData) => {
   const queryData = {};
 
   // Add advanced search params
-  ["searchKeywords", "contributor", "title", "subject"].forEach((inputType) => {
+  ['searchKeywords', 'contributor', 'title', 'subject'].forEach((inputType) => {
     const inputData = formData.find(
-      (entry) => entry[0] === inputType && entry[1]
+      (entry) => entry[0] === inputType && entry[1],
     );
     if (inputData) queryData[inputType] = inputData[1];
   });
 
   // Add dates
-  ["dateAfter", "dateBefore"].forEach((inputType) => {
+  ['dateAfter', 'dateBefore'].forEach((inputType) => {
     const inputData = formData.find(
-      (entry) => entry[0] === inputType && entry[1]
+      (entry) => entry[0] === inputType && entry[1],
     );
     if (inputData) {
       queryData.selectedFilters = queryData.selectedFilters || {};
@@ -22,7 +22,7 @@ const buildQueryDataFromForm = (formData) => {
 
   // Add formats
   formData.forEach((input) => {
-    if (input[0].includes("resourcetypes")) {
+    if (input[0].includes('resourcetypes')) {
       queryData.selectedFilters = queryData.selectedFilters || {};
       queryData.selectedFilters.materialType =
         queryData.selectedFilters.materialType || [];
@@ -32,7 +32,7 @@ const buildQueryDataFromForm = (formData) => {
 
   // Add language
   const languageData = formData.find(
-    (entry) => entry[0] === "language" && entry[1]
+    (entry) => entry[0] === 'language' && entry[1],
   );
   if (languageData) {
     queryData.selectedFilters = queryData.selectedFilters || {};

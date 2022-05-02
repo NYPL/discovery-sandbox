@@ -1,25 +1,25 @@
 /* global window */
-import { updateBibPage } from "@Actions";
-import { Heading } from "@nypl/design-system-react-components";
-import { ajaxCall } from "@utils";
-import PropTypes from "prop-types";
-import React from "react";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import BackToSearchResults from "../components/BibPage/BackToSearchResults";
-import BottomBibDetails from "../components/BibPage/BottomBibDetails";
-import LibraryHoldings from "../components/BibPage/LibraryHoldings";
-import TopBibDetails from "../components/BibPage/TopBibDetails";
-import itemsContainerModule from "../components/Item/ItemsContainer";
-import LegacyCatalogLink from "../components/LegacyCatalog/LegacyCatalogLink";
-import SccContainer from "../components/SccContainer/SccContainer";
-import appConfig from "../data/appConfig";
-import { itemBatchSize } from "../data/constants";
-import LibraryItem from "../utils/item";
+import { updateBibPage } from '@Actions';
+import { Heading } from '@nypl/design-system-react-components';
+import { ajaxCall } from '@utils';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import BottomBibDetails from '../components/BibPage/BottomBibDetails';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import TopBibDetails from '../components/BibPage/TopBibDetails';
+import itemsContainerModule from '../components/Item/ItemsContainer';
+import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
+import { itemBatchSize } from '../data/constants';
+import LibraryItem from '../utils/item';
 import {
   getAggregatedElectronicResources,
   pluckAeonLinksFromResource,
-} from "../utils/utils";
+} from '../utils/utils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -35,7 +35,7 @@ const checkForMoreItems = (bib, dispatch) => {
     const itemFrom = bib.itemFrom || itemBatchSize;
     const bibApi = `${window.location.pathname.replace(
       baseUrl,
-      `${baseUrl}/api`
+      `${baseUrl}/api`,
     )}?itemFrom=${itemFrom}`;
     ajaxCall(
       bibApi,
@@ -51,25 +51,25 @@ const checkForMoreItems = (bib, dispatch) => {
               done,
               itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
             }),
-          })
+          }),
         );
       },
       (error) => {
         console.error(error);
-      }
+      },
     );
   }
 };
 
 export const BibPage = (
   { bib, location, searchKeywords, dispatch, resultSelection },
-  context
+  context,
 ) => {
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
 
-  if (typeof window !== "undefined") {
+  if (typeof window !== 'undefined') {
     // check whether this is a server side or client side render
     // by whether 'window' is defined. After the first render on the client side
     // check for more items
@@ -78,7 +78,7 @@ export const BibPage = (
     // done in an effect.
   }
 
-  const bibId = bib["@id"] ? bib["@id"].substring(4) : "";
+  const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = items.every((i) => i.isElectronicResource);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
@@ -90,12 +90,12 @@ export const BibPage = (
   return (
     <SccContainer
       useLoadingLayer
-      className="nypl-item-details"
-      pageTitle="Item Details"
+      className='nypl-item-details'
+      pageTitle='Item Details'
     >
-      <section className="nypl-item-details__heading">
+      <section className='nypl-item-details__heading'>
         <Heading level={2}>
-          {bib.title && bib.title.length ? bib.title[0] : " "}
+          {bib.title && bib.title.length ? bib.title[0] : ' '}
         </Heading>
         <BackToSearchResults result={resultSelection} bibId={bibId} />
       </section>
@@ -104,15 +104,15 @@ export const BibPage = (
         bib={bib}
         resources={pluckAeonLinksFromResource(
           aggregatedElectronicResources,
-          items
+          items,
         )}
       />
 
       {items.length && !isElectronicResources && (
-        <section style={{ marginTop: "20px" }}>
+        <section style={{ marginTop: '20px' }}>
           <ItemsContainer
             key={bibId}
-            shortenItems={location.pathname.indexOf("all") !== -1}
+            shortenItems={location.pathname.indexOf('all') !== -1}
             items={items}
             bibId={bibId}
             itemPage={location.search}
@@ -123,14 +123,14 @@ export const BibPage = (
       )}
 
       {bib.holdings && (
-        <section style={{ marginTop: "20px" }}>
+        <section style={{ marginTop: '20px' }}>
           <LibraryHoldings holdings={bib.holdings} />
         </section>
       )}
 
       <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith("b")} />
+      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
     </SccContainer>
   );
 };

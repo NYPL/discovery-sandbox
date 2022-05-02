@@ -1,39 +1,39 @@
 /* global window */
-import React from "react";
-import PropTypes from "prop-types";
-import { Header, navConfig } from "@nypl/dgx-header-component";
-import Footer from "@nypl/dgx-react-footer";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { union as _union } from "underscore";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Header, navConfig } from '@nypl/dgx-header-component';
+import Footer from '@nypl/dgx-react-footer';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { union as _union } from 'underscore';
 
-import Feedback from "../Feedback/Feedback";
-import LoadingLayer from "../LoadingLayer/LoadingLayer";
-import DataLoader from "../DataLoader/DataLoader";
-import appConfig from "../../data/appConfig";
+import Feedback from '../Feedback/Feedback';
+import LoadingLayer from '../LoadingLayer/LoadingLayer';
+import DataLoader from '../DataLoader/DataLoader';
+import appConfig from '../../data/appConfig';
 
-import { updateFeatures } from "../../actions/Actions";
+import { updateFeatures } from '../../actions/Actions';
 
-import { breakpoints } from "../../data/constants";
+import { breakpoints } from '../../data/constants';
 
-export const MediaContext = React.createContext("desktop");
+export const MediaContext = React.createContext('desktop');
 
 export class Application extends React.Component {
   constructor(props, context) {
     super(props, context);
     const { query } = context.router.location;
     this.state = {
-      media: "desktop",
+      media: 'desktop',
     };
 
     const urlEnabledFeatures = query.features
-      ? query.features.split(",")
+      ? query.features.split(',')
       : null;
     if (urlEnabledFeatures) {
       const urlFeatures = urlEnabledFeatures.filter(
-        (urlFeat) => !appConfig.features.includes(urlFeat)
+        (urlFeat) => !appConfig.features.includes(urlFeat),
       );
-      const urlFeaturesString = urlFeatures.join(",");
+      const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
       if (
         urlFeatures.some((urlFeat) => !this.props.features.includes(urlFeat))
@@ -45,7 +45,7 @@ export class Application extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener("resize", this.onWindowResize.bind(this));
+    window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
     const { router } = this.context;
     if (this.state.urlEnabledFeatures) {
@@ -68,10 +68,10 @@ export class Application extends React.Component {
     const { innerWidth } = window;
 
     const breakpoint = breakpoints.find(
-      (breakpoint) => innerWidth <= breakpoint.maxValue
+      (breakpoint) => innerWidth <= breakpoint.maxValue,
     );
     const newMedia =
-      breakpoint && breakpoint.media ? breakpoint.media : "desktop";
+      breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
     if (media !== newMedia) this.setState({ media: newMedia });
   }
 
@@ -86,11 +86,11 @@ export class Application extends React.Component {
 
     return (
       <MediaContext.Provider value={this.state.media}>
-        <div className="app-wrapper">
+        <div className='app-wrapper'>
           <Header
             navData={navConfig.current}
             patron={this.props.patron}
-            skipNav={{ target: "mainContent" }}
+            skipNav={{ target: 'mainContent' }}
           />
           <DataLoader
             location={this.context.router.location}
@@ -131,5 +131,5 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Application)
+  connect(mapStateToProps, mapDispatchToProps)(Application),
 );

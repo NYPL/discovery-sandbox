@@ -11,8 +11,8 @@
 export function isAeonUrl(url) {
   if (!url) return false;
   const aeonLinks = [
-    "https://specialcollections.nypl.org/aeon/Aeon.dll",
-    "https://nypl-aeon-test.aeon.atlas-sys.com",
+    'https://specialcollections.nypl.org/aeon/Aeon.dll',
+    'https://nypl-aeon-test.aeon.atlas-sys.com',
   ];
   const link = Array.isArray(url) ? url[0] : url;
   return Boolean(aeonLinks.some((path) => link.startsWith(path)));

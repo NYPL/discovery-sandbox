@@ -1,7 +1,7 @@
 /* eslint-env browser */
-import { createStore, applyMiddleware, compose } from "redux";
-import thunk from "redux-thunk";
-import { rootReducer } from "./Reducers";
+import { createStore, applyMiddleware, compose } from 'redux';
+import thunk from 'redux-thunk';
+import { rootReducer } from './Reducers';
 
 /**
  * Provides a configurable store object that uses enhancers

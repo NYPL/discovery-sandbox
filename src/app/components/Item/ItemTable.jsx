@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { isArray as _isArray } from "underscore";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { isArray as _isArray } from 'underscore';
 
-import ItemTableRow from "./ItemTableRow";
+import ItemTableRow from './ItemTableRow';
 
 const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
   if (
@@ -15,19 +15,19 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
 
   const includeVolColumn =
     items.some((item) => item.volume && item.volume.length) &&
-    page !== "SearchResults";
+    page !== 'SearchResults';
 
   return (
-    <table className="nypl-basic-table" id={id}>
-      <caption className="hidden">Item details</caption>
+    <table className='nypl-basic-table' id={id}>
+      <caption className='hidden'>Item details</caption>
       <thead>
         <tr>
-          {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
-          {page !== "SearchResults" ? <th scope="col">Format</th> : null}
-          <th scope="col">Access</th>
-          <th scope="col">Status</th>
-          <th scope="col">Call Number</th>
-          <th scope="col">Location</th>
+          {includeVolColumn ? <th scope='col'>Vol/Date</th> : null}
+          {page !== 'SearchResults' ? <th scope='col'>Format</th> : null}
+          <th scope='col'>Access</th>
+          <th scope='col'>Status</th>
+          <th scope='col'>Call Number</th>
+          <th scope='col'>Location</th>
         </tr>
       </thead>
       <tbody>
@@ -56,7 +56,7 @@ ItemTable.propTypes = {
 };
 
 ItemTable.defaultProps = {
-  id: "",
+  id: '',
 };
 
 export default ItemTable;

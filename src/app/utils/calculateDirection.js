@@ -1,11 +1,11 @@
 const calculateDirection =
   (currentSortType, currentDirection) => (sortType) => {
     if (sortType === currentSortType)
-      return currentDirection === "ASC" ? "DESC" : "ASC";
+      return currentDirection === 'ASC' ? 'DESC' : 'ASC';
     return {
-      alphabetical: "ASC",
-      bibs: "DESC",
-      descendants: "DESC",
+      alphabetical: 'ASC',
+      bibs: 'DESC',
+      descendants: 'DESC',
     }[sortType];
   };
 

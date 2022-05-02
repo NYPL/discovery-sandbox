@@ -1,5 +1,5 @@
-import NyplDataApiClient from "@nypl/nypl-data-api-client";
-import aws from "aws-sdk";
+import NyplDataApiClient from '@nypl/nypl-data-api-client';
+import aws from 'aws-sdk';
 
 const kmsClientHelper = (options) => {
   const { kmsEnvironment, apiBase, tokenUrl, clientId, clientSecret } = options;
@@ -10,14 +10,14 @@ const kmsClientHelper = (options) => {
 
   // If we want to use encrypted client id and secret strings, then we need to set up
   // AWS and the KMS decryption function.
-  if (kmsEnvironment === "encrypted") {
+  if (kmsEnvironment === 'encrypted') {
     kms = new aws.KMS({
-      region: "us-east-1",
+      region: 'us-east-1',
     });
 
     decryptKMS = (key) => {
       const params = {
-        CiphertextBlob: new Buffer(key, "base64"),
+        CiphertextBlob: new Buffer(key, 'base64'),
       };
 
       return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ const kmsClientHelper = (options) => {
 
     // If we want to use encrypted client id and secret strings, then we first need to
     // decrypt the strings and instantiate the NyplDataApiClient with those decrypted values.
-    if (kmsEnvironment === "encrypted") {
+    if (kmsEnvironment === 'encrypted') {
       return new Promise((resolve, reject) => {
         Promise.all(keys.map(decryptKMS))
           .then(([decryptedClientId, decryptedClientSecret]) => {
@@ -58,8 +58,8 @@ const kmsClientHelper = (options) => {
             resolve(nyplApiClient);
           })
           .catch((error) => {
-            console.log("ERROR trying to decrypt using KMS.", error);
-            reject("ERROR trying to decrypt using KMS.", error);
+            console.log('ERROR trying to decrypt using KMS.', error);
+            reject('ERROR trying to decrypt using KMS.', error);
           });
       });
     }

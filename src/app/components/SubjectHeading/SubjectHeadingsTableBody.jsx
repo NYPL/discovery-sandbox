@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
+import React from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
-import SubjectHeading from "./SubjectHeading";
-import AdditionalSubjectHeadingsButton from "./AdditionalSubjectHeadingsButton";
-import NestedTableHeader from "./NestedTableHeader";
-import Range from "../../models/Range";
-import appConfig from "../../data/appConfig";
+import SubjectHeading from './SubjectHeading';
+import AdditionalSubjectHeadingsButton from './AdditionalSubjectHeadingsButton';
+import NestedTableHeader from './NestedTableHeader';
+import Range from '../../models/Range';
+import appConfig from '../../data/appConfig';
 
 class SubjectHeadingsTableBody extends React.Component {
   constructor(props) {
@@ -43,7 +43,7 @@ class SubjectHeadingsTableBody extends React.Component {
     const { nextUrl, subjectHeadings } = this.state;
     const apiUrl = nextUrl.replace(
       /.*\/api\/v0\.1/,
-      `${appConfig.baseUrl}/api/subjectHeadings`
+      `${appConfig.baseUrl}/api/subjectHeadings`,
     );
     axios(apiUrl)
       .then((resp) => {
@@ -72,7 +72,7 @@ class SubjectHeadingsTableBody extends React.Component {
     return range.intervals.reduce(
       (acc, interval, index) =>
         acc.concat(this.listItemsInInterval(interval, index, lastIndex)),
-      []
+      [],
     );
   }
 
@@ -82,27 +82,27 @@ class SubjectHeadingsTableBody extends React.Component {
     const { container } = this.context;
     const { start, end } = interval;
     const subjectHeadingsInInterval = subjectHeadings.filter(
-      (el, i) => i >= start && i <= end
+      (el, i) => i >= start && i <= end,
     );
-    const isContext = container === "context";
+    const isContext = container === 'context';
     if (subjectHeadings[start - 1] && !isContext) {
       subjectHeadingsInInterval.unshift({
-        button: "previous",
+        button: 'previous',
         indentation,
-        updateParent: () => this.updateRange(range, interval, "start", -10),
+        updateParent: () => this.updateRange(range, interval, 'start', -10),
       });
     }
     if (end !== Infinity && subjectHeadings[end + 1]) {
       subjectHeadingsInInterval.push({
-        button: isContext ? "contextMore" : "next",
+        button: isContext ? 'contextMore' : 'next',
         indentation,
         noEllipse: index === lastIndex,
-        updateParent: () => this.updateRange(range, interval, "end", 10),
+        updateParent: () => this.updateRange(range, interval, 'end', 10),
       });
     }
     if (end === Infinity && nextUrl) {
       subjectHeadingsInInterval.push({
-        button: isContext ? "contextMore" : "next",
+        button: isContext ? 'contextMore' : 'next',
         indentation,
         noEllipse: true,
         updateParent: this.fetchAndUpdate,
@@ -181,7 +181,7 @@ class SubjectHeadingsTableBody extends React.Component {
 
     return (
       <React.Fragment>
-        {nested && subjectHeadings && container !== "context" ? (
+        {nested && subjectHeadings && container !== 'context' ? (
           <NestedTableHeader
             parentUuid={parentUuid}
             key={`nestedTableHeader${indentation}`}

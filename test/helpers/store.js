@@ -1,11 +1,11 @@
 /* eslint-disable react/jsx-filename-extension */
-import React from "react";
-import { mount, shallow } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-import thunk from "redux-thunk";
+import React from 'react';
+import { mount, shallow } from 'enzyme';
+import { Provider } from 'react-redux';
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 
-import initialState from "../../src/app/stores/InitialState";
+import initialState from '../../src/app/stores/InitialState';
 
 const TestProvider = ({ store, children }) => (
   <Provider store={store}>{children}</Provider>

@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import calculateDirection from "@calculateDirection";
+import React from 'react';
+import PropTypes from 'prop-types';
+import calculateDirection from '@calculateDirection';
 
-import SortButton from "./SortButton";
+import SortButton from './SortButton';
 
 const NestedTableHeader = (props) => {
   const {
@@ -20,7 +20,7 @@ const NestedTableHeader = (props) => {
   const calculateDirectionForType = calculateDirection(sortBy, direction);
 
   const sortButtons = {};
-  ["alphabetical", "descendants", "bibs"].forEach((type) => {
+  ['alphabetical', 'descendants', 'bibs'].forEach((type) => {
     sortButtons[type] = (
       <SortButton
         handler={updateSort}
@@ -34,26 +34,26 @@ const NestedTableHeader = (props) => {
   });
 
   return (
-    <tr className="nestedTableHeader">
+    <tr className='nestedTableHeader'>
       <th
         className={`subjectHeadingsTableCell subjectHeadingLabel ${
-          sortBy === "alphabetical" ? "selected" : ""
+          sortBy === 'alphabetical' ? 'selected' : ''
         }`}
       >
-        <div className="subjectHeadingLabelInner" style={positionStyle}>
+        <div className='subjectHeadingLabelInner' style={positionStyle}>
           {sortButtons.alphabetical}
         </div>
       </th>
       <th
         className={`subjectHeadingsTableCell subjectHeadingAttribute narrower ${
-          sortBy === "descendants" ? "selected" : ""
+          sortBy === 'descendants' ? 'selected' : ''
         }`}
       >
         {sortButtons.descendants}
       </th>
       <th
         className={`subjectHeadingsTableCell subjectHeadingAttribute titles ${
-          sortBy === "bibs" ? "selected" : ""
+          sortBy === 'bibs' ? 'selected' : ''
         }`}
       >
         {sortButtons.bibs}

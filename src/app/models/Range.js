@@ -20,7 +20,7 @@ class Range {
         }
         return acc;
       },
-      [this.intervals[0]]
+      [this.intervals[0]],
     );
   }
 }
@@ -33,7 +33,7 @@ Range.fromSubjectHeading = (subjectHeading, linked, show = null) => {
   if (children && uuid !== linked) {
     // on the show page, this is the case for a heading above the main heading
     const mid = children.findIndex(
-      (heading) => heading.children || heading.uuid === linked
+      (heading) => heading.children || heading.uuid === linked,
     );
     const intervals = [
       { start: 0, end: 0 }, // show one child of a heading above the main heading
@@ -58,7 +58,7 @@ Range.addRangeData = (subjectHeading, linked, show = null) => {
   subjectHeading.range = Range.fromSubjectHeading(subjectHeading, linked, show);
   if (subjectHeading.children)
     subjectHeading.children.forEach((child) =>
-      Range.addRangeData(child, linked, show)
+      Range.addRangeData(child, linked, show),
     );
 };
 

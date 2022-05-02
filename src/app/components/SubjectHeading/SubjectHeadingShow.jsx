@@ -1,12 +1,12 @@
-import React from "react";
-import PropTypes from "prop-types";
-import axios from "axios";
+import React from 'react';
+import PropTypes from 'prop-types';
+import axios from 'axios';
 
-import SubjectHeadingsTable from "./SubjectHeadingsTable";
-import NeighboringHeadingsBox from "./NeighboringHeadingsBox";
-import BibsList from "./BibsList";
-import Range from "../../models/Range";
-import appConfig from "../../data/appConfig";
+import SubjectHeadingsTable from './SubjectHeadingsTable';
+import NeighboringHeadingsBox from './NeighboringHeadingsBox';
+import BibsList from './BibsList';
+import Range from '../../models/Range';
+import appConfig from '../../data/appConfig';
 
 class SubjectHeadingShow extends React.Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class SubjectHeadingShow extends React.Component {
     const { uuid } = this.state.mainHeading;
 
     axios(
-      `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`
+      `${appConfig.baseUrl}/api/subjectHeadings/subject_headings/${uuid}/context`,
     )
       .then((res) => {
         const {
@@ -46,7 +46,7 @@ class SubjectHeadingShow extends React.Component {
           {
             contextHeadings: this.processContextHeadings(
               subject_headings,
-              uuid
+              uuid,
             ),
             mainHeading: {
               label,
@@ -57,11 +57,11 @@ class SubjectHeadingShow extends React.Component {
           },
           () => {
             this.props.setBannerText(this.state.mainHeading.label);
-          }
+          },
         );
       })
       .catch((err) => {
-        console.error("error: ", err);
+        console.error('error: ', err);
         this.setState({
           contextIsLoading: false,
           contextError: true,
@@ -78,7 +78,7 @@ class SubjectHeadingShow extends React.Component {
         });
       })
       .catch((err) => {
-        console.error("error: ", err);
+        console.error('error: ', err);
       });
   }
 
@@ -100,7 +100,7 @@ class SubjectHeadingShow extends React.Component {
     const uuid = this.props.params.subjectHeadingUuid;
     const path = this.props.location.pathname.replace(
       /\/subject_headings.*/,
-      ""
+      '',
     );
     return `${path}/subject_headings?linked=${uuid}`;
   }
@@ -112,7 +112,7 @@ class SubjectHeadingShow extends React.Component {
       heading.uuid === uuid ||
       (heading.children &&
         heading.children.some((child) =>
-          this.removeChildrenOffMainPath(child, uuid)
+          this.removeChildrenOffMainPath(child, uuid),
         ));
     if (!onMainPath) heading.children = null;
     if (onMainPath) heading.onMainPath = true;
@@ -123,10 +123,10 @@ class SubjectHeadingShow extends React.Component {
     if (!headings) return [];
     headings.forEach((heading) => {
       this.removeChildrenOffMainPath(heading, uuid);
-      Range.addRangeData(heading, uuid, "show");
+      Range.addRangeData(heading, uuid, 'show');
     });
     const mainHeadingIndex = headings.findIndex(
-      (heading) => heading.children || heading.uuid === uuid
+      (heading) => heading.children || heading.uuid === uuid,
     );
     const startIndex = mainHeadingIndex > 0 ? mainHeadingIndex - 1 : 0;
     const endIndex = mainHeadingIndex + 2;
@@ -151,7 +151,7 @@ class SubjectHeadingShow extends React.Component {
     const linkUrl =
       contextHeadings && contextHeadings.length
         ? this.generateFullContextUrl()
-        : "#";
+        : '#';
 
     if (error) {
       return <div>Not a subject heading</div>;
@@ -167,7 +167,7 @@ class SubjectHeadingShow extends React.Component {
             label={label}
           />
         )}
-        <div className="nypl-column-half subjectHeadingsSideBar">
+        <div className='nypl-column-half subjectHeadingsSideBar'>
           <NeighboringHeadingsBox
             contextHeadings={contextHeadings}
             contextIsLoading={contextIsLoading}
@@ -180,9 +180,9 @@ class SubjectHeadingShow extends React.Component {
             <SubjectHeadingsTable
               subjectHeadings={relatedHeadings}
               location={location}
-              keyId="related"
-              container="related"
-              tableHeaderText="Related Headings"
+              keyId='related'
+              container='related'
+              tableHeaderText='Related Headings'
             />
           ) : null}
         </div>

@@ -1,13 +1,13 @@
 /* eslint-disable camelcase */
 
-import { addSource } from "./utils";
+import { addSource } from './utils';
 
 const mapSearchScope = {
-  all: "keyword",
-  contributor: "author",
-  standard_number: "standardNumber",
-  title: "title",
-  date: "date",
+  all: 'keyword',
+  contributor: 'author',
+  standard_number: 'standardNumber',
+  title: 'title',
+  date: 'date',
 };
 
 /**
@@ -31,7 +31,7 @@ const mapFilters = (filters = {}) => {
       (Array.isArray(filters.language)
         ? filters.language
         : [filters.language]
-      ).map((lang) => lang.replace("lang:", "language:"))
+      ).map((lang) => lang.replace('lang:', 'language:')),
     );
   }
 
@@ -54,17 +54,17 @@ const mapFilters = (filters = {}) => {
 const createResearchNowQuery = (params) => {
   const { q, sort, sort_direction, filters, field, per_page } = params;
 
-  const mainQuery = [mapSearchScope[field] || "keyword", q || "*"].join(":");
+  const mainQuery = [mapSearchScope[field] || 'keyword', q || '*'].join(':');
 
   const query = {
     query: [mainQuery],
     page: 1,
-    source: "catalog",
+    source: 'catalog',
   };
 
   if (sort) {
-    sort_direction = sort_direction || (sort === "date" ? "desc" : "asc");
-    query.sort = [sort, sort_direction].join(":");
+    sort_direction = sort_direction || (sort === 'date' ? 'desc' : 'asc');
+    query.sort = [sort, sort_direction].join(':');
   }
 
   if (per_page) query.size = per_page;
@@ -82,12 +82,12 @@ const createResearchNowQuery = (params) => {
   if (subjectLiteral) {
     query.query = query.query.concat(
       (Array.isArray(subjectLiteral) ? subjectLiteral : [subjectLiteral]).map(
-        (subject) => ["subject", subject].join(":")
-      )
+        (subject) => ['subject', subject].join(':'),
+      ),
     );
   }
   if (contributorLiteral)
-    query.query.push(["author", contributorLiteral].join(":"));
+    query.query.push(['author', contributorLiteral].join(':'));
 
   // Extract language and date filters for drb `filter` param:
   if (language || dateAfter || dateBefore) {
@@ -99,11 +99,11 @@ const createResearchNowQuery = (params) => {
 
 const authorQuery = (author) => ({
   query: `author:${author.name}`,
-  source: "catalog",
+  source: 'catalog',
 });
 
 const formatUrl = (link) =>
-  addSource(link.startsWith("http") ? link : `https://${link}`);
+  addSource(link.startsWith('http') ? link : `https://${link}`);
 
 /**
  *  Given a hash representation of a query string, e.g.
@@ -117,7 +117,7 @@ const formatUrl = (link) =>
  */
 const getQueryString = (query) => {
   return (
-    "?" +
+    '?' +
     (query &&
       Object.keys(query)
         .reduce((pairs, key) => {
@@ -127,10 +127,10 @@ const getQueryString = (query) => {
           values = values.map(encodeURIComponent);
           return pairs.concat(
             // Join values with ','
-            [encodeURIComponent(key), values.join(",")].join("=")
+            [encodeURIComponent(key), values.join(',')].join('='),
           );
         }, [])
-        .join("&"))
+        .join('&'))
   );
 };
 

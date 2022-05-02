@@ -1,6 +1,6 @@
-import { Link as DSLink } from "@nypl/design-system-react-components";
-import React from "react";
-import { Link } from "react-router";
+import { Link as DSLink } from '@nypl/design-system-react-components';
+import React from 'react';
+import { Link } from 'react-router';
 
 const BackToSearchResults = ({ result, bibId }) => {
   return (

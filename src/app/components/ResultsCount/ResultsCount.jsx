@@ -1,8 +1,8 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
-import { displayContext } from "../../utils/utils";
+import { displayContext } from '../../utils/utils';
 
 export class ResultsCount extends React.Component {
   /*
@@ -35,7 +35,7 @@ export class ResultsCount extends React.Component {
       subject,
     } = this.props;
 
-    const countF = count ? count.toLocaleString() : "";
+    const countF = count ? count.toLocaleString() : '';
     const start = (page - 1) * 50 + 1;
     const end = page * 50 > count ? count : page * 50;
     const currentResultDisplay = `${start}-${end}`;
@@ -64,20 +64,20 @@ export class ResultsCount extends React.Component {
   render() {
     const results = this.displayCount();
     const { count, features } = this.props;
-    const includeDrbb = features.includes("drb-integration");
+    const includeDrbb = features.includes('drb-integration');
     if (includeDrbb && count === 0) return null;
 
     return (
       <div
         className={`nypl-results-summary${
-          count === 0 ? " no-scc-results" : ""
-        }${includeDrbb ? " drbb-integration" : ""}`}
+          count === 0 ? ' no-scc-results' : ''
+        }${includeDrbb ? ' drbb-integration' : ''}`}
       >
         <h2
-          id="results-description"
-          aria-live="polite"
-          aria-atomic="true"
-          role="alert"
+          id='results-description'
+          aria-live='polite'
+          aria-atomic='true'
+          role='alert'
         >
           {results}
         </h2>
@@ -99,9 +99,9 @@ ResultsCount.propTypes = {
 };
 
 ResultsCount.defaultProps = {
-  searchKeywords: "",
+  searchKeywords: '',
   count: 0,
-  page: "1",
+  page: '1',
   selectedFilters: {
     materialType: [],
     language: [],

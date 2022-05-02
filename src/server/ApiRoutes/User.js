@@ -1,5 +1,5 @@
-import appConfig from "../../app/data/appConfig";
-import nyplApiClient from "../../server/routes/nyplApiClient";
+import appConfig from '../../app/data/appConfig';
+import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {
   if (
@@ -10,9 +10,9 @@ function requireUser(req, res) {
   ) {
     // redirect to login
     const fullUrl = encodeURIComponent(
-      `${req.protocol}://${req.get("host")}${req.originalUrl}`
+      `${req.protocol}://${req.get('host')}${req.originalUrl}`,
     );
-    if (!fullUrl.includes("%2Fapi%2F")) {
+    if (!fullUrl.includes('%2Fapi%2F')) {
       res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
     }
     return { redirect: true };
@@ -32,7 +32,7 @@ function eligibility(req, res) {
   const id = req.patronTokenResponse.decodedPatron.sub;
   nyplApiClient()
     .then((client) =>
-      client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false })
+      client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }),
     )
     .then((response) => {
       res.send(JSON.stringify(response));

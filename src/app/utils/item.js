@@ -1,36 +1,36 @@
-import { findWhere as _findWhere, isEmpty as _isEmpty } from "underscore";
-import LocationCodes from "../data/locationCodes";
-import { camelToShishKabobCase } from "./utils";
+import { findWhere as _findWhere, isEmpty as _isEmpty } from 'underscore';
+import LocationCodes from '../data/locationCodes';
+import { camelToShishKabobCase } from './utils';
 
 // Map local identifier names to their @type and urn: indicators:
 const itemIdentifierTypeMappings = {
   barcode: {
-    type: "bf:Barcode",
-    legacyUrnPrefix: "urn:barcode:",
+    type: 'bf:Barcode',
+    legacyUrnPrefix: 'urn:barcode:',
   },
   bnum: {
-    type: "nypl:Bnumber",
-    legacyUrnPrefix: "urn:bnum:",
+    type: 'nypl:Bnumber',
+    legacyUrnPrefix: 'urn:bnum:',
   },
   callnumber: {
-    type: "bf:ShelfMark",
-    legacyUrnPrefix: "urn:callnumber:",
+    type: 'bf:ShelfMark',
+    legacyUrnPrefix: 'urn:callnumber:',
   },
   isbn: {
-    type: "bf:Isbn",
-    legacyUrnPrefix: "urn:isbn:",
+    type: 'bf:Isbn',
+    legacyUrnPrefix: 'urn:isbn:',
   },
   issn: {
-    type: "bf:Issn",
-    legacyUrnPrefix: "urn:issn:",
+    type: 'bf:Issn',
+    legacyUrnPrefix: 'urn:issn:',
   },
   lccn: {
-    type: "bf:Lccn",
-    legacyUrnPrefix: "urn:lccn:",
+    type: 'bf:Lccn',
+    legacyUrnPrefix: 'urn:lccn:',
   },
   oclc: {
-    type: "nypl:Oclc",
-    legacyUrnPrefix: "urn:oclc:",
+    type: 'nypl:Oclc',
+    legacyUrnPrefix: 'urn:oclc:',
   },
 };
 
@@ -41,9 +41,9 @@ function LibraryItem() {
    * @return {object}
    */
   this.getDefaultNyplLocation = () => ({
-    "@id": "",
-    prefLabel: "Check with Staff",
-    customerCode: "",
+    '@id': '',
+    'prefLabel': 'Check with Staff',
+    'customerCode': '',
   });
 
   /**
@@ -52,9 +52,9 @@ function LibraryItem() {
    * @return {object}
    */
   this.nonNyplRecapLocation = () => ({
-    "@id": "",
-    prefLabel: "Offsite",
-    customerCode: "",
+    '@id': '',
+    'prefLabel': 'Offsite',
+    'customerCode': '',
   });
 
   /**
@@ -64,20 +64,21 @@ function LibraryItem() {
    */
   this.defaultDeliveryLocations = () => [
     {
-      "@id": "loc:mal",
-      prefLabel: "Stephen A. Schwarzman Building - Rose Main Reading Room 315",
-      customerCode: "NH",
+      '@id': 'loc:mal',
+      'prefLabel':
+        'Stephen A. Schwarzman Building - Rose Main Reading Room 315',
+      'customerCode': 'NH',
     },
     {
-      "@id": "loc:mai",
-      prefLabel:
-        "Stephen A. Schwarzman Building - Milstein Microform Reading Room 119",
-      customerCode: "NF",
+      '@id': 'loc:mai',
+      'prefLabel':
+        'Stephen A. Schwarzman Building - Milstein Microform Reading Room 119',
+      'customerCode': 'NF',
     },
     {
-      "@id": "loc:myr",
-      prefLabel: "Library of Performing Arts - Print Delivery Desk 3rd Floor",
-      customerCode: "NP",
+      '@id': 'loc:myr',
+      'prefLabel': 'Library of Performing Arts - Print Delivery Desk 3rd Floor',
+      'customerCode': 'NP',
     },
   ];
 
@@ -89,20 +90,20 @@ function LibraryItem() {
    */
   this.ensureLegacyIdentifierIsEntity = (identifier) => {
     // If API has given us urn: prefixed identifiers..
-    if (typeof identifier === "string") {
+    if (typeof identifier === 'string') {
       // Convert them to entitys:
       return Object.keys(itemIdentifierTypeMappings)
         .filter(
           (name) =>
             identifier.indexOf(
-              itemIdentifierTypeMappings[name].legacyUrnPrefix
-            ) === 0
+              itemIdentifierTypeMappings[name].legacyUrnPrefix,
+            ) === 0,
         )
         .map((name) => ({
-          "@type": itemIdentifierTypeMappings[name].type,
-          "@value": identifier.replace(
+          '@type': itemIdentifierTypeMappings[name].type,
+          '@value': identifier.replace(
             itemIdentifierTypeMappings[name].legacyUrnPrefix,
-            ""
+            '',
           ),
         }))
         .pop();
@@ -128,7 +129,7 @@ function LibraryItem() {
   this.getIdentifierEntitiesByType = (identifiersArray, type) => {
     return identifiersArray
       .map(this.ensureLegacyIdentifierIsEntity)
-      .filter((identifier) => identifier && identifier["@type"] === type);
+      .filter((identifier) => identifier && identifier['@type'] === type);
   };
 
   /**
@@ -152,11 +153,11 @@ function LibraryItem() {
     return neededTagsArray.reduce((identifierMap, neededTag) => {
       const matches = this.getIdentifierEntitiesByType(
         identifiersArray,
-        neededTag.value
+        neededTag.value,
       );
       if (matches && matches.length > 0)
         return Object.assign(identifierMap, {
-          [neededTag.name]: matches[0]["@value"],
+          [neededTag.name]: matches[0]['@value'],
         });
       return identifierMap;
     }, {});
@@ -182,8 +183,8 @@ function LibraryItem() {
    * @return {object}
    */
   this.mapItem = (item = {}, bib) => {
-    const id = item && item["@id"] ? item["@id"].substring(4) : "";
-    const itemSource = item.idNyplSourceId ? item.idNyplSourceId["@type"] : "";
+    const id = item && item['@id'] ? item['@id'].substring(4) : '';
+    const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
     const accessMessage =
       item.accessMessage && item.accessMessage.length
@@ -191,7 +192,7 @@ function LibraryItem() {
         : {};
     // Taking first callNumber.
     const callNumber =
-      item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : "";
+      item.shelfMark && item.shelfMark.length ? item.shelfMark[0] : '';
     // Taking the first value in the array.
     const requestable =
       item.requestable && item.requestable.length ? item.requestable[0] : false;
@@ -207,43 +208,43 @@ function LibraryItem() {
     const volume =
       item.enumerationChronology && item.enumerationChronology.length
         ? item.enumerationChronology[0]
-        : "";
+        : '';
     const availability =
       !_isEmpty(status) && status.prefLabel
-        ? status.prefLabel.replace(/\W/g, "").toLowerCase()
-        : "";
-    const available = ["available", "useinlibrary"].includes(availability);
+        ? status.prefLabel.replace(/\W/g, '').toLowerCase()
+        : '';
+    const available = ['available', 'useinlibrary'].includes(availability);
     // non-NYPL ReCAP
-    const nonNyplRecap = itemSource.indexOf("Recap") !== -1;
+    const nonNyplRecap = itemSource.indexOf('Recap') !== -1;
     const holdingLocation = this.getHoldingLocation(item, nonNyplRecap);
     // nypl-owned ReCAP
     const nyplRecap = !!(
       holdingLocation &&
       !_isEmpty(holdingLocation) &&
-      holdingLocation["@id"].substring(4, 6) === "rc" &&
-      itemSource === "SierraNypl"
+      holdingLocation['@id'].substring(4, 6) === 'rc' &&
+      itemSource === 'SierraNypl'
     );
     const nonRecapNYPL = !!(
       holdingLocation &&
       !_isEmpty(holdingLocation) &&
-      holdingLocation["@id"].substring(4, 6) !== "rc" &&
-      itemSource === "SierraNypl"
+      holdingLocation['@id'].substring(4, 6) !== 'rc' &&
+      itemSource === 'SierraNypl'
     );
     const isRecap = nonNyplRecap || nyplRecap;
     // The identifier we need for an item now
-    const identifiersArray = [{ name: "barcode", value: "bf:Barcode" }];
+    const identifiersArray = [{ name: 'barcode', value: 'bf:Barcode' }];
     const bibIdentifiers = this.getIdentifiers(
       item.identifier,
-      identifiersArray
+      identifiersArray,
     );
-    const barcode = bibIdentifiers.barcode || "";
+    const barcode = bibIdentifiers.barcode || '';
     const mappedItemSource = camelToShishKabobCase(itemSource);
     const isOffsite = this.isOffsite(holdingLocation.prefLabel.toLowerCase());
     let url = null;
     const isSerial = !!(
       bib &&
       bib.issuance &&
-      bib.issuance[0]["@id"] === "urn:biblevel:s"
+      bib.issuance[0]['@id'] === 'urn:biblevel:s'
     );
     const materialType =
       bib && bib.materialType && bib.materialType[0] ? bib.materialType[0] : {};
@@ -252,7 +253,7 @@ function LibraryItem() {
         ? bib.holdings.format
         : materialType.prefLabel;
 
-    if (availability === "available") {
+    if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
       url = this.getLocationHoldUrl(holdingLocation);
     }
@@ -268,7 +269,7 @@ function LibraryItem() {
       electronicResources,
       location: holdingLocation.prefLabel,
       locationUrl: holdingLocation.url,
-      holdingLocationCode: holdingLocation["@id"] || "",
+      holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,
       requestable,
@@ -297,7 +298,7 @@ function LibraryItem() {
 
     if (itemId && items.length) {
       // Will return undefined if not found.
-      const item = _findWhere(items, { "@id": `res:${itemId}` });
+      const item = _findWhere(items, { '@id': `res:${itemId}` });
       if (item) {
         return this.mapItem(item, bib);
       }
@@ -328,39 +329,39 @@ function LibraryItem() {
    */
   this.getLocationHoldUrl = (location) => {
     const holdingLocationId =
-      location && location["@id"] ? location["@id"].substring(4) : "";
-    let url = "";
-    let shortLocation = "schwarzman";
+      location && location['@id'] ? location['@id'].substring(4) : '';
+    let url = '';
+    let shortLocation = 'schwarzman';
 
     if (holdingLocationId in LocationCodes) {
       shortLocation = LocationCodes[holdingLocationId].location;
     }
 
     switch (shortLocation) {
-      case "schwarzman":
+      case 'schwarzman':
         url =
-          "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=" +
-          "13777&type=1&language=1";
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13777&type=1&language=1';
         break;
-      case "lpa":
+      case 'lpa':
         url =
-          "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=" +
-          "13252&type=1&language=1";
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13252&type=1&language=1';
         break;
-      case "schomburg":
+      case 'schomburg':
         url =
-          "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=" +
-          "13810&type=1&language=1";
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13810&type=1&language=1';
         break;
-      case "sibl":
+      case 'sibl':
         url =
-          "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=" +
-          "13809&type=1&language=1";
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13809&type=1&language=1';
         break;
       default:
         url =
-          "http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=" +
-          "13777&type=1&language=1";
+          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
+          '13777&type=1&language=1';
         break;
     }
 
@@ -404,7 +405,7 @@ function LibraryItem() {
    * @param {string} prefLabel
    * @return {boolean}
    */
-  this.isOffsite = (prefLabel = "") => prefLabel.indexOf("offsite") !== -1;
+  this.isOffsite = (prefLabel = '') => prefLabel.indexOf('offsite') !== -1;
 
   /**
    * isNYPLReCAP(bibId)
@@ -413,8 +414,8 @@ function LibraryItem() {
    * @param {string} bibId
    * @return {boolean}
    */
-  this.isNYPLReCAP = (bibId = "") =>
-    bibId.indexOf("pb") === -1 && bibId.indexOf("cb") === -1;
+  this.isNYPLReCAP = (bibId = '') =>
+    bibId.indexOf('pb') === -1 && bibId.indexOf('cb') === -1;
 }
 
 export default new LibraryItem();
