@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -258,6 +260,7 @@ describe('ResultsList', () => {
 
       after(() => {
         mock.restore();
+        component.unmount();
       });
     });
   });
@@ -282,6 +285,7 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
+      component.unmount();
     });
   });
 

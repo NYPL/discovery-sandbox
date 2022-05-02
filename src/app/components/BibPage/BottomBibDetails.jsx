@@ -1,5 +1,4 @@
 import { Heading } from '@nypl/design-system-react-components';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { definitionMarcs } from '../../utils/bibDetailsUtils';
 import BibDetails from './BibDetails';
@@ -49,15 +48,6 @@ const BottomBibDetails = ({ bib }) => {
       <BibDetails fields={fields} marcs={definitionMarcs(bib)} />
     </section>
   );
-};
-
-BottomBibDetails.propTypes = {
-  bib: PropTypes.object.isRequired,
-  resources: PropTypes.array.isRequired,
-};
-
-BottomBibDetails.defaultProps = {
-  resources: [],
 };
 
 export default BottomBibDetails;

@@ -25,8 +25,9 @@ describe('SubjectHeadings', () => {
         },
       },
     ];
+    const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} idx={1} />);
+    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
 
     it("should have a dt with text 'Subject' and key i", () => {
       expect(component.find('dt').length).to.equal(1);
@@ -77,8 +78,9 @@ describe('SubjectHeadings', () => {
         label: 'Heading+&',
       },
     ];
+    const pos = 1;
 
-    const component = mount(<SubjectHeadings headings={headings} idx={1} />);
+    const component = mount(<SubjectHeadings headings={headings} i={pos} />);
 
     it("should have a dt with text 'Subjects' and key i", () => {
       expect(component.find('dt').length).to.equal(1);

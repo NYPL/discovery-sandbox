@@ -10,9 +10,9 @@ const NotFound404 = () => (
       <div className='nypl-full-width-wrapper'>
         <div className='nypl-row'>
           <div className='nypl-column-three-quarters'>
-            <h1>{`404 Not Found`}</h1>
-            <p>{`We're sorry...`}</p>
-            <p>{`The page you were looking for doesn't exist.`}</p>
+            <h1>404 Not Found</h1>
+            <p>We're sorry...</p>
+            <p>The page you were looking for doesn't exist.</p>
             <p>
               Search the{' '}
               <Link to={`${appConfig.baseUrl}/`}>{appConfig.displayTitle}</Link>{' '}

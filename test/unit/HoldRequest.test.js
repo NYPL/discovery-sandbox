@@ -1,14 +1,17 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-env mocha */
+import React from 'react';
 import appConfig from '@appConfig';
+import { stub, spy } from 'sinon';
+import { expect } from 'chai';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { expect } from 'chai';
-import React from 'react';
-import { spy, stub } from 'sinon';
-import mockedItem from '../fixtures/mocked-item';
-import { makeTestStore, mountTestRender } from '../helpers/store';
+import { mountTestRender, makeTestStore } from '../helpers/store';
+// Import the component that is going to be tested
 import WrappedHoldRequest, {
   HoldRequest,
 } from './../../src/app/pages/HoldRequest';
+import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
   let mock;
@@ -29,9 +32,6 @@ describe('HoldRequest', () => {
       redirect = stub(HoldRequest.prototype, 'redirectWithErrors').callsFake(
         () => true,
       );
-    });
-    after(() => {
-      HoldRequest.prototype.redirectWithErrors.restore();
     });
     describe('ineligible patrons', () => {
       before(() => {
@@ -763,73 +763,6 @@ describe('HoldRequest', () => {
       expect(component.find('Notification').text()).to.include(
         'Some info for our patrons',
       );
-    });
-  });
-
-  describe('if the item is not physRequestable', () => {
-    let component;
-    const bib = {
-      'title': ['Harry Potter'],
-      '@id': 'res:b17688688',
-      'items': { ...mockedItem, physRequestable: false },
-    };
-
-    const deliveryLocations = [
-      {
-        '@id': 'loc:myr',
-        'address': '40 Lincoln Center Plaza',
-        'prefLabel': 'Performing Arts Research Collections',
-        'shortName': 'Library for the Performing Arts',
-      },
-      {
-        '@id': 'loc:sc',
-        'prefLabel': 'Schomburg Center',
-        'address': '515 Malcolm X Boulevard',
-        'shortName': 'Schomburg Center',
-      },
-      {
-        '@id': 'loc:mala',
-        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
-        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
-        'shortName': 'Schwarzman Building',
-      },
-    ];
-
-    before(() => {
-      component = mountTestRender(
-        <WrappedHoldRequest params={{ itemId: 'i10000003' }} />,
-        {
-          attachTo: document.body,
-          store: makeTestStore({
-            patron: { id: 1 },
-            bib,
-            deliveryLocations,
-          }),
-        },
-      );
-    });
-
-    after(() => {
-      component.unmount();
-    });
-    it('should display error message instead of hold request form', () => {
-      let form = component.find('form');
-
-      setImmediate(() => {
-        expect(form.find('h2')).to.have.length(1);
-        expect(
-          form.contains(
-            <h2 className='nypl-request-form-title'>
-              Delivery options for this item are currently unavailable. Please
-              try again later or contact 917-ASK-NYPL (
-              <a href='tel:917-275-6975'>917-275-6975</a>).
-            </h2>,
-          ),
-        ).to.equal(true);
-        form = component.find('form').first();
-
-        expect(form.find('fieldset')).to.have.length(0);
-      });
     });
   });
 });

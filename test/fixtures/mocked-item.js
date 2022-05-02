@@ -32,7 +32,6 @@ export default [
       },
     ],
     'requestable': [true],
-    'physRequestable': [true],
     'accessMessage': [
       {
         '@id': 'accessMessage:2',

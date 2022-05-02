@@ -1,23 +1,23 @@
-import { isArray as _isArray, pick as _pick } from 'underscore';
+import { isArray as _isArray } from 'underscore';
+import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
+import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
+import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
+import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
+import extractFeatures from '../../app/utils/extractFeatures';
 import {
-  getReqParams,
   basicQuery,
+  getReqParams,
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
-import extractFeatures from '../../app/utils/extractFeatures';
-import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
 import nyplApiClient from '../routes/nyplApiClient';
-import logger from '../../../logger';
-import ResearchNow from './ResearchNow';
-import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
-import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
 import {
-  addHoldingDefinition,
   addCheckInItems,
+  addHoldingDefinition,
   fetchLocationUrls,
   findUrl,
 } from './Bib';
+import ResearchNow from './ResearchNow';
 
 const createAPIQuery = basicQuery({
   searchKeywords: '',

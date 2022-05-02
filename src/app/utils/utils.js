@@ -71,10 +71,12 @@ const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
  * createAppHistory
  * Create a history in the browser or server that coincides with react-router.
  */
-const useCreateAppHistory = () => {
-  return useQueries(
-    typeof window !== 'undefined' ? createHistory : createMemoryHistory,
-  )();
+const createAppHistory = () => {
+  if (typeof window !== 'undefined') {
+    return useQueries(createHistory)();
+  }
+
+  return useQueries(createMemoryHistory)();
 };
 
 /**
@@ -520,10 +522,7 @@ const getUpdatedFilterValues = (props) => {
     });
   }
 
-  updatedFilterValues = _sortBy(
-    updatedFilterValues,
-    (filtered) => filtered.label,
-  );
+  updatedFilterValues = _sortBy(updatedFilterValues, (_f) => _f.label);
 
   return updatedFilterValues;
 };
@@ -700,8 +699,8 @@ const isOptionSelected = (filterValue, itemValue) => {
  * @return {boolean}
  */
 const hasValidFilters = (selectedFilters) => {
-  return Object.values(selectedFilters || {}).some((value) =>
-    Array.isArray(value) ? value.length > 0 : value,
+  return Object.values(selectedFilters || {}).some((_v) =>
+    Array.isArray(_v) ? _v.length > 0 : _v,
   );
 };
 
@@ -737,13 +736,13 @@ function extractNoticePreference(fixedFields) {
  *      camelToShishKabobCase("firstCharCanBeLowerCase")
  *        => "first-char-can-be-lower-case"
  */
-function camelToShishKabobCase(str) {
+function camelToShishKabobCase(_s) {
   return (
-    str
+    _s
       // Change capital letters into "-{lowercase letter}"
-      .replace(/([A-Z])/g, (capital, p1, idx) => {
+      .replace(/([A-Z])/g, (_c, p1, _i) => {
         // If capital letter is not first character, precede with '-':
-        return (idx > 0 ? '-' : '') + capital.toLowerCase();
+        return (_i > 0 ? '-' : '') + _c.toLowerCase();
       })
   );
 }
@@ -814,7 +813,7 @@ export {
   trackDiscovery,
   ajaxCall,
   getSortQuery,
-  useCreateAppHistory as createAppHistory,
+  createAppHistory,
   getFieldParam,
   getFilterParam,
   destructureFilters,

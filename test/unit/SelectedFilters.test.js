@@ -5,7 +5,7 @@ import { shallow, mount } from 'enzyme';
 
 import SelectedFilters from '../../src/app/components/Filters/SelectedFilters';
 
-const listItemAt = (component, position) => component.find('li').at(position);
+const listItemAt = (component, pos) => component.find('li').at(pos);
 
 describe('SelectedFilters', () => {
   describe('Default', () => {

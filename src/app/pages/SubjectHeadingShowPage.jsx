@@ -1,9 +1,11 @@
-import { Heading } from '@nypl/design-system-react-components';
-import PropTypes from 'prop-types';
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
+import { Heading } from '@nypl/design-system-react-components';
+
 import SccContainer from '../components/SccContainer/SccContainer';
-import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow';
+import SubjectHeadingSearch from '../components/SubjectHeading/Search/SubjectHeadingSearch';
 
 const SubjectHeadingShowPage = (props) => {
   const {
