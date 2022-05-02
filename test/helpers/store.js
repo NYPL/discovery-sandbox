@@ -1,15 +1,19 @@
-/* eslint-disable react/jsx-filename-extension */
-import React from 'react';
 import { mount, shallow } from 'enzyme';
+import React from 'react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
-
 import initialState from '../../src/app/stores/InitialState';
+import PropTypes from 'prop-types';
 
 const TestProvider = ({ store, children }) => (
   <Provider store={store}>{children}</Provider>
 );
+
+TestProvider.propTypes = {
+  store: PropTypes.object,
+  children: PropTypes.node,
+};
 
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
   return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
