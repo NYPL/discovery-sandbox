@@ -83,7 +83,7 @@ const DefinitionField = ({
 
           return (
             <li key={`${value}-${idx}`}>
-              <ParallelsFields content={definition} bib={bib} />
+              <ParallelsFields field={field} content={definition} bib={bib} />
             </li>
           );
         })

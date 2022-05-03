@@ -36,7 +36,7 @@ const LinkableBibField = ({
 
   return (
     <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      <ParallelsFields content={text} bib={bib} />
+      <ParallelsFields field={field} content={text} bib={bib} />
     </Link>
   );
 };
