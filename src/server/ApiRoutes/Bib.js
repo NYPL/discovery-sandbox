@@ -239,50 +239,6 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       }
       return { bib };
     })
-    .then(({ bib }) => {
-      function extractParallels(bib) {
-        return (
-          Object.keys(bib).reduce((store, key) => {
-            if (key.includes('parallel')) {
-              const field = matchField(key);
-
-              // If parallel but no none parallel (original) match
-              if (!bib[field]) return store;
-
-              const mapping = bib[field]
-                .reduce((acc, curr, idx) => {
-                  const og = curr;
-                  const pa = bib[key][idx];
-                  acc.push([pa, og]); // Set a 2D array
-                  return acc;
-                }, [])
-                .filter(Boolean);
-
-              return {
-                ...store,
-                [field]: {
-                  mapping,
-                  original: bib[field],
-                  parallel: bib[key],
-                },
-              };
-            }
-
-            return store;
-          }, {}) || {}
-        );
-
-        function matchField(key) {
-          const field = key.slice('parallel'.length);
-          const match = field.charAt(0).toLocaleLowerCase() + field.slice(1);
-          return match;
-        }
-      }
-
-      bib.parallels = extractParallels(bib);
-      // TODO: Handle Bib Mapping
-      return { bib };
-    })
     .then((bib) => cb(bib))
     .catch((error) => {
       logger.error(
