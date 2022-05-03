@@ -13,12 +13,8 @@ import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
-const BibDetails = ({ fields = [], resources = [], marcs }) => {
-  const {
-    bib,
-    bib: { subjectHeadingData },
-    parallels,
-  } = useBibParallel();
+const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
+  const { parallels } = useBibParallel();
 
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
@@ -38,7 +34,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
             // term is the label of the feild
             term: label,
             // definition is the value of the label
-            definition: <DefinitionNoteField values={notes} />,
+            definition: <DefinitionNoteField values={notes} bib={bib} />,
           };
         }),
       ];
@@ -54,7 +50,11 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
         {
           term: field.label,
           definition: (
-            <DefinitionField bibValues={ident ?? value} field={field} />
+            <DefinitionField
+              bibValues={ident ?? value}
+              field={field}
+              bib={bib}
+            />
           ),
         },
       ];
@@ -84,13 +84,14 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
 
   const data = combineBibDetailsData(definitions, marcs);
 
-  return <DefinitionList data={data} headings={subjectHeadingData} />;
+  return <DefinitionList data={data} headings={bib.subjectHeadingData} />;
 };
 
 BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   resources: PropTypes.array,
   marcs: PropTypes.array,
+  bib: PropTypes.object,
 };
 
 BibDetails.defaultProps = {

@@ -6,7 +6,12 @@ import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
-const DefinitionField = ({ field, bibValues = [], additional = false }) => {
+const DefinitionField = ({
+  field,
+  bibValues = [],
+  additional = false,
+  bib,
+}) => {
   const { parallel } = useBibParallel(field.value);
 
   // BibValues is an array of various values
@@ -50,6 +55,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
                           bibValue={literal}
                           outbound={field.selfLinkable}
                           filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
+                          bib={bib}
                         />,
                         // Add span if there are additional literals
                         idx < orgArr.length - 1 && (
@@ -68,6 +74,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
                   field={field.value}
                   bibValue={value}
                   outbound={field.selfLinkable}
+                  bib={bib}
                 />
               </li>
             );
@@ -77,7 +84,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
           return (
             <li key={`${value}-${idx}`}>
-              <ParallelsFields content={definition} />
+              <ParallelsFields content={definition} bib={bib} />
             </li>
           );
         })
@@ -88,6 +95,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
 DefinitionField.propTypes = {
   field: PropTypes.object,
+  bib: PropTypes.object,
   additional: PropTypes.bool,
   bibValues: PropTypes.array,
 };

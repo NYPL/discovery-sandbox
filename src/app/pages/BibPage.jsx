@@ -45,6 +45,7 @@ export const BibPage = (
           location={location}
           selection={resultSelection}
           keywords={searchKeywords}
+          bib={bib}
         />
       </SccContainer>
     </BibProvider>
