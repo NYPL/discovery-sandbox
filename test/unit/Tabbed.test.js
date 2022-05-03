@@ -138,13 +138,14 @@ describe('Tabbed', () => {
     </div>
   );
 
-  const bibDetails = <BibDetails fields={bottomFields} resources={[]} />;
+  const bibDetails = (
+    <BibDetails fields={bottomFields} resources={[]} bib={sampleBib} />
+  );
 
   const additionalDetails = <AdditionalDetailsViewer bib={sampleBib} />;
 
   const component = mount(
     <Tabbed
-      bib={sampleBib}
       tabs={[
         { title: 'Availability', content: mockItemsContainer },
         { title: 'Details', content: bibDetails },
