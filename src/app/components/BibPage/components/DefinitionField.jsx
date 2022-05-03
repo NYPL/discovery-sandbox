@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../../context/Bib.Provider';
 import { normalizeLiteral } from '../../../utils/utils';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
@@ -12,12 +11,12 @@ const DefinitionField = ({
   additional = false,
   bib,
 }) => {
-  const { parallel } = useBibParallel(field.value);
+  const parallel = bib.parallels[field.value] ?? {};
 
   // BibValues is an array of various values
   // Set bibValues as a 2D array becuase parallels is also a 2D array
   // Keep things in sync.
-  const list = parallel ?? [bibValues];
+  const list = parallel.mapping ?? [bibValues];
 
   return (
     <ul className={additional && 'additionalDetails'}>

@@ -1,14 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../context/Bib.Provider';
 
 const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
-  const { parallel } = useBibParallel(field);
+  const parallel = bib.parallels[field];
 
   return (
     <>
       {(parallel &&
-        parallel[fieldIndex].map((value, idx) => (
+        parallel.mapping &&
+        parallel.mapping[fieldIndex].map((value, idx) => (
           <span
             key={`${field}_${idx}_para`}
             dir={unicodeDirection(value)}

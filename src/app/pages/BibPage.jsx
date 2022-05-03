@@ -7,7 +7,6 @@ import BibContainer from '../components/BibPage/BibContainer';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import SccContainer from '../components/SccContainer/SccContainer';
-import BibProvider from '../context/Bib.Provider';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
 import { ajaxCall, isEmpty } from '../utils/utils';
@@ -35,20 +34,18 @@ export const BibPage = (
   }
 
   return (
-    <BibProvider bib={bib}>
-      <SccContainer
-        useLoadingLayer
-        className='nypl-item-details'
-        pageTitle='Item Details'
-      >
-        <BibContainer
-          location={location}
-          selection={resultSelection}
-          keywords={searchKeywords}
-          bib={bib}
-        />
-      </SccContainer>
-    </BibProvider>
+    <SccContainer
+      useLoadingLayer
+      className='nypl-item-details'
+      pageTitle='Item Details'
+    >
+      <BibContainer
+        location={location}
+        selection={resultSelection}
+        keywords={searchKeywords}
+        bib={bib}
+      />
+    </SccContainer>
   );
 };
 

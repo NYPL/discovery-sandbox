@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../context/Bib.Provider';
 import {
   combineBibDetailsData,
   groupNotesBySubject,
@@ -14,14 +13,13 @@ import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
 const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
-  const { parallels } = useBibParallel();
-
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
     const value = buildValue();
 
     if (field.value === 'note' && value) {
-      const paras = (parallels['note'] && parallels['note'].parallel) || [];
+      const paras =
+        (bib.parallels['note'] && bib.parallels['note'].parallel) || [];
       const group = groupNotesBySubject(setParallelToNote(value, paras));
 
       return [
