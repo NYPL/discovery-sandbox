@@ -3,16 +3,11 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import bibs from '../fixtures/bibs';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import BibProvider from './../../src/app/context/Bib.Provider';
 
 describe('BibDetails', () => {
   describe('Invalid props', () => {
     it('should return null with no props passed', () => {
-      const component = mount(
-        <BibProvider bib={{}}>
-          <BibDetails />
-        </BibProvider>,
-      );
+      const component = mount(<BibDetails />);
 
       const actual = component.find('BibDetails').getDOMNode();
       expect(actual).to.equal(null);
@@ -51,11 +46,7 @@ describe('BibDetails', () => {
     let component;
 
     before(() => {
-      component = mount(
-        <BibProvider bib={bibs[0]}>
-          <BibDetails fields={fields} />
-        </BibProvider>,
-      );
+      component = mount(<BibDetails fields={fields} bib={bibs[0]} />);
     });
 
     it('should display titles, authors', () => {
@@ -247,7 +238,8 @@ describe('BibDetails', () => {
   describe('getDisplayFields', () => {
     it('modifies note fields appropriately', () => {
       const component = mount(
-        <BibProvider
+        <BibDetails
+          fields={[{ label: 'Notes', value: 'note' }]}
           bib={{
             note: [
               { noteType: 'Language', prefLabel: 'In Urdu' },
@@ -257,9 +249,7 @@ describe('BibDetails', () => {
               },
             ],
           }}
-        >
-          <BibDetails fields={[{ label: 'Notes', value: 'note' }]} />
-        </BibProvider>,
+        />,
       );
 
       expect(component.find('dt').length).to.equal(2);
