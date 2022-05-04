@@ -19,7 +19,10 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
 
     if (field.value === 'note' && value) {
       const paras =
-        (bib.parallels['note'] && bib.parallels['note'].parallel) || [];
+        (bib.parallels &&
+          bib.parallels['note'] &&
+          bib.parallels['note'].parallel) ||
+        [];
       const group = groupNotesBySubject(setParallelToNote(value, paras));
 
       return [

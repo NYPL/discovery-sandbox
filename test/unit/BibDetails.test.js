@@ -50,7 +50,7 @@ describe('BibDetails', () => {
     });
 
     it('should display titles, authors', () => {
-      expect(component.children().type()).to.equal(BibDetails);
+      expect(component.type()).to.equal(BibDetails);
 
       expect(component.find('dd')).to.have.lengthOf(2);
       expect(component.find('dt')).to.have.lengthOf(2);
@@ -236,8 +236,10 @@ describe('BibDetails', () => {
   });
 
   describe('getDisplayFields', () => {
-    it('modifies note fields appropriately', () => {
-      const component = mount(
+    let component;
+
+    before(() => {
+      component = mount(
         <BibDetails
           fields={[{ label: 'Notes', value: 'note' }]}
           bib={{
@@ -251,7 +253,9 @@ describe('BibDetails', () => {
           }}
         />,
       );
+    });
 
+    it('modifies note fields appropriately', () => {
       expect(component.find('dt').length).to.equal(2);
       expect(component.find('dt').at(0).text()).to.equal('Language (note)');
       expect(component.find('dt').at(1).text()).to.equal('Explanatory Note');

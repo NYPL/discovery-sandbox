@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
-  const parallel = bib && bib.parallels[field];
+  const parallel = bib.parallels && bib.parallels[field];
 
   return (
     <>

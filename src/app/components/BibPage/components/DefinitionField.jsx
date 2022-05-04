@@ -11,7 +11,7 @@ const DefinitionField = ({
   additional = false,
   bib,
 }) => {
-  const parallel = bib.parallels[field.value] ?? {};
+  const parallel = (bib.parallels && bib.parallels[field.value]) || {};
 
   // BibValues is an array of various values
   // Set bibValues as a 2D array becuase parallels is also a 2D array
@@ -83,7 +83,11 @@ const DefinitionField = ({
 
           return (
             <li key={`${value}-${idx}`}>
-              <ParallelsFields field={field} content={definition} bib={bib} />
+              <ParallelsFields
+                field={field.value}
+                content={definition}
+                bib={bib}
+              />
             </li>
           );
         })
