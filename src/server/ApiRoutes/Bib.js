@@ -180,7 +180,12 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-
+      // Append dimensions to the extent field so it displays in the description of bottom bib details
+      if(data.dimensions){
+        const semicolon = data.extent[data.extent.length - 1] === ';' ? '' : '; '
+        const description = data.extent + semicolon + data.dimensions
+        data.extent = [description]
+      }
       return data;
     })
     .then((bib) => {
