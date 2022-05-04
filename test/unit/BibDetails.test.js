@@ -3,16 +3,11 @@ import { mount, shallow } from 'enzyme';
 import React from 'react';
 import bibs from '../fixtures/bibs';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import BibProvider from './../../src/app/context/Bib.Provider';
 
 describe('BibDetails', () => {
   describe('Invalid props', () => {
     it('should return null with no props passed', () => {
-      const component = mount(
-        <BibProvider bib={{}}>
-          <BibDetails />
-        </BibProvider>,
-      );
+      const component = mount(<BibDetails />);
 
       const actual = component.find('BibDetails').getDOMNode();
       expect(actual).to.equal(null);
@@ -51,15 +46,11 @@ describe('BibDetails', () => {
     let component;
 
     before(() => {
-      component = mount(
-        <BibProvider bib={bibs[0]}>
-          <BibDetails fields={fields} />
-        </BibProvider>,
-      );
+      component = mount(<BibDetails fields={fields} bib={bibs[0]} />);
     });
 
     it('should display titles, authors', () => {
-      expect(component.children().type()).to.equal(BibDetails);
+      expect(component.type()).to.equal(BibDetails);
 
       expect(component.find('dd')).to.have.lengthOf(2);
       expect(component.find('dt')).to.have.lengthOf(2);
@@ -245,9 +236,12 @@ describe('BibDetails', () => {
   });
 
   describe('getDisplayFields', () => {
-    it('modifies note fields appropriately', () => {
-      const component = mount(
-        <BibProvider
+    let component;
+
+    before(() => {
+      component = mount(
+        <BibDetails
+          fields={[{ label: 'Notes', value: 'note' }]}
           bib={{
             note: [
               { noteType: 'Language', prefLabel: 'In Urdu' },
@@ -257,11 +251,11 @@ describe('BibDetails', () => {
               },
             ],
           }}
-        >
-          <BibDetails fields={[{ label: 'Notes', value: 'note' }]} />
-        </BibProvider>,
+        />,
       );
+    });
 
+    it('modifies note fields appropriately', () => {
       expect(component.find('dt').length).to.equal(2);
       expect(component.find('dt').at(0).text()).to.equal('Language (note)');
       expect(component.find('dt').at(1).text()).to.equal('Explanatory Note');

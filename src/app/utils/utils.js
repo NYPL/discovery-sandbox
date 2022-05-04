@@ -16,6 +16,15 @@ import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
 
 /**
+ *
+ * @param {object} bib
+ * @returns Bib ID or Undefined if not found
+ */
+const getBibId = (bib) => {
+  return bib['@id'] ? bib['@id'].substring(4) : undefined;
+};
+
+/**
  * normalizeLiteral(subjectLiteralArray)
  * Updates the string structure of subject literals by removing " -- " and replacing it with " > "
  *
@@ -805,6 +814,7 @@ function capitalize(field) {
 const isElectronic = (item) => Boolean(item.isElectronicResource);
 
 export {
+  getBibId,
   normalizeLiteral,
   isEmpty,
   isArray,

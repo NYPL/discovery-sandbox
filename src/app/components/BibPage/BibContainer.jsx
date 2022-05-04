@@ -1,8 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBib } from '../../context/Bib.Provider';
 import LibraryItem from '../../utils/item';
-import { getElectronics, pluckAeonLinks } from '../../utils/utils';
+import { getBibId, getElectronics, pluckAeonLinks } from '../../utils/utils';
 import LegacyCatalogLink from '../LegacyCatalog/LegacyCatalogLink';
 import BibHeading from './BibHeading';
 import BottomBibDetails from './BottomBibDetails';
@@ -10,25 +9,28 @@ import BibItems from './components/BibItems';
 import LibraryHoldings from './LibraryHoldings';
 import TopBibDetails from './TopBibDetails';
 
-const BibContainer = ({ location, keywords, selection }) => {
-  const { bib, bibId } = useBib();
-
+const BibContainer = ({ location, keywords, selection, bib }) => {
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const resources = getElectronics(items);
 
   return (
     <>
-      <BibHeading searched={selection} />
+      <BibHeading searched={selection} bib={bib} />
 
-      <TopBibDetails resources={pluckAeonLinks(resources, items)} />
+      <TopBibDetails resources={pluckAeonLinks(resources, items)} bib={bib} />
 
-      <BibItems items={items} keywords={keywords} location={location} />
+      <BibItems
+        items={items}
+        keywords={keywords}
+        location={location}
+        bib={bib}
+      />
 
       <LibraryHoldings holdings={bib.holdings} />
 
       <BottomBibDetails bib={bib} resources={resources} />
 
-      <LegacyCatalogLink recordNumber={bibId} />
+      <LegacyCatalogLink recordNumber={getBibId(bib)} />
     </>
   );
 };
@@ -37,6 +39,7 @@ BibContainer.propTypes = {
   location: PropTypes.object,
   keywords: PropTypes.string,
   selection: PropTypes.object,
+  bib: PropTypes.object,
 };
 
 export default BibContainer;

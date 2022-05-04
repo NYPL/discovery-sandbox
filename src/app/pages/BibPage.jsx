@@ -7,7 +7,6 @@ import BibContainer from '../components/BibPage/BibContainer';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import SccContainer from '../components/SccContainer/SccContainer';
-import BibProvider from '../context/Bib.Provider';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
 import { ajaxCall, isEmpty } from '../utils/utils';
@@ -34,20 +33,21 @@ export const BibPage = (
     return <LoadingLayer loading />;
   }
 
+  bib.parallels = extractParallels(bib);
+
   return (
-    <BibProvider bib={bib}>
-      <SccContainer
-        useLoadingLayer
-        className='nypl-item-details'
-        pageTitle='Item Details'
-      >
-        <BibContainer
-          location={location}
-          selection={resultSelection}
-          keywords={searchKeywords}
-        />
-      </SccContainer>
-    </BibProvider>
+    <SccContainer
+      useLoadingLayer
+      className='nypl-item-details'
+      pageTitle='Item Details'
+    >
+      <BibContainer
+        location={location}
+        selection={resultSelection}
+        keywords={searchKeywords}
+        bib={bib}
+      />
+    </SccContainer>
   );
 };
 
@@ -125,6 +125,45 @@ function checkForMoreItems(bib, dispatch) {
       console.error(error);
     },
   );
+}
+
+function extractParallels(bib) {
+  return (
+    Object.keys(bib).reduce((store, key) => {
+      if (key.includes('parallel')) {
+        const field = matchField(key);
+
+        // If parallel but no none parallel (original) match
+        if (!bib[field]) return store;
+
+        const mapping = bib[field]
+          .reduce((acc, curr, idx) => {
+            const og = curr;
+            const pa = bib[key][idx];
+            acc.push([pa, og]); // Set a 2D array
+            return acc;
+          }, [])
+          .filter(Boolean);
+
+        return {
+          ...store,
+          [field]: {
+            mapping,
+            original: bib[field],
+            parallel: bib[key],
+          },
+        };
+      }
+
+      return store;
+    }, {}) || {}
+  );
+
+  function matchField(key) {
+    const field = key.slice('parallel'.length);
+    const match = field.charAt(0).toLocaleLowerCase() + field.slice(1);
+    return match;
+  }
 }
 
 // NOTE:

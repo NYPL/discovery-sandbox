@@ -1,4 +1,5 @@
 import { Heading } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { definitionMarcs } from '../../utils/bibDetailsUtils';
 import BibDetails from './BibDetails';
@@ -45,9 +46,13 @@ const BottomBibDetails = ({ bib }) => {
     // TODO: [SCC-3124] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
       <Heading level={3}>Details</Heading>
-      <BibDetails fields={fields} marcs={definitionMarcs(bib)} />
+      <BibDetails fields={fields} marcs={definitionMarcs(bib)} bib={bib} />
     </section>
   );
 };
 
 export default BottomBibDetails;
+
+BottomBibDetails.propTypes = {
+  bib: PropTypes.object,
+};

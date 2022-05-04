@@ -12,6 +12,7 @@ const LinkableBibField = ({
   outbound,
   onClick,
   filterPath,
+  bib,
 }) => {
   const text = outbound
     ? bibValue.prefLabel || bibValue.label || bibValue.url
@@ -35,7 +36,7 @@ const LinkableBibField = ({
 
   return (
     <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      <ParallelsFields content={text} />
+      <ParallelsFields field={field} content={text} bib={bib} />
     </Link>
   );
 };
@@ -47,6 +48,7 @@ LinkableBibField.propTypes = {
   outbound: PropTypes.bool,
   onClick: PropTypes.func,
   filterPath: PropTypes.string,
+  bib: PropTypes.object,
 };
 
 export default LinkableBibField;

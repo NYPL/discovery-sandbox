@@ -1,18 +1,22 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../../context/Bib.Provider';
 import { normalizeLiteral } from '../../../utils/utils';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
-const DefinitionField = ({ field, bibValues = [], additional = false }) => {
-  const { parallel } = useBibParallel(field.value);
+const DefinitionField = ({
+  field,
+  bibValues = [],
+  additional = false,
+  bib,
+}) => {
+  const parallel = (bib.parallels && bib.parallels[field.value]) || {};
 
   // BibValues is an array of various values
   // Set bibValues as a 2D array becuase parallels is also a 2D array
   // Keep things in sync.
-  const list = parallel ?? [bibValues];
+  const list = parallel.mapping ?? [bibValues];
 
   return (
     <ul className={additional && 'additionalDetails'}>
@@ -50,6 +54,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
                           bibValue={literal}
                           outbound={field.selfLinkable}
                           filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
+                          bib={bib}
                         />,
                         // Add span if there are additional literals
                         idx < orgArr.length - 1 && (
@@ -68,6 +73,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
                   field={field.value}
                   bibValue={value}
                   outbound={field.selfLinkable}
+                  bib={bib}
                 />
               </li>
             );
@@ -77,7 +83,11 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
           return (
             <li key={`${value}-${idx}`}>
-              <ParallelsFields content={definition} />
+              <ParallelsFields
+                field={field.value}
+                content={definition}
+                bib={bib}
+              />
             </li>
           );
         })
@@ -88,6 +98,7 @@ const DefinitionField = ({ field, bibValues = [], additional = false }) => {
 
 DefinitionField.propTypes = {
   field: PropTypes.object,
+  bib: PropTypes.object,
   additional: PropTypes.bool,
   bibValues: PropTypes.array,
 };

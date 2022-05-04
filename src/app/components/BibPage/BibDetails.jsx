@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { useBibParallel } from '../../context/Bib.Provider';
 import {
   combineBibDetailsData,
   groupNotesBySubject,
@@ -13,19 +12,17 @@ import DefinitionField from './components/DefinitionField';
 import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
-const BibDetails = ({ fields = [], resources = [], marcs }) => {
-  const {
-    bib,
-    bib: { subjectHeadingData },
-    parallels,
-  } = useBibParallel();
-
+const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
     const value = buildValue();
 
     if (field.value === 'note' && value) {
-      const paras = (parallels['note'] && parallels['note'].parallel) || [];
+      const paras =
+        (bib.parallels &&
+          bib.parallels['note'] &&
+          bib.parallels['note'].parallel) ||
+        [];
       const group = groupNotesBySubject(setParallelToNote(value, paras));
 
       return [
@@ -38,7 +35,7 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
             // term is the label of the feild
             term: label,
             // definition is the value of the label
-            definition: <DefinitionNoteField values={notes} />,
+            definition: <DefinitionNoteField values={notes} bib={bib} />,
           };
         }),
       ];
@@ -54,7 +51,11 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
         {
           term: field.label,
           definition: (
-            <DefinitionField bibValues={ident ?? value} field={field} />
+            <DefinitionField
+              bibValues={ident ?? value}
+              field={field}
+              bib={bib}
+            />
           ),
         },
       ];
@@ -84,13 +85,14 @@ const BibDetails = ({ fields = [], resources = [], marcs }) => {
 
   const data = combineBibDetailsData(definitions, marcs);
 
-  return <DefinitionList data={data} headings={subjectHeadingData} />;
+  return <DefinitionList data={data} headings={bib.subjectHeadingData} />;
 };
 
 BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   resources: PropTypes.array,
   marcs: PropTypes.array,
+  bib: PropTypes.object,
 };
 
 BibDetails.defaultProps = {

@@ -23,17 +23,18 @@ const topFields = [
   },
 ];
 
-const TopBibDetails = ({ resources = [] }) => {
+const TopBibDetails = ({ resources = [], bib }) => {
   return (
     // TODO: [SCC-3128] Replace Styles with ClassName or Constant
     <section style={{ marginTop: '20px' }}>
-      <BibDetails fields={topFields} resources={resources} />
+      <BibDetails fields={topFields} resources={resources} bib={bib} />
     </section>
   );
 };
 
 TopBibDetails.propTypes = {
   resources: PropTypes.array.isRequired,
+  bib: PropTypes.object,
 };
 
 export default TopBibDetails;
