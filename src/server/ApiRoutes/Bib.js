@@ -15,7 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
       : '';
   const requestOptions =
     appConfig.features.includes('on-site-edd') ||
-    (urlEnabledFeatures || []).includes('on-site-edd')
+      (urlEnabledFeatures || []).includes('on-site-edd')
       ? { headers: { 'X-Features': 'on-site-edd' } }
       : {};
   return nyplApiClient().then((client) =>
@@ -46,6 +46,17 @@ export const addHoldingDefinition = (holding) => {
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
     .filter((data) => data.definition);
 };
+
+const appendDimensionsToExtent = (bib) => {
+  const semicolon = bib.extent.slice(-2) === '; ' || bib.extent.slice(-1) === ';'
+  if (bib.dimensions) {
+    const description = bib.extent + (semicolon ? '' : '; ') + bib.dimensions
+    return description
+  } else if (semicolon){
+    return bib.extent.slice(0,-1)
+  }
+  else return bib.extent
+}
 
 export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
@@ -103,20 +114,20 @@ const addLocationUrls = (bib) => {
   const { holdings } = bib;
   const holdingCodes = holdings
     ? holdings
-        .map((holding) =>
-          (holding.location || []).map((location) => location.code),
-        )
-        .reduce((acc, el) => acc.concat(el), [])
+      .map((holding) =>
+        (holding.location || []).map((location) => location.code),
+      )
+      .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const itemCodes = bib.items
     ? bib.items
-        .map((item) =>
-          (item.holdingLocation || []).map(
-            (location) => location['@id'] || location.code,
-          ),
-        )
-        .reduce((acc, el) => acc.concat(el), [])
+      .map((item) =>
+        (item.holdingLocation || []).map(
+          (location) => location['@id'] || location.code,
+        ),
+      )
+      .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
@@ -155,7 +166,7 @@ const addLocationUrls = (bib) => {
     });
 };
 
-function fetchBib(bibId, cb, errorcb, reqOptions, res) {
+function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign(
     {
       fetchSubjectHeadingData: true,
@@ -180,12 +191,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-      // Append dimensions to the extent field so it displays in the description of bottom bib details
-      if(data.dimensions){
-        const semicolon = data.extent[data.extent.length - 1] === ';' ? '' : '; '
-        const description = data.extent + semicolon + data.dimensions
-        data.extent = [description]
-      }
+      data.extent[0] = appendDimensionsToExtent(data)
       return data;
     })
     .then((bib) => {
@@ -255,7 +261,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     }); /* end axios call */
 }
 
-function bibSearch(req, res, resolve) {
+function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
@@ -280,4 +286,5 @@ export default {
   fetchBib,
   nyplApiClientCall,
   addLocationUrls,
+  appendDimensionsToExtent
 };
