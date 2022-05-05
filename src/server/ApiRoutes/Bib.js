@@ -48,20 +48,18 @@ export const addHoldingDefinition = (holding) => {
 };
 
 const appendDimensionsToExtent = (bib) => {
-  if (bib.extent) {
-    // Check if extent was cataloged with a semicolon already at the end
-    const semicolon = bib.extent.slice(-2) === '; ' || bib.extent.slice(-1) === ';'
-    if (bib.dimensions) {
-      // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon
-      const description = bib.extent + (semicolon ? '' : '; ') + bib.dimensions
-      return [description]
-      // No dimensions field, remove semicolon if it exists
-    } else if (semicolon) {
-      return [bib.extent.slice(0, -1)]
-    }
+  let extent = bib.extent[0]
+    // Check if extent was cataloged with a semicolon already at the end:
+    let punctuationToAdd = ''
+    const semicolon = (extent.slice(-2) === '; ' || extent.slice(-1) === ';')
+    if (semicolon){
+      if (extent.slice(-1) !== ' ') punctuationToAdd += ' '
+    } else punctuationToAdd = '; '
+    if (bib.dimensions && bib.dimensions[0].length) {
+      // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
+      extent = extent + punctuationToAdd + bib.dimensions[0]
   }
-  // No dimensions field, no semicolon, return unmutated
-  return bib.extent
+  return [extent]
 }
 
 export const findUrl = (location, urls) => {
