@@ -57,6 +57,7 @@ class ElectronicDelivery extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
     this.fromUrl = this.fromUrl.bind(this);
+    // this.props.isEddRequestable = true
   }
 
   componentDidMount() {
