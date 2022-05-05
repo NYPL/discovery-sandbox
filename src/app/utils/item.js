@@ -184,8 +184,6 @@ function LibraryItem() {
    */
   this.mapItem = (item = {}, bib) => {
     const id = item && item['@id'] ? item['@id'].substring(4) : '';
-    const eddRequestable = item.eddRequestable;
-    const physRequestable = item.physRequestable;
     const itemSource = item.idNyplSourceId ? item.idNyplSourceId['@type'] : '';
     // Taking the first object in the accessMessage array.
     const accessMessage =
@@ -261,8 +259,8 @@ function LibraryItem() {
     }
 
     return {
-      physRequestable,
-      eddRequestable,
+      physRequestable: item.physRequestable,
+      eddRequestable: item.eddRequestable,
       id,
       status,
       availability,

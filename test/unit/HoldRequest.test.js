@@ -9,7 +9,6 @@ import MockAdapter from 'axios-mock-adapter';
 import { expect } from 'chai';
 import React from 'react';
 import { spy, stub } from 'sinon';
-import Hold from 'src/server/ApiRoutes/Hold';
 import mockedItem from '../fixtures/mocked-item';
 import { makeTestStore, mountTestRender } from '../helpers/store';
 import WrappedHoldRequest, {
@@ -165,7 +164,7 @@ describe('HoldRequest', () => {
 
   describe(
     'If the patron is logged in and the App receives invalid delivery location data, ' +
-      '<HoldRequest>',
+    '<HoldRequest>',
     () => {
       let component;
       const bib = {
@@ -218,7 +217,7 @@ describe('HoldRequest', () => {
 
   describe(
     'If the patron is logged in and the App receives valid delivery location data, ' +
-      '<HoldRequest>',
+    '<HoldRequest>',
     () => {
       let component;
       const bib = {
@@ -291,7 +290,7 @@ describe('HoldRequest', () => {
 
       it(
         'should display the avaialbe delivery locations, and the first location is selected ' +
-          'by default.',
+        'by default.',
         () => {
           setImmediate(() => {
             const form = component.find('form');
@@ -772,4 +771,71 @@ describe('HoldRequest', () => {
       );
     });
   });
-});
+
+  describe.only('if the item is not physRequestable', () => {
+    let component;
+    const bib = {
+      title: ['Harry Potter'],
+      '@id': 'res:b17688688',
+      items: { ...mockedItem, physRequestable: false },
+    };
+
+    const deliveryLocations = [
+      {
+        '@id': 'loc:myr',
+        address: '40 Lincoln Center Plaza',
+        prefLabel: 'Performing Arts Research Collections',
+        shortName: 'Library for the Performing Arts',
+      },
+      {
+        '@id': 'loc:sc',
+        prefLabel: 'Schomburg Center',
+        address: '515 Malcolm X Boulevard',
+        shortName: 'Schomburg Center',
+      },
+      {
+        '@id': 'loc:mala',
+        prefLabel: 'Schwarzman Building - Allen Scholar Room',
+        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+        shortName: 'Schwarzman Building',
+      },
+    ];
+
+    before(() => {
+      component = mountTestRender(
+        <WrappedHoldRequest params={{ itemId: 'i10000003' }} />,
+        {
+          attachTo: document.body,
+          store: makeTestStore({
+            patron: { id: 1 },
+            bib,
+            deliveryLocations,
+          }),
+        },
+      );
+    });
+
+    after(() => {
+      component.unmount();
+    });
+    it('should display error message instead of hold request form', () => {
+      let form = component.find('form');
+
+      setImmediate(() => {
+        expect(form.find('h2')).to.have.length(1);
+        expect(
+          form.contains(
+            <h2 className='nypl-request-form-title'>
+              Delivery options for this item are currently unavailable. Please
+              try again later or contact 917-ASK-NYPL (
+              <a href='tel:917-275-6975'>917-275-6975</a>).
+            </h2>,
+          ),
+        ).to.equal(true);
+        form = component.find('form').first();
+
+        expect(form.find('fieldset')).to.have.length(0);
+      })
+    })
+  })
+})
