@@ -48,14 +48,20 @@ export const addHoldingDefinition = (holding) => {
 };
 
 const appendDimensionsToExtent = (bib) => {
-  const semicolon = bib.extent.slice(-2) === '; ' || bib.extent.slice(-1) === ';'
-  if (bib.dimensions) {
-    const description = bib.extent + (semicolon ? '' : '; ') + bib.dimensions
-    return description
-  } else if (semicolon){
-    return bib.extent.slice(0,-1)
+  if (bib.extent) {
+    // Check if extent was cataloged with a semicolon already at the end
+    const semicolon = bib.extent.slice(-2) === '; ' || bib.extent.slice(-1) === ';'
+    if (bib.dimensions) {
+      // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon
+      const description = bib.extent + (semicolon ? '' : '; ') + bib.dimensions
+      return [description]
+      // No dimensions field, remove semicolon if it exists
+    } else if (semicolon) {
+      return [bib.extent.slice(0, -1)]
+    }
   }
-  else return bib.extent
+  // No dimensions field, no semicolon, return unmutated
+  return bib.extent
 }
 
 export const findUrl = (location, urls) => {
@@ -191,7 +197,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-      data.extent[0] = appendDimensionsToExtent(data)
+      data.extent = appendDimensionsToExtent(data)
       return data;
     })
     .then((bib) => {
