@@ -56,7 +56,7 @@ describe('Bib', () => {
     ],
   };
 
-  describe.only('appendDimensionsToExtent', () => {
+  describe('appendDimensionsToExtent', () => {
     it('should add a semicolon after extent if there is not one already', () => {
       const newExtent = Bib.appendDimensionsToExtent(mockBib)
       expect(newExtent).to.include('; ')
