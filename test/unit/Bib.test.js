@@ -58,15 +58,15 @@ describe('Bib', () => {
 
   describe('appendDimensionsToExtent', () => {
     it('should add a semicolon after extent if there is not one already', () => {
-      const newExtent = Bib.appendDimensionsToExtent(mockBib)
+      const [newExtent] = Bib.appendDimensionsToExtent(mockBib)
       expect(newExtent).to.include('; ')
     })
     it('should append dimensions to extent', () => {
-      const newExtent = Bib.appendDimensionsToExtent(mockBib)
+      const [newExtent] = Bib.appendDimensionsToExtent(mockBib)
       expect(newExtent).to.equal('99 bottles of beer; 99 x 99 cm')
     })
     it('should not add semicolon if it already is in extent', () => {
-      const newExtent = Bib.appendDimensionsToExtent({extent: '700 sheets of woven gold; ', dimensions: '1 x 1 in.'})
+      const [newExtent] = Bib.appendDimensionsToExtent({extent: '700 sheets of woven gold; ', dimensions: '1 x 1 in.'})
       expect(newExtent).to.equal('700 sheets of woven gold; 1 x 1 in.')
     })
   })
