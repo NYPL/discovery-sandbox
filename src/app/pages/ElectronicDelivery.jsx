@@ -1,24 +1,21 @@
-/* global window document */
+import axios from 'axios';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
-import axios from 'axios';
 import { Link, withRouter } from 'react-router';
 import {
+  extend as _extend,
   isArray as _isArray,
   isEmpty as _isEmpty,
-  extend as _extend,
   mapObject as _mapObject,
 } from 'underscore';
-import { connect } from 'react-redux';
-
-import SccContainer from '../components/SccContainer/SccContainer';
-import appConfig from '../data/appConfig';
+import { updateLoadingStatus } from '../actions/Actions';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
+import SccContainer from '../components/SccContainer/SccContainer';
+import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
-import { trackDiscovery, institutionNameByNyplSource } from '../utils/utils';
-import { updateLoadingStatus } from '../actions/Actions';
+import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -43,8 +40,10 @@ class ElectronicDelivery extends React.Component {
       selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
+    const isEddRequestable = selectedItem.eddRequestable;
 
     this.state = _extend({
+      isEddRequestable,
       title,
       bibId,
       itemId,
@@ -200,7 +199,14 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect } = this.state;
+    const {
+      bibId,
+      itemId,
+      title,
+      raiseError,
+      serverRedirect,
+      isEddRequestable,
+    } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
@@ -239,7 +245,7 @@ class ElectronicDelivery extends React.Component {
             </div>
           )}
         </div>
-        {!this.props.isEddRequestable ? (
+        {!isEddRequestable ? (
           <h2 className='nypl-request-form-title'>
             Electronic delivery options for this item are currently unavailable.
             Please try again later or contact 917-ASK-NYPL (
