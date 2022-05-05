@@ -1,17 +1,14 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
 import appConfig from '@appConfig';
-import { stub, spy } from 'sinon';
-import { expect } from 'chai';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { mountTestRender, makeTestStore } from '../helpers/store';
-// Import the component that is going to be tested
+import { expect } from 'chai';
+import React from 'react';
+import { spy, stub } from 'sinon';
+import mockedItem from '../fixtures/mocked-item';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 import WrappedHoldRequest, {
   HoldRequest,
 } from './../../src/app/pages/HoldRequest';
-import mockedItem from '../fixtures/mocked-item';
 
 describe('HoldRequest', () => {
   let mock;
@@ -28,11 +25,13 @@ describe('HoldRequest', () => {
   describe('When component did mount', () => {
     let component;
     let redirect;
+
     before(() => {
       redirect = stub(HoldRequest.prototype, 'redirectWithErrors').callsFake(
         () => true,
       );
     });
+
     describe('ineligible patrons', () => {
       before(() => {
         mock
@@ -47,14 +46,17 @@ describe('HoldRequest', () => {
           }),
         });
       });
+
       after(() => {
         component.unmount();
       });
+
       it('should redirect', () => {
         setImmediate(() => {
           expect(redirect.called).to.equal(true);
         });
       });
+
       it('should not show form', () => {
         setImmediate(() => {
           const form = component.find('form').first();
@@ -63,6 +65,7 @@ describe('HoldRequest', () => {
         });
       });
     });
+
     describe('eligible patrons', () => {
       before(() => {
         component = mountTestRender(<WrappedHoldRequest />, {
@@ -72,9 +75,11 @@ describe('HoldRequest', () => {
           }),
         });
       });
+
       after(() => {
         component.unmount();
       });
+
       it('should not redirect', () => {
         setImmediate(() => {
           expect(redirect.called).to.equal(false);

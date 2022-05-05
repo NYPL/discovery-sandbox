@@ -35,8 +35,7 @@ export class HoldConfirmation extends React.Component {
   moneyOwedMessage() {
     return (
       <li className='errorItem'>
-        Your fines have exceeded the limit — you can pay your fines in a branch
-        or online from the links under "My Account"
+        {`Your fines have exceeded the limit — you can pay your fines in a branch or online from the links under "My Account"`}
       </li>
     );
   }
@@ -145,8 +144,8 @@ export class HoldConfirmation extends React.Component {
    * Renders the route back to home page for single page application implementation.
    *
    */
-  backToHome(e) {
-    e.preventDefault();
+  backToHome(event) {
+    event.preventDefault();
 
     trackDiscovery('Discovery Search', 'New Search');
     this.context.router.push(`${appConfig.baseUrl}/`);
@@ -158,8 +157,8 @@ export class HoldConfirmation extends React.Component {
    * Renders the route back to search results page.
    *
    */
-  goToSearchResults(e) {
-    e.preventDefault();
+  goToSearchResults(event) {
+    event.preventDefault();
 
     trackDiscovery('Discovery Search', 'Existing Search');
     this.context.router.push(
@@ -239,7 +238,7 @@ export class HoldConfirmation extends React.Component {
           You may also try your search in our{' '}
           <Link
             to={`${appConfig.baseUrl}/`}
-            onClick={(e) => this.backToHome(e)}
+            onClick={(event) => this.backToHome(event)}
           >
             {appConfig.displayTitle}
           </Link>
@@ -259,7 +258,7 @@ export class HoldConfirmation extends React.Component {
         <Link
           id='start-new-search'
           to={`${appConfig.baseUrl}/`}
-          onClick={(e) => this.backToHome(e)}
+          onClick={(event) => this.backToHome(event)}
         >
           {text}
         </Link>
@@ -325,7 +324,7 @@ export class HoldConfirmation extends React.Component {
           // We use this.props.location.query.searchKeywords here for the query from
           // the URL to deal with no js situation.
           to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
-          onClick={(e) => this.goToSearchResults(e)}
+          onClick={(event) => this.goToSearchResults(event)}
         >
           Go back to your search results
         </Link>{' '}
@@ -338,7 +337,6 @@ export class HoldConfirmation extends React.Component {
     const {
       bib,
       deliveryLocations,
-      params: { itemId },
       location: {
         query: { pickupLocation, errorStatus, errorMessage },
       },
@@ -386,7 +384,7 @@ export class HoldConfirmation extends React.Component {
       confirmationInfo = (
         <div className='item'>
           <p>
-            We've received your request for{' '}
+            {`We've received your request for `}
             <Link id='item-link' to={`${appConfig.baseUrl}/bib/${bibId}`}>
               {title}
             </Link>

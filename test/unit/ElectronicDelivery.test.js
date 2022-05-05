@@ -8,6 +8,7 @@ import { makeTestStore, mountTestRender } from '../helpers/store';
 import ElectronicDeliveryForm from './../../src/app/components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import appConfig from './../../src/app/data/appConfig';
 import ElectronicDelivery from './../../src/app/pages/ElectronicDelivery';
+import mockedItem from '../fixtures/mocked-item';
 
 describe('ElectronicDeliveryForm', () => {
   describe('default form', () => {
@@ -50,11 +51,18 @@ describe('ElectronicDeliveryForm', () => {
         onSiteEdd: 'example.com/scan-and-deliver',
       };
 
-      const store = makeTestStore({ features: ['on-site-edd'] });
+      const store = makeTestStore({
+        features: ['on-site-edd'],
+        bib: {
+          'title': ['Harry Potter'],
+          '@id': 'res:b17688688',
+          'items': [{ ...mockedItem[0], eddRequestable: true }],
+        },
+      });
 
       component = mountTestRender(
         <ElectronicDelivery
-          params={{ bibId: 'book1' }}
+          params={{ bibId: 'book1', itemId: 'i10000003' }}
           location={{
             query: '',
           }}
@@ -192,6 +200,69 @@ describe('ElectronicDeliveryForm', () => {
 
       const { formstate } = localStorage;
       expect(formstate, 'Form State Still Exists').to.be.undefined;
+    });
+  });
+
+  describe('EDD unavailable message', () => {
+    let appConfigMock;
+    let component;
+
+    before(() => {
+      appConfigMock = mock(appConfig);
+    });
+    after(() => {
+      appConfigMock.restore();
+    });
+
+    it('should render the error message when the item is not eddRequestable', () => {
+      const bib = {
+        'title': ['Harry Potter'],
+        '@id': 'res:b17688688',
+        'items': [{ ...mockedItem[0], eddRequestable: false }],
+      };
+      const store = makeTestStore({
+        bib,
+      });
+      component = mountTestRender(
+        <ElectronicDelivery params={{ bibId: 'bibId', itemId: 'i10000003' }} />,
+        { store },
+      );
+      const message = component.find('h2');
+      setImmediate(() => {
+        expect(message.find('h2')).to.have.length(1);
+        expect(
+          message.contains(
+            <h2 className='nypl-request-form-title'>
+              Delivery options for this item are currently unavailable. Please
+              try again later or contact 917-ASK-NYPL (
+              <a href='tel:917-275-6975'>917-275-6975</a>).
+            </h2>,
+          ),
+        ).to.equal(true);
+      });
+    });
+    it('should render the edd form when the item is eddRequestable', () => {
+      const bib = {
+        'title': ['Harry Potter'],
+        '@id': 'res:b17688688',
+        'items': [{ ...mockedItem[0], eddRequestable: true }],
+      };
+      const store = makeTestStore({
+        bib,
+      });
+      component = mountTestRender(
+        <ElectronicDelivery
+          location={{ query: 'query' }}
+          params={{ bibId: 'bibId', itemId: 'i10000003' }}
+        />,
+        { store },
+      );
+      const message = component.find('h2');
+      expect(message).to.be.empty;
+      const form = component.find('ElectronicDeliveryForm');
+      setImmediate(() => {
+        expect(form.props().method).to.equal('POST');
+      });
     });
   });
 });
