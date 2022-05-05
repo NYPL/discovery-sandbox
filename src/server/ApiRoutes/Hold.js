@@ -389,6 +389,7 @@ function newHoldRequestServerEdd(req, res, next) {
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
+  const itemId = req.params.itemId || '';
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
@@ -396,7 +397,7 @@ function newHoldRequestServerEdd(req, res, next) {
 
   // Retrieve item
   return Bib.fetchBib(
-    bibId,
+    bibId + (itemId.length ? `-${itemId}` : ''),
     (data) => {
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
