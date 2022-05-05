@@ -37,4 +37,8 @@ TopBibDetails.propTypes = {
   bib: PropTypes.object,
 };
 
+TopBibDetails.defaultProps = {
+  resources: [],
+};
+
 export default TopBibDetails;

@@ -51,6 +51,15 @@ const BottomBibDetails = ({ bib }) => {
   );
 };
 
+BottomBibDetails.propTypes = {
+  bib: PropTypes.object.isRequired,
+  resources: PropTypes.array.isRequired,
+};
+
+BottomBibDetails.defaultProps = {
+  resources: [],
+};
+
 export default BottomBibDetails;
 
 BottomBibDetails.propTypes = {

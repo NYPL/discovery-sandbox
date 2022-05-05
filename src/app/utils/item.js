@@ -259,6 +259,8 @@ function LibraryItem() {
     }
 
     return {
+      physRequestable: item.physRequestable,
+      eddRequestable: item.eddRequestable,
       id,
       status,
       availability,
