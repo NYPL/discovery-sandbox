@@ -1332,12 +1332,78 @@ const bibs = [
           desc_count: 62,
         },
       },
+    ],
+  },
+
+  //##### 4th Bib #####
+  {
+    '@context':
+      'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
+    '@type': ['nypl:Item', 'nypl:Resource'],
+    '@id': 'res:b21147020',
+    'carrierType': [
+      {
+        '@id': 'carriertypes:nc',
+        'prefLabel': 'volume',
+      },
+    ],
+    'contributorLiteral': [
+      'Ancell, Tom,',
+      'Baugh, Michael.',
+      'Bennewitz, Rick,',
+      'Broadway Theatre Archive.',
+      'Dean, Phillip Hayes.',
+      'Engel, Jeff.',
+      'Fields, Chip,',
+      'Gossett, Louis, Jr., 1936-',
+      'Moore, Phil, 1918-1987.',
+      'Myers, Pauline, 1913-1996,',
+      'Public Broadcasting Service (U.S.)',
+      'Richards, Lloyd, 1919-2006,',
+      'Schultz, Barbara,',
+      'Stewart, Roy.',
+      'Tam Soon, Terrence.',
+      'WNET (Television station : New York, N.Y.)',
+      'Ward, Richard, 1915-1979,',
+      'Williams, Dick Anthony,',
+    ],
+    'createdString': ['2001'],
+    'createdYear': 2001,
+    'dateEndString': ['1977'],
+    'dateEndYear': 1977,
+    'dateStartYear': 2001,
+    'dateString': ['2001'],
+    'dimensions': ['1/2 in.'],
+    'extent': ['1 videocassette (VHS) (89 min.) : sound, color ;'],
+    'genreForm': ['Drama.', 'Television.'],
+    'idOclc': ['967777755'],
+    'identifier': [
+      {
+        '@type': 'bf:ShelfMark',
+        '@value': 'NCOX 1932',
+      },
+      {
+        '@type': 'nypl:Bnumber',
+        '@value': '21147020',
+      },
+      {
+        '@type': 'nypl:Oclc',
+        '@value': '967777755',
+      },
+      {
+        '@type': 'bf:Identifier',
+        '@value': '(OCoLC)967777755',
+      },
+    ],
+    'issuance': [
       {
         label: 'Black author',
         uuid: '8575c60c-8168-4677-a043-ebca8f62e8d3',
         bib_count: 74857,
         desc_count: 0,
       },
+    ],
+    'items': [
       {
         label: 'Wheatley, Phillis, 1753-1784 -- Bibliography',
         uuid: 'c08c43f2-2720-4530-af07-6599227d2f4d',
@@ -1351,6 +1417,87 @@ const bibs = [
         },
       },
     ],
+    'language': [
+      {
+        '@id': 'lang:eng',
+        'prefLabel': 'English',
+      },
+    ],
+    'materialType': [
+      {
+        '@id': 'resourcetypes:mov',
+        'prefLabel': 'Moving image',
+      },
+    ],
+    'mediaType': [
+      {
+        '@id': 'mediatypes:n',
+        'prefLabel': 'unmediated',
+      },
+    ],
+    'note': [
+      {
+        'noteType': 'Note',
+        '@type': 'bf:Note',
+        'prefLabel':
+          'Originally broadcast as an episode of the PBS series "Visions."',
+      },
+      {
+        'noteType': 'Access',
+        '@type': 'bf:Note',
+        'prefLabel': 'Restricted to qualified researchers.',
+      },
+      {
+        'noteType': 'Credits',
+        '@type': 'bf:Note',
+        'prefLabel':
+          'Art director, Michael Baugh ; costume design by Terence Tam Soon ; audio, Tom Ancell ; music composed by Phil Moore ; lighting designed by Jeff Engel ; videotape editor, Roy Stewart.',
+      },
+      {
+        'noteType': 'Performer',
+        '@type': 'bf:Note',
+        'prefLabel':
+          'Chip Fields, Louis Gossett, Jr., Paulene Myers, Richard Ward, Dick Anthony Williams.',
+      },
+      {
+        'noteType': 'Event',
+        '@type': 'bf:Note',
+        'prefLabel':
+          'Originally broadcast on WNET/Channel 13, New York, N.Y., Oct. 9, 1977.',
+      },
+      {
+        'noteType': 'Biography',
+        '@type': 'bf:Note',
+        'prefLabel':
+          'The Off-Broadway production of this play ran at the American Place Theatre from Jan. 25, 1973 to Feb. 24, 1973.',
+      },
+    ],
+    'numAvailable': 0,
+    'numItems': 2,
+    'nyplSource': ['sierra-nypl'],
+    'placeOfPublication': ['New York:'],
+    'publicationStatement': ['New York: Broadway Theatre Archive, c2001.'],
+    'publisherLiteral': ['Broadway Theatre Archive,'],
+    'seriesStatement': ['Broadway Theatre Archive'],
+    'shelfMark': ['NCOX 1932'],
+    'subjectLiteral': [
+      'African American men -- Drama.',
+      'African American theater -- New York.',
+      'Dean, Phillip Hayes -- Film adaptations.',
+      'Dean, Phillip Hayes -- Television adaptations.',
+      'Families -- Drama.',
+      'Families, Black -- United States -- Drama.',
+      'Television adaptations.',
+    ],
+    'title': ['Freeman [videorecording]'],
+    'titleAlt': ['Free man'],
+    'titleDisplay': [
+      'Freeman [videorecording] / Produced by Barbara Schultz ; associate producer, Rick Bennewitz ; written by Phillip Hayes Dean ; directed by Lloyd Richards ; a production of WNET/13.',
+    ],
+    'type': ['nypl:Item'],
+    'updatedAt': 1643831603402,
+    'uri': 'b21147020',
+    'suppressed': false,
   },
 
   //##### 4th Bib #####
