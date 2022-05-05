@@ -294,7 +294,6 @@ ElectronicDelivery.propTypes = {
   patron: PropTypes.object,
   updateLoadingStatus: PropTypes.func,
   features: PropTypes.array,
-  isEddRequestable: PropTypes.bool,
 };
 
 ElectronicDelivery.defaultProps = {
@@ -306,7 +305,6 @@ const mapStateToProps = (state) => ({
   bib: state.bib,
   searchKeywords: state.searchKeywords,
   features: state.features,
-  isEddRequestable: state.isEddRequestable,
 });
 
 const mapDispatchToProps = (dispatch) => ({
