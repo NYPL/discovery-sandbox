@@ -6,8 +6,12 @@ import { stub, spy } from 'sinon';
 import { expect } from 'chai';
 import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
-import { mountTestRender, makeTestStore } from '../helpers/store';
-// Import the component that is going to be tested
+import { expect } from 'chai';
+import React from 'react';
+import { spy, stub } from 'sinon';
+import Hold from 'src/server/ApiRoutes/Hold';
+import mockedItem from '../fixtures/mocked-item';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 import WrappedHoldRequest, {
   HoldRequest,
 } from './../../src/app/pages/HoldRequest';
@@ -32,6 +36,9 @@ describe('HoldRequest', () => {
       redirect = stub(HoldRequest.prototype, 'redirectWithErrors').callsFake(
         () => true,
       );
+    });
+    after(() => {
+      HoldRequest.prototype.redirectWithErrors.restore();
     });
     describe('ineligible patrons', () => {
       before(() => {
