@@ -302,7 +302,6 @@ export class HoldRequest extends React.Component {
       closedLocations,
       recapClosedLocations,
       nonRecapClosedLocations,
-      holdRequestNotification,
       searchKeywords,
       loading,
       params,

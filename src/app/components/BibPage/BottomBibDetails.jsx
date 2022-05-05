@@ -1,4 +1,5 @@
 import { Heading } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
 import { isNyplBnumber } from '../../utils/utils';
@@ -56,6 +57,15 @@ const BottomBibDetails = ({ bib, resources }) => {
       />
     </section>
   );
+};
+
+BottomBibDetails.propTypes = {
+  bib: PropTypes.object.isRequired,
+  resources: PropTypes.array.isRequired,
+};
+
+BottomBibDetails.defaultProps = {
+  resources: [],
 };
 
 export default BottomBibDetails;
