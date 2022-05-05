@@ -164,7 +164,7 @@ describe('HoldRequest', () => {
 
   describe(
     'If the patron is logged in and the App receives invalid delivery location data, ' +
-    '<HoldRequest>',
+      '<HoldRequest>',
     () => {
       let component;
       const bib = {
@@ -217,7 +217,7 @@ describe('HoldRequest', () => {
 
   describe(
     'If the patron is logged in and the App receives valid delivery location data, ' +
-    '<HoldRequest>',
+      '<HoldRequest>',
     () => {
       let component;
       const bib = {
@@ -290,7 +290,7 @@ describe('HoldRequest', () => {
 
       it(
         'should display the avaialbe delivery locations, and the first location is selected ' +
-        'by default.',
+          'by default.',
         () => {
           setImmediate(() => {
             const form = component.find('form');
@@ -775,29 +775,29 @@ describe('HoldRequest', () => {
   describe('if the item is not physRequestable', () => {
     let component;
     const bib = {
-      title: ['Harry Potter'],
+      'title': ['Harry Potter'],
       '@id': 'res:b17688688',
-      items: { ...mockedItem, physRequestable: false },
+      'items': { ...mockedItem, physRequestable: false },
     };
 
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
 
@@ -835,7 +835,7 @@ describe('HoldRequest', () => {
         form = component.find('form').first();
 
         expect(form.find('fieldset')).to.have.length(0);
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});
