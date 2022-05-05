@@ -54,10 +54,10 @@ describe('ElectronicDeliveryForm', () => {
       const store = makeTestStore({
         features: ['on-site-edd'],
         bib: {
-          title: ['Harry Potter'],
+          'title': ['Harry Potter'],
           '@id': 'res:b17688688',
-          items: [{...mockedItem[0], eddRequestable: true}],
-        }
+          'items': [{ ...mockedItem[0], eddRequestable: true }],
+        },
       });
 
       component = mountTestRender(
@@ -209,25 +209,25 @@ describe('ElectronicDeliveryForm', () => {
 
     before(() => {
       appConfigMock = mock(appConfig);
-
-    })
+    });
     after(() => {
       appConfigMock.restore();
     });
 
     it('should render the error message when the item is not eddRequestable', () => {
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: [{...mockedItem[0], eddRequestable: false}],
+        'items': [{ ...mockedItem[0], eddRequestable: false }],
       };
       const store = makeTestStore({
-        bib
+        bib,
       });
-      component = mountTestRender(<ElectronicDelivery
-        params={{ bibId: 'bibId', itemId: 'i10000003' }}
-      />, { store })
-      const message = component.find('h2')
+      component = mountTestRender(
+        <ElectronicDelivery params={{ bibId: 'bibId', itemId: 'i10000003' }} />,
+        { store },
+      );
+      const message = component.find('h2');
       setImmediate(() => {
         expect(message.find('h2')).to.have.length(1);
         expect(
@@ -240,27 +240,29 @@ describe('ElectronicDeliveryForm', () => {
           ),
         ).to.equal(true);
       });
-    })
+    });
     it('should render the edd form when the item is eddRequestable', () => {
-      
       const bib = {
-        title: ['Harry Potter'],
+        'title': ['Harry Potter'],
         '@id': 'res:b17688688',
-        items: [{...mockedItem[0], eddRequestable: true}],
+        'items': [{ ...mockedItem[0], eddRequestable: true }],
       };
       const store = makeTestStore({
-        bib
+        bib,
       });
-      component = mountTestRender(<ElectronicDelivery
-      location={{query: "query"}}
-        params={{ bibId: 'bibId', itemId: 'i10000003' }}
-      />, { store })
-      const message = component.find('h2')
-      expect(message).to.be.empty
-      const form = component.find('ElectronicDeliveryForm')
+      component = mountTestRender(
+        <ElectronicDelivery
+          location={{ query: 'query' }}
+          params={{ bibId: 'bibId', itemId: 'i10000003' }}
+        />,
+        { store },
+      );
+      const message = component.find('h2');
+      expect(message).to.be.empty;
+      const form = component.find('ElectronicDeliveryForm');
       setImmediate(() => {
         expect(form.props().method).to.equal('POST');
       });
-    })
-  })
-})
+    });
+  });
+});
