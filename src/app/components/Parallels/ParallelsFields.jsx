@@ -8,19 +8,27 @@ const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
     <>
       {(parallel &&
         parallel.mapping &&
-        parallel.mapping[fieldIndex].map((value, idx) => (
-          <span
-            key={`${field}_${idx}_para`}
-            dir={unicodeDirection(value)}
-            style={{ display: 'block' }}
-          >
-            {value}
+        parallel.mapping[fieldIndex]
+          .map((value, idx) => {
+            if (!value) return;
+
+            return (
+              <span
+                key={`${field}_${idx}_para`}
+                dir={unicodeDirection(value)}
+                style={{ display: 'block' }}
+              >
+                {value}
+              </span>
+            );
+          })
+          .filter(Boolean)) ||
+        (content && (
+          <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
+            {content}
           </span>
-        ))) || (
-        <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
-          {content}
-        </span>
-      )}
+        )) ||
+        null}
     </>
   );
 };
@@ -35,6 +43,6 @@ ParallelsFields.propTypes = {
   bib: PropTypes.object,
 };
 
-function unicodeDirection(text) {
+function unicodeDirection(text = '') {
   return text[0] === '\u200F' ? 'rtl' : 'ltr';
 }
