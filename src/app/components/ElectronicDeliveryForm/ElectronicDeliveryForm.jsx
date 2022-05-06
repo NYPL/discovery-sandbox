@@ -1,12 +1,13 @@
-import PropTypes from 'prop-types';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
+  mapObject as _mapObject,
   extend as _extend,
   isEmpty as _isEmpty,
-  mapObject as _mapObject,
 } from 'underscore';
-import appConfig from '../../data/appConfig';
+
 import { validate } from '../../utils/formValidationUtils';
+import appConfig from '../../data/appConfig';
 import { fetchFromLocal, minSinceMil } from './helpers';
 
 class ElectronicDeliveryForm extends React.Component {

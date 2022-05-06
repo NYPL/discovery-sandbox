@@ -131,21 +131,21 @@ describe('HoldConfirmation', () => {
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
     let component;
@@ -240,9 +240,9 @@ describe('HoldConfirmation', () => {
       const deliveryLocations = [
         {
           '@id': 'loc:myr',
-          address: '',
-          prefLabel: '',
-          shortName: '',
+          'address': '',
+          'prefLabel': '',
+          'shortName': '',
         },
       ];
       let component;
@@ -289,21 +289,21 @@ describe('HoldConfirmation', () => {
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
 
@@ -397,21 +397,21 @@ describe('HoldConfirmation', () => {
     const deliveryLocations = [
       {
         '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
+        'address': '40 Lincoln Center Plaza',
+        'prefLabel': 'Performing Arts Research Collections',
+        'shortName': 'Library for the Performing Arts',
       },
       {
         '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
+        'prefLabel': 'Schomburg Center',
+        'address': '515 Malcolm X Boulevard',
+        'shortName': 'Schomburg Center',
       },
       {
         '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
+        'prefLabel': 'Schwarzman Building - Allen Scholar Room',
+        'address': '476 Fifth Avenue (42nd St and Fifth Ave)',
+        'shortName': 'Schwarzman Building',
       },
     ];
 

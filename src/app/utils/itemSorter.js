@@ -73,6 +73,6 @@ ItemSorter.sortItems = (items) =>
   items
     .map(ItemSorter.itemWithSortableShelfMark)
     .sort((i1, i2) => (i1.shelfMarkSort > i2.shelfMarkSort ? 1 : -1))
-    .map((item) => item.item);
+    .map((_i) => _i.item);
 
 export default ItemSorter;

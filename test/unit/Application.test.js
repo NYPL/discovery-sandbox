@@ -1,17 +1,14 @@
-/* eslint-disable react/jsx-filename-extension */
-/* eslint-env mocha */
-import React from 'react';
+import { Application } from '@Application';
+import { Header, navConfig } from '@nypl/dgx-header-component';
 import { expect } from 'chai';
 import { shallow } from 'enzyme';
+import React from 'react';
 import { stub } from 'sinon';
-
-import WrappedApplication, { Application } from '@Application';
-import { Header, navConfig } from '@nypl/dgx-header-component';
-import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
+import { mockRouterContext } from '../helpers/routing';
 
-const resizeWindow = (xPosition) => {
-  window.innerWidth = xPosition;
+const resizeWindow = (size) => {
+  window.innerWidth = size;
   window.dispatchEvent(new Event('resize'));
 };
 
@@ -28,9 +25,7 @@ describe('Application', () => {
           history: { listen: stub() },
         }}
         addFeatures={() => undefined}
-      >
-        {}
-      </Application>,
+      />,
       { context },
     );
 

@@ -3,23 +3,22 @@ import {
   mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
-
-import appConfig from '../../app/data/appConfig';
-import locationCodes from '../../app/data/locationCodes';
 import locationDetails from '../../../locations';
-import User from './User';
-import Bib from './Bib';
-import LibraryItem from './../../app/utils/item';
-import { validate } from '../../app/utils/formValidationUtils';
-import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
 import {
   updateBib,
-  updateSearchKeywords,
   updateHoldRequestPage,
+  updateSearchKeywords,
 } from '../../app/actions/Actions';
+import appConfig from '../../app/data/appConfig';
+import locationCodes from '../../app/data/locationCodes';
 import extractFeatures from '../../app/utils/extractFeatures';
+import { validate } from '../../app/utils/formValidationUtils';
+import nyplApiClient from '../routes/nyplApiClient';
 import isAeonUrl from '../utils/isAeonUrl';
+import LibraryItem from './../../app/utils/item';
+import Bib from './Bib';
+import User from './User';
 
 const nyplApiClientGet = (endpoint) =>
   nyplApiClient().then((client) => client.get(endpoint, { cache: false }));
@@ -83,9 +82,9 @@ function postHoldAPI(
  */
 function mapLocationDetails(locations) {
   locations.map((loc) => {
-    _mapObject(locationCodes, (code) => {
-      if (loc['@id'].replace('loc:', '') === code.delivery_location) {
-        const locationDetailsItem = locationDetails[code.location];
+    _mapObject(locationCodes, (_c) => {
+      if (loc['@id'].replace('loc:', '') === _c.delivery_location) {
+        const locationDetailsItem = locationDetails[_c.location];
 
         loc.address = locationDetailsItem
           ? locationDetailsItem.address.address1
@@ -390,14 +389,15 @@ function newHoldRequestServerEdd(req, res, next) {
   const error = req.query.error ? JSON.parse(req.query.error) : {};
   const form = req.query.form ? JSON.parse(req.query.form) : {};
   const bibId = req.params.bibId || '';
+  const itemId = req.params.itemId || '';
   const { features } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
 
   if (redirect) return false;
 
   // Retrieve item
-  const item = Bib.fetchBib(
-    bibId,
+  return Bib.fetchBib(
+    bibId + (itemId.length ? `-${itemId}` : ''),
     (data) => {
       dispatch(updateBib(data.bib));
       dispatch(updateSearchKeywords(req.query.searchKeywords));
@@ -423,7 +423,6 @@ function newHoldRequestServerEdd(req, res, next) {
       features: urlEnabledFeatures,
     },
   );
-  return item;
 }
 
 /**

@@ -19,7 +19,7 @@ class SubjectHeadingSearch extends React.Component {
     this.makeApiCallWithThrottle = this.makeApiCallWithThrottle.bind(this);
   }
 
-  onSubmit(event, { suggestion }) {
+  onSubmit(e, { suggestion }) {
     const url = this.generatePath(suggestion);
     this.context.router.push(url);
   }
@@ -96,7 +96,7 @@ class SubjectHeadingSearch extends React.Component {
         suggestions={suggestions}
         onSuggestionsFetchRequested={() => makeApiCallWithThrottle()}
         onSuggestionsClearRequested={() => this.setState({ suggestions: [] })}
-        onSuggestionSelected={(event, secondArg) => onSubmit(event, secondArg)}
+        onSuggestionSelected={(e, secondArg) => onSubmit(e, secondArg)}
         getSuggestionValue={(suggestion) => suggestion.label}
         inputProps={{
           placeholder: 'Enter a Subject Heading Term',
@@ -133,7 +133,7 @@ SubjectHeadingSearch.propTypes = {
 };
 
 SubjectHeadingSearch.defaultProps = {
-  setContentPrimaryStyle: () => undefined,
+  setContentPrimaryStyle: () => {},
 };
 
 export default SubjectHeadingSearch;

@@ -1,4 +1,5 @@
 import { Heading } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
 import React from 'react';
 import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
 import { isNyplBnumber } from '../../utils/utils';
@@ -26,7 +27,7 @@ const BottomBibDetails = ({ bib, resources }) => {
     // if the subject heading API call failed for some reason,
     bib.subjectHeadingData
       ? { label: 'Subject', value: 'subjectHeadingData' }
-      : { label: 'Subject', value: 'subjectLiteral', linkabe: true },
+      : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'React Component' },
     { label: 'Contents', value: 'tableOfContents' },
@@ -56,6 +57,15 @@ const BottomBibDetails = ({ bib, resources }) => {
       />
     </section>
   );
+};
+
+BottomBibDetails.propTypes = {
+  bib: PropTypes.object.isRequired,
+  resources: PropTypes.array.isRequired,
+};
+
+BottomBibDetails.defaultProps = {
+  resources: [],
 };
 
 export default BottomBibDetails;

@@ -15,7 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
       : '';
   const requestOptions =
     appConfig.features.includes('on-site-edd') ||
-    (urlEnabledFeatures || []).includes('on-site-edd')
+      (urlEnabledFeatures || []).includes('on-site-edd')
       ? { headers: { 'X-Features': 'on-site-edd' } }
       : {};
   return nyplApiClient().then((client) =>
@@ -34,11 +34,11 @@ const shepApiCall = (bibId) =>
   });
 
 const holdingsMappings = {
-  Location: 'location',
-  Format: 'format',
+  'Location': 'location',
+  'Format': 'format',
   'Call Number': 'shelfMark',
   'Library Has': 'holdingStatement',
-  Notes: 'notes',
+  'Notes': 'notes',
 };
 
 export const addHoldingDefinition = (holding) => {
@@ -46,6 +46,25 @@ export const addHoldingDefinition = (holding) => {
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
     .filter((data) => data.definition);
 };
+
+const appendDimensionsToExtent = (bib) => {
+  if (!bib.extent || bib.extent.length === 0) return
+  let extent = bib.extent[0]
+  let punctuationToAdd = ''
+  // Check if extent was cataloged with a semicolon already at the end:
+  const semicolon = (extent.slice(-2) === '; ' || extent.slice(-1) === ';')
+  if (semicolon) {
+    if (extent.slice(-1) !== ' ') punctuationToAdd += ' '
+  } else punctuationToAdd = '; '
+  if (bib.dimensions && bib.dimensions[0].length) {
+    // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
+    extent = extent + punctuationToAdd + bib.dimensions[0]
+  } else {
+    // If there is no dimensions field, remove the semicolon
+    extent = punctuationToAdd.length === 0 ? extent.slice(0, -2) : extent.slice(0, -1)
+  }
+  return [extent]
+}
 
 export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
@@ -75,7 +94,7 @@ const checkInItemsForHolding = (holding) => {
     format,
     position: box.position || 0,
     status: { prefLabel: box.status || '' },
-    accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
+    accessMessage: { '@id': 'accessMessage: 1', 'prefLabel': 'Use in library' },
     volume: box.coverage || '',
     callNumber: box.shelfMark || '',
     available: true,
@@ -103,20 +122,20 @@ const addLocationUrls = (bib) => {
   const { holdings } = bib;
   const holdingCodes = holdings
     ? holdings
-        .map((holding) =>
-          (holding.location || []).map((location) => location.code),
-        )
-        .reduce((acc, el) => acc.concat(el), [])
+      .map((holding) =>
+        (holding.location || []).map((location) => location.code),
+      )
+      .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const itemCodes = bib.items
     ? bib.items
-        .map((item) =>
-          (item.holdingLocation || []).map(
-            (location) => location['@id'] || location.code,
-          ),
-        )
-        .reduce((acc, el) => acc.concat(el), [])
+      .map((item) =>
+        (item.holdingLocation || []).map(
+          (location) => location['@id'] || location.code,
+        ),
+      )
+      .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
@@ -155,7 +174,7 @@ const addLocationUrls = (bib) => {
     });
 };
 
-function fetchBib(bibId, cb, errorcb, reqOptions, res) {
+function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign(
     {
       fetchSubjectHeadingData: true,
@@ -180,7 +199,6 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-
       return data;
     })
     .then((bib) => {
@@ -208,7 +226,10 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       }
       return Object.assign({ status }, bib);
     })
-    .then((bib) => addLocationUrls(bib))
+    .then((bib) => {
+      bib.extent = appendDimensionsToExtent(bib)
+      return addLocationUrls(bib)
+    })
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
@@ -250,7 +271,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     }); /* end axios call */
 }
 
-function bibSearch(req, res, resolve) {
+function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
@@ -275,4 +296,5 @@ export default {
   fetchBib,
   nyplApiClientCall,
   addLocationUrls,
+  appendDimensionsToExtent
 };

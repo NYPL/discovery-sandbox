@@ -1,3 +1,5 @@
+/* eslint-disable react/jsx-filename-extension */
+/* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
@@ -20,24 +22,24 @@ const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
   result: {
     '@id': 'res:b17692265',
-    extent: ['xii, 267 p. : ill. '],
-    note: ['Includes bibliographical references (p. 244-258) and index.'],
-    createdYear: 2007,
-    title: ['Hamlet without Hamlet', 'Hamlet without Hamlet /'],
-    creatorLiteral: ['De Grazia, Margreta.'],
-    createdString: ['2007'],
-    items: [],
+    'extent': ['xii, 267 p. : ill. '],
+    'note': ['Includes bibliographical references (p. 244-258) and index.'],
+    'createdYear': 2007,
+    'title': ['Hamlet without Hamlet', 'Hamlet without Hamlet /'],
+    'creatorLiteral': ['De Grazia, Margreta.'],
+    'createdString': ['2007'],
+    'items': [],
   },
 };
 const singleBibNoTitleDisplayOrCreator = {
   result: {
     '@id': 'res:b17692265',
-    extent: ['xii, 267 p. : ill. '],
-    note: ['Includes bibliographical references (p. 244-258) and index.'],
-    createdYear: 2007,
-    title: ['Hamlet without Hamlet', 'Hamlet without Hamlet /'],
-    createdString: ['2007'],
-    items: [],
+    'extent': ['xii, 267 p. : ill. '],
+    'note': ['Includes bibliographical references (p. 244-258) and index.'],
+    'createdYear': 2007,
+    'title': ['Hamlet without Hamlet', 'Hamlet without Hamlet /'],
+    'createdString': ['2007'],
+    'items': [],
   },
 };
 const emptyBib = { result: {} };
@@ -258,6 +260,7 @@ describe('ResultsList', () => {
 
       after(() => {
         mock.restore();
+        component.unmount();
       });
     });
   });
@@ -282,6 +285,7 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
+      component.unmount();
     });
   });
 

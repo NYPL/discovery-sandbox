@@ -9,26 +9,26 @@ import Tabbed from './../../src/app/components/BibPage/Tabbed';
 
 describe('Tabbed', () => {
   const sampleBib = {
-    'annotatedMarc': {
-      'bib': {
-        'id': '12082323',
-        'nyplSource': 'sierra-nypl',
-        'fields': [
+    annotatedMarc: {
+      bib: {
+        id: '12082323',
+        nyplSource: 'sierra-nypl',
+        fields: [
           {
-            'label': 'Abbreviated Title',
-            'values': [
+            label: 'Abbreviated Title',
+            values: [
               {
-                'content': 'Abrev. title -- 210 ',
-                'source': {
-                  'fieldTag': 'u',
-                  'marcTag': '210',
-                  'ind1': '1',
-                  'ind2': '0',
-                  'content': null,
-                  'subfields': [
+                content: 'Abrev. title -- 210 ',
+                source: {
+                  fieldTag: 'u',
+                  marcTag: '210',
+                  ind1: '1',
+                  ind2: '0',
+                  content: null,
+                  subfields: [
                     {
-                      'tag': 'a',
-                      'content': 'Abrev. title -- 210 ',
+                      tag: 'a',
+                      content: 'Abrev. title -- 210 ',
                     },
                   ],
                 },
@@ -36,36 +36,36 @@ describe('Tabbed', () => {
             ],
           },
           {
-            'label': 'Access',
-            'values': [
+            label: 'Access',
+            values: [
               {
-                'content': 'Access -- 506 blank,any',
-                'source': {
-                  'fieldTag': 'n',
-                  'marcTag': '506',
-                  'ind1': ' ',
-                  'ind2': ' ',
-                  'content': null,
-                  'subfields': [
+                content: 'Access -- 506 blank,any',
+                source: {
+                  fieldTag: 'n',
+                  marcTag: '506',
+                  ind1: ' ',
+                  ind2: ' ',
+                  content: null,
+                  subfields: [
                     {
-                      'tag': 'a',
-                      'content': 'Access -- 506 blank,any',
+                      tag: 'a',
+                      content: 'Access -- 506 blank,any',
                     },
                   ],
                 },
               },
               {
-                'content': 'Access -- 506 0,any',
-                'source': {
-                  'fieldTag': 'n',
-                  'marcTag': '506',
-                  'ind1': '0',
-                  'ind2': ' ',
-                  'content': null,
-                  'subfields': [
+                content: 'Access -- 506 0,any',
+                source: {
+                  fieldTag: 'n',
+                  marcTag: '506',
+                  ind1: '0',
+                  ind2: ' ',
+                  content: null,
+                  subfields: [
                     {
-                      'tag': 'a',
-                      'content': 'Access -- 506 0,any',
+                      tag: 'a',
+                      content: 'Access -- 506 0,any',
                     },
                   ],
                 },
@@ -73,25 +73,25 @@ describe('Tabbed', () => {
             ],
           },
           {
-            'label': 'Url',
-            'values': [
+            label: 'Url',
+            values: [
               {
-                'label': '856 40',
-                'content': 'http://blogs.nypl.org/rcramer/',
-                'source': {
-                  'fieldTag': 'y',
-                  'marcTag': '856',
-                  'ind1': '4',
-                  'ind2': '0',
-                  'content': null,
-                  'subfields': [
+                label: '856 40',
+                content: 'http://blogs.nypl.org/rcramer/',
+                source: {
+                  fieldTag: 'y',
+                  marcTag: '856',
+                  ind1: '4',
+                  ind2: '0',
+                  content: null,
+                  subfields: [
                     {
-                      'tag': 'u',
-                      'content': 'http://blogs.nypl.org/rcramer/',
+                      tag: 'u',
+                      content: 'http://blogs.nypl.org/rcramer/',
                     },
                     {
-                      'tag': 'z',
-                      'content': '[redacted]',
+                      tag: 'z',
+                      content: '[redacted]',
                     },
                   ],
                 },
