@@ -18,11 +18,14 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
     const value = buildValue();
 
     if (field.value === 'note' && value) {
+      // Due to notes potentially having multiple subjects
+      // The store needs to be extended with all the subjects
       const paras =
         (bib.parallels &&
           bib.parallels['note'] &&
           bib.parallels['note'].parallel) ||
         [];
+      // Extend the notes subjects with any parallels to keep index mapping
       const group = groupNotesBySubject(setParallelToNote(value, paras));
 
       return [
