@@ -6,28 +6,28 @@ const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
 
   return (
     <>
-      {(parallel &&
-        parallel.mapping &&
-        parallel.mapping[fieldIndex]
-          .map((value, idx) => {
-            if (!value) return;
+      {(content && (
+        <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
+          {content}
+        </span>
+      )) ||
+        (parallel &&
+          parallel.mapping &&
+          parallel.mapping[fieldIndex]
+            .map((value, idx) => {
+              if (!value) return;
 
-            return (
-              <span
-                key={`${field}_${idx}_para`}
-                dir={unicodeDirection(value)}
-                style={{ display: 'block' }}
-              >
-                {value}
-              </span>
-            );
-          })
-          .filter(Boolean)) ||
-        (content && (
-          <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
-            {content}
-          </span>
-        )) ||
+              return (
+                <span
+                  key={`${field}_${idx}_para`}
+                  dir={unicodeDirection(value)}
+                  style={{ display: 'block' }}
+                >
+                  {value}
+                </span>
+              );
+            })
+            .filter(Boolean)) ||
         null}
     </>
   );
