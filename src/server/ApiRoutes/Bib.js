@@ -48,6 +48,7 @@ export const addHoldingDefinition = (holding) => {
 };
 
 const appendDimensionsToExtent = (bib) => {
+  if (!bib.extent || bib.extent.length === 0) return 
   let extent = bib.extent[0]
   let punctuationToAdd = ''
   // Check if extent was cataloged with a semicolon already at the end:
