@@ -75,6 +75,10 @@ describe('Bib', () => {
       expect(newExtent).to.equal('700 sheets of woven gold')
       expect(anotherExtent).to.equal('700 sheets of woven gold')
     })
+    it('should return undefined if there is no extent', () => {
+      const nullExtent = Bib.appendDimensionsToExtent({})
+      expect(nullExtent).to.equal(undefined)
+    })
   })
 
   describe('addCheckInItems', () => {

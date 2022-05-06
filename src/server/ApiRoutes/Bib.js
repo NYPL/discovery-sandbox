@@ -48,7 +48,7 @@ export const addHoldingDefinition = (holding) => {
 };
 
 const appendDimensionsToExtent = (bib) => {
-  if (!bib.extent || bib.extent.length === 0) return 
+  if (!bib.extent || bib.extent.length === 0) return
   let extent = bib.extent[0]
   let punctuationToAdd = ''
   // Check if extent was cataloged with a semicolon already at the end:
@@ -199,7 +199,6 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
       // Make sure retrieved annotated-marc document is valid:
       if (!data.annotatedMarc || !data.annotatedMarc.bib)
         data.annotatedMarc = null;
-      data.extent = appendDimensionsToExtent(data)
       return data;
     })
     .then((bib) => {
@@ -227,7 +226,10 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
       }
       return Object.assign({ status }, bib);
     })
-    .then((bib) => addLocationUrls(bib))
+    .then((bib) => {
+      bib.extent = appendDimensionsToExtent(bib)
+      return addLocationUrls(bib)
+    })
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
