@@ -49,15 +49,18 @@ export const addHoldingDefinition = (holding) => {
 
 const appendDimensionsToExtent = (bib) => {
   let extent = bib.extent[0]
-    // Check if extent was cataloged with a semicolon already at the end:
-    let punctuationToAdd = ''
-    const semicolon = (extent.slice(-2) === '; ' || extent.slice(-1) === ';')
-    if (semicolon){
-      if (extent.slice(-1) !== ' ') punctuationToAdd += ' '
-    } else punctuationToAdd = '; '
-    if (bib.dimensions && bib.dimensions[0].length) {
-      // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
-      extent = extent + punctuationToAdd + bib.dimensions[0]
+  let punctuationToAdd = ''
+  // Check if extent was cataloged with a semicolon already at the end:
+  const semicolon = (extent.slice(-2) === '; ' || extent.slice(-1) === ';')
+  if (semicolon) {
+    if (extent.slice(-1) !== ' ') punctuationToAdd += ' '
+  } else punctuationToAdd = '; '
+  if (bib.dimensions && bib.dimensions[0].length) {
+    // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
+    extent = extent + punctuationToAdd + bib.dimensions[0]
+  } else {
+    // If there is no dimensions field, remove the semicolon
+    extent = punctuationToAdd.length === 0 ? extent.slice(0, -2) : extent.slice(0, -1)
   }
   return [extent]
 }

@@ -69,6 +69,12 @@ describe('Bib', () => {
       const [newExtent] = Bib.appendDimensionsToExtent({extent: ['700 sheets of woven gold; '], dimensions: ['1 x 1 in.']})
       expect(newExtent).to.equal('700 sheets of woven gold; 1 x 1 in.')
     })
+    it('should remove semicolon if there is no dimensions', () => {
+      const [newExtent] = Bib.appendDimensionsToExtent({extent: ['700 sheets of woven gold; ']})
+      const [anotherExtent] = Bib.appendDimensionsToExtent({extent: ['700 sheets of woven gold;']})
+      expect(newExtent).to.equal('700 sheets of woven gold')
+      expect(anotherExtent).to.equal('700 sheets of woven gold')
+    })
   })
 
   describe('addCheckInItems', () => {
