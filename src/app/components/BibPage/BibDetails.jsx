@@ -13,6 +13,15 @@ import DefinitionNoteField from './components/DefinitionNoteField';
 import DefinitionList from './DefinitionList';
 
 const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
+  if (!bib || isEmpty(bib) || isArray(bib)) {
+    return null;
+  }
+
+  // Make sure fields is a nonempty array
+  if (isEmpty(fields) || !isArray(fields)) {
+    return null;
+  }
+
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field) => {
     const value = buildValue();
@@ -86,11 +95,6 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
       return val;
     }
   }, []);
-
-  // Make sure fields is a nonempty array
-  if (isEmpty(fields) || !isArray(fields)) {
-    return null;
-  }
 
   const data = combineBibDetailsData(definitions, marcs);
 

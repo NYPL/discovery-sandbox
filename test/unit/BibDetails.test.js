@@ -7,24 +7,22 @@ import BibDetails from './../../src/app/components/BibPage/BibDetails';
 describe('BibDetails', () => {
   describe('Invalid props', () => {
     it('should return null with no props passed', () => {
-      const component = mount(<BibDetails />);
-
-      const actual = component.find('BibDetails').getDOMNode();
-      expect(actual).to.equal(null);
-    });
-
-    // TODO: [SCC-3129] Define && Update tests for BibDetails
-    xit('should return null with no bib passed', () => {
-      const component = mount(React.createElement(BibDetails, { bib: null }));
+      const component = shallow(<BibDetails />);
       expect(component.type()).to.equal(null);
     });
 
-    xit('should return null if bib is not an object', () => {
+    // TODO: [SCC-3129] Define && Update tests for BibDetails
+    it('should return null with no bib passed', () => {
+      const component = shallow(<BibDetails bib={null} />);
+      expect(component.type()).to.equal(null);
+    });
+
+    it('should return null if bib is not an object', () => {
       const stringItem = shallow(
-        React.createElement(BibDetails, { bib: 'not an object', fields: [] }),
+        <BibDetails bib={'not an object'} fields={[]} />,
       );
       const objectItem = shallow(
-        React.createElement(BibDetails, { bib: ['not an object'], fields: [] }),
+        <BibDetails bib={['not an object']} fields={[]} />,
       );
 
       expect(stringItem.type()).to.equal(null);
