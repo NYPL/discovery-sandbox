@@ -32,13 +32,19 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
         ...store,
         // In order to get the noteType as a label
         // we need to process this here
-        ...Object.entries(group).map(([label, notes]) => {
+        ...Object.entries(group).map(([label, notes], idx) => {
           // type notes = Note[]
           return {
             // term is the label of the feild
             term: label,
             // definition is the value of the label
-            definition: <DefinitionNoteField values={notes} bib={bib} />,
+            definition: (
+              <DefinitionNoteField
+                key={`note_${label}_${idx}`}
+                values={notes}
+                bib={bib}
+              />
+            ),
           };
         }),
       ];
