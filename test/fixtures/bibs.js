@@ -1,46 +1,68 @@
 const bibs = [
   {
+    '@context':
+      'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
     '@type': ['nypl:Item', 'nypl:Resource'],
-    '@id': 'res:b11417539',
-    'carrierType': [{ '@id': 'carriertypes:nc', 'prefLabel': 'volume' }],
-    'createdString': ['1991'],
-    'createdYear': 1991,
+    '@id': 'res:b15349955',
+    'carrierType': [
+      {
+        '@id': 'carriertypes:nc',
+        'prefLabel': 'volume',
+      },
+    ],
+    'contributorLiteral': [
+      'Narodna biblioteka "Stefan Prvovenčani"',
+      'Narodna biblioteka Kraljevo.',
+      'Narodna biblioteka "Stefan Prvovenčani."',
+    ],
+    'createdString': ['1985'],
+    'createdYear': 1985,
     'creatorLiteral': ['De Grazia, Margreta.'],
-    'dateStartYear': 1991,
-    'dateString': ['1991'],
-    'dimensions': ['23 cm.'],
-    'extent': ['xi, 244 p., [8] p. of plates : ill. ;'],
-    'idIsbn': ['0198117787'],
-    'idLccn': ['90048121'],
-    'idOclc': ['22452233'],
+    'dateEndString': ['9999'],
+    'dateEndYear': 9999,
+    'dateStartYear': 1985,
+    'dateString': ['1985'],
+    'description': [
+      '"Casopis za književnosti, umetnost, kulturu, prosvetna i društvena pitanja."',
+    ],
+    'dimensions': ['25 cm'],
+    'extent': ['v. ;'],
+    'genreForm': ['Periodicals.'],
+    'idIssn': ['0352-7751'],
+    'idLccn': ['sn 95033418'],
+    'idOclc': ['32768016'],
     'identifier': [
       {
         '@type': 'bf:ShelfMark',
-        '@value': 'JFD 91-4064',
+        '@value': '*QKKA 08-490',
       },
       {
         '@type': 'nypl:Bnumber',
-        '@value': '11417539',
+        '@value': '15349955',
       },
       {
-        '@type': 'bf:Isbn',
-        '@value': '0198117787',
-      },
-      {
-        '@type': 'bf:Isbn',
-        '@value': '012345',
-        'identifierStatus': 'incorrect',
+        '@type': 'bf:Issn',
+        '@value': '0352-7751',
       },
       {
         '@type': 'bf:Lccn',
-        '@value': '90048121',
+        '@value': 'sn 95033418',
       },
       {
         '@type': 'nypl:Oclc',
-        '@value': '22452233',
+        '@value': '32768016',
+      },
+      {
+        '@type': 'bf:Identifier',
+        '@value': '(OCoLC)32768016',
       },
     ],
-    'issuance': [{ '@id': 'urn:biblevel:m', 'prefLabel': 'monograph/item' }],
+    'issuance': [
+      {
+        '@id': 'urn:biblevel:s',
+        'prefLabel': 'serial',
+      },
+    ],
     'items': [
       {
         '@id': 'res:i13183119',
@@ -88,97 +110,88 @@ const bibs = [
         },
       },
     ],
-    'language': [{ '@id': 'lang:eng', 'prefLabel': 'English' }],
-    'lccClassification': ['PR3071 .D4 1991'],
-    'materialType': [{ '@id': 'resourcetypes:txt', 'prefLabel': 'Text' }],
-    'mediaType': [{ '@id': 'mediatypes:n', 'prefLabel': 'unmediated' }],
+    'language': [
+      {
+        '@id': 'lang:srp',
+        'prefLabel': 'Serbian',
+      },
+    ],
+    'lccClassification': ['DR1932 .P68'],
+    'materialType': [
+      {
+        '@id': 'resourcetypes:txt',
+        'prefLabel': 'Text',
+      },
+    ],
+    'mediaType': [
+      {
+        '@id': 'mediatypes:n',
+        'prefLabel': 'unmediated',
+      },
+    ],
     'note': [
       {
-        'noteType': 'Bibliography',
-        'prefLabel':
-          'Includes bibliographical references (p. [227]-238) and index.',
+        'noteType': 'Supplement',
         '@type': 'bf:Note',
+        'prefLabel': 'Has supplement, <2012-2016>: Pojedinačno.',
+      },
+      {
+        'noteType': 'Language',
+        '@type': 'bf:Note',
+        'prefLabel': 'In Serbian',
+      },
+      {
+        'noteType': 'Issued By',
+        '@type': 'bf:Note',
+        'prefLabel': 'Issued by: Narodna biblioteka Kraljevo.',
+      },
+      {
+        'noteType': 'Source of Description',
+        '@type': 'bf:Note',
+        'prefLabel': 'Latest issue consulted: G. 46, 3 (2016).',
       },
     ],
-    'numAvailable': 1,
-    'numItems': 1,
-    'placeOfPublication': ['Oxford [England] : New York :'],
+    'numAvailable': 26,
+    'numItems': 27,
+    'nyplSource': ['sierra-nypl'],
+    'parallelContributorLiteral': ['', 'Народна библиотека Краљево.'],
+    'parallelDescription': [
+      '"Часопис за књижевности, уметност, културу, просветна и друштвена питања."',
+    ],
+    'parallelNote': [null, null, 'Issued by: Народна библиотека Краљево.'],
+    'parallelPlaceOfPublication': [null, 'Краљево :'],
+    'parallelPublicationStatement': [
+      null,
+      'Краљево : Народна библиотека "Стефан Првовенчани"',
+    ],
+    'parallelPublisherLiteral': [
+      'Слово,',
+      'Народна библиотека "Стефан Првовенчани"',
+    ],
+    'parallelTitle': ['Повеља.'],
+    'parallelTitleAlt': ['Појединачно.'],
+    'parallelTitleDisplay': ['Повеља.'],
+    'placeOfPublication': ['Kraljevo :'],
     'publicationStatement': [
-      'Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.',
+      'Kraljevo : Slovo, 1985-',
+      'Kraljevo : Narodna biblioteka "Stefan Prvovenčani"',
     ],
-    'publisherLiteral': ['Clarendon Press ; Oxford University Press,'],
-    'shelfMark': ['JFD 91-4064'],
-    'subjectHeadingData': [
-      {
-        label: 'Shakespeare, William, -- 1564-1616',
-        uuid: '56567c13-9c92-4379-8f8a-7e6168ef47c1',
-        bib_count: 19632,
-        desc_count: 2024,
-        parent: {
-          label: 'Shakespeare, William,',
-          uuid: '584104d8-9be1-45ba-bfd7-b59f17d36c88',
-          bib_count: 19642,
-          desc_count: 2042,
-        },
-      },
-      {
-        label: 'Malone, Edmond, -- 1741-1812',
-        uuid: '1cec52b3-dfe0-44ab-9cfb-4be9d4d0b97e',
-        bib_count: 26,
-        desc_count: 7,
-        parent: {
-          label: 'Malone, Edmond,',
-          uuid: 'c8c76c90-3d01-49b0-90ca-7204c54faedf',
-          bib_count: 26,
-          desc_count: 8,
-        },
-      },
-      {
-        label: 'Shakespeare, William, -- 1564-1616 -- Criticism, Textual',
-        uuid: '1913e567-8d33-41d9-9a8b-104008655684',
-        bib_count: 502,
-        desc_count: 4,
-        parent: {
-          label: 'Shakespeare, William, -- 1564-1616',
-          uuid: '56567c13-9c92-4379-8f8a-7e6168ef47c1',
-          bib_count: 19632,
-          desc_count: 2024,
-          parent: {
-            label: 'Shakespeare, William,',
-            uuid: '584104d8-9be1-45ba-bfd7-b59f17d36c88',
-            bib_count: 19642,
-            desc_count: 2042,
-          },
-        },
-      },
-      {
-        label: 'Editing -- History -- 18th century',
-        uuid: '861d31ed-ec55-44d3-ac7e-9b3b77826304',
-        bib_count: 13,
-        desc_count: 1,
-        parent: {
-          label: 'Editing -- History',
-          uuid: 'c9619cd0-105a-41db-93ae-70bd2fdea6ea',
-          bib_count: 49,
-          desc_count: 12,
-          parent: {
-            label: 'Editing',
-            uuid: '39916e16-51b2-45d2-83b2-d2d9f2b76da3',
-            bib_count: 702,
-            desc_count: 69,
-          },
-        },
-      },
+    'publisherLiteral': ['Slovo,', 'Narodna biblioteka "Stefan Prvovenčani"'],
+    'serialPublicationDates': [
+      'Nova serija g. 15, br. 1 (1985)-nova serija 27, br. 4 (1997); g. 28, br. 1 (1998)-',
     ],
-    'title': [
-      'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus',
+    'shelfMark': ['*QKKA 08-490'],
+    'subjectLiteral': [
+      'Civilization.',
+      'Serbia -- Civilization -- Periodicals.',
+      'Serbia.',
     ],
-    'titleDisplay': [
-      'Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.',
-    ],
+    'title': ['Povelja.'],
+    'titleAlt': ['Pojedinačno.'],
+    'titleDisplay': ['Povelja.'],
     'type': ['nypl:Item'],
-    'updatedAt': 1524665261653,
-    'uri': 'b11417539',
+    'updatedAt': 1648669058255,
+    'uri': 'b15349955',
     'suppressed': false,
   },
   {

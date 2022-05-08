@@ -24,7 +24,7 @@ const DefinitionField = ({ values, field, bib }) => {
           if (!value) return null;
 
           if (field.value === 'identifier') {
-            return <IdentifierField entity={value} />;
+            return <IdentifierField key={`${value}-${idx}`} entity={value} />;
           }
 
           if (field.linkable) {

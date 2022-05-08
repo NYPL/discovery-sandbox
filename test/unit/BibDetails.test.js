@@ -50,10 +50,10 @@ describe('BibDetails', () => {
     it('should display titles, authors', () => {
       expect(component.type()).to.equal(BibDetails);
 
-      expect(component.find('dd')).to.have.lengthOf(2);
-      expect(component.find('dt')).to.have.lengthOf(2);
+      expect(component.find('dd')).to.have.lengthOf(3);
+      expect(component.find('dt')).to.have.lengthOf(3);
       // Expect first DT to contain titleDisplay:
-      expect(component.find('dd').at(0).text()).to.equal(
+      expect(component.find('dd').at(0).text()).to.contain(
         bibs[0].titleDisplay[0],
       );
       // Expect second DT to contain creatorLiteral:
@@ -75,7 +75,7 @@ describe('BibDetails', () => {
       { label: 'Former Title', value: 'formerTitle' },
       { label: 'Subject', value: 'subjectHeadingData' },
       { label: 'Genre/Form', value: 'genreForm' },
-      { label: 'Notes', value: 'React Component' },
+      { label: 'Notes', value: 'note' },
       {
         label: 'Additional Resources',
         value: 'supplementaryContent',

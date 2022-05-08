@@ -55,7 +55,7 @@ describe('BibPage', () => {
       expect(node.type()).to.equal(DefinitionField);
       expect(node.prop('field').label).to.equal('Electronic Resource');
 
-      const resources = node.prop('bibValues');
+      const resources = node.prop('values');
 
       expect(resources).to.have.lengthOf(2);
       expect(isAeonLink(resources[1].url)).to.be.true;
@@ -123,7 +123,7 @@ describe('BibPage', () => {
       expect(linkToLegacy.length).to.equal(1);
       expect(linkToLegacy.is('a')).to.equal(true);
       expect(linkToLegacy.prop('href')).to.equal(
-        'https://legacyBaseUrl.nypl.org/record=b11417539~S1',
+        'https://legacyBaseUrl.nypl.org/record=b15349955~S1',
       );
     });
   });
