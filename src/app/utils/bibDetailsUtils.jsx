@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNyplBnumber } from './utils';
+import { capitalize, isNyplBnumber } from './utils';
 
 const definitionItem = (value, index = 0) => {
   const link = (
@@ -49,13 +49,36 @@ const getNoteType = (note) => {
 
 /**
  *
+ * @param {Bib} bib object
+ * @param {string} field string
+ * @returns {ParallelMatrix} Array<string | undefined | never>[ ]
+ *
+ * ex: [ ['parallel', 'original'] ]
+ */
+const extractParallels = (bib = {}, field = '') => {
+  const literal = bib[field];
+  const parallel = bib['parallel' + capitalize(field)];
+  if (!literal || !parallel) return undefined;
+
+  // Set Parallel Matrix
+  return literal.reduce((acc, lit, idx) => {
+    acc.push([parallel[idx], lit]);
+    return acc;
+  }, []);
+};
+
+/**
+ *
  * Set a new Notes object with a parallel property
  * @param note Note(object)[ ]
  * @param parallels string[ ]
  * @return A list of notes with a parallel property
  *
  */
-const setParallelToNote = (note = [], parallels = []) => {
+const setParallelToNote = (note = [], bib) => {
+  const parallels = extractParallels(bib, 'note');
+  if (!parallels) return note;
+
   return note.map((note, idx) => {
     // Set new note object to avoid mutation
     const outNote = { ...note, parallel: null };
@@ -87,9 +110,10 @@ const groupNotesBySubject = (note = []) => {
 };
 
 export {
+  combineBibDetailsData,
   definitionItem,
   definitionMarcs,
-  combineBibDetailsData,
+  extractParallels,
   getNoteType,
   groupNotesBySubject,
   setParallelToNote,

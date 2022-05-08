@@ -1,8 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { extractParallels } from '../../utils/bibDetailsUtils';
 
 const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
-  const parallel = bib.parallels && bib.parallels[field];
+  if (!content) return null;
+
+  const parallel = extractParallels(bib, field);
 
   return (
     <>
