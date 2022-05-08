@@ -7,6 +7,7 @@ import ParallelsFields from '../../Parallels/ParallelsFields';
 
 const LinkableBibField = ({
   bibValue,
+  data = {},
   field,
   label,
   outbound,
@@ -36,13 +37,19 @@ const LinkableBibField = ({
 
   return (
     <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      <ParallelsFields field={field} content={text} bib={bib} />
+      <ParallelsFields
+        content={text}
+        field={data.name}
+        fieldIndex={data.position}
+        bib={bib}
+      />
     </Link>
   );
 };
 
 LinkableBibField.propTypes = {
   bibValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  data: PropTypes.object,
   field: PropTypes.string.isRequired,
   label: PropTypes.string,
   outbound: PropTypes.bool,

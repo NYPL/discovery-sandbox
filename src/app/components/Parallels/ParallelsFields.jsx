@@ -9,29 +9,27 @@ const ParallelsFields = ({ field, content = '', fieldIndex = 0, bib }) => {
 
   return (
     <>
-      {(content && (
+      {(parallel &&
+        parallel[fieldIndex] &&
+        parallel[fieldIndex]
+          .map((value, idx) => {
+            if (!value) return null;
+
+            return (
+              <span
+                key={`${idx}_${fieldIndex}_${value}`}
+                dir={unicodeDirection(value)}
+                style={{ display: 'block' }}
+              >
+                {value}
+              </span>
+            );
+          })
+          .filter(Boolean)) || (
         <span dir={unicodeDirection(content)} style={{ display: 'block' }}>
           {content}
         </span>
-      )) ||
-        (parallel &&
-          parallel.mapping &&
-          parallel.mapping[fieldIndex]
-            .map((value, idx) => {
-              if (!value) return;
-
-              return (
-                <span
-                  key={`${field}_${idx}_para`}
-                  dir={unicodeDirection(value)}
-                  style={{ display: 'block' }}
-                >
-                  {value}
-                </span>
-              );
-            })
-            .filter(Boolean)) ||
-        null}
+      )}
     </>
   );
 };

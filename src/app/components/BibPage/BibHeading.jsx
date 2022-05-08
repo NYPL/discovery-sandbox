@@ -6,10 +6,12 @@ import ParallelsFields from '../Parallels/ParallelsFields';
 import BackToSearchResults from './BackToSearchResults';
 
 const BibHeading = ({ searched, bib }) => {
+  if (!bib) return null;
+
   return (
     <section className='nypl-item-details__heading'>
       <Heading level={2}>
-        <ParallelsFields field={'title'} content={bib.title[0]} bib={bib} />
+        <ParallelsFields content={bib.title[0]} field={'title'} bib={bib} />
       </Heading>
 
       <BackToSearchResults result={searched} bibId={getBibId(bib)} />

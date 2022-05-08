@@ -2,22 +2,26 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import ParallelsFields from '../../Parallels/ParallelsFields';
 
-const DefinitionNoteField = ({ values, bib }) => {
+const DefinitionNoteField = ({ values, ulKey }) => {
   // type value = Note[]
   return (
-    <ul>
+    <ul key={ulKey}>
       {values
-        .map((note, idx) => {
-          return note && note.prefLabel ? (
-            <>
-              {note.parallel ? (
-                <li key={`${note.noteType}_${idx}`}>
-                  <ParallelsFields content={note.parallel} bib={bib} />
+        .map(({ prefLabel, parallel = [] } = {}) => {
+          if (!prefLabel) return null;
+
+          return (
+            <React.Fragment key={ulKey + prefLabel}>
+              {parallel[0] ? (
+                <li>
+                  <ParallelsFields content={parallel[0]} />
                 </li>
               ) : null}
-              <li key={idx.toString()}>{note.prefLabel}</li>
-            </>
-          ) : null;
+              <li>
+                <ParallelsFields content={prefLabel} />
+              </li>
+            </React.Fragment>
+          );
         })
         .filter(Boolean)}
     </ul>
@@ -26,7 +30,7 @@ const DefinitionNoteField = ({ values, bib }) => {
 
 DefinitionNoteField.propTypes = {
   values: PropTypes.array,
-  bib: PropTypes.object,
+  ulKey: PropTypes.string,
 };
 
 export default DefinitionNoteField;
