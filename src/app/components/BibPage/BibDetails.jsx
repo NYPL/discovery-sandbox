@@ -24,15 +24,15 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
 
   // Loops through fields and builds the Definition Field Component
   const definitions = fields.reduce((store, field, fIdx) => {
-    const value = buildValue();
+    const values = buildValue(bib, field, resources);
 
-    if (!value) return store;
+    if (!values) return store;
 
     if (field.value === 'note') {
       // Due to notes potentially having multiple subjects
       // The store needs to be extended with all possible subjects
       // Extend the notes subjects with any parallels to keep index mapping
-      const group = groupNotesBySubject(setParallelToNote(value, bib));
+      const group = groupNotesBySubject(setParallelToNote(values, bib));
 
       return [
         ...store,
@@ -56,10 +56,6 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
       ];
     }
 
-    const ident = validIdentifier(field, value);
-    // To avoid adding a label with empty array for identifiers
-    if (ident && !ident.length) return store;
-
     return [
       ...store,
       {
@@ -67,27 +63,13 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
         definition: (
           <DefinitionField
             key={`${field.label}_${fIdx}`}
-            values={ident ?? value}
+            values={values}
             field={field}
             bib={bib}
           />
         ),
       },
     ];
-
-    function buildValue() {
-      const val = bib[field.value];
-
-      if (field.label === 'Electronic Resource' && resources.length) {
-        return resources;
-      }
-
-      if (field.label === 'Owning Institutions') {
-        return getOwner(bib);
-      }
-
-      return val;
-    }
   }, []);
 
   const data = combineBibDetailsData(definitions, marcs);
@@ -116,12 +98,42 @@ export default BibDetails;
 
 /**
  *
- * @param {object} field A Single Field Object Set in Bottom or Top Bib Details
- * @param {array} value The Identifier Values from the Bib
- * @returns An Array with the appropriate Identifier Object
+ * @param {FieldDefinition} field A Single Field Object Set in Bottom or Top Bib Details
+ * @param {Identifier[]} value The Identifier Values from the Bib
+ * @returns {Identifier[] | never} An Array with the appropriate Identifier Object or Null
  */
 function validIdentifier(field, value) {
   return field.value === 'identifier'
     ? LibraryItem.getIdentifierEntitiesByType(value, field.identifier)
     : null;
+}
+
+/**
+ *
+ * @param {Bib} bib The Bib Object
+ * @param {FieldDefinition} field A Single Field Object Set in Bottom or Top Bib Details
+ * @param {Resource[]} resources The Resources plucked from the Bib
+ * @returns {Array<string | BibDefinition | Note | Identifer | Resource> | undefined} An array of a mapped field to the bib value
+ */
+function buildValue(bib, field, resources) {
+  const val = bib[field.value];
+
+  if (field.label === 'Electronic Resource') {
+    return resources.length ? resources : undefined;
+  }
+
+  if (field.label === 'Owning Institutions') {
+    const owner = getOwner(bib);
+    return owner ? [owner] : undefined;
+  }
+
+  if (field.value === 'identifier' && val) {
+    const ident = validIdentifier(field, val);
+    // To avoid adding a label with empty array for identifiers
+    if (ident && !ident.length) return;
+
+    return ident;
+  }
+
+  return val;
 }
