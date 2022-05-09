@@ -1,8 +1,13 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
+
 import {
-  getQueryString,
+  createResearchNowQuery,
+  authorQuery,
+  generateStreamedReaderUrl,
+  formatUrl,
   getResearchNowQueryString,
+  getQueryString,
 } from '../../src/app/utils/researchNowUtils';
 
 describe('researchNowUtils', () => {

@@ -33,7 +33,7 @@ const renderMockReq = (
   patronObj = {},
 ) => ({
   params: { content },
-  get: (node) => node,
+  get: (_n) => _n,
   patronTokenResponse: mockPatronTokenResponse,
   headers: {
     cookie: '',

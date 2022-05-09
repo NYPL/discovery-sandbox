@@ -248,12 +248,9 @@ describe('ItemTableRow', () => {
     });
 
     describe('Aeon-requestable item without params', () => {
-      const expectedUrl = encodeURI(
-        'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&ItemISxN=i33299542&itemNumber=45678&CallNumber=Sc Scores Bechet',
-      );
       const data = item.aeonRequestableWithoutParams;
       let component;
-      let tdList;
+      const expectedUrl = `https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=%5BSongs+and+piano+solos+%2F&Site=SCHMA&Author=Bechet%2C+Sidney%2C&Date=1941-1960.&ItemInfo3=https%3A%2F%2Fnypl-sierra-test.nypl.org%2Frecord%3Db11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc+Scores+Bechet&itemid=33299542&ItemISxN=i33299542&itemNumber=45678&CallNumber=Sc+Scores+Bechet`;
 
       before(() => {
         component = mount(<ItemTableRow item={data} bibId='b12345' />);
@@ -277,12 +274,9 @@ describe('ItemTableRow', () => {
     });
 
     describe('Aeon-requestable item with params', () => {
-      const expectedUrl = encodeURI(
-        'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=[Songs+and+piano+solos+/&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet,+Sidney,&Date=1941-1960.&ItemInfo3=https://nypl-sierra-test.nypl.org/record=b11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i332995422&Genre=Score&Location=Schomburg+Center&shelfmark=Sc Scores Bechet&itemid=33299542&itemNumber=4567',
-      );
       const data = item.aeonRequestableWithParams;
       let component;
-      let tdList;
+      const expectedUrl = `https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=%5BSongs+and+piano+solos+%2F&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet%2C+Sidney%2C&Date=1941-1960.&ItemInfo3=https%3A%2F%2Fnypl-sierra-test.nypl.org%2Frecord%3Db11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i33299542&Genre=Score&Location=Schomburg+Center&shelfmark=Sc+Scores+Bechet&itemid=33299542&itemNumber=45678`;
 
       before(() => {
         component = mount(<ItemTableRow item={data} bibId='b12345' />);

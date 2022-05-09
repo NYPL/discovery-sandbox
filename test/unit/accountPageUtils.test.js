@@ -1,14 +1,15 @@
 /* eslint-env mocha */
 import { expect } from 'chai';
-import fs from 'fs';
 import { jsdom } from 'jsdom';
-import appConfig from './../../src/app/data/appConfig';
+import fs from 'fs';
+
 import {
+  isClosed,
   convertEncoreUrl,
   formatPatronExpirationDate,
-  isClosed,
   manipulateAccountPage,
 } from './../../src/app/utils/accountPageUtils';
+import appConfig from './../../src/app/data/appConfig';
 
 describe('`isClosed`', () => {
   it('should return true for string with "CLOSED"', () => {
@@ -95,15 +96,12 @@ describe('manipulateAccountPage', () => {
       // Check that the linked bibs that remain are not OTF records:
       const linkedBibTitles = Array.from(
         dom.querySelectorAll('.patFuncBibTitle a'),
-      ).map((anchor) => {
-        const st = anchor.textContent
-          .replace(/[\n\r]+/g, ' ')
-          .split(' ')
-          .filter((str) => str.length && str)
+      ).map((tag) => {
+        return tag.textContent
+          .split('\n')
+          .map((str) => str.trim())
           .join(' ');
-        return st;
       });
-
       expect(linkedBibTitles).to.have.members([
         'Toast / by Raquel Pelzel ; photographs by Evan Sung.',
         '-2 +3 Stefano Arienti, Massimo Bartolini : la Collezione di Museion = die Sammlung Museion = the Museion collection. Minus 2 plus 3 Minus two plus three Stefano Arienti, Massimo Bartolini',
@@ -132,9 +130,7 @@ describe('manipulateAccountPage', () => {
       const links = dom.querySelectorAll('.patFuncTitle a');
       expect(links).to.have.lengthOf(1);
       // Check that the linked bibs that remain are not OTF records:
-      const linkedBibTitles = Array.from(links).map(
-        (anchor) => anchor.textContent,
-      );
+      const linkedBibTitles = Array.from(links).map((link) => link.textContent);
       expect(linkedBibTitles).to.have.members(['A table / Jean Follain.']);
     });
 

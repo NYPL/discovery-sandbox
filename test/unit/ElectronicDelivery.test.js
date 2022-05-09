@@ -1,3 +1,5 @@
+/* eslint-env mocha */
+/* eslint-disable react/jsx-filename-extension */
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
 import React from 'react';
@@ -28,7 +30,7 @@ describe('ElectronicDeliveryForm', () => {
       expect(
         component
           .find('input')
-          .findWhere((node) => node.props().name === 'pickupLocation').length,
+          .findWhere((_n) => _n.props().name === 'pickupLocation').length,
       ).to.equal(1);
     });
 

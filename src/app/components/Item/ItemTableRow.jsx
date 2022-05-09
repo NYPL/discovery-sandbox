@@ -40,6 +40,29 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
+  aeonUrl(item) {
+    const itemUrl = Array.isArray(item.aeonUrl)
+      ? item.aeonUrl[0]
+      : item.aeonUrl;
+
+    const AeonUrl = new URL(itemUrl);
+
+    const paramDict = {
+      ItemISxN: 'id',
+      itemNumber: 'barcode',
+      CallNumber: 'callNumber',
+    };
+
+    // Add/Replace query parameters on AeonURL with item key values
+    Object.entries(paramDict).forEach(([param, key]) => {
+      // If item doesn't have a value use searchParams value
+      const value = item[key] ?? AeonUrl.searchParams.get(param);
+      if (value) AeonUrl.searchParams.set(param, value);
+    });
+
+    return AeonUrl.toString();
+  }
+
   requestButton() {
     const { item, bibId, page } = this.props;
 

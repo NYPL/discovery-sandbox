@@ -282,6 +282,7 @@ describe('ResultsList', () => {
 
       after(() => {
         mock.restore();
+        component.unmount();
       });
     });
   });
@@ -308,6 +309,7 @@ describe('ResultsList', () => {
 
     after(() => {
       mock.restore();
+      component.unmount();
     });
   });
 

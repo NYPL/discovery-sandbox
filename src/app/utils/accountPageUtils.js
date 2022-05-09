@@ -68,8 +68,8 @@ export const formatPatronExpirationDate = (expirationDate) => {
     return expirationDate;
   }
 
-  const [year, month, day] = expirationDate.split('-');
-  return [month, day, year].join('-');
+  const [_y, _m, _d] = expirationDate.split('-');
+  return [_m, _d, _y].join('-');
 };
 
 export const manipulateAccountPage = (
@@ -143,8 +143,8 @@ export const manipulateAccountPage = (
             else if (isClosed(option.innerText)) option.remove();
           });
           locationData[locationProp] = locationValue;
-          const locationChangeCb = (elem) => {
-            locationData[locationProp] = elem.target.value.replace('+++', '');
+          const locationChangeCb = (event) => {
+            locationData[locationProp] = event.target.value.replace('+++', '');
             eventListenerCb(buildReqBody(contentType, {}, locationData));
           };
           locationSelect.addEventListener('change', locationChangeCb);

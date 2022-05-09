@@ -194,7 +194,7 @@ describe('BibPage', () => {
       expect(
         component
           .find('dt')
-          .findWhere((node) => node.type() === 'dt' && node.text() === 'Notes')
+          .findWhere((_n) => _n.type() === 'dt' && _n.text() === 'Notes')
           .length,
       ).to.equal(1);
     });

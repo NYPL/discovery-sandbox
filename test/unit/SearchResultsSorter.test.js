@@ -157,6 +157,7 @@ describe('SearchResultsSorter', () => {
       after(() => {
         mock.restore();
         axiosSpy.restore();
+        component.unmount();
       });
     });
   });
