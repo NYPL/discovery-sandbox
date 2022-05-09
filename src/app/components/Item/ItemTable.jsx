@@ -31,9 +31,9 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
         </tr>
       </thead>
       <tbody>
-        {items.map((item) => (
+        {items.map((item, row) => (
           <ItemTableRow
-            key={item.id}
+            key={`Table-Row:${row}-id:${item.id}`}
             item={item}
             bibId={bibId}
             searchKeywords={searchKeywords}

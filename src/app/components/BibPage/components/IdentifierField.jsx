@@ -22,7 +22,7 @@ const IdentifierField = ({ entity }) => {
 };
 
 IdentifierField.propTypes = {
-  entity: PropTypes.array,
+  entity: PropTypes.object,
 };
 
 export default IdentifierField;
