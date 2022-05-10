@@ -15,7 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
       : '';
   const requestOptions =
     appConfig.features.includes('on-site-edd') ||
-      (urlEnabledFeatures || []).includes('on-site-edd')
+    (urlEnabledFeatures || []).includes('on-site-edd')
       ? { headers: { 'X-Features': 'on-site-edd' } }
       : {};
   return nyplApiClient().then((client) =>
@@ -48,23 +48,24 @@ export const addHoldingDefinition = (holding) => {
 };
 
 const appendDimensionsToExtent = (bib) => {
-  if (!bib.extent || bib.extent.length === 0) return
-  let extent = bib.extent[0]
-  let punctuationToAdd = ''
+  if (!bib.extent || bib.extent.length === 0) return;
+  let extent = bib.extent[0];
+  let punctuationToAdd = '';
   // Check if extent was cataloged with a semicolon already at the end:
-  const semicolon = (extent.slice(-2) === '; ' || extent.slice(-1) === ';')
+  const semicolon = extent.slice(-2) === '; ' || extent.slice(-1) === ';';
   if (semicolon) {
-    if (extent.slice(-1) !== ' ') punctuationToAdd += ' '
-  } else punctuationToAdd = '; '
+    if (extent.slice(-1) !== ' ') punctuationToAdd += ' ';
+  } else punctuationToAdd = '; ';
   if (bib.dimensions && bib.dimensions[0].length) {
     // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
-    extent = extent + punctuationToAdd + bib.dimensions[0]
+    extent = extent + punctuationToAdd + bib.dimensions[0];
   } else {
     // If there is no dimensions field, remove the semicolon
-    extent = punctuationToAdd.length === 0 ? extent.slice(0, -2) : extent.slice(0, -1)
+    extent =
+      punctuationToAdd.length === 0 ? extent.slice(0, -2) : extent.slice(0, -1);
   }
-  return [extent]
-}
+  return [extent];
+};
 
 export const findUrl = (location, urls) => {
   const matches = urls[location.code] || [];
@@ -122,20 +123,20 @@ const addLocationUrls = (bib) => {
   const { holdings } = bib;
   const holdingCodes = holdings
     ? holdings
-      .map((holding) =>
-        (holding.location || []).map((location) => location.code),
-      )
-      .reduce((acc, el) => acc.concat(el), [])
+        .map((holding) =>
+          (holding.location || []).map((location) => location.code),
+        )
+        .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const itemCodes = bib.items
     ? bib.items
-      .map((item) =>
-        (item.holdingLocation || []).map(
-          (location) => location['@id'] || location.code,
-        ),
-      )
-      .reduce((acc, el) => acc.concat(el), [])
+        .map((item) =>
+          (item.holdingLocation || []).map(
+            (location) => location['@id'] || location.code,
+          ),
+        )
+        .reduce((acc, el) => acc.concat(el), [])
     : [];
 
   const codes = holdingCodes.concat(itemCodes).join(',');
@@ -174,7 +175,7 @@ const addLocationUrls = (bib) => {
     });
 };
 
-function fetchBib (bibId, cb, errorcb, reqOptions, res) {
+function fetchBib(bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign(
     {
       fetchSubjectHeadingData: true,
@@ -227,8 +228,8 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
       return Object.assign({ status }, bib);
     })
     .then((bib) => {
-      bib.extent = appendDimensionsToExtent(bib)
-      return addLocationUrls(bib)
+      bib.extent = appendDimensionsToExtent(bib);
+      return addLocationUrls(bib);
     })
     .then((bib) => {
       if (bib.holdings) {
@@ -271,7 +272,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
     }); /* end axios call */
 }
 
-function bibSearch (req, res, resolve) {
+function bibSearch(req, res, resolve) {
   const bibId = req.params.bibId;
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
@@ -296,5 +297,5 @@ export default {
   fetchBib,
   nyplApiClientCall,
   addLocationUrls,
-  appendDimensionsToExtent
+  appendDimensionsToExtent,
 };
