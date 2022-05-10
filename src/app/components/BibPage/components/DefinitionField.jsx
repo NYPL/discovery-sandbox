@@ -1,11 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { isArray, isEmpty, normalizeLiteral } from '../../../utils/utils';
-import ParallelsFields from '../../Parallels/ParallelsFields';
+import DirectionalText from './DirectionalText';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 
-const DefinitionField = ({ values, field, bib }) => {
+const DefinitionField = ({ values, field }) => {
   if (!isArray(values) || isEmpty(values)) {
     return null;
   }
@@ -13,6 +13,7 @@ const DefinitionField = ({ values, field, bib }) => {
   return (
     <ul>
       {values
+        .flat()
         .map((value) => {
           if (field.value === 'subjectLiteral') {
             return normalizeLiteral(value);
@@ -45,7 +46,6 @@ const DefinitionField = ({ values, field, bib }) => {
                           bibValue={literal}
                           outbound={field.selfLinkable}
                           filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
-                          bib={bib}
                         />,
                         // Add span if there are additional literals
                         idx < orgArr.length - 1 && (
@@ -61,11 +61,9 @@ const DefinitionField = ({ values, field, bib }) => {
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
                   label={field.label}
-                  data={{ name: field.value, value, position: idx }}
                   field={field.value}
                   bibValue={value}
                   outbound={field.selfLinkable}
-                  bib={bib}
                 />
               </li>
             );
@@ -75,12 +73,7 @@ const DefinitionField = ({ values, field, bib }) => {
 
           return (
             <li key={`${value}-${idx}`}>
-              <ParallelsFields
-                content={definition}
-                field={field.value}
-                fieldIndex={idx}
-                bib={bib}
-              />
+              <DirectionalText text={definition} />
             </li>
           );
         })

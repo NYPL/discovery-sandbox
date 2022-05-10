@@ -14,3 +14,9 @@ const DirectionalText = ({ text }) => {
 DirectionalText.propTypes = {
   text: PropTypes.string,
 };
+
+export default DirectionalText;
+
+function unicodeDirection(text) {
+  return text[0] === '\u200F' ? 'rtl' : 'ltr';
+}

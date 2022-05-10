@@ -51,7 +51,7 @@ const getNoteType = (note) => {
  *
  * @param {Bib} bib object
  * @param {string} field string
- * @returns {ParallelMatrix} Array<string | undefined | never>[ ]
+ * @returns {ParallelMatrix | undefined} Array<string | undefined | never>[ ] | undefined
  *
  * ex: [ ['parallel', 'original'] ]
  */

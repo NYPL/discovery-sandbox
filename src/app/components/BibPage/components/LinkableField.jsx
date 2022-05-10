@@ -3,17 +3,15 @@ import React from 'react';
 import { Link } from 'react-router';
 import appConfig from '../../../data/appConfig';
 import { trackDiscovery } from '../../../utils/utils';
-import ParallelsFields from '../../Parallels/ParallelsFields';
+import DirectionalText from './DirectionalText';
 
 const LinkableBibField = ({
   bibValue,
-  data = {},
   field,
   label,
   outbound,
   onClick,
   filterPath,
-  bib,
 }) => {
   const text = outbound
     ? bibValue.prefLabel || bibValue.label || bibValue.url
@@ -37,25 +35,20 @@ const LinkableBibField = ({
 
   return (
     <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      <ParallelsFields
-        content={text}
-        field={data.name}
-        fieldIndex={data.position}
-        bib={bib}
-      />
+      <DirectionalText text={text} />
     </Link>
   );
 };
 
 LinkableBibField.propTypes = {
   bibValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  data: PropTypes.object,
+  // data: PropTypes.object,
   field: PropTypes.string.isRequired,
   label: PropTypes.string,
   outbound: PropTypes.bool,
   onClick: PropTypes.func,
   filterPath: PropTypes.string,
-  bib: PropTypes.object,
+  // bib: PropTypes.object,
 };
 
 export default LinkableBibField;

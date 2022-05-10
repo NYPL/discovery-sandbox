@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import {
   combineBibDetailsData,
+  extractParallels,
   groupNotesBySubject,
   setParallelToNote,
 } from '../../utils/bibDetailsUtils';
@@ -65,7 +66,6 @@ const BibDetails = ({ fields = [], resources = [], marcs, bib }) => {
             key={`${field.label}_${fIdx}`}
             values={values}
             field={field}
-            bib={bib}
           />
         ),
       },
@@ -116,8 +116,6 @@ function validIdentifier(field, value) {
  * @returns {Array<string | BibDefinition | Note | Identifer | Resource> | undefined} An array of a mapped field to the bib value
  */
 function buildValue(bib, field, resources) {
-  const val = bib[field.value];
-
   if (field.label === 'Electronic Resource') {
     return resources.length ? resources : undefined;
   }
@@ -126,6 +124,12 @@ function buildValue(bib, field, resources) {
     const owner = getOwner(bib);
     return owner ? [owner] : undefined;
   }
+
+  if (field.value === 'note') {
+    return bib[field.value];
+  }
+
+  const val = extractParallels(bib, field.value) || bib[field.value];
 
   if (field.value === 'identifier' && val) {
     const ident = validIdentifier(field, val);

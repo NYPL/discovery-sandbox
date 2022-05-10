@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import ParallelsFields from '../../Parallels/ParallelsFields';
+import DirectionalText from './DirectionalText';
 
 const DefinitionNoteField = ({ values, ulKey }) => {
   // type value = Note[]
@@ -14,11 +14,11 @@ const DefinitionNoteField = ({ values, ulKey }) => {
             <React.Fragment key={ulKey + prefLabel}>
               {parallel[0] ? (
                 <li>
-                  <ParallelsFields content={parallel[0]} />
+                  <DirectionalText text={parallel[0]} />
                 </li>
               ) : null}
               <li>
-                <ParallelsFields content={prefLabel} />
+                <DirectionalText text={prefLabel} />
               </li>
             </React.Fragment>
           );
