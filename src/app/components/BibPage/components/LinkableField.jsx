@@ -15,13 +15,16 @@ const LinkableBibField = ({
   filterPath,
   bib,
 }) => {
-
   const text = outbound
     ? bibValue.prefLabel || bibValue.label || bibValue.url
     : bibValue;
-  
+
   // react router url encoding ignores & and +, so such characters within bibValue need to be encoded manually
-  const filter = `filters[${field}]=${ filterPath ?? bibValue['@id'] ?? bibValue.replace('&', '%26').replace('+', '%2B') ?? ''
+  const filter = `filters[${field}]=${
+    filterPath ??
+    bibValue['@id'] ??
+    bibValue.replace('&', '%26').replace('+', '%2B') ??
+    ''
   }`;
 
   const url = outbound
