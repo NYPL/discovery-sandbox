@@ -27,7 +27,6 @@ const LinkableBibField = ({
       .join('');
   };
 
-  // react router url encoding ignores & and +, so such characters within bibValue need to be encoded manually
   const queryString = `${filterPath ?? bibValue['@id'] ?? bibValue ?? ''}`;
   const filter = `filters[${field}]=${encodeURIComponent(queryString)}`;
 
