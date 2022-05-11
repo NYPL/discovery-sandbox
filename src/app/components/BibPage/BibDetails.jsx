@@ -212,18 +212,9 @@ class BibDetails extends React.Component {
     return (
       <ul>
         {bibValues.map((value) => {
-          let partialUrlEncodedBibValue;
-          if (typeof value === 'string') {
-            partialUrlEncodedBibValue = value
-              .split('')
-              .map((char) =>
-                char === '&' ? '%26' : char === '+' ? '%2B' : char,
-              )
-              .join('');
-          }
-          const url = `filters[${fieldValue}]=${
-            partialUrlEncodedBibValue || value
-          }`;
+          const queryString =  typeof value === 'string' ? value : value.label;
+          const url = `filters[${fieldValue}]=${encodeURIComponent(queryString)}`
+
           return (
             <li
               key={`filter${fieldValue}${
