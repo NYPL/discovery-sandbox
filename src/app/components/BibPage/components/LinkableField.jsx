@@ -17,9 +17,16 @@ const LinkableBibField = ({
     ? bibValue.prefLabel || bibValue.label || bibValue.url
     : bibValue;
 
-  const filter = `filters[${field}]=${
-    filterPath ?? bibValue['@id'] ?? bibValue ?? ''
-  }`;
+  let partialUrlEncodedBibValue
+  if (bibValue && typeof bibValue === 'string') {
+    partialUrlEncodedBibValue = bibValue
+      .split('')
+      .map((char) => (char === '&' ? '%26' : char === '+' ? '%2B' : char))
+      .join('');
+  };
+
+  const queryString = `${filterPath ?? bibValue['@id'] ?? bibValue ?? ''}`;
+  const filter = `filters[${field}]=${encodeURIComponent(queryString)}`;
 
   const url = outbound
     ? bibValue['@id'] || bibValue.url
