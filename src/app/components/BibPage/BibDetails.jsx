@@ -201,6 +201,7 @@ class BibDetails extends React.Component {
 
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
+
       const url = `filters[${fieldValue}]=${bibValue}`;
       return this.getDefinitionOneItem(
         bibValue,
@@ -217,7 +218,9 @@ class BibDetails extends React.Component {
     return (
       <ul>
         {bibValues.map((value) => {
-          const url = `filters[${fieldValue}]=${value}`;
+          const queryString =  typeof value === 'string' ? value : value.label;
+          const url = `filters[${fieldValue}]=${encodeURIComponent(queryString)}`
+
           return (
             <li
               key={`filter${fieldValue}${
