@@ -28,7 +28,7 @@ const LinkableBibField = ({
   }
 
   // react router url encoding ignores & and +, so such characters within bibValue need to be encoded manually
-  const filter = `filters[${field}]=${filterPath ?? bibValue['@id'] ?? partialUrlEncodedBibValue ?? ''
+  const filter = `filters[${field}]=${filterPath ?? bibValue['@id'] ?? partialUrlEncodedBibValue ?? bibValue ?? ''
     }`;
 
   const url = outbound
