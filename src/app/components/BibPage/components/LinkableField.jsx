@@ -27,6 +27,8 @@ const LinkableBibField = ({
   filterQuery,
   onClick,
 }) => {
+  if (!value || !field) return null;
+
   const text = outbound ? value.prefLabel || value.label || value.url : value;
 
   const queryString = `${filterQuery ?? value['@id'] ?? value ?? ''}`;
