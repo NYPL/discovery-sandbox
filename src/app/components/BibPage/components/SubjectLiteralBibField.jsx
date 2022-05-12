@@ -6,7 +6,7 @@ import LinkableBibField from './LinkableField';
  *
  * @typedef {Object} SubjectLiteralBibFieldProps
  * @property {!string} value
- * @property {!FieldDefinition} field
+ * @property {!import('../TopBibDetails').FieldDefinition} field
  */
 
 /**
@@ -44,17 +44,8 @@ const SubjectLiteralBibField = ({ value, field }) => {
 SubjectLiteralBibField.propTypes = {
   /** @type {string} */
   value: PropTypes.string.isRequired,
-  /** @type {FieldDefinition} */
+  /** @type {import('../TopBibDetails').FieldDefinition} */
   field: PropTypes.object.isRequired,
 };
 
 export default SubjectLiteralBibField;
-
-/**
- * - The type definition of the field objects used to define the displayed field in BibDetails
- * @typedef {Object} FieldDefinition
- * @property {string} label - The label to display in the Dom for a particular Bib Field
- * @property {string} value - The Bib field property to map to
- * @property {true=} linkable - Whether or not the bib field value is linkable
- * @property {true=} selfLinkable - Whether or not a linkable field directs to an internal page
- */

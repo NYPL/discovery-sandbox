@@ -9,7 +9,7 @@ import SubjectLiteralBibField from './SubjectLiteralBibField';
 /**
  * @typedef {Object} DefinitionFieldProps
  * @property {Array<string[] | object[]>} values
- * @property {import('./SubjectLiteralBibField').FieldDefinition} field
+ * @property {import('../TopBibDetails').FieldDefinition} field
  */
 
 /**
