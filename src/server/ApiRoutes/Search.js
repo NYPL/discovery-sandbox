@@ -29,9 +29,9 @@ const createAPIQuery = basicQuery({
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
   const requestOptions =
-    appConfig.features.includes('on-site-edd') ||
-    urlEnabledFeatures.includes('on-site-edd')
-      ? { headers: { 'X-Features': 'on-site-edd' } }
+    appConfig.features.includes('no-onsite-edd') ||
+    urlEnabledFeatures.includes('no-onsite-edd')
+      ? { headers: { 'X-Features': 'no-onsite-edd' } }
       : {};
 
   return nyplApiClient().then((client) =>

@@ -107,12 +107,6 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    // determine which `eddAboutUrl` to use based on 'on-site-edd' feature flag
-    const { eddAboutUrl } = appConfig;
-
-    const whichUrl = this.props.onSiteEddEnabled ? 'onSiteEdd' : 'default';
-    const aboutUrl = eddAboutUrl[whichUrl];
-
     // A lot of this can be refactored to be in a loop but that's a later and
     // next step. I was thinking each `nypl-text-field` or `nypl-year-field`
     // div can be its own component in a loop with the required props and
@@ -162,7 +156,9 @@ class ElectronicDeliveryForm extends React.Component {
               </span>
               <br />
               <span>
-                <a href={aboutUrl}>Read more about this service</a>.
+                <a href={'https://www.nypl.org/research/scan-and-deliver'}>
+                  Read more about this service
+                </a>.
               </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
                 <label htmlFor='startPage' id='startPage-label'>
@@ -405,8 +401,7 @@ ElectronicDeliveryForm.propTypes = {
   defaultEmail: PropTypes.string,
   searchKeywords: PropTypes.string,
   serverRedirect: PropTypes.bool,
-  fromUrl: PropTypes.string,
-  onSiteEddEnabled: PropTypes.bool,
+  fromUrl: PropTypes.string
 };
 
 ElectronicDeliveryForm.defaultProps = {

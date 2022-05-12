@@ -98,7 +98,7 @@ describe('Application', () => {
       context.router = {
         location: {
           query: {
-            features: 'on-site-edd',
+            features: 'no-onsite-edd',
           },
         },
         listen: stub(),
@@ -116,7 +116,7 @@ describe('Application', () => {
     });
 
     it('sets `urlEnabledFeatures` state from `router.location.query.features`', () => {
-      expect(component.state().urlEnabledFeatures).to.equal('on-site-edd');
+      expect(component.state().urlEnabledFeatures).to.equal('no-onsite-edd');
     });
   });
 });
