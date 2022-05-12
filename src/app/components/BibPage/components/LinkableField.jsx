@@ -11,7 +11,7 @@ import DirectionalText from './DirectionalText';
  * @property {string} field - The bib member name
  * @property {string} label - The display name of the bib member
  * @property {true=} outbound - Internal or external navigation
- * @property {string=} filterQuery - Subject Literal query value. FOR SubjectLiteralField ONLY
+ * @property {string=} filterQuery - Subject Literal query value. *** FOR SubjectLiteralBibField ONLY ***
  * @property {((event: MouseEvent) => void)=} onClick - On Click Handler
  */
 
