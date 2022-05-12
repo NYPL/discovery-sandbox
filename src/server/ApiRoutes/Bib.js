@@ -172,7 +172,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       return Object.assign({ status }, bib);
     })
     .then((bib) => {
-      bib.extent = appendDimensionsToExtent(bib)
+      appendDimensionsToExtent(bib)
       return addLocationUrls(bib)})
     .then((bib) => {
       if (bib.holdings) {
