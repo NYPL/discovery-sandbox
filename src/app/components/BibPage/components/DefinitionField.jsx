@@ -30,30 +30,13 @@ const DefinitionField = ({ values, field }) => {
 
           if (field.linkable) {
             if (field.value === 'subjectLiteral') {
-              // This will only be processed if SubjectHeadingData on Bib is undefined
-              // and if subjectLiterals is defined.
+              // Process if Bib.subjectHeadingData is undefined & Bib.subjectLiterals is defined
               return (
-                <li key={`${value}-${idx}`}>
-                  {value
-                    .split(' > ')
-                    .reduce((literalList, literal, idx, orgArr) => {
-                      return [
-                        ...literalList,
-                        <LinkableBibField
-                          key={`${literal}-${idx}`}
-                          label={field.label}
-                          field={field.value}
-                          bibValue={literal}
-                          outbound={field.selfLinkable}
-                          filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
-                        />,
-                        // Add span if there are additional literals
-                        idx < orgArr.length - 1 && (
-                          <span key={`divider-${idx}-${literal}`}> &gt; </span>
-                        ),
-                      ].filter(Boolean);
-                    }, [])}
-                </li>
+                <SubjectLiteralField
+                  key={`${value}-${idx}`}
+                  value={value}
+                  field={field}
+                />
               );
             }
 
@@ -94,3 +77,27 @@ DefinitionField.default = {
 };
 
 export default DefinitionField;
+
+function SubjectLiteralField(value, field) {
+  return (
+    <li>
+      {value.split(' > ').reduce((literalList, literal, idx, orgArr) => {
+        return [
+          ...literalList,
+          <LinkableBibField
+            key={`${literal}-${idx}`}
+            value={literal}
+            field={field.value}
+            label={field.label}
+            outbound={field.selfLinkable}
+            filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
+          />,
+          // Add span if there are additional literals
+          idx < orgArr.length - 1 && (
+            <span key={`divider-${idx}-${literal}`}> &gt; </span>
+          ),
+        ].filter(Boolean);
+      }, [])}
+    </li>
+  );
+}
