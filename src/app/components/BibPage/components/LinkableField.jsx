@@ -5,23 +5,35 @@ import appConfig from '../../../data/appConfig';
 import { trackDiscovery } from '../../../utils/utils';
 import DirectionalText from './DirectionalText';
 
+/**
+ * @typedef {Object} LinkableBibFieldProps
+ * @property {string | object} value - The value to display
+ * @property {string} field - The bib member name
+ * @property {string} label - The display name of the bib member
+ * @property {true=} outbound - Internal or external navigation
+ * @property {string=} filterQuery - Subject Literal query value. FOR SubjectLiteralField ONLY
+ * @property {((event: MouseEvent) => void)=} onClick - On Click Handler
+ */
+
+/**
+ * @param {LinkableBibFieldProps} props
+ * @returns {React.Node}
+ */
 const LinkableBibField = ({
-  bibValue,
+  value,
   field,
   label,
   outbound,
+  filterQuery,
   onClick,
-  filterPath,
 }) => {
-  const text = outbound
-    ? bibValue.prefLabel || bibValue.label || bibValue.url
-    : bibValue;
+  const text = outbound ? value.prefLabel || value.label || value.url : value;
 
-  const queryString = `${filterPath ?? bibValue['@id'] ?? bibValue ?? ''}`;
+  const queryString = `${filterQuery ?? value['@id'] ?? value ?? ''}`;
   const filter = `filters[${field}]=${encodeURIComponent(queryString)}`;
 
   const url = outbound
-    ? bibValue['@id'] || bibValue.url
+    ? value['@id'] || value.url
     : `${appConfig.baseUrl}/search?${filter}`;
 
   const handler = (event) => {
@@ -40,14 +52,18 @@ const LinkableBibField = ({
 };
 
 LinkableBibField.propTypes = {
-  bibValue: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  // data: PropTypes.object,
+  /** @type {string | object} */
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  /** @type {string} */
   field: PropTypes.string.isRequired,
+  /** @type {string} */
   label: PropTypes.string,
+  /** @type {true=} */
   outbound: PropTypes.bool,
+  /** @type {string=} */
+  filterQuery: PropTypes.string,
+  /** @type {((event: MouseEvent) => void)=} */
   onClick: PropTypes.func,
-  filterPath: PropTypes.string,
-  // bib: PropTypes.object,
 };
 
 export default LinkableBibField;

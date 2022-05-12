@@ -43,9 +43,9 @@ const DefinitionField = ({ values, field }) => {
             return (
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
-                  label={field.label}
+                  value={value}
                   field={field.value}
-                  bibValue={value}
+                  label={field.label}
                   outbound={field.selfLinkable}
                 />
               </li>
