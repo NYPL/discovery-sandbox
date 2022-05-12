@@ -8,9 +8,9 @@ import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
-  // If on-site-edd feature enabled in front-end, enable it in discovery-api:
+  // If no-onsite-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
-  const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions = appConfig.features.includes('no-onsite-edd') || (urlEnabledFeatures || []).includes('no-onsite-edd') ? { headers: { 'X-Features': 'no-onsite-edd' } } : {};
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
