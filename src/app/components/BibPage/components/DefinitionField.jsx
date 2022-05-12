@@ -4,6 +4,7 @@ import { isArray, isEmpty, normalizeLiteral } from '../../../utils/utils';
 import DirectionalText from './DirectionalText';
 import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
+import SubjectLiteralBibField from './SubjectLiteralBibField';
 
 const DefinitionField = ({ values, field }) => {
   if (!isArray(values) || isEmpty(values)) {
@@ -32,7 +33,7 @@ const DefinitionField = ({ values, field }) => {
             if (field.value === 'subjectLiteral') {
               // Process if Bib.subjectHeadingData is undefined & Bib.subjectLiterals is defined
               return (
-                <SubjectLiteralField
+                <SubjectLiteralBibField
                   key={`${value}-${idx}`}
                   value={value}
                   field={field}
@@ -77,27 +78,3 @@ DefinitionField.default = {
 };
 
 export default DefinitionField;
-
-function SubjectLiteralField(value, field) {
-  return (
-    <li>
-      {value.split(' > ').reduce((literalList, literal, idx, orgArr) => {
-        return [
-          ...literalList,
-          <LinkableBibField
-            key={`${literal}-${idx}`}
-            value={literal}
-            field={field.value}
-            label={field.label}
-            outbound={field.selfLinkable}
-            filterPath={orgArr.slice(0, idx + 1).join(' -- ')}
-          />,
-          // Add span if there are additional literals
-          idx < orgArr.length - 1 && (
-            <span key={`divider-${idx}-${literal}`}> &gt; </span>
-          ),
-        ].filter(Boolean);
-      }, [])}
-    </li>
-  );
-}
