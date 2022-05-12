@@ -6,7 +6,7 @@ import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
-import { appendDimensionsToExtent } from 'src/app/utils/appendDimensionsToExtent';
+import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
