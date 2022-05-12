@@ -6,6 +6,16 @@ import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 import SubjectLiteralBibField from './SubjectLiteralBibField';
 
+/**
+ * @typedef {Object} DefinitionFieldProps
+ * @property {Array<string[] | object[]>} values
+ * @property {import('./SubjectLiteralBibField').FieldDefinition} field
+ */
+
+/**
+ * @param {DefinitionFieldProps} props
+ * @return {React.Node?}
+ */
 const DefinitionField = ({ values, field }) => {
   if (!isArray(values) || isEmpty(values)) {
     return null;
