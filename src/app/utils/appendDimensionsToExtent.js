@@ -6,9 +6,8 @@ export const appendDimensionsToExtent = (bib) => {
   let parts = [bib.extent[0].replace(/\s*;\s*$/, '')]
   if (bib.dimensions && bib.dimensions[0]) {
     parts.push(bib.dimensions[0])
-    parts = parts.join('; ')
-  } else parts = parts[0]
-  bib.extent[0] = parts
+  }
+  bib.extent[0] = parts.join('; ')
   return bib
 }
 
