@@ -22,8 +22,12 @@ describe('appendDimensionsToExtent', () => {
     expect(bib.extent[0]).to.equal('700 sheets of woven gold')
     expect(anotherBib.extent[0]).to.equal('700 sheets of woven gold')
   })
-  it('should do nothing if there is no extent', () => {
-    const bib = appendDimensionsToExtent({ dimensions: 'lol' })
+  it('should display dimensions if there are dimensions and no extent', () => {
+    const bib = appendDimensionsToExtent({ dimensions: ['1,000,000mm x 7ft'] })
+    expect(bib.extent[0]).to.equal('1,000,000mm x 7ft')
+  })
+  it('should do nothing if there are no dimensions or extent', () => {
+    const bib = appendDimensionsToExtent({ })
     expect(bib).to.not.have.keys('extent')
   })
 })
