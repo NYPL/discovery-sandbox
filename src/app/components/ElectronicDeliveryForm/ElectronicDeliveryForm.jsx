@@ -366,8 +366,7 @@ ElectronicDeliveryForm.propTypes = {
   defaultEmail: PropTypes.string,
   searchKeywords: PropTypes.string,
   serverRedirect: PropTypes.bool,
-  fromUrl: PropTypes.string,
-  onSiteEddEnabled: PropTypes.bool,
+  fromUrl: PropTypes.string
 };
 
 ElectronicDeliveryForm.defaultProps = {

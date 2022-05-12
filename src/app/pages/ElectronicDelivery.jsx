@@ -272,7 +272,6 @@ class ElectronicDelivery extends React.Component {
                 searchKeywords={searchKeywords}
                 serverRedirect={serverRedirect}
                 fromUrl={this.fromUrl()}
-                onSiteEddEnabled={this.props.features.includes('on-site-edd')}
               />
               : null
           }
