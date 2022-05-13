@@ -273,6 +273,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
-  addLocationUrls,
-  appendDimensionsToExtent,
+  addLocationUrls
 };

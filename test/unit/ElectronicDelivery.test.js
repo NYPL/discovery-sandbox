@@ -174,7 +174,7 @@ describe('ElectronicDeliveryForm', () => {
         bib,
       });
       component = mountTestRender(
-        <ElectronicDelivery params={{ bibId: 'bibId', itemId: 'i10000003' }} />,
+        <ElectronicDelivery location={{ query: 'query' }}params={{ bibId: 'bibId', itemId: 'i10000003' }} />,
         { store },
       );
       const message = component.find('h2');
