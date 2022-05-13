@@ -7,11 +7,11 @@ import DirectionalText from './DirectionalText';
 
 /**
  * @typedef {Object} LinkableBibFieldProps
- * @property {string | object} value - The value to display
+ * @property {string} displayText - The bib member name
  * @property {string} field - The bib member name
  * @property {string} label - The display name of the bib member
- * @property {true=} outbound - Internal or external navigation
- * @property {string=} filterQuery - Subject Literal query value. *** FOR SubjectLiteralBibField ONLY ***
+ * @property {string} searchQuery - The Query To Search for when clicked
+ * @property {string=} url - The bib member name
  * @property {((event: MouseEvent) => void)=} onClick - On Click Handler
  */
 
@@ -20,50 +20,47 @@ import DirectionalText from './DirectionalText';
  * @returns {React.Node}
  */
 const LinkableBibField = ({
-  value,
+  displayText,
   field,
   label,
-  outbound,
-  filterQuery,
+  searchQuery,
+  url,
   onClick,
 }) => {
-  if (!value || !field) return null;
+  if (!displayText || !field || !label || (!url && !searchQuery)) return null;
 
-  const text = outbound ? value.prefLabel || value.label || value.url : value;
-
-  const queryString = `${filterQuery ?? value['@id'] ?? value ?? ''}`;
-  const filter = `filters[${field}]=${encodeURIComponent(queryString)}`;
-
-  const url = outbound
-    ? value['@id'] || value.url
-    : `${appConfig.baseUrl}/search?${filter}`;
+  const to = url
+    ? url
+    : `${appConfig.baseUrl}/search?filters[${field}]=${encodeURIComponent(
+        searchQuery,
+      )}`;
 
   const handler = (event) => {
-    if (!outbound) {
+    if (!url) {
       !!onClick && onClick(event);
     }
 
-    trackDiscovery('Bib fields', `${label} - ${text}`);
+    trackDiscovery('Bib fields', `${label} - ${displayText}`);
   };
 
   return (
-    <Link onClick={handler} to={url} target={outbound ? '_blank' : undefined}>
-      <DirectionalText text={text} />
+    <Link onClick={handler} to={to} target={url ? '_blank' : undefined}>
+      <DirectionalText text={displayText} />
     </Link>
   );
 };
 
 LinkableBibField.propTypes = {
-  /** @type {string | object} */
-  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+  /** @type {string} */
+  displayText: PropTypes.string.isRequired,
   /** @type {string} */
   field: PropTypes.string.isRequired,
   /** @type {string} */
-  label: PropTypes.string,
-  /** @type {true=} */
-  outbound: PropTypes.bool,
+  label: PropTypes.string.isRequired,
   /** @type {string=} */
-  filterQuery: PropTypes.string,
+  searchQuery: PropTypes.string.isRequired,
+  /** @type {string} */
+  url: PropTypes.string,
   /** @type {((event: MouseEvent) => void)=} */
   onClick: PropTypes.func,
 };

@@ -76,11 +76,10 @@ describe('SubjectLiteralBibField', () => {
       expect(component.find(LinkableBibField).length).to.equal(1);
 
       expect(component.find(LinkableBibField).props()).to.include({
-        value: 'Serbia -- Civilization -- Periodicals',
-        filterQuery: 'Serbia -- Civilization -- Periodicals',
+        displayText: 'Serbia -- Civilization -- Periodicals',
+        searchQuery: 'Serbia -- Civilization -- Periodicals',
         field: field.value,
         label: field.label,
-        outbound: true,
       });
     });
 
@@ -92,27 +91,24 @@ describe('SubjectLiteralBibField', () => {
       expect(component.find(LinkableBibField).length).to.equal(3);
 
       expect(component.find(LinkableBibField).at(0).props()).to.include({
-        value: 'Serbia',
-        filterQuery: 'Serbia',
+        displayText: 'Serbia',
+        searchQuery: 'Serbia',
         field: field.value,
         label: field.label,
-        outbound: true,
       });
 
       expect(component.find(LinkableBibField).at(1).props()).to.include({
-        value: 'Civilization',
-        filterQuery: 'Serbia -- Civilization',
+        displayText: 'Civilization',
+        searchQuery: 'Serbia -- Civilization',
         field: field.value,
         label: field.label,
-        outbound: true,
       });
 
       expect(component.find(LinkableBibField).at(2).props()).to.include({
-        value: 'Periodicals',
-        filterQuery: 'Serbia -- Civilization -- Periodicals',
+        displayText: 'Periodicals',
+        searchQuery: 'Serbia -- Civilization -- Periodicals',
         field: field.value,
         label: field.label,
-        outbound: true,
       });
     });
   });

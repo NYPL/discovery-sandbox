@@ -54,10 +54,15 @@ const DefinitionField = ({ values, field }) => {
             return (
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
-                  value={value}
+                  displayText={
+                    field.selfLinkable
+                      ? value.prefLabel || value.label || value.url
+                      : value
+                  }
                   field={field.value}
                   label={field.label}
-                  outbound={field.selfLinkable}
+                  searchQuery={value['@id'] ?? value}
+                  url={(field.selfLinkable && value['@id']) || value.url}
                 />
               </li>
             );

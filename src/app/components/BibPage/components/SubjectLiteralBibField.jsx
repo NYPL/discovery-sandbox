@@ -25,11 +25,10 @@ const SubjectLiteralBibField = ({ value, field }) => {
           ...literalList,
           <LinkableBibField
             key={`${literal}-${idx}`}
-            value={literal}
+            displayText={literal}
             field={field.value}
             label={field.label}
-            outbound={field.selfLinkable}
-            filterQuery={orgArr.slice(0, idx + 1).join(' -- ')}
+            searchQuery={orgArr.slice(0, idx + 1).join(' -- ')}
           />,
           // Add span if there are additional literals
           idx < orgArr.length - 1 && (
