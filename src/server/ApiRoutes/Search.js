@@ -11,6 +11,7 @@ import {
   parseServerSelectedFilters,
 } from '../../app/utils/utils';
 import nyplApiClient from '../routes/nyplApiClient';
+import { noOnsiteEddCheck } from '../utils/noOnsiteEddCheck';
 import {
   addCheckInItems,
   addHoldingDefinition,
@@ -28,11 +29,7 @@ const createAPIQuery = basicQuery({
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
-  const requestOptions =
-    appConfig.features.includes('no-onsite-edd') ||
-    urlEnabledFeatures.includes('no-onsite-edd')
-      ? { headers: { 'X-Features': 'no-onsite-edd' } }
-      : {};
+  const requestOptions = noOnsiteEddCheck(appConfig)
 
   return nyplApiClient().then((client) =>
     client.get(`/discovery/resources${query}`, requestOptions),

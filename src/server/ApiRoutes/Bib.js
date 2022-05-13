@@ -6,6 +6,7 @@ import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
+import { noOnsiteEddCheck } from '../utils/noOnsiteEddCheck';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If no-onsite-edd feature enabled in front-end, enable it in discovery-api:
@@ -13,11 +14,8 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
     typeof itemFrom !== 'undefined'
       ? `?items_size=${itemBatchSize}&items_from=${itemFrom}`
       : '';
-  const requestOptions =
-    appConfig.features.includes('no-onsite-edd') ||
-    (urlEnabledFeatures || []).includes('no-onsite-edd')
-      ? { headers: { 'X-Features': 'no-onsite-edd' } }
-      : {};
+  const requestOptions = noOnsiteEddCheck(appConfig)
+    
   return nyplApiClient().then((client) =>
     client.get(
       `/discovery/resources/${query}${queryForItemPage}`,
