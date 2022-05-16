@@ -59,9 +59,9 @@ const DefinitionField = ({ values = [], field = {} }) => {
               <li key={`${value}-${idx}`}>
                 <LinkableBibField
                   displayText={
-                    field.selfLinkable
-                      ? value.prefLabel || value.label || value.url
-                      : value
+                    (field.selfLinkable &&
+                      (value.prefLabel || value.label || value.url)) ||
+                    value
                   }
                   field={field.value}
                   label={field.label}
