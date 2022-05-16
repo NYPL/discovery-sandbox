@@ -6,9 +6,11 @@ import IdentifierField from './IdentifierField';
 import LinkableBibField from './LinkableField';
 import SubjectLiteralBibField from './SubjectLiteralBibField';
 
+/** @typedef {Array<string | object | string[] | object[] | Array<string | object>>} DefinitionValues */
+
 /**
  * @typedef {Object} DefinitionFieldProps
- * @property {Array<string | object | string[] | object[] | Array<string | object>>} values
+ * @property {DefinitionValues} values
  * @property {import('../TopBibDetails').FieldDefinition} field
  */
 
@@ -86,7 +88,9 @@ const DefinitionField = ({ values = [], field = {} }) => {
 };
 
 DefinitionField.propTypes = {
+  /** @type {DefinitionValues}  */
   values: PropTypes.array,
+  /** @type {import('../TopBibDetails').FieldDefinition}  */
   field: PropTypes.object,
 };
 
