@@ -8,7 +8,7 @@ import SubjectLiteralBibField from './SubjectLiteralBibField';
 
 /**
  * @typedef {Object} DefinitionFieldProps
- * @property {Array<string[] | object[]>} values
+ * @property {Array<string | object | string[] | object[] | Array<string | object>>} values
  * @property {import('../TopBibDetails').FieldDefinition} field
  */
 
@@ -16,8 +16,12 @@ import SubjectLiteralBibField from './SubjectLiteralBibField';
  * @param {DefinitionFieldProps} props
  * @return {React.Node?}
  */
-const DefinitionField = ({ values, field }) => {
+const DefinitionField = ({ values = [], field = {} }) => {
   if (!isArray(values) || isEmpty(values)) {
+    return null;
+  }
+
+  if (!field || isArray(field) || isEmpty(field)) {
     return null;
   }
 
@@ -82,14 +86,13 @@ const DefinitionField = ({ values, field }) => {
 };
 
 DefinitionField.propTypes = {
-  field: PropTypes.object,
-  bib: PropTypes.object,
   values: PropTypes.array,
+  field: PropTypes.object,
 };
 
 DefinitionField.default = {
-  additional: false,
   values: [],
+  field: {},
 };
 
 export default DefinitionField;
