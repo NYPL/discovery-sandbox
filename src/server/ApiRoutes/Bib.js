@@ -6,6 +6,7 @@ import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
+import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
@@ -208,7 +209,9 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       }
       return Object.assign({ status }, bib);
     })
-    .then((bib) => addLocationUrls(bib))
+    .then((bib) => {
+      appendDimensionsToExtent(bib)
+      return addLocationUrls(bib)})
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
