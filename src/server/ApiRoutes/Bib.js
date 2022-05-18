@@ -14,8 +14,8 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
     typeof itemFrom !== 'undefined'
       ? `?items_size=${itemBatchSize}&items_from=${itemFrom}`
       : '';
-  const requestOptions = noOnsiteEddCheck(appConfig)
-    
+  const requestOptions = noOnsiteEddCheck(appConfig.features, urlEnabledFeatures)
+  
   return nyplApiClient().then((client) =>
     client.get(
       `/discovery/resources/${query}${queryForItemPage}`,

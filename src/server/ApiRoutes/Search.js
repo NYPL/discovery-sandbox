@@ -29,7 +29,7 @@ const createAPIQuery = basicQuery({
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
-  const requestOptions = noOnsiteEddCheck(appConfig)
+  const requestOptions = noOnsiteEddCheck(appConfig.features, urlEnabledFeatures)
 
   return nyplApiClient().then((client) =>
     client.get(`/discovery/resources${query}`, requestOptions),
