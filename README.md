@@ -195,11 +195,16 @@ npx prettier --write path/to/file
 This app has an unusual Git Workflow / deployment scheme:
 
 - Cut feature branches off of the `development` branch
-- After an approved PR to `development`,
-- Tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
-- Merge your feature branch into `production` to deploy to production
+- Post a PR targeting `development`
+- After an approved PR to `development`, tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
+- Only after feature branch is approved in QA, merge to `development`
+- Merge `development` into `production` to deploy to production
 
-\* To QA multiple feature branches, create a branch called `qa-release-{YYYY}-{MM}-{DD}`, merge your feature branches into that, and then tag that with `qa-deployment-...`
+There are a couple of scenarios that complicate the above workflow:
+
+1. Sometimes, feature branches do not require QA, for instance changes to the README. In this case, it is OK to merge into `development` and `production` without a QA tag, but this should only be done in cases where no QA is necessary. Ideally we never QA work that is already merged to `development`
+
+2. Sometimes, feature branches may be bundled together into a release branch. In this case, the release may be tagged for QA, and upon passing QA merged into `development`. The other branches can then be deleted. Ideally, anything merged to `development` should have been on QA exactly as it is at the time of merge.
 
 ## Webpack Bundle Analyzer
 
