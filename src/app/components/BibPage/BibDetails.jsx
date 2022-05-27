@@ -36,6 +36,16 @@ class BibDetails extends React.Component {
     return notes;
   }
 
+
+  isRtl(string) {
+    if (typeof string !== 'string') { console.log('not string: ', string); return null }
+    return string.substring(0, 1) === '\u200F'
+  }
+
+  stringDirection(string) {
+    return this.isRtl(string) ? 'rtl' : 'ltr'
+  }
+
   /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
@@ -74,7 +84,11 @@ class BibDetails extends React.Component {
             }
             to={`${appConfig.baseUrl}/search?${url}`}
           >
-            {bibValue.prefLabel}
+            {
+              this.isRtl(bibValue.prefLabel) ?
+                (<span dir='rtl'>{bibValue.prefLabel}</span>) :
+                bibValue.prefLabel
+            }
           </Link>
         );
       }
@@ -82,6 +96,7 @@ class BibDetails extends React.Component {
       if (fieldSelfLinkable) {
         return (
           <a
+            dir={this.stringDirection(bibValue.prefLabel)}
             href={bibValue['@id']}
             onClick={() =>
               trackDiscovery(
@@ -95,7 +110,7 @@ class BibDetails extends React.Component {
         );
       }
 
-      return <span>{bibValue.prefLabel}</span>;
+      return <span dir={this.stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</span>;
     }
 
     return (
@@ -109,7 +124,7 @@ class BibDetails extends React.Component {
               }
               to={`${appConfig.baseUrl}/search?${url}`}
             >
-              {value.prefLabel}
+              { value.prefLabel }
             </Link>
           ) : (
             <span>{value.prefLabel}</span>
@@ -130,7 +145,7 @@ class BibDetails extends React.Component {
             );
           }
 
-          return <li key={value.prefLabel}>{itemValue}</li>;
+          return <li key={value.prefLabel} dir={this.stringDirection(value.prefLabel)}>{itemValue}</li>;
         })}
       </ul>
     );
@@ -286,14 +301,20 @@ class BibDetails extends React.Component {
           }
           to={`${appConfig.baseUrl}/search?${url}`}
         >
-          {bibValue}
+          {
+            this.isRtl(bibValue) ?
+            (<span dir='rtl'>{bibValue}</span>) :
+            bibValue
+          }
         </Link>
       );
     }
 
     if (fieldSelfLinkable) {
+      const textValue = bibValue.prefLabel || bibValue.label || bibValue.url
       return (
         <a
+          dir={this.stringDirection(textValue)}
           href={bibValue.url}
           onClick={() =>
             trackDiscovery(
@@ -302,12 +323,12 @@ class BibDetails extends React.Component {
             )
           }
         >
-          {bibValue.prefLabel || bibValue.label || bibValue.url}
+          {textValue}
         </a>
       );
     }
 
-    return <span>{bibValue}</span>;
+    return <span dir={this.stringDirection(bibValue)}>{bibValue}</span>;
   }
 
   /**
@@ -329,6 +350,7 @@ class BibDetails extends React.Component {
       if (match) {
         const parallels = bib[key];
         const paralleledField = `${match[1].toLowerCase()}${match[2]}`;
+        if (paralleledField.includes('subject')) { return null }
         const paralleledValues = bib[paralleledField];
         console.log('matching ', key, 'to ', paralleledField)
         console.log('interleaving: ', paralleledValues, parallels);
