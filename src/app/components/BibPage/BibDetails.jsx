@@ -352,6 +352,7 @@ class BibDetails extends React.Component {
 
   matchParallels(bib) {
     const parallelFieldMatches = Object.keys(bib).map((key) => {
+      if (key.match(/subject/)) { return null }
       const match = key.match(/parallel(.)(.*)/)
       const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
       const paralleledValues = paralleledField && bib[paralleledField]
