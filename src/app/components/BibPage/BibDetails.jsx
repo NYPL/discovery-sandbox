@@ -323,6 +323,27 @@ class BibDetails extends React.Component {
     return type.toLowerCase().includes('note') ? type : `${type} (note)`;
   }
 
+  matchParallels(bib) {
+    const parallels = Object.keys(bib).map((key) => {
+      const match = key.match(/parallel(.)(.*)/);
+      if (match) {
+        const parallels = bib[key];
+        const paralleledField = `${match[1].toLowerCase()}${match[2]}`;
+        const paralleledValues = bib[paralleledField];
+        console.log('matching ', key, 'to ', paralleledField)
+        console.log('interleaving: ', paralleledValues, parallels);
+        if (paralleledValues && Array.isArray(paralleledValues)) {
+          const interleaved = [];
+          paralleledValues.forEach((paralleled, id) => { interleaved.push(parallels[id]); interleaved.push(paralleled)})
+          return { [paralleledField]: interleaved.filter(value => value) }
+        }
+      }
+      return null;
+    }).filter(parallel => parallel)
+
+    return [{}, bib].concat(parallels).reduce((acc, el) => Object.assign(acc, el));
+  }
+
   /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
@@ -335,6 +356,8 @@ class BibDetails extends React.Component {
     // component rather than from the bib field properties.
     const fields = this.props.fields;
     const fieldsToRender = [];
+    const matchedBib = this.matchParallels(bib);
+    if (typeof window !== 'undefined') { window.matchedBib = matchedBib }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
@@ -342,7 +365,7 @@ class BibDetails extends React.Component {
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
       const fieldIdentifier = field.identifier;
-      let bibValues = bib[fieldValue];
+      let bibValues = matchedBib[fieldValue];
 
       if (fieldValue === 'subjectLiteral') {
         bibValues = this.compressSubjectLiteral(bib[fieldValue]);
@@ -385,7 +408,7 @@ class BibDetails extends React.Component {
 
       // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
-        const owner = getOwner(this.props.bib);
+        const owner = getOwner(matchedBib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,
@@ -403,7 +426,7 @@ class BibDetails extends React.Component {
       //     '@type': 'bf:Note'},
       //    {...}]
       if (fieldLabel === 'Notes') {
-        const note = this.getNote(this.props.bib);
+        const note = this.getNote(matchedBib);
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
           // Group notes by noteType:
@@ -616,6 +639,8 @@ class BibDetails extends React.Component {
   }
 
   render() {
+
+    if (typeof window !== 'undefined') { window.bib = this.props.bib }
     // Make sure bib prop is
     //  1) nonempty
     //  2) an object
