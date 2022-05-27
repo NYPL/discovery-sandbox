@@ -344,33 +344,21 @@ class BibDetails extends React.Component {
     return type.toLowerCase().includes('note') ? type : `${type} (note)`;
   }
 
-  matchParallels(bib) {
-    const parallels = Object.keys(bib).map((key) => {
-      const match = key.match(/parallel(.)(.*)/);
-      if (match) {
-        const parallels = bib[key];
-        const paralleledField = `${match[1].toLowerCase()}${match[2]}`;
-        if (paralleledField.includes('subject')) { return null }
-        const paralleledValues = bib[paralleledField];
-        console.log('matching ', key, 'to ', paralleledField)
-        console.log('interleaving: ', paralleledValues, parallels);
-        if (paralleledValues && Array.isArray(paralleledValues)) {
-          const interleaved = [];
-          paralleledValues.forEach((paralleled, id) => {
-            let parallel = parallels[id];
-            if (paralleledField === 'note') {
-              parallel = Object.assign({}, paralleled, { prefLabel: parallel });
-            }
-            interleaved.push(parallel);
-            interleaved.push(paralleled);
-          })
-          return { [paralleledField]: interleaved.filter(value => value) }
-        }
-      }
-      return null;
-    }).filter(parallel => parallel)
+  interleave(arr1, arr2) {
+    return arr2
+      .map((el, id) => [arr1[id], el])
+      .reduce((acc, el) => (el[0] && acc.push(el[0]), el[1] && acc.push(el[1]), acc), [])
+  }
 
-    return [{}, bib].concat(parallels).reduce((acc, el) => Object.assign(acc, el));
+  matchParallels(bib) {
+    const parallelFieldMatches = Object.keys(bib).map((key) => {
+      const match = key.match(/parallel(.)(.*)/)
+      const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
+      const paralleledValues = paralleledField && bib[paralleledField]
+      return paralleledValues && { [paralleledField] : this.interleave(bib[key], paralleledValues)}
+    })
+
+    return Object.assign({}, bib, ...parallelFieldMatches)
   }
 
   /**
