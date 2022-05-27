@@ -334,7 +334,14 @@ class BibDetails extends React.Component {
         console.log('interleaving: ', paralleledValues, parallels);
         if (paralleledValues && Array.isArray(paralleledValues)) {
           const interleaved = [];
-          paralleledValues.forEach((paralleled, id) => { interleaved.push(parallels[id]); interleaved.push(paralleled)})
+          paralleledValues.forEach((paralleled, id) => {
+            let parallel = parallels[id];
+            if (paralleledField === 'note') {
+              parallel = Object.assign({}, paralleled, { prefLabel: parallel });
+            }
+            interleaved.push(parallel);
+            interleaved.push(paralleled);
+          })
           return { [paralleledField]: interleaved.filter(value => value) }
         }
       }
