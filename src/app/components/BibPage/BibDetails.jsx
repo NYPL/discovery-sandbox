@@ -7,7 +7,7 @@ import {
   isObject as _isObject,
 } from 'underscore';
 import appConfig from '../../data/appConfig';
-import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
+import { combineBibDetailsData, isRtl, stringDirection, matchParallels } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
 import { trackDiscovery } from '../../utils/utils';
@@ -34,16 +34,6 @@ class BibDetails extends React.Component {
     }
 
     return notes;
-  }
-
-
-  isRtl(string) {
-    if (typeof string !== 'string') { console.log('not string: ', string); return null }
-    return string.substring(0, 1) === '\u200F'
-  }
-
-  stringDirection(string) {
-    return this.isRtl(string) ? 'rtl' : 'ltr'
   }
 
   /**
@@ -85,7 +75,7 @@ class BibDetails extends React.Component {
             to={`${appConfig.baseUrl}/search?${url}`}
           >
             {
-              this.isRtl(bibValue.prefLabel) ?
+              isRtl(bibValue.prefLabel) ?
                 (<span dir='rtl'>{bibValue.prefLabel}</span>) :
                 bibValue.prefLabel
             }
@@ -96,7 +86,7 @@ class BibDetails extends React.Component {
       if (fieldSelfLinkable) {
         return (
           <a
-            dir={this.stringDirection(bibValue.prefLabel)}
+            dir={stringDirection(bibValue.prefLabel)}
             href={bibValue['@id']}
             onClick={() =>
               trackDiscovery(
@@ -110,7 +100,7 @@ class BibDetails extends React.Component {
         );
       }
 
-      return <span dir={this.stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</span>;
+      return <span dir={stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</span>;
     }
 
     return (
@@ -145,7 +135,7 @@ class BibDetails extends React.Component {
             );
           }
 
-          return <li key={value.prefLabel} dir={this.stringDirection(value.prefLabel)}>{itemValue}</li>;
+          return <li key={value.prefLabel} dir={stringDirection(value.prefLabel)}>{itemValue}</li>;
         })}
       </ul>
     );
@@ -302,7 +292,7 @@ class BibDetails extends React.Component {
           to={`${appConfig.baseUrl}/search?${url}`}
         >
           {
-            this.isRtl(bibValue) ?
+            isRtl(bibValue) ?
             (<span dir='rtl'>{bibValue}</span>) :
             bibValue
           }
@@ -314,7 +304,7 @@ class BibDetails extends React.Component {
       const textValue = bibValue.prefLabel || bibValue.label || bibValue.url
       return (
         <a
-          dir={this.stringDirection(textValue)}
+          dir={stringDirection(textValue)}
           href={bibValue.url}
           onClick={() =>
             trackDiscovery(
@@ -328,7 +318,7 @@ class BibDetails extends React.Component {
       );
     }
 
-    return <span dir={this.stringDirection(bibValue)}>{bibValue}</span>;
+    return <span dir={stringDirection(bibValue)}>{bibValue}</span>;
   }
 
   /**
@@ -344,24 +334,6 @@ class BibDetails extends React.Component {
     return type.toLowerCase().includes('note') ? type : `${type} (note)`;
   }
 
-  interleave(arr1, arr2) {
-    return arr2
-      .map((el, id) => [arr1[id], el])
-      .reduce((acc, el) => (el[0] && acc.push(el[0]), el[1] && acc.push(el[1]), acc), [])
-  }
-
-  matchParallels(bib) {
-    const parallelFieldMatches = Object.keys(bib).map((key) => {
-      if (key.match(/subject/)) { return null }
-      const match = key.match(/parallel(.)(.*)/)
-      const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
-      const paralleledValues = paralleledField && bib[paralleledField]
-      return paralleledValues && { [paralleledField] : this.interleave(bib[key], paralleledValues)}
-    })
-
-    return Object.assign({}, bib, ...parallelFieldMatches)
-  }
-
   /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
@@ -374,7 +346,7 @@ class BibDetails extends React.Component {
     // component rather than from the bib field properties.
     const fields = this.props.fields;
     const fieldsToRender = [];
-    const matchedBib = this.matchParallels(bib);
+    const matchedBib = matchParallels(bib);
     if (typeof window !== 'undefined') { window.matchedBib = matchedBib }
 
     fields.forEach((field) => {
