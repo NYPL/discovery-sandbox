@@ -13,12 +13,13 @@ import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
 import { mockRouterContext } from '../helpers/routing';
 import { makeTestStore } from '../helpers/store';
 import { BibPage } from './../../src/app/pages/BibPage';
+import { Heading } from '@nypl/design-system-react-components';
 import {
   addCheckInItems,
   addHoldingDefinition,
 } from './../../src/server/ApiRoutes/Bib';
 
-describe('BibPage', () => {
+describe.only('BibPage', () => {
   const context = mockRouterContext();
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
@@ -242,5 +243,36 @@ describe('BibPage', () => {
         component.find(BackToSearchResults).first().render().find(Link).length,
       ).to.equal(0);
     });
+  });
+
+  describe('Bib with parallel title', () => {
+    it('should display parallel title as main title', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find(Heading).at(1).text()).to.eql('Parallel Title')
+    })
   });
 });
