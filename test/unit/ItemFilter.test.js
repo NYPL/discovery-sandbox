@@ -15,11 +15,19 @@ describe('ItemFilters', () => {
       expect(component.type()).to.equal(null);
     });
     it('should not render without `options`', () => {
-      component = shallow(<ItemFilter filter='category' />);
+      component = shallow(
+        <ItemFilter
+          filter="category"
+        />,
+      );
       expect(component.type()).to.equal(null);
     });
     it('should not render without `filter`', () => {
-      component = shallow(<ItemFilter options={locationFilters} />);
+      component = shallow(
+        <ItemFilter
+          options={locationFilters}
+        />,
+      );
       expect(component.type()).to.equal(null);
     });
   });
@@ -28,8 +36,10 @@ describe('ItemFilters', () => {
     let component;
     it('should render a `div` and a `button`', () => {
       component = mount(
-        <ItemFilter options={locationFilters} filter='location' />,
-      );
+        <ItemFilter
+          options={locationFilters}
+          filter="location"
+        />);
       expect(component.find('div').length).to.equal(1);
       expect(component.find('button').length).to.equal(1);
     });
@@ -39,8 +49,11 @@ describe('ItemFilters', () => {
     let component;
     it('should render a fieldset, 3 buttons, 2nd two buttons disabled', () => {
       component = mount(
-        <ItemFilter options={locationFilters} filter='location' isOpen />,
-      );
+        <ItemFilter
+          options={locationFilters}
+          filter="location"
+          isOpen
+        />);
       expect(component.find('fieldset').length).to.equal(1);
       expect(component.find('button').length).to.equal(3);
       expect(component.find('button').at(1).prop('disabled')).to.equal(true);
@@ -65,20 +78,16 @@ describe('ItemFilters', () => {
           options={locationFilters}
           isOpen
           selectedFilters={selectedFilters}
-          filter='location'
+          filter="location"
           setSelectedFilters={(reactGeneratedFunc) => {
             updatedFilters = reactGeneratedFunc(selectedFilters);
           }}
-        />,
-      );
+        />);
       const clearButton = component.find('button').at(1);
       expect(clearButton.prop('disabled')).to.equal(false);
       expect(clearButton.text()).to.equal('Clear');
       clearButton.simulate('click');
-      expect(updatedFilters).to.deep.equal({
-        location: [],
-        status: ['status:a'],
-      });
+      expect(updatedFilters).to.deep.equal({ location: [], status: ['status:a'] });
     });
   });
 });

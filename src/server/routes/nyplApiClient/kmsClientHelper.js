@@ -2,7 +2,13 @@ import NyplDataApiClient from '@nypl/nypl-data-api-client';
 import aws from 'aws-sdk';
 
 const kmsClientHelper = (options) => {
-  const { kmsEnvironment, apiBase, tokenUrl, clientId, clientSecret } = options;
+  const {
+    kmsEnvironment,
+    apiBase,
+    tokenUrl,
+    clientId,
+    clientSecret,
+  } = options;
   const keys = [clientId, clientSecret];
   const CACHE = {};
   let decryptKMS;
@@ -57,7 +63,7 @@ const kmsClientHelper = (options) => {
 
             resolve(nyplApiClient);
           })
-          .catch((error) => {
+          .catch(error => {
             console.log('ERROR trying to decrypt using KMS.', error);
             reject('ERROR trying to decrypt using KMS.', error);
           });

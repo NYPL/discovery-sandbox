@@ -45,8 +45,8 @@ describe('ItemFiltersMobile', () => {
       component = mount(
         <ItemFiltersMobile
           options={formatOptions}
-          setSelectedFilters={() => undefined}
-          submitFilterSelections={() => undefined}
+          setSelectedFilters={() => {}}
+          submitFilterSelections={() => {}}
           initialFilters={initialFilters}
           selectedFilters={initialFilters}
         />,

@@ -21,26 +21,23 @@ export const MediaContext = React.createContext('desktop');
 export class Application extends React.Component {
   constructor(props, context) {
     super(props, context);
-    const { query } = context.router.location;
+    const {
+      query,
+    } = context.router.location;
     this.state = {
       media: 'desktop',
     };
 
-    const urlEnabledFeatures = query.features
-      ? query.features.split(',')
-      : null;
+    const urlEnabledFeatures = query.features ? query.features.split(',') : null;
     if (urlEnabledFeatures) {
       const urlFeatures = urlEnabledFeatures.filter(
-        (urlFeat) => !appConfig.features.includes(urlFeat),
-      );
+        urlFeat => !appConfig.features.includes(urlFeat));
       const urlFeaturesString = urlFeatures.join(',');
       if (urlFeaturesString) this.state.urlEnabledFeatures = urlFeaturesString;
-      if (
-        urlFeatures.some((urlFeat) => !this.props.features.includes(urlFeat))
-      ) {
+      if (urlFeatures.some(urlFeat => !this.props.features.includes(urlFeat))) {
         const allFeatures = _union(this.props.features, urlFeatures);
         this.props.updateFeatures(allFeatures);
-      }
+      };
     }
   }
 
@@ -50,13 +47,14 @@ export class Application extends React.Component {
     const { router } = this.context;
     if (this.state.urlEnabledFeatures) {
       router.listen(() => {
-        const { pathname, query } = router.location;
+        const {
+          pathname,
+          query,
+        } = router.location;
         if (query.features !== this.state.urlEnabledFeatures) {
           router.replace({
             pathname,
-            query: Object.assign(query, {
-              features: this.state.urlEnabledFeatures,
-            }),
+            query: Object.assign(query, { features: this.state.urlEnabledFeatures }),
           });
         }
       });
@@ -67,26 +65,27 @@ export class Application extends React.Component {
     const { media } = this.state;
     const { innerWidth } = window;
 
-    const breakpoint = breakpoints.find(
-      (breakpoint) => innerWidth <= breakpoint.maxValue,
-    );
-    const newMedia =
-      breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
+    const breakpoint = breakpoints.find(breakpoint => innerWidth <= breakpoint.maxValue);
+    const newMedia = breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
     if (media !== newMedia) this.setState({ media: newMedia });
   }
 
   render() {
     // dataLocation is passed as a key to DataLoader to ensure it reloads
     // whenever the location changes.
-    const dataLocation = Object.assign({}, this.context.router.location, {
-      hash: null,
-      action: null,
-      key: null,
-    });
+    const dataLocation = Object.assign(
+      {},
+      this.context.router.location,
+      {
+        hash: null,
+        action: null,
+        key: null,
+      },
+    );
 
     return (
       <MediaContext.Provider value={this.state.media}>
-        <div className='app-wrapper'>
+        <div className="app-wrapper">
           <Header
             navData={navConfig.current}
             patron={this.props.patron}
@@ -120,16 +119,10 @@ Application.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = ({ patron, loading, features }) => ({
-  patron,
-  loading,
-  features,
+const mapStateToProps = ({ patron, loading, features }) => ({ patron, loading, features });
+
+const mapDispatchToProps = dispatch => ({
+  updateFeatures: features => dispatch(updateFeatures(features)),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  updateFeatures: (features) => dispatch(updateFeatures(features)),
-});
-
-export default withRouter(
-  connect(mapStateToProps, mapDispatchToProps)(Application),
-);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Application));

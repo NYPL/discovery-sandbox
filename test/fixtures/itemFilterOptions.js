@@ -19,4 +19,8 @@ const statusFilters = [
   { id: 'requestable', label: 'Requestable' },
 ];
 
-export { locationFilters, formatFilters, statusFilters };
+export {
+  locationFilters,
+  formatFilters,
+  statusFilters,
+};

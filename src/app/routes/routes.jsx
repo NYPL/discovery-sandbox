@@ -30,31 +30,22 @@ const { baseUrl } = appConfig;
 const routes = {
   // Routes used in the Express server:
   server: (
-    <Route path='/' component={Application}>
+    <Route path="/" component={Application}>
       <IndexRoute component={Home} />
-      <Route path='/search/advanced' component={AdvancedSearch} />
-      <Route path='/search' component={SearchResults} />
-      <Route path='/bib/:bibId' component={BibPage} />
-      <Route path='/bib/:bibId/all' component={BibPage} />
-      <Route path='/hold/request/:bibId-:itemId' component={HoldRequest} />
-      <Route
-        path='/hold/request/:bibId-:itemId/edd'
-        component={ElectronicDelivery}
-      />
-      <Route
-        path='/hold/confirmation/:bibId-:itemId'
-        component={HoldConfirmation}
-      />
-      <Route
-        path='/subject_headings/:subjectHeadingUuid'
-        component={SubjectHeadingShowPage}
-      />
-      <Route path='/subject_headings' component={SubjectHeadingsIndexPage} />
-      <Route path='/account(/:content)' component={AccountPage} />
-      <Route path='/accountError' component={AccountError} />
-      <Route path='/404/redirect' component={Redirect404} />
-      <Route path='/404' component={NotFound404} />
-      <Redirect from='*' to='/404' />
+      <Route path="/search/advanced" component={AdvancedSearch} />
+      <Route path="/search" component={SearchResults} />
+      <Route path="/bib/:bibId" component={BibPage} />
+      <Route path="/bib/:bibId/all" component={BibPage} />
+      <Route path="/hold/request/:bibId-:itemId" component={HoldRequest} />
+      <Route path="/hold/request/:bibId-:itemId/edd" component={ElectronicDelivery} />
+      <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
+      <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
+      <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
+      <Route path="/account(/:content)" component={AccountPage} />
+      <Route path="/accountError" component={AccountError} />
+      <Route path="/404/redirect" component={Redirect404} />
+      <Route path="/404" component={NotFound404} />
+      <Redirect from="*" to="/404" />
     </Route>
   ),
   // Routes used in the client-side React-Router:
@@ -65,31 +56,16 @@ const routes = {
       <Route path={`${baseUrl}/search`} component={SearchResults} />
       <Route path={`${baseUrl}/bib/:bibId`} component={BibPage} />
       <Route path={`${baseUrl}/bib/:bibId/all`} component={BibPage} />
-      <Route
-        path={`${baseUrl}/hold/request/:bibId-:itemId`}
-        component={HoldRequest}
-      />
-      <Route
-        path={`${baseUrl}/hold/request/:bibId-:itemId/edd`}
-        component={ElectronicDelivery}
-      />
-      <Route
-        path={`${baseUrl}/hold/confirmation/:bibId-:itemId`}
-        component={HoldConfirmation}
-      />
-      <Route
-        path={`${baseUrl}/subject_headings/:subjectHeadingUuid`}
-        component={SubjectHeadingShowPage}
-      />
-      <Route
-        path={`${baseUrl}/subject_headings`}
-        component={SubjectHeadingsIndexPage}
-      />
+      <Route path={`${baseUrl}/hold/request/:bibId-:itemId`} component={HoldRequest} />
+      <Route path={`${baseUrl}/hold/request/:bibId-:itemId/edd`} component={ElectronicDelivery} />
+      <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
+      <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
+      <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
       <Route path={`${baseUrl}/account(/:content)`} component={AccountPage} />
       <Route path={`${baseUrl}/accountError`} component={AccountError} />
       <Route path={`${baseUrl}/404/redirect`} component={Redirect404} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
-      <Redirect from='*' to={`${baseUrl}/404`} />
+      <Redirect from="*" to={`${baseUrl}/404`} />
     </Route>
   ),
 };

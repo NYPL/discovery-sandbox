@@ -1,9 +1,1 @@
-{
-  "mm": [
-    {
-      "code": "mm*",
-      "url": "http://www.nypl.org/locations/mid-manhattan-library",
-      "label": "Mid-Manhattan"
-    }
-  ]
-}
+{"mm":[{"code":"mm*","url":"http://www.nypl.org/locations/mid-manhattan-library","label":"Mid-Manhattan"}]}

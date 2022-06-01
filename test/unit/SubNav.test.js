@@ -16,12 +16,13 @@ const mountSubNav = (
       baseUrl: 'baseUrl.com',
     },
   }),
-) =>
-  mount(
-    <Provider store={store}>
-      <SubNav {...props} />
-    </Provider>,
-  );
+) => mount(
+  <Provider
+    store={store}
+  >
+    <SubNav {...props} />
+  </Provider>
+);
 
 describe('SubNav', () => {
   describe('Default rendering, no features', () => {
@@ -37,9 +38,7 @@ describe('SubNav', () => {
 
     it('should have <a> for "Search" and "Subject Heading Explorer"', () => {
       expect(component.find('a').at(0).text()).to.equal('Search');
-      expect(component.find('a').at(1).text()).to.equal(
-        'Subject Heading Explorer',
-      );
+      expect(component.find('a').at(1).text()).to.equal('Subject Heading Explorer');
     });
 
     it('should hide "My Account" link', () => {
@@ -56,9 +55,7 @@ describe('SubNav', () => {
     });
 
     it('should have <a> for active section', () => {
-      expect(component.find('a').at(1).text()).to.equal(
-        'Subject Heading Explorer',
-      );
+      expect(component.find('a').at(1).text()).to.equal('Subject Heading Explorer');
     });
   });
 });

@@ -109,19 +109,11 @@ describe('bibDetailsUtils', () => {
       const mockOutput = annotatedMarcDetails(mockBib);
       expect(mockOutput.length).to.equal(2);
       expect(mockOutput[0].term).to.equal('Field1');
-      expect(
-        mockOutput[0].definition[0].props.children[0].props.children,
-      ).to.equal('ItemLabel1');
-      expect(
-        mockOutput[0].definition[1].props.children[0].props.children,
-      ).to.equal('ItemLabel2');
+      expect(mockOutput[0].definition[0].props.children[0].props.children).to.equal('ItemLabel1');
+      expect(mockOutput[0].definition[1].props.children[0].props.children).to.equal('ItemLabel2');
       expect(mockOutput[1].term).to.equal('Field2');
-      expect(
-        mockOutput[1].definition[0].props.children[0].props.children,
-      ).to.equal('ItemLabel3');
-      expect(
-        mockOutput[1].definition[1].props.children[0].props.children,
-      ).to.equal('ItemLabel4');
+      expect(mockOutput[1].definition[0].props.children[0].props.children).to.equal('ItemLabel3');
+      expect(mockOutput[1].definition[1].props.children[0].props.children).to.equal('ItemLabel4');
     });
   });
 
@@ -144,15 +136,17 @@ describe('bibDetailsUtils', () => {
       ];
 
       expect(JSON.stringify(combineBibDetailsData(list1, list2))).to.equal(
-        JSON.stringify([
-          { term: 'a', value: '1' },
-          { term: 'c', value: '4' },
-          { term: 'a', value: '2' },
-          { term: 'b', value: '3' },
-          { term: 'd', value: '9' },
-          { term: 'e', value: '10' },
-          { term: 'd', value: '8' },
-        ]),
+        JSON.stringify(
+          [
+            { term: 'a', value: '1' },
+            { term: 'c', value: '4' },
+            { term: 'a', value: '2' },
+            { term: 'b', value: '3' },
+            { term: 'd', value: '9' },
+            { term: 'e', value: '10' },
+            { term: 'd', value: '8' },
+          ],
+        ),
       );
     });
   });
