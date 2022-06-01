@@ -261,4 +261,167 @@ describe('BibDetails', () => {
       expect(component.find('dt').at(1).text()).to.equal('Explanatory Note');
     });
   });
+
+  describe.only('Bib with rtl fields', () => {
+    const mockFields = [
+      { label: 'Field1', value: 'field1' },
+      { label: 'Field2', value: 'field2', linkable: true },
+      { label: 'Field3', value: 'field3', selfLinkable: true },
+    ];
+
+    it('should handle rtl text in a single object value', () => {
+      const mockBibRtl = { field1: [{ '@id': 'id', prefLabel: '\u200F\u00E9' }] }
+      const mockBibLtr = { field1: [{'@id': 'id', prefLabel: '\u00E9'}] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span').prop('dir')).to.not.eql('rtl')
+
+    })
+
+    it('should handle rtl text in a single linkable object value', () => {
+      const mockBibRtl = { field2: [{ '@id': 'id', prefLabel: '\u200F\u00E9'}] }
+      const mockBibLtr = { field2: [{ '@id': 'id', prefLabel: '\u00E9\u00E9'}] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('span').at(0).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('a').at(0).find('span')).to.have.lengthOf(0)
+    })
+
+    it('should handle rtl text in a single self-linkable object value', () => {
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9' }]}
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9' }]}
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+      expect(rtlComponent.find('a')).to.have.lengthOf(1)
+      expect(rtlComponent.find('a').at(0).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('a')).to.have.lengthOf(1)
+      expect(ltrComponent.find('a').at(0).prop('dir')).to.eql('ltr')
+    })
+
+    it('should handle rtl text in a list of object values', () => {
+      const mockBibRtl = { field1: [{ '@id': 'id', prefLabel: '\u200F\u00E9' }, { '@id': 'id', prefLabel: '\u200F\u00E9' }]}
+      const mockBibLtr = { field1: [{ '@id': 'id', prefLabel: '\u00E9' }, { '@id': 'id', prefLabel: '\u00E9' }]}
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+      expect(rtlComponent.find('li')).to.have.lengthOf(2)
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('li')).to.have.lengthOf(2)
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+    })
+
+    it('should handle rtl text in a list of linkable object values', () => {
+      const mockBibRtl = { field2: [{ '@id': 'id', prefLabel: '\u200F\u00E9'}, { '@id': 'id', prefLabel: '\u200F\u00E9'}] }
+      const mockBibLtr = { field2: [{ '@id': 'id', prefLabel: '\u00E9\u00E9'}, { '@id': 'id', prefLabel: '\u00E9\u00E9'}] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+
+      expect(rtlComponent.find('li')).to.have.lengthOf(2)
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('li')).to.have.lengthOf(2)
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+    })
+
+    it('should handle rtl text in a list of self-linkable object values', () => {
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9'}, { '@id': 'id', prefLabel: '\u200F\u00E9'}] }
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9\u00E9'}, { '@id': 'id', prefLabel: '\u00E9\u00E9'}] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+
+      expect(rtlComponent.find('li')).to.have.lengthOf(2)
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('li')).to.have.lengthOf(2)
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+    })
+
+    it('should handle rtl text in a string value', () => {
+      const mockBibRtl = { field1: ['\u200F\u00E9'] }
+      const mockBibLtr = { field1: ['\u00E9'] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span').prop('dir')).to.not.eql('rtl')
+    })
+
+    it('should handle rtl text in a linkable string value', () => {
+      const mockBibRtl = { field2: ['\u200F\u00E9'] }
+      const mockBibLtr = { field2: ['\u00E9'] }
+      const rtlComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields }),
+      );
+      const ltrComponent = mount(
+        React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
+      )
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(0)
+    })
+  })
 });
