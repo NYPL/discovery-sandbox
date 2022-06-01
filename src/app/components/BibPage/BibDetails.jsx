@@ -347,7 +347,6 @@ class BibDetails extends React.Component {
     const fields = this.props.fields;
     const fieldsToRender = [];
     const matchedBib = matchParallels(bib);
-    if (typeof window !== 'undefined') { window.matchedBib = matchedBib }
 
     fields.forEach((field) => {
       const fieldLabel = field.label;
@@ -629,8 +628,6 @@ class BibDetails extends React.Component {
   }
 
   render() {
-
-    if (typeof window !== 'undefined') { window.bib = this.props.bib }
     // Make sure bib prop is
     //  1) nonempty
     //  2) an object

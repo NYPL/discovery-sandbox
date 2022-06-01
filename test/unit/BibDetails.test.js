@@ -262,7 +262,7 @@ describe('BibDetails', () => {
     });
   });
 
-  describe.only('Bib with rtl fields', () => {
+  describe('Bib with rtl fields', () => {
     const mockFields = [
       { label: 'Field1', value: 'field1' },
       { label: 'Field2', value: 'field2', linkable: true },

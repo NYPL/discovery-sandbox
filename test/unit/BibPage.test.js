@@ -19,7 +19,7 @@ import {
   addHoldingDefinition,
 } from './../../src/server/ApiRoutes/Bib';
 
-describe.only('BibPage', () => {
+describe('BibPage', () => {
   const context = mockRouterContext();
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
