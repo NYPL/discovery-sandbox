@@ -77,7 +77,7 @@ const interleave = (arr1, arr2) => arr2.reduce((acc, el, id) => (arr1[id] && acc
  */
 const matchParallels = (bib) => {
   const parallelFieldMatches = Object.keys(bib).map((key) => {
-    if (key.match(/subject/)) { return null }
+    if (key.match(/subject/i)) { return null }
     const match = key.match(/parallel(.)(.*)/)
     const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
     const paralleledValues = paralleledField && bib[paralleledField]
