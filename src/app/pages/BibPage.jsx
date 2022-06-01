@@ -97,7 +97,9 @@ export const BibPage = (
     >
       <section className='nypl-item-details__heading'>
         <Heading level={2}>
-          {bib.title && bib.title.length ? bib.title[0] : ' '}
+          {
+            [ bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null)
+          }
         </Heading>
         <BackToSearchResults result={resultSelection} bibId={bibId} />
       </section>
