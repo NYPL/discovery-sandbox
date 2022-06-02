@@ -274,5 +274,64 @@ describe('BibPage', () => {
 
       expect(component.find(Heading).at(1).text()).to.eql('Parallel Title')
     })
+
+    it('should display parallel title rtl if rtl', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['\u200FParallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find(Heading).at(1).find('span').length).to.eql(1)
+      expect(component.find(Heading).at(1).find('span').at(0).prop('dir')).to.eql('rtl')
+    })
+
+    it('should display parallel title ltr if ltr', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find(Heading).at(1).find('span').length).to.eql(0)
+    })
   });
 });
