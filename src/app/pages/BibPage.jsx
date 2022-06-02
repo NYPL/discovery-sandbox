@@ -20,6 +20,7 @@ import {
   getAggregatedElectronicResources,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import { isRtl, stringDirection } from '../utils/bibDetailsUtils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -89,6 +90,8 @@ export const BibPage = (
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
 
+  const mainHeading = [ bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null)
+
   return (
     <SccContainer
       useLoadingLayer
@@ -98,7 +101,7 @@ export const BibPage = (
       <section className='nypl-item-details__heading'>
         <Heading level={2}>
           {
-            [ bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null)
+            mainHeading
           }
         </Heading>
         <BackToSearchResults result={resultSelection} bibId={bibId} />
