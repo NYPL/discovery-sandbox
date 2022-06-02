@@ -20,7 +20,7 @@ import {
   getAggregatedElectronicResources,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
-import { isRtl, stringDirection } from '../utils/bibDetailsUtils';
+import { isRtl } from '../utils/bibDetailsUtils';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -101,6 +101,8 @@ export const BibPage = (
       <section className='nypl-item-details__heading'>
         <Heading level={2}>
           {
+            isRtl(mainHeading) ?
+            <span dir='rtl'>{mainHeading}</span> :
             mainHeading
           }
         </Heading>
