@@ -14,12 +14,10 @@ describe('Bib', () => {
     dimensions: ['99 x 99 cm'],
     holdings: [
       {
-        location: [
-          {
-            label: 'Mid-Manhattan',
-            code: 'mm',
-          },
-        ],
+        location: [{
+          label: 'Mid-Manhattan',
+          code: 'mm',
+        }],
         format: 'Text',
         checkInBoxes: [
           {
@@ -95,7 +93,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            'prefLabel': 'Use in library',
+            prefLabel: 'Use in library',
           },
           available: true,
           callNumber: 'efgh',
@@ -114,7 +112,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            'prefLabel': 'Use in library',
+            prefLabel: 'Use in library',
           },
           available: true,
           callNumber: 'ijkl',
@@ -133,7 +131,7 @@ describe('Bib', () => {
         {
           accessMessage: {
             '@id': 'accessMessage: 1',
-            'prefLabel': 'Use in library',
+            prefLabel: 'Use in library',
           },
           available: true,
           callNumber: 'abcd',
@@ -154,16 +152,10 @@ describe('Bib', () => {
   });
   describe('addLocationUrls', () => {
     before(() => {
-      stub(NyplApiClient.prototype, 'get').callsFake(() =>
-        Promise.resolve(
-          JSON.parse(
-            fs.readFileSync(
-              './test/fixtures/locations-service-mm.json',
-              'utf8',
-            ),
-          ),
-        ),
-      );
+      stub(NyplApiClient.prototype, 'get').callsFake(() => Promise.resolve(
+        JSON.parse(
+          fs.readFileSync(
+            './test/fixtures/locations-service-mm.json', 'utf8'))));
     });
     after(() => {
       NyplApiClient.prototype.get.restore();
@@ -172,13 +164,11 @@ describe('Bib', () => {
       Bib.addLocationUrls(mockBib).then((resp) => {
         expect(resp.holdings).to.deep.equal([
           {
-            location: [
-              {
-                label: 'Mid-Manhattan',
-                code: 'mm',
-                url: 'http://www.nypl.org/locations/mid-manhattan-library',
-              },
-            ],
+            location: [{
+              label: 'Mid-Manhattan',
+              code: 'mm',
+              url: 'http://www.nypl.org/locations/mid-manhattan-library',
+            }],
             format: 'Text',
             checkInBoxes: [
               {

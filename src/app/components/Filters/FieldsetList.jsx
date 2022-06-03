@@ -1,8 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { extend as _extend, findWhere as _findWhere } from 'underscore';
+import {
+  extend as _extend,
+  findWhere as _findWhere,
+} from 'underscore';
 
-import { getUpdatedFilterValues } from '../../utils/utils';
+import {
+  getUpdatedFilterValues,
+} from '../../utils/utils';
 
 class FieldsetList extends React.Component {
   constructor(props) {
@@ -36,7 +41,10 @@ class FieldsetList extends React.Component {
   }
 
   render() {
-    const { legend, filterId } = this.props;
+    const {
+      legend,
+      filterId,
+    } = this.props;
     const values = this.state.values;
 
     if (!values || !values.length) {
@@ -44,36 +52,33 @@ class FieldsetList extends React.Component {
     }
 
     return (
-      <fieldset className='nypl-fieldset inner'>
-        {legend && (
-          <legend>
-            <h3>{legend}</h3>
-          </legend>
-        )}
-        <ul className='nypl-generic-checkbox nypl-generic-columns'>
-          {values.map((filter) => {
-            let filterLabel = filter.label;
-            if (filter.label === 'Greek, Modern (1453- )') {
-              filterLabel = 'Greek, Modern (1453-present)';
-            }
+      <fieldset className="nypl-fieldset inner">
+        {legend && <legend><h3>{legend}</h3></legend>}
+        <ul className="nypl-generic-checkbox nypl-generic-columns">
+          {
+            values.map((filter) => {
+              let filterLabel = filter.label;
+              if (filter.label === 'Greek, Modern (1453- )') {
+                filterLabel = 'Greek, Modern (1453-present)';
+              }
 
-            return (
-              <li className='nypl-generic-checkbox' key={filter.value}>
-                <input
-                  id={`${filter.label}-label`}
-                  type='checkbox'
-                  name='filters'
-                  value={JSON.stringify(_extend({ field: filterId }, filter))}
-                  onClick={(e) => this.onFilterClick(e, filter)}
-                  checked={filter.selected}
-                />
-                <label htmlFor={`${filter.label}-label`}>
-                  {filterLabel}{' '}
-                  {filter.count ? `(${filter.count.toLocaleString()})` : null}
-                </label>
-              </li>
-            );
-          })}
+              return (
+                <li className="nypl-generic-checkbox" key={filter.value}>
+                  <input
+                    id={`${filter.label}-label`}
+                    type="checkbox"
+                    name="filters"
+                    value={JSON.stringify(_extend({ field: filterId }, filter))}
+                    onClick={e => this.onFilterClick(e, filter)}
+                    checked={filter.selected}
+                  />
+                  <label htmlFor={`${filter.label}-label`}>
+                    {filterLabel} {filter.count ? `(${filter.count.toLocaleString()})` : null}
+                  </label>
+                </li>
+              );
+            })
+          }
         </ul>
       </fieldset>
     );

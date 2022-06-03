@@ -26,9 +26,7 @@ describe('ItemTableRow', () => {
     });
 
     it('should return null if the item is an electronic resource', () => {
-      const component = shallow(
-        <ItemTableRow item={{ isElectronicResource: true }} />,
-      );
+      const component = shallow(<ItemTableRow item={{ isElectronicResource: true }} />);
 
       expect(component.type()).to.equal(null);
     });
@@ -107,9 +105,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).text()).to.equal(
-          'SASB M1 - General Research - Room 315',
-        );
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -135,9 +131,7 @@ describe('ItemTableRow', () => {
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).text()).to.equal(
-          'SASB M1 - General Research - Room 315',
-        );
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -159,15 +153,11 @@ describe('ItemTableRow', () => {
 
       it('should have a status as the third <td> column data and not a button', () => {
         expect(component.find('td').at(2).text()).to.equal('Available');
-        expect(
-          component.find('td').at(2).render().find('Link').length,
-        ).to.equal(0);
+        expect(component.find('td').at(2).render().find('Link').length).to.equal(0);
       });
 
       it('should have a location as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).text()).to.equal(
-          'SASB M1 - General Research - Room 315',
-        );
+        expect(component.find('td').at(4).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
 
@@ -178,9 +168,8 @@ describe('ItemTableRow', () => {
 
       before(() => {
         getItemRecord = spy(ItemTableRow.prototype, 'getItemRecord');
-        component = mount(<ItemTableRow item={data} bibId='b12345' />, {
-          context,
-        });
+        component =
+          mount(<ItemTableRow item={data} bibId="b12345" />, { context });
       });
 
       it('should render the Request button in the third <td> column', () => {
@@ -190,7 +179,7 @@ describe('ItemTableRow', () => {
 
       it('should call the getItemRecord function when the Request button is clicked', () => {
         const link = component.find('td').find('Link');
-        link.simulate('click', { preventDefault: () => undefined });
+        link.simulate('click', { preventDefault: () => {} });
         expect(getItemRecord.calledOnce).to.equal(true);
       });
     });
@@ -200,7 +189,7 @@ describe('ItemTableRow', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} bibId='b12345' />);
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
 
       it('should not render the Request button the third <td> column data', () => {
@@ -218,7 +207,7 @@ describe('ItemTableRow', () => {
       const expectedUrl = `https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=%5BSongs+and+piano+solos+%2F&Site=SCHMA&Author=Bechet%2C+Sidney%2C&Date=1941-1960.&ItemInfo3=https%3A%2F%2Fnypl-sierra-test.nypl.org%2Frecord%3Db11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&Genre=Score&Location=Schomburg+Center&shelfmark=Sc+Scores+Bechet&itemid=33299542&ItemISxN=i33299542&itemNumber=45678&CallNumber=Sc+Scores+Bechet`;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} bibId='b12345' />);
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
 
       it('should have a link to aeon', () => {
@@ -242,7 +231,7 @@ describe('ItemTableRow', () => {
       const expectedUrl = `https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=%5BSongs+and+piano+solos+%2F&Site=SCHMA&CallNumber=Sc+Scores+Bechet&Author=Bechet%2C+Sidney%2C&Date=1941-1960.&ItemInfo3=https%3A%2F%2Fnypl-sierra-test.nypl.org%2Frecord%3Db11545018x&ReferenceNumber=b11545018x&ItemInfo1=USE+IN+LIBRARY&ItemISxN=i33299542&Genre=Score&Location=Schomburg+Center&shelfmark=Sc+Scores+Bechet&itemid=33299542&itemNumber=45678`;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} bibId='b12345' />);
+        component = shallow(<ItemTableRow item={data} bibId="b12345" />);
       });
 
       it('should have a link to aeon', () => {
@@ -267,7 +256,7 @@ describe('ItemTableRow', () => {
         before(() => {
           const data = item.full;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow item={data} bibId='b12345' />);
+          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
         });
       });
 
@@ -275,7 +264,7 @@ describe('ItemTableRow', () => {
         before(() => {
           const data = item.requestable_nonReCAP_NYPL;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow item={data} bibId='b12345' />);
+          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
         });
         it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
           expect(component.find('td').find('div').length).to.equal(0);
@@ -290,18 +279,15 @@ describe('ItemTableRow', () => {
         let component;
         appConfig.recapClosedLocations = [''];
 
-        after(() => (appConfig.recapClosedLocations = []));
+        after(() => appConfig.recapClosedLocations = []);
 
         before(() => {
-          component = mount(<ItemTableRow item={data} bibId='b12345' />, {
-            context,
-          });
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
         });
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal(
-            'Request',
-          );
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });
@@ -312,15 +298,12 @@ describe('ItemTableRow', () => {
         appConfig.recapClosedLocations = [];
 
         before(() => {
-          component = mount(<ItemTableRow item={data} bibId='b12345' />, {
-            context,
-          });
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
         });
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal(
-            'Request',
-          );
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });
@@ -331,17 +314,15 @@ describe('ItemTableRow', () => {
         appConfig.closedLocations = [];
 
         before(() => {
-          component = mount(<ItemTableRow item={data} bibId='b12345' />, {
-            context,
-          });
+          component =
+            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
         });
 
-        after(() => (appConfig.closedLocations = []));
+
+        after(() => appConfig.closedLocations = []);
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal(
-            'Request',
-          );
+          expect(component.find('td').at(2).render().text()).to.equal('Request');
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });

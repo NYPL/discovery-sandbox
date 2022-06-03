@@ -36,5 +36,5 @@ global.navigator = {
 window.sessionStorage = global.sessionStorage;
 window.localStorage = global.localStorage;
 
-const noop = () => undefined;
+const noop = () => {};
 require.extensions['.png'] = noop;

@@ -89,6 +89,7 @@ describe('Feedback', () => {
         textarea.instance().value = 'Test text';
         textarea.simulate('change');
 
+
         const submitButton = component.find('Button').at(2).find('button');
         submitButton.simulate('submit');
         component.update();
@@ -109,13 +110,9 @@ describe('Feedback', () => {
       textarea.simulate('change');
 
       return new Promise((resolve) => {
-        savedSetState = component
-          .instance()
-          .setState.bind(component.instance());
+        savedSetState = component.instance().setState.bind(component.instance());
         component.instance().setState = (...args) => {
-          savedSetState(...args, () => {
-            resolve();
-          });
+          savedSetState(...args, () => { resolve(); });
         };
 
         nock('http://test-server.com')
@@ -124,7 +121,7 @@ describe('Feedback', () => {
             'access-control-allow-credentials': 'true',
           })
           .post(/\/api\/feedback/)
-          .reply(200, () => undefined);
+          .reply(200, () => {});
 
         const submitButton = component.find('Button').at(2).find('button');
         submitButton.simulate('submit');
@@ -145,10 +142,9 @@ describe('Feedback', () => {
     it('should show thank you message', () => {
       setUp().then(() => {
         const ptag = component.find('p');
-        const expectedText =
-          'Thank you for submitting your comments. ' +
-          'If you requested a response, our service staff ' +
-          'will get back to you as soon as possible.';
+        const expectedText = 'Thank you for submitting your comments. ' +
+        'If you requested a response, our service staff ' +
+        'will get back to you as soon as possible.';
         expect(ptag.text()).to.equal(expectedText);
       });
     });
@@ -163,6 +159,7 @@ describe('Feedback', () => {
     const originalError = console.error;
     let erroredCorrectly = false;
 
+
     let savedBaseUrl;
 
     after(() => {
@@ -175,6 +172,7 @@ describe('Feedback', () => {
       appConfig.baseUrl = 'http://test-server.com';
 
       return new Promise((resolve) => {
+
         console.error = (...args) => {
           originalError(...args);
           if (args.includes('errorText')) {
@@ -208,6 +206,7 @@ describe('Feedback', () => {
     const originalLog = console.log;
     let loggedCorrectly = false;
 
+
     let savedBaseUrl;
 
     after(() => {
@@ -220,6 +219,7 @@ describe('Feedback', () => {
       appConfig.baseUrl = 'http://test-server.com';
 
       return new Promise((resolve) => {
+
         console.log = (...args) => {
           originalLog(...args);
           if (args.includes('Feedback error')) {
@@ -252,9 +252,7 @@ describe('Feedback', () => {
     it('should render a <p>', () => {
       const successP = component.find('p');
       expect(successP).to.have.length(1);
-      expect(successP.text()).to.equal(
-        'Thank you for submitting your comments. If you requested a response, our service staff will get back to you as soon as possible.',
-      );
+      expect(successP.text()).to.equal('Thank you for submitting your comments. If you requested a response, our service staff will get back to you as soon as possible.');
     });
   });
 });

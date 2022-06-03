@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 import FieldsetList from '../../src/app/components/Filters/FieldsetList';
 
-const listItemAt = (component, _n) => component.find('li').at(_n);
+const listItemAt = (component, n) => component.find('li').at(n);
 
 describe('FilterPopup', () => {
   describe('Default', () => {
@@ -44,9 +44,7 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(
-        <FieldsetList filter={languageFilter} legend={legend} />,
-      );
+      component = mount(<FieldsetList filter={languageFilter} legend={legend} />);
     });
 
     it('should render a fieldset', () => {

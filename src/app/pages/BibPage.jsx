@@ -92,10 +92,10 @@ export const BibPage = (
   return (
     <SccContainer
       useLoadingLayer
-      className='nypl-item-details'
-      pageTitle='Item Details'
+      className="nypl-item-details"
+      pageTitle="Item Details"
     >
-      <section className='nypl-item-details__heading'>
+      <section className="nypl-item-details__heading">
         <Heading level={2}>
           {bib.title && bib.title.length ? bib.title[0] : ' '}
         </Heading>

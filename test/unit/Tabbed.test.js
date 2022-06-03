@@ -8,100 +8,101 @@ import AdditionalDetailsViewer from './../../src/app/components/BibPage/Addition
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 
 describe('Tabbed', () => {
-  const sampleBib = {
-    annotatedMarc: {
-      bib: {
-        id: '12082323',
-        nyplSource: 'sierra-nypl',
-        fields: [
+  const sampleBib =
+  {
+  "annotatedMarc" : {
+  "bib": {
+    "id": "12082323",
+    "nyplSource": "sierra-nypl",
+    "fields": [
+      {
+        "label": "Abbreviated Title",
+        "values": [
           {
-            label: 'Abbreviated Title',
-            values: [
-              {
-                content: 'Abrev. title -- 210 ',
-                source: {
-                  fieldTag: 'u',
-                  marcTag: '210',
-                  ind1: '1',
-                  ind2: '0',
-                  content: null,
-                  subfields: [
-                    {
-                      tag: 'a',
-                      content: 'Abrev. title -- 210 ',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-          {
-            label: 'Access',
-            values: [
-              {
-                content: 'Access -- 506 blank,any',
-                source: {
-                  fieldTag: 'n',
-                  marcTag: '506',
-                  ind1: ' ',
-                  ind2: ' ',
-                  content: null,
-                  subfields: [
-                    {
-                      tag: 'a',
-                      content: 'Access -- 506 blank,any',
-                    },
-                  ],
-                },
-              },
-              {
-                content: 'Access -- 506 0,any',
-                source: {
-                  fieldTag: 'n',
-                  marcTag: '506',
-                  ind1: '0',
-                  ind2: ' ',
-                  content: null,
-                  subfields: [
-                    {
-                      tag: 'a',
-                      content: 'Access -- 506 0,any',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-          {
-            label: 'Url',
-            values: [
-              {
-                label: '856 40',
-                content: 'http://blogs.nypl.org/rcramer/',
-                source: {
-                  fieldTag: 'y',
-                  marcTag: '856',
-                  ind1: '4',
-                  ind2: '0',
-                  content: null,
-                  subfields: [
-                    {
-                      tag: 'u',
-                      content: 'http://blogs.nypl.org/rcramer/',
-                    },
-                    {
-                      tag: 'z',
-                      content: '[redacted]',
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-        ],
+            "content": "Abrev. title -- 210 ",
+            "source": {
+              "fieldTag": "u",
+              "marcTag": "210",
+              "ind1": "1",
+              "ind2": "0",
+              "content": null,
+              "subfields": [
+                {
+                  "tag": "a",
+                  "content": "Abrev. title -- 210 "
+                }
+              ]
+            }
+          }
+        ]
       },
-    },
-  };
+      {
+        "label": "Access",
+        "values": [
+          {
+            "content": "Access -- 506 blank,any",
+            "source": {
+              "fieldTag": "n",
+              "marcTag": "506",
+              "ind1": " ",
+              "ind2": " ",
+              "content": null,
+              "subfields": [
+                {
+                  "tag": "a",
+                  "content": "Access -- 506 blank,any"
+                }
+              ]
+            }
+          },
+          {
+            "content": "Access -- 506 0,any",
+            "source": {
+              "fieldTag": "n",
+              "marcTag": "506",
+              "ind1": "0",
+              "ind2": " ",
+              "content": null,
+              "subfields": [
+                {
+                  "tag": "a",
+                  "content": "Access -- 506 0,any"
+                }
+                ]
+              }
+            }
+          ]
+        },
+        {
+        "label": "Url",
+        "values": [
+          {
+            "label": "856 40",
+            "content": "http://blogs.nypl.org/rcramer/",
+            "source": {
+              "fieldTag": "y",
+              "marcTag": "856",
+              "ind1": "4",
+              "ind2": "0",
+              "content": null,
+              "subfields": [
+                {
+                  "tag": "u",
+                  "content": "http://blogs.nypl.org/rcramer/"
+                },
+                {
+                  "tag": "z",
+                  "content": "[redacted]"
+                }
+              ]
+            }
+          }
+          ]
+        }
+      ]
+    }
+  }
+};
 
   const bottomFields = [
     { label: 'Publication', value: 'publicationStatement' },
@@ -115,11 +116,7 @@ describe('Tabbed', () => {
     { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'React Component' },
-    {
-      label: 'Additional Resources',
-      value: 'supplementaryContent',
-      selfLinkable: true,
-    },
+    { label: 'Additional Resources', value: 'supplementaryContent', selfLinkable: true },
     { label: 'Contents', value: 'tableOfContents' },
     { label: 'Bibliography', value: '' },
     { label: 'ISBN', value: 'identifier', identifier: 'urn:isbn' },
@@ -138,26 +135,22 @@ describe('Tabbed', () => {
         <li>item</li>
       </ul>
     </div>
-  );
+  )
 
-  const bibDetails = (
-    <BibDetails
-      bib={sampleBib}
-      fields={bottomFields}
-      electronicResources={[]}
-    />
-  );
+  const bibDetails = (<BibDetails
+    bib={sampleBib}
+    fields={bottomFields}
+    electronicResources={[]}
+  />);
 
-  const additionalDetails = <AdditionalDetailsViewer bib={sampleBib} />;
+  const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib} />);
 
   const component = mount(
-    <Tabbed
-      tabs={[
-        { title: 'Availability', content: mockItemsContainer },
-        { title: 'Details', content: bibDetails },
-        { title: 'Full Description', content: additionalDetails },
-      ]}
-    />,
+    <Tabbed tabs={[
+      { title: 'Availability', content: mockItemsContainer },
+      { title: 'Details', content: bibDetails },
+      { title: 'Full Description', content: additionalDetails }]}
+    />
   );
   const details = component.find('a').at(0);
   const fullDescription = component.find('a').at(1);
@@ -192,7 +185,7 @@ describe('Tabbed', () => {
       focused = document.activeElement;
       expect(details.getDOMNode()).to.equal(focused);
     });
-  });
+  })
 
   describe('Navigating with Key Press', () => {
     it('should focus on Full Description on Right Arrow Press', () => {
