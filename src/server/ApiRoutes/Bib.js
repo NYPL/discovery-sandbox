@@ -6,6 +6,7 @@ import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
+import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
@@ -32,26 +33,6 @@ export const addHoldingDefinition = (holding) => {
   holding.holdingDefinition = Object.entries(holdingsMappings)
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
     .filter(data => data.definition);
-};
-
-const appendDimensionsToExtent = (bib) => {
-  if (!bib.extent || bib.extent.length === 0) return;
-  let extent = bib.extent[0];
-  let punctuationToAdd = '';
-  // Check if extent was cataloged with a semicolon already at the end:
-  const semicolon = extent.slice(-2) === '; ' || extent.slice(-1) === ';';
-  if (semicolon) {
-    if (extent.slice(-1) !== ' ') punctuationToAdd += ' ';
-  } else punctuationToAdd = '; ';
-  if (bib.dimensions && bib.dimensions[0].length) {
-    // If there is a dimensions field, append  it to the extent and make sure they are separated by a semicolon and a space:
-    extent = extent + punctuationToAdd + bib.dimensions[0];
-  } else {
-    // If there is no dimensions field, remove the semicolon
-    extent =
-      punctuationToAdd.length === 0 ? extent.slice(0, -2) : extent.slice(0, -1);
-  }
-  return [extent];
 };
 
 export const findUrl = (location, urls) => {
@@ -191,8 +172,8 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       return Object.assign({ status }, bib);
     })
     .then((bib) => {
-      bib.extent = appendDimensionsToExtent(bib);
-      return addLocationUrls(bib);
+      appendDimensionsToExtent(bib)
+      return addLocationUrls(bib)
     })
     .then((bib) => {
       if (bib.holdings) {
