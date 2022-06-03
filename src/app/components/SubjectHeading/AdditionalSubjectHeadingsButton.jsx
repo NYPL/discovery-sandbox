@@ -19,7 +19,13 @@ class AdditionalSubjectHeadingsButton extends React.Component {
   }
 
   render() {
-    const { indentation, text, linkUrl, noEllipse, marginSize } = this.props;
+    const {
+      indentation,
+      text,
+      linkUrl,
+      noEllipse,
+      marginSize,
+    } = this.props;
 
     if (this.state.hidden) return null;
 
@@ -31,13 +37,19 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     if (linkUrl) {
       button = (
-        <Link to={linkUrl} className='seeMoreButton toIndex'>
+        <Link
+          to={linkUrl}
+          className="seeMoreButton toIndex"
+        >
           {seeMoreText}
         </Link>
       );
     } else if (this.props.button === 'contextMore') {
       button = (
-        <span data={`${text}-${linkUrl}`} className='contextMore'>
+        <span
+          data={`${text}-${linkUrl}`}
+          className="contextMore"
+        >
           {seeMoreText}
         </span>
       );
@@ -46,10 +58,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
         <button
           data={`${text}-${linkUrl}`}
           onClick={this.onClick}
-          className='seeMoreButton'
+          className="seeMoreButton"
         >
-          {previous ? '↑' : '↓'} <em key='seeMoreText'>{seeMoreText}</em>
-          {previous ? null : <br />}
+          {previous ? '↑' : '↓'} <em key="seeMoreText">{seeMoreText}</em>
+          {previous ? null : <br /> }
           {previous || noEllipse ? null : <VerticalEllipse />}
         </button>
       );
@@ -63,16 +75,13 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 
     return (
       <tr
-        className={`subjectHeadingRow seeMore ${
-          previous || noEllipse ? '' : 'ellipse'
-        }`}
+        className={`subjectHeadingRow seeMore ${previous || noEllipse ? '' : 'ellipse'}`}
       >
-        <td className='subjectHeadingsTableCell' colSpan='4'>
-          <div
-            className='subjectHeadingLabelInner'
-            style={{ marginLeft: `${marginSize * indentation}px` }}
-          >
-            {content}
+        <td className="subjectHeadingsTableCell" colSpan="4">
+          <div className="subjectHeadingLabelInner" style={{ marginLeft: `${marginSize * indentation}px` }}>
+            {
+              content
+            }
           </div>
         </td>
       </tr>
@@ -81,10 +90,10 @@ class AdditionalSubjectHeadingsButton extends React.Component {
 }
 
 const VerticalEllipse = () => (
-  <div className='verticalEllipse'>
-    <div className='dot'>.</div>
-    <div className='dot'>.</div>
-    <div className='dot'>.</div>
+  <div className="verticalEllipse">
+    <div className="dot">.</div>
+    <div className="dot">.</div>
+    <div className="dot">.</div>
   </div>
 );
 

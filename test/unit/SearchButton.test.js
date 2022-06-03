@@ -15,9 +15,7 @@ describe('SearchButton', () => {
     });
 
     it('should be wrapped in a #nypl-omni-button', () => {
-      expect(component.find('#nypl-omni-button').hostNodes().length).to.equal(
-        1,
-      );
+      expect(component.find('#nypl-omni-button').hostNodes().length).to.equal(1);
     });
 
     it('should have a button element', () => {
@@ -40,8 +38,8 @@ describe('SearchButton', () => {
     before(() => {
       component = shallow(
         <SearchButton
-          id='discoverySearch'
-          value='Search Discovery'
+          id="discoverySearch"
+          value="Search Discovery"
           onClick={updateVal}
         />,
       );

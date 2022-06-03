@@ -104,7 +104,7 @@ class BibDetails extends React.Component {
     }
 
     return (
-      <ul className='additionalDetails'>
+      <ul className="additionalDetails">
         {bibValues.map((value) => {
           const url = `filters[${fieldValue}]=${value['@id']}`;
           let itemValue = fieldLinkable ? (
@@ -458,7 +458,7 @@ class BibDetails extends React.Component {
           electronicElem = (
             <a
               href={electronicItem.url}
-              target='_blank'
+              target="_blank"
               onClick={() =>
                 trackDiscovery(
                   'Bib fields',

@@ -4,8 +4,7 @@ import axios from 'axios';
 import appConfig from '../data/appConfig';
 import { CLOSED_LOCATION_REGEX } from '../data/constants';
 
-export const isClosed = (optionInnerText) =>
-  optionInnerText && !!optionInnerText.match(CLOSED_LOCATION_REGEX);
+export const isClosed = optionInnerText => optionInnerText && !!optionInnerText.match(CLOSED_LOCATION_REGEX);
 
 export const makeRequest = (
   updateAccountHtml,
@@ -17,21 +16,18 @@ export const makeRequest = (
   const url = `${appConfig.baseUrl}/api/account/${contentType}`;
   setIsLoading(true);
 
-  return axios
-    .post(url, body)
+  return axios.post(url, body)
     .then((res) => {
       const { data } = res;
       if (data.redirect) {
         const fullUrl = encodeURIComponent(window.location.href);
-        window.location.replace(
-          `${appConfig.loginUrl}?redirect_uri=${fullUrl}`,
-        );
+        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         return { redirect: true };
       }
       if (data.error) console.error(data.error);
       return updateAccountHtml(data);
     })
-    .catch((res) => console.error('ERROR', res))
+    .catch(res => console.error('ERROR', res))
     .finally(() => setIsLoading(false));
 };
 
@@ -52,11 +48,10 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
 };
 
 export const convertEncoreUrl = (encoreUrl) => {
-  const bibId =
-    encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
+  const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
   if (!bibId) return encoreUrl;
   return `${appConfig.baseUrl}/bib/${bibId}`;
-};
+}
 
 /**
  * Takes a patron expiration date in form YYYY-MM-DD
@@ -68,9 +63,9 @@ export const formatPatronExpirationDate = (expirationDate) => {
     return expirationDate;
   }
 
-  const [_y, _m, _d] = expirationDate.split('-');
-  return [_m, _d, _y].join('-');
-};
+  const [y, m, d] = expirationDate.split('-');
+  return [m, d, y].join('-');
+}
 
 export const manipulateAccountPage = (
   accountPageContent,
@@ -80,14 +75,19 @@ export const manipulateAccountPage = (
   setIsLoading,
   setItemToCancel,
 ) => {
-  const eventListenerCb = (body) =>
-    makeRequest(updateAccountHtml, patron.id, body, contentType, setIsLoading);
+  const eventListenerCb = body => makeRequest(
+    updateAccountHtml,
+    patron.id,
+    body,
+    contentType,
+    setIsLoading,
+  );
 
   const eventListeners = [];
   if (['items', 'holds'].includes(contentType)) {
     // all <inputs> of type 'submit' are removed
     const submits = accountPageContent.querySelectorAll('input[type=submit]');
-    submits.forEach((submit) => submit.remove());
+    submits.forEach(submit => submit.remove());
 
     // use 'patFuncEntry' class to access items (checkouts or holds)
     const items = accountPageContent.querySelectorAll('.patFuncEntry') || [];
@@ -95,20 +95,13 @@ export const manipulateAccountPage = (
     const buttonTh = document.createElement('th');
     buttonTh.classList.add('patFuncHeaders');
     if (contentType === 'holds') buttonTh.textContent = 'Cancel/Freeze';
-    const patFuncHeaderTrs =
-      accountPageContent.querySelectorAll('tr.patFuncHeaders');
-    if (patFuncHeaderTrs && patFuncHeaderTrs.length)
-      patFuncHeaderTrs[0].appendChild(buttonTh);
+    const patFuncHeaderTrs = accountPageContent.querySelectorAll('tr.patFuncHeaders');
+    if (patFuncHeaderTrs && patFuncHeaderTrs.length) patFuncHeaderTrs[0].appendChild(buttonTh);
 
     accountPageContent.querySelectorAll('th.patFuncHeaders').forEach((th) => {
       const { textContent } = th;
       // this "Ratings" feature is in the html, but is not in use
-      if (
-        textContent.trim() === 'CANCEL' ||
-        ['Ratings', 'RENEW', 'FREEZE'].find((text) =>
-          textContent.includes(text),
-        )
-      ) {
+      if (textContent.trim() === 'CANCEL' || ['Ratings', 'RENEW', 'FREEZE'].find(text => textContent.includes(text))) {
         th.remove();
         return;
       }
@@ -116,16 +109,12 @@ export const manipulateAccountPage = (
       // change th that originally says '{x} ITEMS CHECKED OUT'
       if (th.textContent.includes('checked')) {
         const length = items.length;
-        th.textContent = `Checkouts - ${length || 'No'} item${
-          length !== 1 ? 's' : ''
-        }`;
+        th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
       }
 
       if (th.textContent.includes('holds')) {
         const length = items.length;
-        th.textContent = `Holds - ${length || 'No'} item${
-          length !== 1 ? 's' : ''
-        }`;
+        th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
       }
     });
 
@@ -143,38 +132,33 @@ export const manipulateAccountPage = (
             else if (isClosed(option.innerText)) option.remove();
           });
           locationData[locationProp] = locationValue;
-          const locationChangeCb = (event) => {
-            locationData[locationProp] = event.target.value.replace('+++', '');
+          const locationChangeCb = (e) => {
+            locationData[locationProp] = e.target.value.replace('+++', '');
             eventListenerCb(buildReqBody(contentType, {}, locationData));
           };
           locationSelect.addEventListener('change', locationChangeCb);
-          eventListeners.push({
-            element: locationSelect,
-            cb: locationChangeCb,
-          });
+          eventListeners.push({ element: locationSelect, cb: locationChangeCb });
         }
       }
-      el.querySelectorAll('.patFuncTitle,.patFuncBibTitle').forEach(
-        (titleTd) => {
-          const isOtfRecord = [
-            '[Supervised use]',
-            '[In Library Use]',
-            '[Standard NYPL restrictions apply]',
-          ].some((phrase) => titleTd.textContent.includes(phrase));
-          // Remove link if it appears to be an OTF record (it's not in index)
-          if (isOtfRecord) {
-            titleTd.querySelectorAll('a').forEach((link) => {
-              // In 5.3, the link may be wrapped in a label
-              link.parentNode.removeChild(link);
-              titleTd.appendChild(link.firstChild);
-            });
-          } else {
-            titleTd.querySelectorAll('a').forEach((link) => {
-              link.href = convertEncoreUrl(link.href);
-            });
-          }
-        },
-      );
+      el.querySelectorAll('.patFuncTitle,.patFuncBibTitle').forEach((titleTd) => {
+        const isOtfRecord = [
+          '[Supervised use]',
+          '[In Library Use]',
+          '[Standard NYPL restrictions apply]'
+        ].some((phrase) => titleTd.textContent.includes(phrase))
+        // Remove link if it appears to be an OTF record (it's not in index)
+        if (isOtfRecord) {
+          titleTd.querySelectorAll('a').forEach(link => {
+            // In 5.3, the link may be wrapped in a label
+            link.parentNode.removeChild(link);
+            titleTd.appendChild(link.firstChild);
+          });
+        } else {
+          titleTd.querySelectorAll('a').forEach(link => {
+            link.href = convertEncoreUrl(link.href);
+          });
+        }
+      });
 
       // Remove any left-column checkmarks, replacing them with right-column buttons
       const inputs = el.querySelectorAll('input');
@@ -194,36 +178,32 @@ export const manipulateAccountPage = (
           // In 5.3 Checkouts ("items") view, the input name looks like
           // "name_pfmark_canceli15686436x00", but the only relevant action is
           // Renew
-          button.textContent = 'Renew';
+          button.textContent = 'Renew'
         } else {
           // In Holds view, set button text based on presense of one of these
           // phrases:
-          button.textContent = ['Renew', 'Freeze', 'Cancel'].find((text) =>
-            input.name.includes(text.toLowerCase()),
-          );
+          button.textContent = ['Renew', 'Freeze', 'Cancel'].find(text => input.name.includes(text.toLowerCase()));
         }
         if (input.checked && button.textContent === 'Freeze') {
           button.textContent = 'Unfreeze';
           input.value = 'off';
         }
         button.className = 'button button--outline';
-        const eventCb = (event) => {
-          event.preventDefault();
-          eventListenerCb(
-            buildReqBody(
-              contentType,
-              { [input.name]: input.value },
-              locationData,
-            ),
-          );
+        const eventCb = (e) => {
+          e.preventDefault();
+          eventListenerCb(buildReqBody(
+            contentType,
+            { [input.name]: input.value },
+            locationData,
+          ));
         };
         if (button.textContent === 'Cancel') {
           // This element should always be found, but let's not depend on it:
           const titleTd = el.querySelectorAll('.patFuncTitleMain');
           const title = titleTd && titleTd[0] ? titleTd[0].textContent : null;
 
-          button.addEventListener('click', (event) => {
-            event.preventDefault();
+          button.addEventListener('click', (e) => {
+            e.preventDefault();
             setItemToCancel({
               name: input.name,
               value: input.value,
@@ -248,7 +228,7 @@ export const manipulateAccountPage = (
        * If the freeze cell did not have an `input`, it still needs to be removed.
        * There may be an error message, probably "This hold can not be frozen."
        * If so, create an element to display it and then remove the cell.
-       */
+      */
       const freezeCells = el.querySelectorAll('.patFuncFreeze');
       if (freezeCells) {
         freezeCells.forEach((cell) => {
@@ -265,12 +245,9 @@ export const manipulateAccountPage = (
       });
       el.appendChild(td);
     });
-    accountPageContent
-      .querySelectorAll('.patFuncRating')
-      .forEach((el) => el.remove());
+    accountPageContent.querySelectorAll('.patFuncRating').forEach(el => el.remove());
 
-    const errorMessageEls =
-      accountPageContent.getElementsByClassName('errormessage');
+    const errorMessageEls = accountPageContent.getElementsByClassName('errormessage');
     if (errorMessageEls.length) {
       // in original HTML this is `hidden`
       errorMessageEls[0].style.display = 'block';
@@ -289,9 +266,7 @@ export const manipulateAccountPage = (
 
     const overduesTh = accountPageContent.querySelectorAll('th');
     if (overduesTh && overduesTh.length) {
-      overduesTh[0].textContent = `Fine/Fee - ${
-        patFuncFinesEntries || 'No'
-      } item${patFuncFinesEntries === 1 ? '' : 's'}`;
+      overduesTh[0].textContent = `Fine/Fee - ${patFuncFinesEntries || 'No'} item${patFuncFinesEntries === 1 ? '' : 's'}`;
     }
   }
 
@@ -315,8 +290,8 @@ export const manipulateAccountPage = (
           isFirstRenewAll = false;
           const button = document.createElement('button');
           button.textContent = 'Renew All';
-          const renewAllCb = (event) => {
-            event.preventDefault();
+          const renewAllCb = (e) => {
+            e.preventDefault();
             eventListenerCb({ renewall: 'YES' });
           };
           button.addEventListener('click', renewAllCb);

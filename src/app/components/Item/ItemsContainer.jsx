@@ -90,7 +90,7 @@ class ItemsContainer extends React.Component {
       <ItemTable
         items={itemsToDisplay}
         bibId={bibId}
-        id='bib-item-table'
+        id="bib-item-table"
         searchKeywords={this.props.searchKeywords}
         holdings={this.props.holdings}
       />
@@ -192,7 +192,7 @@ class ItemsContainer extends React.Component {
           page={this.state.page}
           updatePage={this.updatePage}
           to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?itemPage=` }}
-          ariaControls='bib-item-table'
+          ariaControls="bib-item-table"
         />
       );
 
@@ -207,16 +207,16 @@ class ItemsContainer extends React.Component {
     const numItemsEstimate =
       this.props.bib.numItems + (this.props.bib.checkInItems || []).length;
     const itemLoadingMessage = (
-      <div className='item-filter-info'>
+      <div className="item-filter-info">
         <h3>
           <br />
           About {`${numItemsEstimate}`} Item
           {numItemsEstimate !== 1 ? 's. ' : '. '}
-          <div className='items-loading'>
+          <div className="items-loading">
             Still Loading More items
-            <span className='dot1'>.</span>
-            <span className='dot2'>.</span>
-            <span className='dot3'>.</span>
+            <span className="dot1">.</span>
+            <span className="dot2">.</span>
+            <span className="dot3">.</span>
           </div>
         </h3>
       </div>
@@ -225,7 +225,7 @@ class ItemsContainer extends React.Component {
     return (
       <>
         <Heading level={3}>Items in the Library & Offsite</Heading>
-        <div className='nypl-results-item'>
+        <div className="nypl-results-item">
           {bibDone ? (
             <ItemFilters
               items={items}
@@ -242,15 +242,15 @@ class ItemsContainer extends React.Component {
             this.filteredItems.length > itemsListPageLimit &&
             !this.state.showAll
           ) && (
-            <div className='view-all-items-container'>
+            <div className="view-all-items-container">
               {this.state.js ? (
-                <a href='#' onClick={this.showAll}>
+                <a href="#" onClick={this.showAll}>
                   View All Items
                 </a>
               ) : (
                 <Link
                   to={`${appConfig.baseUrl}/bib/${bibId}/all`}
-                  className='view-all-items'
+                  className="view-all-items"
                   onClick={() =>
                     trackDiscovery('View All Items', `Click - ${bibId}`)
                   }

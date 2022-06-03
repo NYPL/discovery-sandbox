@@ -14,11 +14,9 @@ const NotFound404 = () => (
             <p>{`We're sorry...`}</p>
             <p>{`The page you were looking for doesn't exist.`}</p>
             <p>
-              Search the{' '}
-              <Link to={`${appConfig.baseUrl}/`}>{appConfig.displayTitle}</Link>{' '}
-              or our <a href={appConfig.legacyBaseUrl}>Legacy Catalog</a> for
-              research materials.
-            </p>
+              Search the <Link to={`${appConfig.baseUrl}/`}>
+              {appConfig.displayTitle}</Link> or our <a href={appConfig.legacyBaseUrl}>
+              Legacy Catalog</a> for research materials.</p>
           </div>
         </div>
       </div>
