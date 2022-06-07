@@ -106,12 +106,6 @@ class ElectronicDeliveryForm extends React.Component {
       errorClass[key] = this.state.error[key] ? 'nypl-field-error' : '';
     });
 
-    // determine which `eddAboutUrl` to use based on 'on-site-edd' feature flag
-    const { eddAboutUrl } = appConfig;
-
-    const whichUrl = this.props.onSiteEddEnabled ? 'onSiteEdd' : 'default';
-    const aboutUrl = eddAboutUrl[whichUrl];
-
     // A lot of this can be refactored to be in a loop but that's a later and
     // next step. I was thinking each `nypl-text-field` or `nypl-year-field`
     // div can be its own component in a loop with the required props and
@@ -159,7 +153,7 @@ class ElectronicDeliveryForm extends React.Component {
                 You may request one chapter, one article, around 10% of work, or 50 pages for public domain works.
               </span><br />
               <span>
-                <a href={aboutUrl}>
+                <a href={'https://www.nypl.org/research/scan-and-deliver'}>
                   Read more about this service
                 </a>.
               </span>
@@ -372,8 +366,7 @@ ElectronicDeliveryForm.propTypes = {
   defaultEmail: PropTypes.string,
   searchKeywords: PropTypes.string,
   serverRedirect: PropTypes.bool,
-  fromUrl: PropTypes.string,
-  onSiteEddEnabled: PropTypes.bool,
+  fromUrl: PropTypes.string
 };
 
 ElectronicDeliveryForm.defaultProps = {

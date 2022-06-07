@@ -15,6 +15,7 @@ import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
 import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
+import { noOnsiteEddCheck } from '../utils/noOnsiteEddCheck';
 import {
   addHoldingDefinition,
   addCheckInItems,
@@ -31,7 +32,7 @@ const createAPIQuery = basicQuery({
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
-  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions = noOnsiteEddCheck(appConfig.features, urlEnabledFeatures)
 
   return nyplApiClient()
     .then(client =>
