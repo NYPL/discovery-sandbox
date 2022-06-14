@@ -21,6 +21,18 @@ import {
   pluckAeonLinksFromResource,
 } from '../utils/utils';
 
+export const RouterContext = React.createContext(null);
+export const RouterProvider = ({ children, value }) => {
+  return (
+    <RouterContext.Provider value={value}>
+      {children}
+    </RouterContext.Provider>
+  );
+};
+RouterProvider.propTypes = {
+  children: PropTypes.node,
+  value: PropTypes.object,
+};
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
@@ -90,50 +102,52 @@ export const BibPage = (
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
 
   return (
-    <SccContainer
-      useLoadingLayer
-      className="nypl-item-details"
-      pageTitle="Item Details"
-    >
-      <section className="nypl-item-details__heading">
-        <Heading level={2}>
-          {bib.title && bib.title.length ? bib.title[0] : ' '}
-        </Heading>
-        <BackToSearchResults result={resultSelection} bibId={bibId} />
-      </section>
+    <RouterProvider value={context}>
+      <SccContainer
+        useLoadingLayer
+        className="nypl-item-details"
+        pageTitle="Item Details"
+      >
+        <section className="nypl-item-details__heading">
+          <Heading level={2}>
+            {bib.title && bib.title.length ? bib.title[0] : ' '}
+          </Heading>
+          <BackToSearchResults result={resultSelection} bibId={bibId} />
+        </section>
 
-      <TopBibDetails
-        bib={bib}
-        resources={pluckAeonLinksFromResource(
-          aggregatedElectronicResources,
-          items,
+        <TopBibDetails
+          bib={bib}
+          resources={pluckAeonLinksFromResource(
+            aggregatedElectronicResources,
+            items,
+          )}
+        />
+
+        {items.length && !isElectronicResources && (
+          <section style={{ marginTop: '20px' }}>
+            <ItemsContainer
+              key={bibId}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              items={items}
+              bibId={bibId}
+              itemPage={location.search}
+              searchKeywords={searchKeywords}
+              holdings={bib.holdings}
+            />
+          </section>
         )}
-      />
 
-      {items.length && !isElectronicResources && (
-        <section style={{ marginTop: '20px' }}>
-          <ItemsContainer
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={bib.holdings}
-          />
-        </section>
-      )}
+        {bib.holdings && (
+          <section style={{ marginTop: '20px' }}>
+            <LibraryHoldings holdings={bib.holdings} />
+          </section>
+        )}
 
-      {bib.holdings && (
-        <section style={{ marginTop: '20px' }}>
-          <LibraryHoldings holdings={bib.holdings} />
-        </section>
-      )}
+        <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
 
-      <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
-
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
-    </SccContainer>
+        <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
+      </SccContainer>
+    </RouterProvider>
   );
 };
 

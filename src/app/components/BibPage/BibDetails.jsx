@@ -1,23 +1,25 @@
+import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
   isObject as _isObject,
 } from 'underscore';
+
+// Components
+import DefinitionList from './DefinitionList';
+// Utils and configs
 import appConfig from '../../data/appConfig';
 import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
 import getOwner from '../../utils/getOwner';
 import LibraryItem from '../../utils/item';
+import {RouterContext} from "../../pages/BibPage";
 import { trackDiscovery } from '../../utils/utils';
-import DefinitionList from './DefinitionList';
 
-class BibDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.owner = getOwner(this.props.bib);
-  }
+
+const BibDetails = (props) => {
+  const { router } = React.useContext(RouterContext);
 
   /**
    * Return note array or null.
@@ -25,17 +27,10 @@ class BibDetails extends React.Component {
    * @param {object} bib
    * @return {null|array}
    */
-  getNote(bib) {
+  const getNote = (bib) => {
     const note = bib.note;
-    const notes = note && note.length ? note : null;
-
-    if (!notes) {
-      return null;
-    }
-
-    return notes;
-  }
-
+    return note && note.length ? note : null;
+  };
   /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
@@ -48,13 +43,13 @@ class BibDetails extends React.Component {
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  getDefinitionObject(
+   const getDefinitionObject = (
     bibValues,
     fieldValue,
     fieldLinkable,
     fieldSelfLinkable,
     fieldLabel,
-  ) {
+  ) => {
     // If there's only one value, we just want that value and not a list.
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
@@ -64,7 +59,7 @@ class BibDetails extends React.Component {
         return (
           <Link
             onClick={(event) =>
-              this.newSearch(
+              newSearch(
                 event,
                 url,
                 fieldValue,
@@ -105,7 +100,7 @@ class BibDetails extends React.Component {
           let itemValue = fieldLinkable ? (
             <Link
               onClick={(event) =>
-                this.newSearch(event, url, fieldValue, value['@id'], fieldLabel)
+                newSearch(event, url, fieldValue, value['@id'], fieldLabel)
               }
               to={`${appConfig.baseUrl}/search?${url}`}
             >
@@ -143,7 +138,7 @@ class BibDetails extends React.Component {
    * @param {array<object>} bibValues - Array of entities to inspect
    * @param {string} identifierType - The rdf:type to get (e.g. bf:Isbn)
    */
-  getIdentifiers(bibValues, identifierType) {
+  const getIdentifiers = (bibValues, identifierType) => {
     const entities = LibraryItem.getIdentifierEntitiesByType(
       bibValues,
       identifierType,
@@ -187,23 +182,23 @@ class BibDetails extends React.Component {
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  getDefinition(
+  const getDefinition = (
     bibValues,
     fieldValue,
     fieldLinkable,
     fieldIdentifier,
     fieldSelfLinkable,
     fieldLabel,
-  ) {
+  ) => {
     if (fieldValue === 'identifier') {
-      return this.getIdentifiers(bibValues, fieldIdentifier);
+      return getIdentifiers(bibValues, fieldIdentifier);
     }
 
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
 
       const url = `filters[${fieldValue}]=${bibValue}`;
-      return this.getDefinitionOneItem(
+      return getDefinitionOneItem(
         bibValue,
         url,
         bibValues,
@@ -227,7 +222,7 @@ class BibDetails extends React.Component {
                 typeof value === 'string' ? value : value.label
               }`}
             >
-              {this.getDefinitionOneItem(
+              {getDefinitionOneItem(
                 value,
                 url,
                 bibValues,
@@ -259,7 +254,7 @@ class BibDetails extends React.Component {
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  getDefinitionOneItem(
+  const getDefinitionOneItem = (
     bibValue,
     url,
     bibValues,
@@ -268,9 +263,9 @@ class BibDetails extends React.Component {
     fieldIdentifier,
     fieldSelfLinkable,
     fieldLabel,
-  ) {
+  ) => {
     if (fieldValue === 'subjectLiteral') {
-      return this.constructSubjectHeading(
+      return constructSubjectHeading(
         bibValue,
         url,
         fieldValue,
@@ -282,7 +277,7 @@ class BibDetails extends React.Component {
       return (
         <Link
           onClick={(event) =>
-            this.newSearch(event, url, fieldValue, bibValue, fieldLabel)
+            newSearch(event, url, fieldValue, bibValue, fieldLabel)
           }
           to={`${appConfig.baseUrl}/search?${url}`}
         >
@@ -318,7 +313,7 @@ class BibDetails extends React.Component {
    * @return {string}
    */
 
-  getNoteType(note) {
+  const getNoteType = (note) => {
     const type = note.noteType || '';
     return type.toLowerCase().includes('note') ? type : `${type} (note)`;
   }
@@ -330,10 +325,10 @@ class BibDetails extends React.Component {
    * @param {object} bib
    * @return {array}
    */
-  getDisplayFields(bib) {
+  const getDisplayFields = (bib) => {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
-    const fields = this.props.fields;
+    const fields = props.fields;
     const fieldsToRender = [];
 
     fields.forEach((field) => {
@@ -345,7 +340,7 @@ class BibDetails extends React.Component {
       let bibValues = bib[fieldValue];
 
       if (fieldValue === 'subjectLiteral') {
-        bibValues = this.compressSubjectLiteral(bib[fieldValue]);
+        bibValues = compressSubjectLiteral(bib[fieldValue]);
       }
 
       // skip absent fields
@@ -357,7 +352,7 @@ class BibDetails extends React.Component {
         if (firstFieldValue['@id']) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: this.getDefinitionObject(
+            definition: getDefinitionObject(
               bibValues,
               fieldValue,
               fieldLinkable,
@@ -366,7 +361,7 @@ class BibDetails extends React.Component {
             ),
           });
         } else {
-          const definition = this.getDefinition(
+          const definition = getDefinition(
             bibValues,
             fieldValue,
             fieldLinkable,
@@ -385,7 +380,7 @@ class BibDetails extends React.Component {
 
       // The Owner is complicated too.
       if (fieldLabel === 'Owning Institutions') {
-        const owner = getOwner(this.props.bib);
+        const owner = getOwner(props.bib);
         if (owner) {
           fieldsToRender.push({
             term: fieldLabel,
@@ -403,7 +398,7 @@ class BibDetails extends React.Component {
       //     '@type': 'bf:Note'},
       //    {...}]
       if (fieldLabel === 'Notes') {
-        const note = this.getNote(this.props.bib);
+        const note = getNote(props.bib);
         // Make sure we have at least one note
         if (note && Array.isArray(note)) {
           // Group notes by noteType:
@@ -411,7 +406,7 @@ class BibDetails extends React.Component {
             // Make sure all notes are blanknodes:
             .filter((note) => typeof note === 'object')
             .reduce((groups, note) => {
-              const noteType = this.getNoteType(note);
+              const noteType = getNoteType(note);
               if (!groups[noteType]) groups[noteType] = [];
               groups[noteType].push(note);
               return groups;
@@ -436,9 +431,9 @@ class BibDetails extends React.Component {
 
       if (
         fieldLabel === 'Electronic Resource' &&
-        this.props.electronicResources.length
+        props.electronicResources.length
       ) {
-        const electronicResources = this.props.electronicResources;
+        const electronicResources = props.electronicResources;
         let electronicElem;
 
         if (electronicResources.length === 1) {
@@ -499,7 +494,7 @@ class BibDetails extends React.Component {
    * @param {array} subjectLiteralArray
    * @return {array}
    */
-  compressSubjectLiteral(subjectLiteralArray) {
+  const compressSubjectLiteral = (subjectLiteralArray) => {
     if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
       subjectLiteralArray = subjectLiteralArray.map((item) =>
         item.replace(/\.$/, '').replace(/--/g, '>'),
@@ -519,7 +514,7 @@ class BibDetails extends React.Component {
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  constructSubjectHeading(bibValue, url, fieldValue, fieldLabel) {
+  const constructSubjectHeading = (bibValue, url, fieldValue, fieldLabel) => {
     let currentArrayString = '';
     const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
     const singleSubjectHeadingArray = bibValue.split(' > ');
@@ -541,7 +536,7 @@ class BibDetails extends React.Component {
       const subjectHeadingLink = (
         <Link
           onClick={(event) =>
-            this.newSearch(
+            newSearch(
               event,
               urlWithFilterQuery,
               fieldValue,
@@ -568,36 +563,6 @@ class BibDetails extends React.Component {
   }
 
   /**
-   * Display for single and multivalued object arrays.
-   * @param {array} notes
-   * @return {string}
-   */
-  noteObjectDisplay(notes) {
-    let display;
-    if (notes.length === 1) {
-      display = (
-        <div>
-          <h4>{notes[0].noteType}</h4>
-          <p>{notes[0].prefLabel}</p>
-        </div>
-      );
-    } else {
-      display = (
-        <ul>
-          {notes.map((note, idx) => (
-            <li key={idx.toString()}>
-              <h4>{note.noteType}</h4>
-              <p>{note.prefLabel}</p>
-            </li>
-          ))}
-        </ul>
-      );
-    }
-
-    return display;
-  }
-
-  /**
    * newSearch(e, query, field, value, label)
    * The method that passed as a callback to a Link element for handling onClick events.
    *
@@ -608,41 +573,39 @@ class BibDetails extends React.Component {
    * @param {string} label - the type of the search keyword. It will be used for
    * the search instruction
    */
-  newSearch(event, query, field, value, label) {
+  const newSearch = (event, query, field, value, label) =>{
     event.preventDefault();
 
     trackDiscovery('Bib fields', `${label} - ${value}`);
-    this.context.router.push(`${appConfig.baseUrl}/search?${query}`);
+    router.push(`${appConfig.baseUrl}/search?${query}`);
   }
 
-  render() {
-    // Make sure bib prop is
-    //  1) nonempty
-    //  2) an object
-    //  3) not an array (which is also an object)
-    if (
-      _isEmpty(this.props.bib) ||
-      !_isObject(this.props.bib) ||
-      _isArray(this.props.bib)
-    ) {
-      return null;
-    }
-    // Make sure fields is a nonempty array:
-    if (_isEmpty(this.props.fields) || !_isArray(this.props.fields)) {
-      return null;
-    }
-
-    const bibDetails = this.getDisplayFields(this.props.bib);
-    const data = combineBibDetailsData(bibDetails, this.props.additionalData);
-
-    return (
-      <DefinitionList
-        data={data}
-        headings={this.props.bib.subjectHeadingData}
-      />
-    );
+  // Make sure bib prop is
+  //  1) nonempty
+  //  2) an object
+  //  3) not an array (which is also an object)
+  if (
+    _isEmpty(props.bib) ||
+    !_isObject(props.bib) ||
+    _isArray(props.bib)
+  ) {
+    return null;
   }
-}
+  // Make sure fields is a nonempty array:
+  if (_isEmpty(props.fields) || !_isArray(props.fields)) {
+    return null;
+  }
+
+  const bibDetails = getDisplayFields(props.bib);
+  const data = combineBibDetailsData(bibDetails, props.additionalData || []);
+
+  return (
+    <DefinitionList
+      data={data}
+      headings={props.bib.subjectHeadingData}
+    />
+  );
+};
 
 BibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
@@ -650,14 +613,9 @@ BibDetails.propTypes = {
   electronicResources: PropTypes.array,
   additionalData: PropTypes.array,
 };
-
 BibDetails.defaultProps = {
   electronicResources: [],
   additionalData: [],
-};
-
-BibDetails.contextTypes = {
-  router: PropTypes.object,
 };
 
 export default BibDetails;

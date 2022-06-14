@@ -21,7 +21,6 @@ const TopBibDetails = ({ bib, resources }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <BibDetails
-        logging
         bib={bib}
         fields={topFields}
         electronicResources={resources}
