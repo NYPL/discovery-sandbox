@@ -1,6 +1,6 @@
 <div align="center">
 
-# NYPL Discovery Applicaiton
+# NYPL Discovery Application
 
 ## The [NYPL](https://www.nypl.org/) [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
 
@@ -24,10 +24,10 @@ For searching, discovering and placing a hold on research items from NYPL and Re
     - [Note: Pre and Post Installation](#note-pre-and-post-installation)
   - [Configurations](#configurations)
     - [Node](#node)
-    - [Environment](#environment)
+    - [Environment Variables](#environment-variables)
     - [VPN](#vpn)
     - [Authentication](#authentication)
-    - [Hosting](#hosting)
+    - [Local Hosting](#local-hosting)
   - [Development](#development)
     - [Different API environments](#different-api-environments)
     - [API Responses](#api-responses)
@@ -44,7 +44,6 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 - [React Accessibility](#react-accessibility)
   - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
   - [react-a11y](#react-a11y)
-- [Misc](#misc)
 - [Deployment](#deployment)
   - [Elastic Beanstalk](#elastic-beanstalk)
 - [Feedback Form](#feedback-form)
@@ -64,60 +63,64 @@ Version 10.17.0
 
 #### NVM
 
-Best practices (though not requried) would suggest using a Node Version Manger (nvm) to aid in managing which Node runtime to use durring development. Through utilizing an nvm you've the ability to quickly migrate between different version for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
+Best practices (though not required) suggest using Node Version Manger (nvm) to aid in managing which Node runtime to use during development. Through nvm, you can quickly migrate between different node versions for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
 
 Relevant packages can be found here:
 
 - [NVM for Windows](https://github.com/coreybutler/nvm-windows)
-
 - [NVM for Mac](https://github.com/nvm-sh/nvm)
 
 ### Installation
 
-To install packages run
+To install packages, in the repo directory run:
 
+```bash
+$ npm install
 ```
-$ npm install or npm i
+
+or
+
+```bash
+$ npm i
 ```
 
 #### Note: Pre and Post Installation
 
-When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail it may indicate you're running a different version of Node's runtime environment. Reference the projects [Node Runtime](#node-runtime)
+When installing you'll notice a pre and post install script run. These scripts are for **_QA_**/**_Production_**/**_Staging_** environments and can be ignored. However, if the scripts fail it may indicate you're running a different version of Node's runtime environment. Reference the project's current [Node Runtime](#node-runtime).
 
 ### Configurations
 
-There are a few consideration to be aware of when spinning up a local development environment. And, while you will be able to view a local version on your machine with just setting up the environment variables, the application may soon break if the host isn't configured properly.
+There are a few consideration to be aware of when spinning up a local development environment. While you will be able to view a local version on your machine with just setting up the environment variables, the application may soon break if the host isn't configured properly.
 
 #### Node
 
-Ensure you are running the proper [node version](#node-runtime).
-If missconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured
+Ensure you are running the proper [node version](#node-runtime). If misconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured.
 
-#### Environment
+#### Environment Variables
 
-See `.env-sample` for supported environmental variables. Rename `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
+See `.env-sample` for supported environmental variables. Copy and rename `.env-sample` as `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
 See [EBSVARS](EBSVARS.md) for more information.
 
 #### VPN
 
-Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
+Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly, Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
 
-`To set up Cisco AnyConnect contact a coworker`
+**To set up Cisco AnyConnect contact a coworker.**
 
 #### Authentication
 
-Certain pages/content within the Discovery application require a user to be logged in. It's higly recommended to apply for a [NYPL library card](https://www.nypl.org/library-card) but it is not required.
+Certain pages/content within the Discovery application require a user to be logged in. It's recommended to apply for a [NYPL library card](https://www.nypl.org/library-card) but it is not required.
 
-There are additional test Patrons and Staff Logins which can be used. Please ask a coworker for the list of available logins.
+There are additional test Patron and Staff Logins that can be used. Please ask a coworker for the list of available logins.
 
-The login logic is managed by NYPL's Header component and Authentication is handled via a cookie passed to a separate NYPL applicaiton and returned to our web server. However, authentication will fail if your [hosting](#hosting) environment is not configured correctly.
+The login logic is managed by NYPL's Header component and authentication is handled via a cookie passed to a separate NYPL application and returned to our web server. However, authentication will fail if your local [hosting](#hosting) environment is not configured correctly.
 
-#### Hosting
+#### Local Hosting
 
-In order to successfully login under a local deployment you'll need to update the `etc/hosts` file. This hosts file maps local host names to ips addresses.
+In order to successfully login under a local deployment you'll need to update your machine's `etc/hosts` file. This hosts file maps local host names to ips addresses.
 
-Add this to your `etc/hosts` file. There is no need to remove or update any other configuration in this file. Simply add it.
+Add this to your `etc/hosts` file. There is no need to remove or update any other configuration in this file. Simply add it at the end of the file.
 
 ```
 	127.0.0.1       local.nypl.org
@@ -125,11 +128,13 @@ Add this to your `etc/hosts` file. There is no need to remove or update any othe
 
 ### Development
 
-To run a local instance of the Discovery Front End application using configurations from `.env`:
+To run a local instance of the Discovery Front End application using configurations from `.env`, run:
 
+```bash
+$ npm start
 ```
-npm run start
-```
+
+Visit `localhost:3001` to see the web app locally. If login authentication is needed, visit `local.nypl.org:3001` (configured in the previous [Authentication](#authentication) section).
 
 #### Different API environments
 
@@ -152,13 +157,13 @@ To run the app locally in production mode you need to run two commands:
 - `npm run dist`: This builds the assets.
 - `source .env; npm run prod-start`: Start servers using production API & serve prebundled assets.
 
-Visit `localhost:3001` to see the UI locally.
+Visit `localhost:3001` to see the web app locally.
 
 ## Technology
 
 - Universal React
 - Redux
-- Webpack & Webpack Dev Server
+- Webpack 4 & Webpack Dev Server
 - ES6 and Babel
 - ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
 - Unit Testing with [Mocha](https://mochajs.org/) and [Enzyme](http://airbnb.io/enzyme/)
@@ -196,7 +201,7 @@ This app has an unusual Git Workflow / deployment scheme:
 
 There are a couple of scenarios that complicate the above workflow:
 
-1. Sometimes, feature branches do not require QA, for instance changes to the README. In this case, it is OK to merge into `development` and `production` without a QA tag, but this should only be done in cases where no QA is necessary. Ideally we never QA work that is already merged to `development`
+1. Sometimes, feature branches do not require QA, for instance changes to the README. In this case, it is OK to merge into `development` and `production` without a QA tag, but this should only be done in cases where no QA is necessary. Ideally we never QA work that is already merged to `development`.
 
 2. Sometimes, feature branches may be bundled together into a release branch. In this case, the release may be tagged for QA, and upon passing QA merged into `development`. The other branches can then be deleted. Ideally, anything merged to `development` should have been on QA exactly as it is at the time of merge.
 
@@ -299,10 +304,6 @@ Or all components at once:
 
 This will output warnings in the browser's console for elements that do not meet accessibility standards. Some rules may be too strict and should be verified against other accessibility rules.
 
-## Misc
-
-Starting up from a [Node/React boilerplate](https://bitbucket.org/NYPL/dgx-nypl-react-boilerplate).
-
 ## Deployment
 
 We have CI/CD configured through travis for the following branches:
@@ -345,7 +346,7 @@ When new Sierra locations (especially Sierra locations that are "delivery locati
 In this repo, two local JSONs are critical to adding locations:
 
 - `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
-- `./data/locationCodes.js`: A JSON mapping _all_ sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`) (Note that sierra locations that act only as _delivery locations_ must be entered in this hash and cite themselves as `delivery_location`.)
+- `./data/locationCodes.js`: A JSON mapping _all_ Sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`). (Note that Sierra locations that act only as _delivery locations_ must be entered in this hash and cite themselves as `delivery_location`).
 
 These files must be kept up to date with newly added locations to ensure that the hold-request page presents delivery locations with correct labels and building addresses. For example, when Scholar rooms 217 and 223 were added to SASB, entries like the following needed to be added to `./locationCodes.js`:
 
@@ -360,16 +361,16 @@ Less frequently, when an NYPL location address changes, we should change the cor
 
 ## Business Continuity
 
-There are variables available in .env to configure the requestable locations.
+There are variables available in the `.env` dilw to configure the requestable locations.
 
-`CLOSED_LOCATIONS` is a semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options. `.env-sample` contains an example of this.
+- `CLOSED_LOCATIONS` is a semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options. `.env-sample` contains an example of this.
 
-Currently used physical locations: Schwarzman;Science;Library for the Performing Arts;Schomburg
+  Currently used physical locations: `Schwarzman;Science;Library for the Performing Arts;Schomburg`.
 
-To close all locations, add `all`. This will also remove EDD as a request option, and the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available.
+  To close all locations, add `all`. This will also remove EDD as a request option, the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available.
 
-`OPEN_LOCATIONS` is a comma-delimited list of strings. If set to anything other than an empty string, only locations matching one of these strings will be displayed.
+- `OPEN_LOCATIONS` is a comma-delimited list of strings. If set to anything other than an empty string, only locations matching one of these strings will be displayed.
 
-`HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the HoldRequest landing page, and the EDD page.
+- `HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the `HoldRequest` landing page, and the EDD page.
 
-`SEARCH_RESULTS_NOTIFICATION`: Same as above, but will be added on the SearchResults page
+- `SEARCH_RESULTS_NOTIFICATION`: Same as above, but will be added on the `SearchResults` page
