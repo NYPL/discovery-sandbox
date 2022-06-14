@@ -3,8 +3,9 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
+import BibDetails from './../../src/app/components/BibPage/BibDetails';
+import { RouterProvider } from './../../src/app/pages/BibPage.jsx'
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 
 describe('Tabbed', () => {
@@ -137,11 +138,15 @@ describe('Tabbed', () => {
     </div>
   )
 
-  const bibDetails = (<BibDetails
-    bib={sampleBib}
-    fields={bottomFields}
-    electronicResources={[]}
-  />);
+  const bibDetails = (
+    <RouterProvider value={{ push: () => {}}}>
+      <BibDetails
+        bib={sampleBib}
+        fields={bottomFields}
+        electronicResources={[]}
+      />
+    </RouterProvider>
+  );
 
   const additionalDetails = (<AdditionalDetailsViewer bib={sampleBib} />);
 
