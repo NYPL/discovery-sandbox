@@ -25,18 +25,11 @@ describe('SubjectHeadings', () => {
         },
       },
     ];
-    const i = 1;
+    const component = mount(<SubjectHeadings headings={headings} />);
 
-    const component = mount(<SubjectHeadings headings={headings} i={i} />);
-
-    it('should have a div', () => {
-      expect(component.find('div').length).to.equal(1);
-    });
-
-    it('should have a dt with text \'Subject\' and key i', () => {
+    it('should have a dt with text \'Subject\'', () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subject');
-      expect(component.find('dt').at(0).key()).to.equal('term-1');
     });
 
     it('should have a dd', () => {
@@ -74,18 +67,11 @@ describe('SubjectHeadings', () => {
         label: 'Heading+&',
       },
     ];
-    const i = 1;
+    const component = mount(<SubjectHeadings headings={headings} />);
 
-    const component = mount(<SubjectHeadings headings={headings} i={i} />);
-
-    it('should have a div', () => {
-      expect(component.find('div').length).to.equal(1);
-    });
-
-    it('should have a dt with text \'Subjects\' and key i', () => {
+    it('should have a dt with text \'Subjects\'', () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subjects');
-      expect(component.find('dt').at(0).key()).to.equal('term-1');
     });
 
     it('should have a dd', () => {

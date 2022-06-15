@@ -5,6 +5,7 @@ import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
+import { getGroupedNotes } from '../../src/app/components/BibPage/BottomBibDetails';
 import { RouterProvider } from './../../src/app/pages/BibPage.jsx'
 import bibs from '../fixtures/bibs';
 
@@ -197,11 +198,11 @@ describe('BibDetails', () => {
 
     xit('should render proper texts and link(s) for each subject heading', () => {
       component = mount(
-        <TestProvider>
+        <RouterProvider value={{ push: () => {}}}>
           {React.createElement(
             BibDetails, { bib: bibs[0], fields }
           )}
-        </TestProvider>
+        </RouterProvider>
       );
       const bibDetailsComponent = component.children();
 
@@ -224,19 +225,21 @@ describe('BibDetails', () => {
 
   describe('getDisplayFields', () => {
     it('modifies note fields appropriately', () => {
+      const bib =  {
+        note: [
+          { noteType: 'Language', prefLabel: 'In Urdu' },
+          { noteType: 'Explanatory Note', prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE' },
+        ],
+      };
       const component = mount(
         <RouterProvider value={{ push: () => {}}}>
           {React.createElement(BibDetails,
             {
-              bib: {
-                note: [
-                  { noteType: 'Language', prefLabel: 'In Urdu' },
-                  { noteType: 'Explanatory Note', prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE' },
-                ],
-              },
+              bib,
               fields: [{ label: 'Notes', value: 'React Component' }],
               electronicResources: [],
               additionalData: [],
+              notes: getGroupedNotes(bib),
             },
           )}
         </RouterProvider>

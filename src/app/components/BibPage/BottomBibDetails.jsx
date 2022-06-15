@@ -5,11 +5,47 @@ import { annotatedMarcDetails } from '../../utils/bibDetailsUtils';
 import { isNyplBnumber } from '../../utils/utils';
 import BibDetails from './BibDetails';
 
-// `linkable` means that those values are links inside the app.
-// `selfLinkable` means that those values are external links and should be self-linked,
-// e.g. the prefLabel is the label and the URL is the id.
+export const getGroupedNotes = (bib) => {
+  const note = bib?.note?.length ? bib.note : null;
+  let notesGroupedByNoteType = {};
+
+  /**
+   * getNoteType(note)
+   * Construct label for a note by adding the word 'Note'
+   *
+   * @param {object} note
+   * @return {string}
+   */
+  const getNoteType = (note) => {
+    const type = note.noteType || '';
+    return type.toLowerCase().includes('note') ? type : `${type} (note)`;
+  }
+
+  if (!note) {
+    return notesGroupedByNoteType;
+  }
+  // Make sure we have at least one note
+  if (note && Array.isArray(note)) {
+    // Group notes by noteType:
+    notesGroupedByNoteType = note
+      // Make sure all notes are blanknodes:
+      .filter((note) => typeof note === 'object')
+      .reduce((groups, note) => {
+        const noteType = getNoteType(note);
+        if (!groups[noteType]) {
+          groups[noteType] = [];
+        }
+        groups[noteType].push(note);
+        return groups;
+      }, {});
+  }
+  return notesGroupedByNoteType;
+};
 
 const BottomBibDetails = ({ bib, resources }) => {
+  // `linkable` means that those values are links inside the app.
+  // `selfLinkable` means that those values are external links and should be self-linked,
+  // e.g. the prefLabel is the label and the URL is the id.
   const detailsFields = [
     {
       label: 'Additional Authors',
@@ -45,6 +81,7 @@ const BottomBibDetails = ({ bib, resources }) => {
       <Heading level={3}>Details</Heading>
       <BibDetails
         bib={bib}
+        notes={getGroupedNotes(bib)}
         fields={detailsFields}
         electronicResources={resources}
         additionalData={

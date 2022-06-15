@@ -21,16 +21,28 @@ import { trackDiscovery } from '../../utils/utils';
 const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
 
-  /**
-   * Return note array or null.
-   *
-   * @param {object} bib
-   * @return {null|array}
-   */
-  const getNote = (bib) => {
-    const note = bib.note;
-    return note && note.length ? note : null;
-  };
+  // /**
+  //  * Return note array or null.
+  //  *
+  //  * @param {object} bib
+  //  * @return {null|array}
+  //  */
+  // const getNote = (bib) => {
+  //   const note = bib.note;
+  //   return note && note.length ? note : null;
+  // };
+  // /**
+  //  * getNoteType(note)
+  //  * Construct label for a note by adding the word 'Note'
+  //  *
+  //  * @param {object} note
+  //  * @return {string}
+  //  */
+
+  //  const getNoteType = (note) => {
+  //   const type = note.noteType || '';
+  //   return type.toLowerCase().includes('note') ? type : `${type} (note)`;
+  // }
   /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
@@ -56,22 +68,12 @@ const BibDetails = (props) => {
       const url = `filters[${fieldValue}]=${bibValue['@id']}`;
 
       if (fieldLinkable) {
-        return (
-          <Link
-            onClick={(event) =>
-              newSearch(
-                event,
-                url,
-                fieldValue,
-                bibValue['@id'],
-                fieldLabel,
-              )
-            }
-            to={`${appConfig.baseUrl}/search?${url}`}
-          >
-            {bibValue.prefLabel}
-          </Link>
-        );
+        return searchLink({
+          query: url,
+          label: bibValue.prefLabel,
+          analyticsLabel: fieldLabel,
+          analyticsValue: bibValue['@id'],
+        });
       }
 
       if (fieldSelfLinkable) {
@@ -98,14 +100,12 @@ const BibDetails = (props) => {
         {bibValues.map((value) => {
           const url = `filters[${fieldValue}]=${value['@id']}`;
           let itemValue = fieldLinkable ? (
-            <Link
-              onClick={(event) =>
-                newSearch(event, url, fieldValue, value['@id'], fieldLabel)
-              }
-              to={`${appConfig.baseUrl}/search?${url}`}
-            >
-              {value.prefLabel}
-            </Link>
+            searchLink({
+              query: url,
+              label: value.prefLabel,
+              analyticsLabel: fieldLabel,
+              analyticsValue: value['@id'],
+            })
           ) : (
             <span>{value.prefLabel}</span>
           );
@@ -201,10 +201,8 @@ const BibDetails = (props) => {
       return getDefinitionOneItem(
         bibValue,
         url,
-        bibValues,
         fieldValue,
         fieldLinkable,
-        fieldIdentifier,
         fieldSelfLinkable,
         fieldLabel,
       );
@@ -225,10 +223,8 @@ const BibDetails = (props) => {
               {getDefinitionOneItem(
                 value,
                 url,
-                bibValues,
                 fieldValue,
                 fieldLinkable,
-                fieldIdentifier,
                 fieldSelfLinkable,
                 fieldLabel,
               )}
@@ -246,10 +242,8 @@ const BibDetails = (props) => {
    *
    * @param {string} bibValue - the value for the current field
    * @param {string} url - for constructing the query values of the URLs
-   * @param {string} bibValues
    * @param {string} fieldValue - the name of the current field
    * @param {boolean} fieldLinkable - if the field should be clickable
-   * @param {string} fieldIdentifier
    * @param {boolean} fieldSelfLinkable - if the Bib field already has a URL
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
@@ -257,10 +251,8 @@ const BibDetails = (props) => {
   const getDefinitionOneItem = (
     bibValue,
     url,
-    bibValues,
     fieldValue,
     fieldLinkable,
-    fieldIdentifier,
     fieldSelfLinkable,
     fieldLabel,
   ) => {
@@ -274,16 +266,12 @@ const BibDetails = (props) => {
     }
 
     if (fieldLinkable) {
-      return (
-        <Link
-          onClick={(event) =>
-            newSearch(event, url, fieldValue, bibValue, fieldLabel)
-          }
-          to={`${appConfig.baseUrl}/search?${url}`}
-        >
-          {bibValue}
-        </Link>
-      );
+      return searchLink({
+        query: url,
+        label: bibValue,
+        analyticsLabel: fieldLabel,
+        analyticsValue: bibValue,
+      });
     }
 
     if (fieldSelfLinkable) {
@@ -306,29 +294,16 @@ const BibDetails = (props) => {
   }
 
   /**
-   * getNoteType(note)
-   * Construct label for a note by adding the word 'Note'
-   *
-   * @param {object} note
-   * @return {string}
-   */
-
-  const getNoteType = (note) => {
-    const type = note.noteType || '';
-    return type.toLowerCase().includes('note') ? type : `${type} (note)`;
-  }
-
-  /**
    * getDisplayFields(bib)
    * Get an array of definition term/values.
    *
    * @param {object} bib
+   * @return {object} fields
    * @return {array}
    */
-  const getDisplayFields = (bib) => {
+  const getDisplayFields = (bib, fields) => {
     // A value of 'React Component' just means that we are getting it from a
     // component rather than from the bib field properties.
-    const fields = props.fields;
     const fieldsToRender = [];
 
     fields.forEach((field) => {
@@ -397,80 +372,64 @@ const BibDetails = (props) => {
       //     'prefLabel': 'string',
       //     '@type': 'bf:Note'},
       //    {...}]
-      if (fieldLabel === 'Notes') {
-        const note = getNote(props.bib);
-        // Make sure we have at least one note
-        if (note && Array.isArray(note)) {
-          // Group notes by noteType:
-          const notesGroupedByNoteType = note
-            // Make sure all notes are blanknodes:
-            .filter((note) => typeof note === 'object')
-            .reduce((groups, note) => {
-              const noteType = getNoteType(note);
-              if (!groups[noteType]) groups[noteType] = [];
-              groups[noteType].push(note);
-              return groups;
-            }, {});
-
-          // For each group of notes, add a fieldToRender:
-          Object.keys(notesGroupedByNoteType).forEach((noteType) => {
-            const notesList = (
-              <ul>
-                {notesGroupedByNoteType[noteType].map((note, idx) => (
-                  <li key={idx.toString()}>{note.prefLabel}</li>
-                ))}
-              </ul>
-            );
-            fieldsToRender.push({
-              term: noteType,
-              definition: notesList,
-            });
+      if (fieldLabel === 'Notes' && props.notes) {
+        const notesGroupedByNoteType = props.notes;
+        // For each group of notes, add a fieldToRender:
+        Object.keys(notesGroupedByNoteType).forEach((noteType) => {
+          const notesList = (
+            <ul>
+              {notesGroupedByNoteType[noteType].map((note, idx) => (
+                <li key={idx.toString()}>{note.prefLabel}</li>
+              ))}
+            </ul>
+          );
+          fieldsToRender.push({
+            term: noteType,
+            definition: notesList,
           });
-        }
+        });
       }
 
       if (
         fieldLabel === 'Electronic Resource' &&
-        props.electronicResources.length
+        props.electronicResources.length > 0
       ) {
         const electronicResources = props.electronicResources;
+        const electronicResourcesLink = ({ href, label }) => (
+          <a
+            href={href}
+            target="_blank"
+            onClick={() =>
+              trackDiscovery(
+                'Bib fields',
+                `Electronic Resource - ${label} - ${href}`,
+              )
+            }
+            rel='noreferrer'
+          >
+            {label || href}
+          </a>
+        );
         let electronicElem;
 
+        // If there is only one electronic resource, then
+        // just render a single anchor element.
         if (electronicResources.length === 1) {
           const electronicItem = electronicResources[0];
-          electronicElem = (
-            <a
-              href={electronicItem.url}
-              target="_blank"
-              onClick={() =>
-                trackDiscovery(
-                  'Bib fields',
-                  `Electronic Resource - ${electronicItem.label} - ${electronicItem.url}`,
-                )
-              }
-              rel='noreferrer'
-            >
-              {electronicItem.label || electronicItem.url}
-            </a>
-          );
+          electronicElem = electronicResourcesLink({
+            href: electronicItem.url,
+            label: electronicItem.label,
+          });
         } else {
+          // Otherwise, create a list of anchors.
           electronicElem = (
             <ul>
               {electronicResources.map((resource) => (
                 <li key={resource.label}>
-                  <a
-                    href={resource.url}
-                    target='_blank'
-                    onClick={() =>
-                      trackDiscovery(
-                        'Bib fields',
-                        `Electronic Resource - ${resource.label} - ${resource.url}`,
-                      )
-                    }
-                    rel='noreferrer'
-                  >
-                    {resource.label || resource.url}
-                  </a>
+                  {electronicResourcesLink({
+                    href: resource.url,
+                    label: resource.label,
+                  })}
                 </li>
               ))}
             </ul>
@@ -533,23 +492,12 @@ const BibDetails = (props) => {
     singleSubjectHeadingArray.forEach((heading, index) => {
       const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
 
-      const subjectHeadingLink = (
-        <Link
-          onClick={(event) =>
-            newSearch(
-              event,
-              urlWithFilterQuery,
-              fieldValue,
-              urlArray[index],
-              fieldLabel,
-            )
-          }
-          to={`${appConfig.baseUrl}/search?${urlWithFilterQuery}`}
-          key={heading}
-        >
-          {heading}
-        </Link>
-      );
+      const subjectHeadingLink = searchLink({
+        query: urlWithFilterQuery,
+        label: heading,
+        analyticsLabel: fieldLabel,
+        analyticsValue: urlArray[index],
+      });
 
       returnArray.push(subjectHeadingLink);
 
@@ -563,22 +511,32 @@ const BibDetails = (props) => {
   }
 
   /**
-   * newSearch(e, query, field, value, label)
-   * The method that passed as a callback to a Link element for handling onClick events.
-   *
-   * @param event {event} - onClick event
-   * @param {string} query - the search query that is attached to the search endpoint
-   * @param {string} field - the type of the search query
-   * @param {string} value - the search keyword of the search. It will be used for the filter button
-   * @param {string} label - the type of the search keyword. It will be used for
-   * the search instruction
+   * Creates a react-router `Link` component set for searching a
+   * specific query within the app.
+   * 
+   * @param {string} query - the search query to add in the URL
+   * @param {string} label - the visible label for the anchor element
+   * @param {string} analyticsLabel - label text used for Google Analytics
+   * @param {string} analyticsValue - value text used for Google Analytics
+   * @returns React-router `Link` component.
    */
-  const newSearch = (event, query, field, value, label) =>{
-    event.preventDefault();
+  const searchLink = ({ query, label, analyticsLabel, analyticsValue }) => {
+    const onClick = (event) => {
+      event.preventDefault();
 
-    trackDiscovery('Bib fields', `${label} - ${value}`);
-    router.push(`${appConfig.baseUrl}/search?${query}`);
-  }
+      trackDiscovery('Bib fields', `${analyticsLabel} - ${analyticsValue}`);
+      router.push(`${appConfig.baseUrl}/search?${query}`);
+    };
+
+    return (
+      <Link
+        onClick={onClick}
+        to={`${appConfig.baseUrl}/search?${query}`}
+      >
+        {label}
+      </Link>
+    )
+  };
 
   // Make sure bib prop is
   //  1) nonempty
@@ -596,7 +554,7 @@ const BibDetails = (props) => {
     return null;
   }
 
-  const bibDetails = getDisplayFields(props.bib);
+  const bibDetails = getDisplayFields(props.bib, props.fields);
   const data = combineBibDetailsData(bibDetails, props.additionalData || []);
 
   return (
@@ -612,6 +570,7 @@ BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   electronicResources: PropTypes.array,
   additionalData: PropTypes.array,
+  notes: PropTypes.object,
 };
 BibDetails.defaultProps = {
   electronicResources: [],

@@ -5,6 +5,7 @@ import SubjectHeadings from './SubjectHeadings';
 /*
  * DefinitionList
  * Expects data in the form of [{ term: '', definition: '' }, {...}, ...].
+ * The `headings` prop is only used in `BibDetails.jsx`.
  */
 const DefinitionList = ({ data, headings }) => {
   const getDefinitions = (definitions) =>
