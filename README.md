@@ -98,7 +98,7 @@ Ensure you are running the proper [node version](#node-runtime). If misconfigure
 
 #### Environment Variables
 
-See `.env-sample` for supported environmental variables. Copy and rename `.env-sample` as `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
+See `.env-sample` for supported environmental variables. Create a new `.env` file. Copy the contents of `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
 See [EBSVARS](EBSVARS.md) for more information.
 
@@ -361,7 +361,7 @@ Less frequently, when an NYPL location address changes, we should change the cor
 
 ## Business Continuity
 
-There are variables available in the `.env` dilw to configure the requestable locations.
+There are variables available in the `.env` file to configure the requestable locations.
 
 - `CLOSED_LOCATIONS` is a semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options. `.env-sample` contains an example of this.
 
