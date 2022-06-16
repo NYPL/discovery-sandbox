@@ -182,13 +182,15 @@ export class HoldRequest extends React.Component {
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
   checkEligibility () {
     this.setState({ checkingPatronEligibility: true })
+    let checkingEligibility = true
     const startTime = Date.now()
     let eligible = false
     setTimeout(() => {
-      if (this.state.checkingPatronEligibility) console.log(`Patron eligibility check taking at least 3 seconds`)
+      if (checkingEligibility) console.log(`Patron eligibility check taking at least 3 seconds`)
     }, 3000)
     return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
       .then((response) => {
+        eligible = response.data.eligibility
         return response.data
       })
       .catch(() => {
@@ -199,8 +201,10 @@ export class HoldRequest extends React.Component {
         const elapsed = Date.now() - startTime
         console.log(`Patron eligibility check took ${elapsed}ms. Patron eligibility: ${eligible}`)
         // not 100% on this return, it was implicitly returned in the original code
+        checkingEligibility = false
         return this.setState({ checkingPatronEligibility: false })
       });
+
   }
 
   redirectWithErrors (path, status, message) {
