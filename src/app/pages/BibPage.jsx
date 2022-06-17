@@ -117,7 +117,7 @@ export const BibPage = (
 
         <TopBibDetails
           bib={bib}
-          resources={pluckAeonLinksFromResource(
+          electronicResources={pluckAeonLinksFromResource(
             aggregatedElectronicResources,
             items,
           )}
@@ -143,7 +143,10 @@ export const BibPage = (
           </section>
         )}
 
-        <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
+        <BottomBibDetails
+          bib={bib}
+          electronicResources={aggregatedElectronicResources}
+        />
 
         <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
       </SccContainer>

@@ -1,6 +1,6 @@
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
@@ -12,37 +12,12 @@ import DefinitionList from './DefinitionList';
 // Utils and configs
 import appConfig from '../../data/appConfig';
 import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
-import getOwner from '../../utils/getOwner';
-import LibraryItem from '../../utils/item';
-import {RouterContext} from "../../pages/BibPage";
+import { RouterContext } from "../../pages/BibPage";
 import { trackDiscovery } from '../../utils/utils';
-
 
 const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
 
-  // /**
-  //  * Return note array or null.
-  //  *
-  //  * @param {object} bib
-  //  * @return {null|array}
-  //  */
-  // const getNote = (bib) => {
-  //   const note = bib.note;
-  //   return note && note.length ? note : null;
-  // };
-  // /**
-  //  * getNoteType(note)
-  //  * Construct label for a note by adding the word 'Note'
-  //  *
-  //  * @param {object} note
-  //  * @return {string}
-  //  */
-
-  //  const getNoteType = (note) => {
-  //   const type = note.noteType || '';
-  //   return type.toLowerCase().includes('note') ? type : `${type} (note)`;
-  // }
   /**
    * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API, where
@@ -132,52 +107,13 @@ const BibDetails = (props) => {
   }
 
   /**
-   * Given an array of identifier entities and an rdf:type, returns markup to
-   * render the values - if any - for the requested type.
-   *
-   * @param {array<object>} bibValues - Array of entities to inspect
-   * @param {string} identifierType - The rdf:type to get (e.g. bf:Isbn)
-   */
-  const getIdentifiers = (bibValues, identifierType) => {
-    const entities = LibraryItem.getIdentifierEntitiesByType(
-      bibValues,
-      identifierType,
-    );
-    if (Array.isArray(entities) && entities.length > 0) {
-      const markup = entities.map((ent) => {
-        const nodes = [<span key={`${ent['@value']}`}>{ent['@value']}</span>];
-        if (ent.identifierStatus)
-          nodes.push(
-            <span key={`${ent['@value']}`}>
-              {' '}
-              <em>({ent.identifierStatus})</em>
-            </span>,
-          );
-        return nodes;
-      });
-
-      return markup.length === 1 ? (
-        markup.pop()
-      ) : (
-        <ul>
-          {markup.map((mark) => (
-            <li key={mark[0].key}>{mark}</li>
-          ))}
-        </ul>
-      );
-    }
-    return null;
-  }
-
-  /**
-   * getDefinition(bibValues, fieldValue, fieldLinkable, fieldIdentifier,
+   * getDefinition(bibValues, fieldValue, fieldLinkable,
    * fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API.
    *
    * @param {array} bibValues - the value(s) of the current field
    * @param {string} fieldValue - the name of the current field
    * @param {boolean} fieldLinkable  - flags true if the field should be clickable
-   * @param {string} fieldIdentifier
    * @param {string} fieldSelfLinkable - flags true if the Bib field already has a URL
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
@@ -186,12 +122,21 @@ const BibDetails = (props) => {
     bibValues,
     fieldValue,
     fieldLinkable,
-    fieldIdentifier,
     fieldSelfLinkable,
     fieldLabel,
   ) => {
     if (fieldValue === 'identifier') {
-      return getIdentifiers(bibValues, fieldIdentifier);
+      if (bibValues) {
+        return bibValues.length === 1 ? (
+          bibValues.pop()
+        ) : (
+          <ul>
+            {bibValues.map((mark, index) => (
+              <li key={index}>{mark}</li>
+            ))}
+          </ul>
+        );
+      }
     }
 
     if (bibValues.length === 1) {
@@ -260,7 +205,6 @@ const BibDetails = (props) => {
       return constructSubjectHeading(
         bibValue,
         url,
-        fieldValue,
         fieldLabel,
       );
     }
@@ -289,7 +233,6 @@ const BibDetails = (props) => {
         </a>
       );
     }
-
     return <span>{bibValue}</span>;
   }
 
@@ -318,6 +261,11 @@ const BibDetails = (props) => {
         bibValues = compressSubjectLiteral(bib[fieldValue]);
       }
 
+      if (fieldValue === 'identifier') {
+        // return getIdentifiers(bibValues, fieldIdentifier);
+        bibValues = bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
+      }
+
       // skip absent fields
       if (bibValues && bibValues.length && _isArray(bibValues)) {
         // Taking just the first value for each field to check the type.
@@ -340,7 +288,6 @@ const BibDetails = (props) => {
             bibValues,
             fieldValue,
             fieldLinkable,
-            fieldIdentifier,
             fieldSelfLinkable,
             fieldLabel,
           );
@@ -354,26 +301,23 @@ const BibDetails = (props) => {
       }
 
       // The Owner is complicated too.
-      if (fieldLabel === 'Owning Institutions') {
-        const owner = getOwner(props.bib);
-        if (owner) {
-          fieldsToRender.push({
-            term: fieldLabel,
-            definition: owner,
-          });
-        }
+      if (fieldLabel === 'Owning Institutions' && props.bib?.owner) {
+        fieldsToRender.push({
+          term: fieldLabel,
+          definition: props.bib.owner,
+        });
       }
 
       // Note field rendering as array of objects instead of an array of strings.
       // Parse the original and new note format.
       // Original format: ['string1', 'string2']
-      // 2018 format:
-      //    [{'noteType': 'string',
-      //     'prefLabel': 'string',
-      //     '@type': 'bf:Note'},
+      // Updated 2018 format:
+      //    [{'@type': 'bf:Note',
+      //      'noteType': 'string',
+      //      'prefLabel': 'string'},
       //    {...}]
-      if (fieldLabel === 'Notes' && props.notes) {
-        const notesGroupedByNoteType = props.notes;
+      if (fieldLabel === 'Notes' && !_isEmpty(props.bib.notesGroupedByNoteType)) {
+        const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
         // For each group of notes, add a fieldToRender:
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
@@ -455,7 +399,7 @@ const BibDetails = (props) => {
    */
   const compressSubjectLiteral = (subjectLiteralArray) => {
     if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
-      subjectLiteralArray = subjectLiteralArray.map((item) =>
+      return subjectLiteralArray.map((item) =>
         item.replace(/\.$/, '').replace(/--/g, '>'),
       );
     }
@@ -464,16 +408,15 @@ const BibDetails = (props) => {
   }
 
   /**
-   * constructSubjectHeading(bibValue, url, fieldValue, fieldLabel)
+   * constructSubjectHeading(bibValue, url, fieldLabel)
    * Constructs the link elements of subject headings.
    *
    * @param {string} bibValue - for constructing the texts of link elements
    * @param {string} url - for constructing the query values of the URLs
-   * @param {string} fieldValue - offers the values of search keywords
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  const constructSubjectHeading = (bibValue, url, fieldValue, fieldLabel) => {
+  const constructSubjectHeading = (bibValue, url, fieldLabel) => {
     let currentArrayString = '';
     const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
     const singleSubjectHeadingArray = bibValue.split(' > ');
@@ -530,6 +473,7 @@ const BibDetails = (props) => {
 
     return (
       <Link
+        key={label.trim().replace(/ /g,'')}
         onClick={onClick}
         to={`${appConfig.baseUrl}/search?${query}`}
       >
@@ -570,7 +514,6 @@ BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   electronicResources: PropTypes.array,
   additionalData: PropTypes.array,
-  notes: PropTypes.object,
 };
 BibDetails.defaultProps = {
   electronicResources: [],

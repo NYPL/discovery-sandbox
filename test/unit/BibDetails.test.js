@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import { getGroupedNotes } from '../../src/app/components/BibPage/BottomBibDetails';
+import { getGroupedNotes } from '../../src/app/utils/bibDetailsUtils';
 import { RouterProvider } from './../../src/app/pages/BibPage.jsx'
 import bibs from '../fixtures/bibs';
 
@@ -231,6 +231,8 @@ describe('BibDetails', () => {
           { noteType: 'Explanatory Note', prefLabel: 'https://www.youtube.com/watch?v=Eikb2lX5xYE' },
         ],
       };
+      bib["notesGroupedByNoteType"] = getGroupedNotes(bib);
+
       const component = mount(
         <RouterProvider value={{ push: () => {}}}>
           {React.createElement(BibDetails,
@@ -239,7 +241,6 @@ describe('BibDetails', () => {
               fields: [{ label: 'Notes', value: 'React Component' }],
               electronicResources: [],
               additionalData: [],
-              notes: getGroupedNotes(bib),
             },
           )}
         </RouterProvider>

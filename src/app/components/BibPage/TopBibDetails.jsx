@@ -17,13 +17,13 @@ const topFields = [
   },
 ];
 
-const TopBibDetails = ({ bib, resources }) => {
+const TopBibDetails = ({ bib, electronicResources }) => {
   return (
     <section style={{ marginTop: '20px' }}>
       <BibDetails
         bib={bib}
         fields={topFields}
-        electronicResources={resources}
+        electronicResources={electronicResources}
       />
     </section>
   );
@@ -31,11 +31,11 @@ const TopBibDetails = ({ bib, resources }) => {
 
 TopBibDetails.propTypes = {
   bib: PropTypes.object.isRequired,
-  resources: PropTypes.array.isRequired,
+  electronicResources: PropTypes.array.isRequired,
 };
 
 TopBibDetails.defaultProps = {
-  resources: [],
+  electronicResources: [],
 };
 
 export default TopBibDetails;
