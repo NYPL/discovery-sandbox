@@ -40,7 +40,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
 };
 
 function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
-  const encodedResultsQueryString = createAPIQuery({
+  const encodedQueryString = createAPIQuery({
     searchKeywords,
     contributor,
     title,
@@ -52,17 +52,10 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     identifierNumbers,
   });
 
-  const encodedAggregationsQueryString = createAPIQuery({
-    searchKeywords,
-    selectedFilters: filters,
-    field,
-    identifierNumbers
-  });
-
-  const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
+  const aggregationQuery = `/aggregations?${encodedQueryString}`;
   // TODO: Why are we hard-coding per_page=50? Could we set this to the number
   // shown on Search Results pages (3)?
-  const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
+  const resultsQuery = `?${encodedQueryString}&per_page=50`;
   const queryObj = {
     query: { q: searchKeywords, sortBy, order, field, filters },
   };
