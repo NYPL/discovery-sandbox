@@ -5,21 +5,31 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+
+// Components
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import BibDetails from '../components/BibPage/BibDetails';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
-import BottomBibDetails from '../components/BibPage/BottomBibDetails';
-import LibraryHoldings from '../components/BibPage/LibraryHoldings';
-import TopBibDetails from '../components/BibPage/TopBibDetails';
 import itemsContainerModule from '../components/Item/ItemsContainer';
 import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import LibraryItem from '../utils/item';
 import SccContainer from '../components/SccContainer/SccContainer';
+// Utils and configs
+import {
+  allFields,
+  annotatedMarcDetails,
+  getGroupedNotes,
+  getIdentifiers,
+} from '../utils/bibDetailsUtils';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-import LibraryItem from '../utils/item';
 import {
   getAggregatedElectronicResources,
+  isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import getOwner from '../utils/getOwner';
 
 export const RouterContext = React.createContext(null);
 export const RouterProvider = ({ children, value }) => {
@@ -101,6 +111,13 @@ export const BibPage = (
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
 
+  const topFields = allFields.top;
+  const bottomFields = allFields.bottom(bib);
+  const newBibModel = { ...bib };
+  newBibModel["notesGroupedByNoteType"] = getGroupedNotes(bib);
+  newBibModel["owner"] = getOwner(bib);
+  newBibModel["updatedIdentifiers"] = getIdentifiers(newBibModel, bottomFields);
+
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -110,18 +127,21 @@ export const BibPage = (
       >
         <section className="nypl-item-details__heading">
           <Heading level={2}>
-            {bib.title && bib.title.length ? bib.title[0] : ' '}
+            {newBibModel.title && newBibModel.title.length ? newBibModel.title[0] : ' '}
           </Heading>
           <BackToSearchResults result={resultSelection} bibId={bibId} />
         </section>
 
-        <TopBibDetails
-          bib={bib}
-          electronicResources={pluckAeonLinksFromResource(
-            aggregatedElectronicResources,
-            items,
-          )}
-        />
+        <section style={{ marginTop: '20px' }}>
+          <BibDetails
+            bib={newBibModel}
+            electronicResources={pluckAeonLinksFromResource(
+              aggregatedElectronicResources,
+              items,
+            )}
+            fields={topFields}
+          />
+        </section>
 
         {items.length && !isElectronicResources && (
           <section style={{ marginTop: '20px' }}>
@@ -132,21 +152,30 @@ export const BibPage = (
               bibId={bibId}
               itemPage={location.search}
               searchKeywords={searchKeywords}
-              holdings={bib.holdings}
+              holdings={newBibModel.holdings}
             />
           </section>
         )}
 
-        {bib.holdings && (
+        {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>
-            <LibraryHoldings holdings={bib.holdings} />
+            <LibraryHoldings holdings={newBibModel.holdings} />
           </section>
         )}
 
-        <BottomBibDetails
-          bib={bib}
-          electronicResources={aggregatedElectronicResources}
-        />
+        <section style={{ marginTop: '20px' }}>
+          <Heading level={3}>Details</Heading>
+          <BibDetails
+            additionalData={
+              isNyplBnumber(newBibModel.uri) && newBibModel.annotatedMarc
+                ? annotatedMarcDetails(newBibModel)
+                : []
+            }
+            bib={newBibModel}
+            electronicResources={aggregatedElectronicResources}
+            fields={bottomFields}
+          />
+        </section>
 
         <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
       </SccContainer>
