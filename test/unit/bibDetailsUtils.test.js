@@ -1,13 +1,13 @@
 /* eslint-env mocha */
-
-import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
 
 import {
-  definitionItem,
   annotatedMarcDetails,
   combineBibDetailsData,
+  compressSubjectLiteral,
+  constructSubjectHeadingsArray,
+  definitionItem,
+  getGroupedNotes,
 } from '../../src/app/utils/bibDetailsUtils';
 
 describe('bibDetailsUtils', () => {
@@ -148,6 +148,77 @@ describe('bibDetailsUtils', () => {
           ],
         ),
       );
+    });
+  });
+
+  describe('getGroupedNotes', () => {
+    it('returns an empty object when a bib has no "note" field', () => {
+      const bib = {};
+      expect(getGroupedNotes(bib)).to.deep.equal({});
+    });
+
+    it('returns a notes grouped by their type', () => {
+      const bib = {
+        note: [
+          { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 1' },
+          { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 2' },
+          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Access -- 506 blank,any' },
+          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Restricted Access -- 506 1,any' },
+          { '@type': 'bf:Note', noteType: 'Credits', prefLabel: 'Credits (Creation/production credits note) -- 508' },
+        ],
+      };
+
+      const notesGroupedByNoteType = {
+        Note: [
+          { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 1' },
+          { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 2' },
+        ],
+        'Access (note)': [
+          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Access -- 506 blank,any' },
+          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Restricted Access -- 506 1,any' },
+        ],
+        'Credits (note)': [
+          { '@type': 'bf:Note', noteType: 'Credits', prefLabel: 'Credits (Creation/production credits note) -- 508' },
+        ],
+      };
+
+      expect(getGroupedNotes(bib)).to.deep.equal(notesGroupedByNoteType);
+    });
+  });
+
+  describe('compressSubjectLiteral', () => {
+    it('returns undefined if there are no subject literals', () => {
+      const bib = {};
+      expect(compressSubjectLiteral(bib)).to.equal(undefined);
+    });
+
+    it('returns an array of updated subject literal strings', () =>{
+      const bib = {
+        subjectLiteral: [
+          'Artist, Starving, 1900-1999 -- Autobiography. -- 600 10 with $d $v',
+          'Conference subject entry. --  611 20',
+        ],
+      };
+
+      const updatedSubjectLiterals = [
+        'Artist, Starving, 1900-1999 > Autobiography. > 600 10 with $d $v',
+        'Conference subject entry. >  611 20',
+      ];
+
+      expect(compressSubjectLiteral(bib)).to.deep.equal(updatedSubjectLiterals);
+    });
+  });
+
+  describe('constructSubjectHeadingsArray', () => {
+    it('returns an empty array with no input', () => {
+      expect(constructSubjectHeadingsArray()).to.deep.equal([]);
+    });
+
+    it('returns an array of updated subject literal strings', () =>{
+      const url = 'filters[subjectLiteral]=Indexed%20term%20%3E%20653';
+      const expectedResult = ['Indexed%20term%20%3E%20653'];
+
+      expect(constructSubjectHeadingsArray(url)).to.deep.equal(expectedResult);
     });
   });
 });

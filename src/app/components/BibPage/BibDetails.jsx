@@ -11,7 +11,10 @@ import {
 import DefinitionList from './DefinitionList';
 // Utils and configs
 import appConfig from '../../data/appConfig';
-import { combineBibDetailsData } from '../../utils/bibDetailsUtils';
+import {
+  combineBibDetailsData,
+  constructSubjectHeadingsArray
+} from '../../utils/bibDetailsUtils';
 import { RouterContext } from "../../pages/BibPage";
 import { trackDiscovery } from '../../utils/utils';
 
@@ -19,96 +22,8 @@ const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
 
   /**
-   * getDefinitionObject(bibValues, fieldValue, fieldLinkable, fieldSelfLinkable, fieldLabel)
-   * Gets a list, or one value, of data to display for a field from the API, where
-   * the data is an object in the array.
-   *
-   * @param {array} bibValues - the value(s) of the current field
-   * @param {string} fieldValue - the name of the current field
-   * @param {boolean} fieldLinkable - flags true if the field should be clickable
-   * @param {boolean} fieldSelfLinkable - flags true if the Bib field already has a URL
-   * @param {string} fieldLabel - offers the type of search keywords
-   * @return {HTML element}
-   */
-   const getDefinitionObject = (
-    bibValues,
-    fieldValue,
-    fieldLinkable,
-    fieldSelfLinkable,
-    fieldLabel,
-  ) => {
-    // If there's only one value, we just want that value and not a list.
-    if (bibValues.length === 1) {
-      const bibValue = bibValues[0];
-      const url = `filters[${fieldValue}]=${bibValue['@id']}`;
-
-      if (fieldLinkable) {
-        return searchLink({
-          query: url,
-          label: bibValue.prefLabel,
-          analyticsLabel: fieldLabel,
-          analyticsValue: bibValue['@id'],
-        });
-      }
-
-      if (fieldSelfLinkable) {
-        return (
-          <a
-            href={bibValue['@id']}
-            onClick={() =>
-              trackDiscovery(
-                'Bib fields',
-                `${fieldLabel} - ${bibValue.prefLabel}`,
-              )
-            }
-          >
-            {bibValue.prefLabel}
-          </a>
-        );
-      }
-
-      return <span>{bibValue.prefLabel}</span>;
-    }
-
-    return (
-      <ul className="additionalDetails">
-        {bibValues.map((value) => {
-          const url = `filters[${fieldValue}]=${value['@id']}`;
-          let itemValue = fieldLinkable ? (
-            searchLink({
-              query: url,
-              label: value.prefLabel,
-              analyticsLabel: fieldLabel,
-              analyticsValue: value['@id'],
-            })
-          ) : (
-            <span>{value.prefLabel}</span>
-          );
-          if (fieldSelfLinkable) {
-            itemValue = (
-              <a
-                href={value['@id']}
-                onClick={() =>
-                  trackDiscovery(
-                    'Bib fields',
-                    `${fieldLabel} - ${value.prefLabel}`,
-                  )
-                }
-              >
-                {value.prefLabel}
-              </a>
-            );
-          }
-
-          return <li key={value.prefLabel}>{itemValue}</li>;
-        })}
-      </ul>
-    );
-  }
-
-  /**
    * getDefinition(bibValues, fieldValue, fieldLinkable,
-   * fieldSelfLinkable, fieldLabel)
+   *   fieldSelfLinkable, fieldLabel)
    * Gets a list, or one value, of data to display for a field from the API.
    *
    * @param {array} bibValues - the value(s) of the current field
@@ -125,25 +40,13 @@ const BibDetails = (props) => {
     fieldSelfLinkable,
     fieldLabel,
   ) => {
-    if (fieldValue === 'identifier') {
-      if (bibValues) {
-        return bibValues.length === 1 ? (
-          bibValues.pop()
-        ) : (
-          <ul>
-            {bibValues.map((mark, index) => (
-              <li key={index}>{mark}</li>
-            ))}
-          </ul>
-        );
-      }
-    }
-
+    // If there is only one value object in the array for the bib,
+    // then render this definition value as a simple `span`, react-router
+    // `link`, or an `a` tag.
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
-
       const url = `filters[${fieldValue}]=${bibValue}`;
-      return getDefinitionOneItem(
+      return renderSingleValue(
         bibValue,
         url,
         fieldValue,
@@ -153,19 +56,22 @@ const BibDetails = (props) => {
       );
     }
 
+    // Otherwise, render every value object in the array for the bib in a list.
+    // Each list item definition will be rendered as a simple `span`,
+    // react-router `link`, or an `a` tag.
     return (
       <ul>
-        {bibValues.map((value) => {
+        {bibValues.map((value, index) => {
           const queryString =  typeof value === 'string' ? value : value.label;
+          // @NOTE this encodes ">" as "%3E" so in "renderSingleValue",
+          // the mapping done to create the url queries does not work.
+          // This tends to set the url query to `filters[...]=undefined`,
+          // because `value.label` is not defined.
           const url = `filters[${fieldValue}]=${encodeURIComponent(queryString)}`
 
           return (
-            <li
-              key={`filter${fieldValue}${
-                typeof value === 'string' ? value : value.label
-              }`}
-            >
-              {getDefinitionOneItem(
+            <li key={`filter${fieldValue}-${index}`}>
+              {renderSingleValue(
                 value,
                 url,
                 fieldValue,
@@ -181,8 +87,8 @@ const BibDetails = (props) => {
   }
 
   /**
-   * getDefinitionOneItem (bibValue, url, bibValues, fieldValue, fieldLinkable, fieldIdentifier,
-   * fieldSelfLinkable, fieldLabel)
+   * renderSingleValue (bibValue, url, bibValues, fieldValue,
+   *   fieldLinkable, fieldSelfLinkable, fieldLabel)
    * Gets the value for a single Bib detail field.
    *
    * @param {string} bibValue - the value for the current field
@@ -193,7 +99,7 @@ const BibDetails = (props) => {
    * @param {string} fieldLabel - offers the type of search keywords
    * @return {HTML element}
    */
-  const getDefinitionOneItem = (
+  const renderSingleValue = (
     bibValue,
     url,
     fieldValue,
@@ -202,15 +108,16 @@ const BibDetails = (props) => {
     fieldLabel,
   ) => {
     if (fieldValue === 'subjectLiteral') {
-      return constructSubjectHeading(
+      const subjectHeadings = constructSubjectHeadingsArray(url);
+      return constructSubjectHeadingLinks(
         bibValue,
-        url,
+        subjectHeadings,
         fieldLabel,
       );
     }
 
     if (fieldLinkable) {
-      return searchLink({
+      return searchRouterLink({
         query: url,
         label: bibValue,
         analyticsLabel: fieldLabel,
@@ -233,20 +140,20 @@ const BibDetails = (props) => {
         </a>
       );
     }
+
     return <span>{bibValue}</span>;
   }
 
   /**
    * getDisplayFields(bib)
-   * Get an array of definition term/values.
+   * Get an array of term/value object pairs for usage
+   * in the DefinitionList component.
    *
    * @param {object} bib
    * @return {object} fields
    * @return {array}
    */
   const getDisplayFields = (bib, fields) => {
-    // A value of 'React Component' just means that we are getting it from a
-    // component rather than from the bib field properties.
     const fieldsToRender = [];
 
     fields.forEach((field) => {
@@ -254,53 +161,42 @@ const BibDetails = (props) => {
       const fieldValue = field.value;
       const fieldLinkable = field.linkable;
       const fieldSelfLinkable = field.selfLinkable;
-      const fieldIdentifier = field.identifier;
       let bibValues = bib[fieldValue];
 
+      // For `subjectLiteral`, `identifier`, and almost every other field,
+      // all the values that need to be rendered as the definition are
+      // located in the `bib` object, with the field value as the key.
+
       if (fieldValue === 'subjectLiteral') {
-        bibValues = compressSubjectLiteral(bib[fieldValue]);
+        bibValues = bib.updatedSubjectLiteral;
       }
 
       if (fieldValue === 'identifier') {
-        // return getIdentifiers(bibValues, fieldIdentifier);
         bibValues = bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
       }
 
       // skip absent fields
-      if (bibValues && bibValues.length && _isArray(bibValues)) {
-        // Taking just the first value for each field to check the type.
-        const firstFieldValue = bibValues[0];
-
-        // Each value is an object with @id and prefLabel properties.
-        if (firstFieldValue['@id']) {
+      if (bibValues && _isArray(bibValues) && bibValues.length > 0) {
+        const definition = getDefinition(
+          bibValues,
+          fieldValue,
+          fieldLinkable,
+          fieldSelfLinkable,
+          fieldLabel,
+        );
+        if (definition) {
           fieldsToRender.push({
             term: fieldLabel,
-            definition: getDefinitionObject(
-              bibValues,
-              fieldValue,
-              fieldLinkable,
-              fieldSelfLinkable,
-              fieldLabel,
-            ),
+            definition,
           });
-        } else {
-          const definition = getDefinition(
-            bibValues,
-            fieldValue,
-            fieldLinkable,
-            fieldSelfLinkable,
-            fieldLabel,
-          );
-          if (definition) {
-            fieldsToRender.push({
-              term: fieldLabel,
-              definition,
-            });
-          }
         }
       }
+      
+      // For the rest of the fields in the `bib` object, the values are
+      // structured in ways that cannot be easily rendered with the
+      // `getDefinition` function above.
 
-      // The Owner is complicated too.
+      // The Owner is complicated too
       if (fieldLabel === 'Owning Institutions' && props.bib?.owner) {
         fieldsToRender.push({
           term: fieldLabel,
@@ -308,22 +204,14 @@ const BibDetails = (props) => {
         });
       }
 
-      // Note field rendering as array of objects instead of an array of strings.
-      // Parse the original and new note format.
-      // Original format: ['string1', 'string2']
-      // Updated 2018 format:
-      //    [{'@type': 'bf:Note',
-      //      'noteType': 'string',
-      //      'prefLabel': 'string'},
-      //    {...}]
+      // For each group of notes, add them to the definition list individually.
       if (fieldLabel === 'Notes' && !_isEmpty(props.bib.notesGroupedByNoteType)) {
         const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
-        // For each group of notes, add a fieldToRender:
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
             <ul>
-              {notesGroupedByNoteType[noteType].map((note, idx) => (
-                <li key={idx.toString()}>{note.prefLabel}</li>
+              {notesGroupedByNoteType[noteType].map((note, index) => (
+                <li key={index}>{note.prefLabel}</li>
               ))}
             </ul>
           );
@@ -391,51 +279,24 @@ const BibDetails = (props) => {
   }
 
   /**
-   * compressSubjectLiteral(subjectLiteralArray)
-   * Updates the string structure of subject literals.
-   *
-   * @param {array} subjectLiteralArray
-   * @return {array}
-   */
-  const compressSubjectLiteral = (subjectLiteralArray) => {
-    if (Array.isArray(subjectLiteralArray) && subjectLiteralArray.length) {
-      return subjectLiteralArray.map((item) =>
-        item.replace(/\.$/, '').replace(/--/g, '>'),
-      );
-    }
-
-    return subjectLiteralArray;
-  }
-
-  /**
-   * constructSubjectHeading(bibValue, url, fieldLabel)
+   * constructSubjectHeadingLinks(bibValue, urlArray, fieldLabel)
    * Constructs the link elements of subject headings.
    *
    * @param {string} bibValue - for constructing the texts of link elements
-   * @param {string} url - for constructing the query values of the URLs
+   * @param {string} urlArray - for constructing the query values of the URLs
    * @param {string} fieldLabel - offers the type of search keywords
-   * @return {HTML element}
+   * @return {HTML element array} Returns an array of react router links
+   *   separated with a > character.
    */
-  const constructSubjectHeading = (bibValue, url, fieldLabel) => {
-    let currentArrayString = '';
+  const constructSubjectHeadingLinks = (bibValue, urlArray, fieldLabel) => {
     const filterQueryForSubjectHeading = 'filters[subjectLiteral]=';
     const singleSubjectHeadingArray = bibValue.split(' > ');
     const returnArray = [];
 
-    const urlArray = url
-      .replace(filterQueryForSubjectHeading, '')
-      .split(' > ')
-      .map((urlString, index) => {
-        const dashDivided = index !== 0 ? ' -- ' : '';
-        currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
-
-        return currentArrayString;
-      });
-
     singleSubjectHeadingArray.forEach((heading, index) => {
       const urlWithFilterQuery = `${filterQueryForSubjectHeading}${urlArray[index]}`;
 
-      const subjectHeadingLink = searchLink({
+      const subjectHeadingLink = searchRouterLink({
         query: urlWithFilterQuery,
         label: heading,
         analyticsLabel: fieldLabel,
@@ -463,7 +324,7 @@ const BibDetails = (props) => {
    * @param {string} analyticsValue - value text used for Google Analytics
    * @returns React-router `Link` component.
    */
-  const searchLink = ({ query, label, analyticsLabel, analyticsValue }) => {
+  const searchRouterLink = ({ query, label, analyticsLabel, analyticsValue }) => {
     const onClick = (event) => {
       event.preventDefault();
 

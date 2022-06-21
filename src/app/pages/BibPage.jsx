@@ -19,6 +19,7 @@ import SccContainer from '../components/SccContainer/SccContainer';
 import {
   allFields,
   annotatedMarcDetails,
+  compressSubjectLiteral,
   getGroupedNotes,
   getIdentifiers,
 } from '../utils/bibDetailsUtils';
@@ -113,10 +114,14 @@ export const BibPage = (
 
   const topFields = allFields.top;
   const bottomFields = allFields.bottom(bib);
+  // Make a copy of the `bib` so we can add additional fields with
+  // computed data values that will make rendering them easier in
+  // the `BibDetails` component.
   const newBibModel = { ...bib };
   newBibModel["notesGroupedByNoteType"] = getGroupedNotes(bib);
   newBibModel["owner"] = getOwner(bib);
   newBibModel["updatedIdentifiers"] = getIdentifiers(newBibModel, bottomFields);
+  newBibModel["updatedSubjectLiteral"] = compressSubjectLiteral(bib);
 
   return (
     <RouterProvider value={context}>

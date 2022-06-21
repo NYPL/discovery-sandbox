@@ -1,9 +1,13 @@
 import React from 'react';
 import LibraryItem from './item';
 
-// `linkable` means that those values are links inside the app.
-// `selfLinkable` means that those values are external links and should be self-linked,
-// e.g. the prefLabel is the label and the URL is the id.
+// - `linkable` means that those values are links inside the app set
+//   through react-router.
+// - `selfLinkable` means that those values are external links and should be
+//   self-linked set through an HTML anchor element, e.g. the prefLabel is
+//   the label and the URL is the id.
+// - A value of 'React Component' means that we are getting it from a
+//   component rather than from the bib field properties.
 const allFields = {
   top: [
     { label: 'Title', value: 'titleDisplay' },
@@ -76,6 +80,18 @@ const combineBibDetailsData = (bibDetails, additionalData) => {
   return bibDetails.concat(filteredAdditionalData);
 };
 
+/**
+ * Note field rendering as array of objects instead of an array of strings.
+ * Parse the original and new note format.
+ * Original format: ['string1', 'string2']
+ * Updated 2018 format:
+ *    [{'@type': 'bf:Note',
+ *      'noteType': 'string',
+ *      'prefLabel': 'string'},
+ *    {...}]
+ * @param {object} bib 
+ * @returns 
+ */
 const getGroupedNotes = (bib) => {
   const note = bib?.note?.length ? bib.note : null;
   let notesGroupedByNoteType = {};
@@ -110,6 +126,7 @@ const getGroupedNotes = (bib) => {
         return groups;
       }, {});
   }
+
   return notesGroupedByNoteType;
 };
 
@@ -143,13 +160,59 @@ const getIdentifiers = (bib, detailsFields = []) => {
       }
     }
   });
+
   return newIdentifiers;
+};
+
+/**
+ * compressSubjectLiteral(bib)
+ * Updates the string structure of subject literals in the bib.
+ *
+ * @param {object} Bib object
+ * @return {array}
+ */
+ const compressSubjectLiteral = (bib) => {
+  const subjectLiteral = bib.subjectLiteral;
+  if (subjectLiteral && Array.isArray(subjectLiteral) && subjectLiteral.length) {
+    return subjectLiteral.map((item) =>
+      item.replace(/\.$/, '').replace(/--/g, '>'),
+    );
+  }
+  return undefined;
+};
+
+/**
+ * constructSubjectHeadingsArray(url)
+ * Creates an array of subject headings from a URL string, broken up
+ * by `>` and divided by `--`.
+ * 
+ * @param {string} url 
+ * @returns {string[]}
+ */
+const constructSubjectHeadingsArray = (url = '') => {
+  let currentArrayString = '';
+
+  if (!url) {
+    return [];
+  }
+
+  return url
+    .replace('filters[subjectLiteral]=', '')
+    .split(' > ')
+    .map((urlString, index) => {
+      const dashDivided = index !== 0 ? ' -- ' : '';
+      currentArrayString = `${currentArrayString}${dashDivided}${urlString}`;
+
+      return currentArrayString;
+    });
 };
 
 export {
   allFields,
   annotatedMarcDetails,
   combineBibDetailsData,
+  compressSubjectLiteral,
+  constructSubjectHeadingsArray,
   definitionItem,
   getGroupedNotes,
   getIdentifiers,
