@@ -35,7 +35,9 @@ const allFields = {
     { label: 'Alternative Title', value: 'titleAlt' },
     { label: 'Former Title', value: 'formerTitle' },
     // if the subject heading API call failed for some reason,
-    bib.subjectHeadingData ? { label: 'Subject', value: 'subjectHeadingData' } : { label: 'Subject', value: 'subjectLiteral', linkable: true },
+    bib.subjectHeadingData
+      ? { label: 'Subject', value: 'subjectHeadingData' }
+      : { label: 'Subject', value: 'subjectLiteral', linkable: true },
     { label: 'Genre/Form', value: 'genreForm' },
     { label: 'Notes', value: 'React Component' },
     { label: 'Contents', value: 'tableOfContents' },
@@ -89,8 +91,8 @@ const combineBibDetailsData = (bibDetails, additionalData) => {
  *      'noteType': 'string',
  *      'prefLabel': 'string'},
  *    {...}]
- * @param {object} bib 
- * @returns 
+ * @param {object} bib
+ * @returns
  */
 const getGroupedNotes = (bib) => {
   const note = bib?.note?.length ? bib.note : null;
@@ -106,7 +108,7 @@ const getGroupedNotes = (bib) => {
   const getNoteType = (note) => {
     const type = note.noteType || '';
     return type.toLowerCase().includes('note') ? type : `${type} (note)`;
-  }
+  };
 
   if (!note) {
     return notesGroupedByNoteType;
@@ -132,34 +134,33 @@ const getGroupedNotes = (bib) => {
 
 /**
  * * Given an array of identifier entities and an rdf:type, returns markup to
-   * render the values - if any - for the requested type.
-   * 
- * @param {*} bib 
- * @param {*} detailsFields 
- * @returns 
+ * render the values - if any - for the requested type.
+ *
+ * @param {*} bib
+ * @param {*} detailsFields
+ * @returns
  */
 const getIdentifiers = (bib, detailsFields = []) => {
   const bibValues = bib?.identifier;
   const newIdentifiers = {};
-  bibValues && detailsFields.forEach(fieldObject => {
-    if (fieldObject.value === 'identifier') {
-      const entities = LibraryItem.getIdentifierEntitiesByType(
-        [...bibValues],
-        fieldObject.identifier,
-      );
-      if (Array.isArray(entities) && entities.length > 0) {
-        const markup = entities.map((ent, index) => (
-          <span key={index}>
-            {ent['@value']}
-            {ent.identifierStatus ? (
-              <em> ({ent.identifierStatus})</em>
-            ) : null}
-          </span>
-        ));
-        newIdentifiers[fieldObject.label] = markup;
+  bibValues &&
+    detailsFields.forEach((fieldObject) => {
+      if (fieldObject.value === 'identifier') {
+        const entities = LibraryItem.getIdentifierEntitiesByType(
+          [...bibValues],
+          fieldObject.identifier,
+        );
+        if (Array.isArray(entities) && entities.length > 0) {
+          const markup = entities.map((ent, index) => (
+            <span key={index}>
+              {ent['@value']}
+              {ent.identifierStatus ? <em> ({ent.identifierStatus})</em> : null}
+            </span>
+          ));
+          newIdentifiers[fieldObject.label] = markup;
+        }
       }
-    }
-  });
+    });
 
   return newIdentifiers;
 };
@@ -171,9 +172,13 @@ const getIdentifiers = (bib, detailsFields = []) => {
  * @param {object} Bib object
  * @return {array}
  */
- const compressSubjectLiteral = (bib) => {
+const compressSubjectLiteral = (bib) => {
   const subjectLiteral = bib.subjectLiteral;
-  if (subjectLiteral && Array.isArray(subjectLiteral) && subjectLiteral.length) {
+  if (
+    subjectLiteral &&
+    Array.isArray(subjectLiteral) &&
+    subjectLiteral.length
+  ) {
     return subjectLiteral.map((item) =>
       item.replace(/\.$/, '').replace(/--/g, '>'),
     );
@@ -185,8 +190,8 @@ const getIdentifiers = (bib, detailsFields = []) => {
  * constructSubjectHeadingsArray(url)
  * Creates an array of subject headings from a URL string, broken up
  * by `>` and divided by `--`.
- * 
- * @param {string} url 
+ *
+ * @param {string} url
  * @returns {string[]}
  */
 const constructSubjectHeadingsArray = (url = '') => {

@@ -35,9 +35,7 @@ import getOwner from '../utils/getOwner';
 export const RouterContext = React.createContext(null);
 export const RouterProvider = ({ children, value }) => {
   return (
-    <RouterContext.Provider value={value}>
-      {children}
-    </RouterContext.Provider>
+    <RouterContext.Provider value={value}>{children}</RouterContext.Provider>
   );
 };
 RouterProvider.propTypes = {
@@ -118,21 +116,23 @@ export const BibPage = (
   // computed data values that will make rendering them easier in
   // the `BibDetails` component.
   const newBibModel = { ...bib };
-  newBibModel["notesGroupedByNoteType"] = getGroupedNotes(bib);
-  newBibModel["owner"] = getOwner(bib);
-  newBibModel["updatedIdentifiers"] = getIdentifiers(newBibModel, bottomFields);
-  newBibModel["updatedSubjectLiteral"] = compressSubjectLiteral(bib);
+  newBibModel['notesGroupedByNoteType'] = getGroupedNotes(bib);
+  newBibModel['owner'] = getOwner(bib);
+  newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
+  newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   return (
     <RouterProvider value={context}>
       <SccContainer
         useLoadingLayer
-        className="nypl-item-details"
-        pageTitle="Item Details"
+        className='nypl-item-details'
+        pageTitle='Item Details'
       >
-        <section className="nypl-item-details__heading">
+        <section className='nypl-item-details__heading'>
           <Heading level={2}>
-            {newBibModel.title && newBibModel.title.length ? newBibModel.title[0] : ' '}
+            {newBibModel.title && newBibModel.title.length
+              ? newBibModel.title[0]
+              : ' '}
           </Heading>
           <BackToSearchResults result={resultSelection} bibId={bibId} />
         </section>
@@ -182,7 +182,10 @@ export const BibPage = (
           />
         </section>
 
-        <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
+        <LegacyCatalogLink
+          recordNumber={bibId}
+          display={bibId.startsWith('b')}
+        />
       </SccContainer>
     </RouterProvider>
   );

@@ -55,9 +55,7 @@ const SubjectHeadings = ({ headings }) => {
 
   return (
     <>
-      <dt>
-        {headings.length > 1 ? 'Subjects' : 'Subject'}
-      </dt>
+      <dt>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
       <dd>
         <ul>{headings.map(generateHeadingLi)}</ul>
       </dd>

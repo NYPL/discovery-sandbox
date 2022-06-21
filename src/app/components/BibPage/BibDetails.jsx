@@ -13,9 +13,9 @@ import DefinitionList from './DefinitionList';
 import appConfig from '../../data/appConfig';
 import {
   combineBibDetailsData,
-  constructSubjectHeadingsArray
+  constructSubjectHeadingsArray,
 } from '../../utils/bibDetailsUtils';
-import { RouterContext } from "../../pages/BibPage";
+import { RouterContext } from '../../pages/BibPage';
 import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {
@@ -62,12 +62,14 @@ const BibDetails = (props) => {
     return (
       <ul>
         {bibValues.map((value, index) => {
-          const queryString =  typeof value === 'string' ? value : value.label;
+          const queryString = typeof value === 'string' ? value : value.label;
           // @NOTE this encodes ">" as "%3E" so in "renderSingleValue",
           // the mapping done to create the url queries does not work.
           // This tends to set the url query to `filters[...]=undefined`,
           // because `value.label` is not defined.
-          const url = `filters[${fieldValue}]=${encodeURIComponent(queryString)}`
+          const url = `filters[${fieldValue}]=${encodeURIComponent(
+            queryString,
+          )}`;
 
           return (
             <li key={`filter${fieldValue}-${index}`}>
@@ -84,7 +86,7 @@ const BibDetails = (props) => {
         })}
       </ul>
     );
-  }
+  };
 
   /**
    * renderSingleValue (bibValue, url, bibValues, fieldValue,
@@ -142,7 +144,7 @@ const BibDetails = (props) => {
     }
 
     return <span>{bibValue}</span>;
-  }
+  };
 
   /**
    * getDisplayFields(bib)
@@ -172,7 +174,8 @@ const BibDetails = (props) => {
       }
 
       if (fieldValue === 'identifier') {
-        bibValues = bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
+        bibValues =
+          bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
       }
 
       // skip absent fields
@@ -191,7 +194,7 @@ const BibDetails = (props) => {
           });
         }
       }
-      
+
       // For the rest of the fields in the `bib` object, the values are
       // structured in ways that cannot be easily rendered with the
       // `getDefinition` function above.
@@ -205,7 +208,10 @@ const BibDetails = (props) => {
       }
 
       // For each group of notes, add them to the definition list individually.
-      if (fieldLabel === 'Notes' && !_isEmpty(props.bib.notesGroupedByNoteType)) {
+      if (
+        fieldLabel === 'Notes' &&
+        !_isEmpty(props.bib.notesGroupedByNoteType)
+      ) {
         const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
@@ -230,7 +236,7 @@ const BibDetails = (props) => {
         const electronicResourcesLink = ({ href, label }) => (
           <a
             href={href}
-            target="_blank"
+            target='_blank'
             onClick={() =>
               trackDiscovery(
                 'Bib fields',
@@ -276,7 +282,7 @@ const BibDetails = (props) => {
     }); // End of the forEach loop
 
     return fieldsToRender;
-  }
+  };
 
   /**
    * constructSubjectHeadingLinks(bibValue, urlArray, fieldLabel)
@@ -312,19 +318,24 @@ const BibDetails = (props) => {
     });
 
     return returnArray;
-  }
+  };
 
   /**
    * Creates a react-router `Link` component set for searching a
    * specific query within the app.
-   * 
+   *
    * @param {string} query - the search query to add in the URL
    * @param {string} label - the visible label for the anchor element
    * @param {string} analyticsLabel - label text used for Google Analytics
    * @param {string} analyticsValue - value text used for Google Analytics
    * @returns React-router `Link` component.
    */
-  const searchRouterLink = ({ query, label, analyticsLabel, analyticsValue }) => {
+  const searchRouterLink = ({
+    query,
+    label,
+    analyticsLabel,
+    analyticsValue,
+  }) => {
     const onClick = (event) => {
       event.preventDefault();
 
@@ -334,24 +345,20 @@ const BibDetails = (props) => {
 
     return (
       <Link
-        key={label.trim().replace(/ /g,'')}
+        key={label.trim().replace(/ /g, '')}
         onClick={onClick}
         to={`${appConfig.baseUrl}/search?${query}`}
       >
         {label}
       </Link>
-    )
+    );
   };
 
   // Make sure bib prop is
   //  1) nonempty
   //  2) an object
   //  3) not an array (which is also an object)
-  if (
-    _isEmpty(props.bib) ||
-    !_isObject(props.bib) ||
-    _isArray(props.bib)
-  ) {
+  if (_isEmpty(props.bib) || !_isObject(props.bib) || _isArray(props.bib)) {
     return null;
   }
   // Make sure fields is a nonempty array:
@@ -362,12 +369,7 @@ const BibDetails = (props) => {
   const bibDetails = getDisplayFields(props.bib, props.fields);
   const data = combineBibDetailsData(bibDetails, props.additionalData || []);
 
-  return (
-    <DefinitionList
-      data={data}
-      headings={props.bib.subjectHeadingData}
-    />
-  );
+  return <DefinitionList data={data} headings={props.bib.subjectHeadingData} />;
 };
 
 BibDetails.propTypes = {

@@ -109,11 +109,19 @@ describe('bibDetailsUtils', () => {
       const mockOutput = annotatedMarcDetails(mockBib);
       expect(mockOutput.length).to.equal(2);
       expect(mockOutput[0].term).to.equal('Field1');
-      expect(mockOutput[0].definition[0].props.children[0].props.children).to.equal('ItemLabel1');
-      expect(mockOutput[0].definition[1].props.children[0].props.children).to.equal('ItemLabel2');
+      expect(
+        mockOutput[0].definition[0].props.children[0].props.children,
+      ).to.equal('ItemLabel1');
+      expect(
+        mockOutput[0].definition[1].props.children[0].props.children,
+      ).to.equal('ItemLabel2');
       expect(mockOutput[1].term).to.equal('Field2');
-      expect(mockOutput[1].definition[0].props.children[0].props.children).to.equal('ItemLabel3');
-      expect(mockOutput[1].definition[1].props.children[0].props.children).to.equal('ItemLabel4');
+      expect(
+        mockOutput[1].definition[0].props.children[0].props.children,
+      ).to.equal('ItemLabel3');
+      expect(
+        mockOutput[1].definition[1].props.children[0].props.children,
+      ).to.equal('ItemLabel4');
     });
   });
 
@@ -136,17 +144,15 @@ describe('bibDetailsUtils', () => {
       ];
 
       expect(JSON.stringify(combineBibDetailsData(list1, list2))).to.equal(
-        JSON.stringify(
-          [
-            { term: 'a', value: '1' },
-            { term: 'c', value: '4' },
-            { term: 'a', value: '2' },
-            { term: 'b', value: '3' },
-            { term: 'd', value: '9' },
-            { term: 'e', value: '10' },
-            { term: 'd', value: '8' },
-          ],
-        ),
+        JSON.stringify([
+          { term: 'a', value: '1' },
+          { term: 'c', value: '4' },
+          { term: 'a', value: '2' },
+          { term: 'b', value: '3' },
+          { term: 'd', value: '9' },
+          { term: 'e', value: '10' },
+          { term: 'd', value: '8' },
+        ]),
       );
     });
   });
@@ -162,9 +168,21 @@ describe('bibDetailsUtils', () => {
         note: [
           { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 1' },
           { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 2' },
-          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Access -- 506 blank,any' },
-          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Restricted Access -- 506 1,any' },
-          { '@type': 'bf:Note', noteType: 'Credits', prefLabel: 'Credits (Creation/production credits note) -- 508' },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Access',
+            prefLabel: 'Access -- 506 blank,any',
+          },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Access',
+            prefLabel: 'Restricted Access -- 506 1,any',
+          },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Credits',
+            prefLabel: 'Credits (Creation/production credits note) -- 508',
+          },
         ],
       };
 
@@ -174,11 +192,23 @@ describe('bibDetailsUtils', () => {
           { '@type': 'bf:Note', noteType: 'Note', prefLabel: 'Note 2' },
         ],
         'Access (note)': [
-          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Access -- 506 blank,any' },
-          { '@type': 'bf:Note', noteType: 'Access', prefLabel: 'Restricted Access -- 506 1,any' },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Access',
+            prefLabel: 'Access -- 506 blank,any',
+          },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Access',
+            prefLabel: 'Restricted Access -- 506 1,any',
+          },
         ],
         'Credits (note)': [
-          { '@type': 'bf:Note', noteType: 'Credits', prefLabel: 'Credits (Creation/production credits note) -- 508' },
+          {
+            '@type': 'bf:Note',
+            noteType: 'Credits',
+            prefLabel: 'Credits (Creation/production credits note) -- 508',
+          },
         ],
       };
 
@@ -192,7 +222,7 @@ describe('bibDetailsUtils', () => {
       expect(compressSubjectLiteral(bib)).to.equal(undefined);
     });
 
-    it('returns an array of updated subject literal strings', () =>{
+    it('returns an array of updated subject literal strings', () => {
       const bib = {
         subjectLiteral: [
           'Artist, Starving, 1900-1999 -- Autobiography. -- 600 10 with $d $v',
@@ -214,7 +244,7 @@ describe('bibDetailsUtils', () => {
       expect(constructSubjectHeadingsArray()).to.deep.equal([]);
     });
 
-    it('returns an array of updated subject literal strings', () =>{
+    it('returns an array of updated subject literal strings', () => {
       const url = 'filters[subjectLiteral]=Indexed%20term%20%3E%20653';
       const expectedResult = ['Indexed%20term%20%3E%20653'];
 

@@ -27,7 +27,7 @@ describe('SubjectHeadings', () => {
     ];
     const component = mount(<SubjectHeadings headings={headings} />);
 
-    it('should have a dt with text \'Subject\'', () => {
+    it("should have a dt with text 'Subject'", () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subject');
     });
@@ -44,11 +44,19 @@ describe('SubjectHeadings', () => {
       expect(component.find('li').length).to.equal(1);
       expect(component.find(Link).length).to.equal(2);
       expect(component.find(Link).at(0).text()).to.equal('Heading');
-      expect(component.find(Link).at(0).prop('to')).to.equal(`${appConfig.baseUrl}/subject_headings/67890?label=${encodeURIComponent('Heading')}`);
+      expect(component.find(Link).at(0).prop('to')).to.equal(
+        `${appConfig.baseUrl}/subject_headings/67890?label=${encodeURIComponent(
+          'Heading',
+        )}`,
+      );
       expect(component.find('span').length).to.equal(1);
       expect(component.find('span').at(0).text()).to.equal(' > ');
       expect(component.find(Link).at(1).text()).to.equal('Subheading');
-      expect(component.find(Link).at(1).prop('to')).to.equal(`${appConfig.baseUrl}/subject_headings/12345?label=${encodeURIComponent('Heading -- Subheading')}`);
+      expect(component.find(Link).at(1).prop('to')).to.equal(
+        `${appConfig.baseUrl}/subject_headings/12345?label=${encodeURIComponent(
+          'Heading -- Subheading',
+        )}`,
+      );
     });
   });
 
@@ -69,7 +77,7 @@ describe('SubjectHeadings', () => {
     ];
     const component = mount(<SubjectHeadings headings={headings} />);
 
-    it('should have a dt with text \'Subjects\'', () => {
+    it("should have a dt with text 'Subjects'", () => {
       expect(component.find('dt').length).to.equal(1);
       expect(component.find('dt').at(0).text()).to.equal('Subjects');
     });
@@ -90,18 +98,30 @@ describe('SubjectHeadings', () => {
       const firstLi = component.find('li').at(0);
       expect(firstLi.find(Link).length).to.equal(2);
       expect(firstLi.find(Link).at(0).text()).to.equal('Heading1');
-      expect(firstLi.find(Link).at(0).prop('to')).to.equal(`${appConfig.baseUrl}/subject_headings/67890?label=${encodeURIComponent('Heading1')}`);
+      expect(firstLi.find(Link).at(0).prop('to')).to.equal(
+        `${appConfig.baseUrl}/subject_headings/67890?label=${encodeURIComponent(
+          'Heading1',
+        )}`,
+      );
       expect(firstLi.find('span').length).to.equal(1);
       expect(firstLi.find('span').at(0).text()).to.equal(' > ');
       expect(firstLi.find(Link).at(1).text()).to.equal('Subheading1');
-      expect(firstLi.find(Link).at(1).prop('to')).to.equal(`${appConfig.baseUrl}/subject_headings/12345?label=${encodeURIComponent('Heading1 -- Subheading1')}`);
+      expect(firstLi.find(Link).at(1).prop('to')).to.equal(
+        `${appConfig.baseUrl}/subject_headings/12345?label=${encodeURIComponent(
+          'Heading1 -- Subheading1',
+        )}`,
+      );
     });
 
     it('should show the second heading correctly', () => {
       const secondLi = component.find('li').at(1);
       expect(secondLi.find(Link).length).to.equal(1);
       expect(secondLi.find(Link).at(0).text()).to.equal('Heading+&');
-      expect(secondLi.find(Link).at(0).prop('to')).to.equal(`${appConfig.baseUrl}/subject_headings/00000?label=${encodeURIComponent('Heading+&')}`);
+      expect(secondLi.find(Link).at(0).prop('to')).to.equal(
+        `${appConfig.baseUrl}/subject_headings/00000?label=${encodeURIComponent(
+          'Heading+&',
+        )}`,
+      );
     });
   });
 });
