@@ -15,7 +15,7 @@ import {
   combineBibDetailsData,
   constructSubjectHeadingsArray,
 } from '../../utils/bibDetailsUtils';
-import { RouterContext } from '../../pages/BibPage';
+import { RouterContext } from '../../context/RouterContext';
 import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {

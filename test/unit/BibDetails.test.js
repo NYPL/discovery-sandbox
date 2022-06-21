@@ -6,7 +6,7 @@ import { mount } from 'enzyme';
 // Import the component that is going to be tested
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import { getGroupedNotes } from '../../src/app/utils/bibDetailsUtils';
-import { RouterProvider } from './../../src/app/pages/BibPage.jsx';
+import { RouterProvider } from './../../src/app/context/RouterContext';
 import bibs from '../fixtures/bibs';
 
 describe('BibDetails', () => {

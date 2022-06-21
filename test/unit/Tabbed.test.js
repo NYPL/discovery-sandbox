@@ -5,7 +5,7 @@ import { mount } from 'enzyme';
 
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
-import { RouterProvider } from './../../src/app/pages/BibPage.jsx';
+import { RouterProvider } from './../../src/app/context/RouterContext';
 import Tabbed from './../../src/app/components/BibPage/Tabbed';
 
 describe('Tabbed', () => {

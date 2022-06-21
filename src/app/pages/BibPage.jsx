@@ -31,17 +31,8 @@ import {
   pluckAeonLinksFromResource,
 } from '../utils/utils';
 import getOwner from '../utils/getOwner';
+import { RouterProvider } from '../context/RouterContext';
 
-export const RouterContext = React.createContext(null);
-export const RouterProvider = ({ children, value }) => {
-  return (
-    <RouterContext.Provider value={value}>{children}</RouterContext.Provider>
-  );
-};
-RouterProvider.propTypes = {
-  children: PropTypes.node,
-  value: PropTypes.object,
-};
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
 const checkForMoreItems = (bib, dispatch) => {
