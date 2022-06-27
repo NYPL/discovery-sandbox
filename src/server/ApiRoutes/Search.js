@@ -64,7 +64,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
   // shown on Search Results pages (3)?
   const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
   const queryObj = {
-    query: { q: searchKeywords, sortBy, order, field, filters },
+    query: { q: searchKeywords, contributor, title, subject, sortBy, order, field, filters },
   };
 
   let drbRequesting = true;
