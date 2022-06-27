@@ -11,7 +11,6 @@ import { createResearchNowQuery as createResearchNowQueryV3, getResearchNowQuery
  * Given a request, resolves the relevant response from the DRB API
  */
 const drbQueryFromRequest = (req) => {
-  console.log('req: ', JSON.stringify(req, null, 2));
   const query = Object.assign({ per_page: 3 }, req.query);
 
   let drbQueryString = null;
@@ -27,7 +26,6 @@ const drbQueryFromRequest = (req) => {
     drbQueryString = getResearchNowQueryStringV3(query);
   } else {
     const drbQuery = getResearchNowQueryString(query)
-    console.log('drbQueryString: ', JSON.stringify(drbQuery, null, 2));
     drbCall = nyplApiClient({ apiName: 'drbb' })
       .then(client => client.get(drbQuery));
     // Remove leading '?'
