@@ -120,7 +120,7 @@ export const BibPage = (
         pageTitle='Item Details'
       >
         <section className='nypl-item-details__heading'>
-          <Heading level={2}>
+          <Heading level="two">
             {newBibModel.title && newBibModel.title.length
               ? newBibModel.title[0]
               : ' '}
@@ -160,7 +160,7 @@ export const BibPage = (
         )}
 
         <section style={{ marginTop: '20px' }}>
-          <Heading level={3}>Details</Heading>
+          <Heading level="three">Details</Heading>
           <BibDetails
             additionalData={
               isNyplBnumber(newBibModel.uri) && newBibModel.annotatedMarc

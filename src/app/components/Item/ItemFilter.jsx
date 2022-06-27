@@ -119,14 +119,11 @@ const ItemFilter = ({
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
-                labelOptions={{
-                  id: option.id,
-                  labelContent: option.label,
-                }}
+                id={option.id}
+                labelText={option.label}
                 onChange={() => handleCheckbox(option)}
                 key={option.id || i}
-                checkboxId={option.id}
-                checked={isSelected(option)}
+                isChecked={isSelected(option)}
               />
             ))}
           </fieldset>
@@ -137,12 +134,12 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
-                  disabled={!selectedFilters[filter].length}
+                  isDisabled={!selectedFilters[filter].length}
                 >Clear
                 </Button>
                 <Button
                   onClick={() => submitFilterSelections(selectedFilters)}
-                  disabled={!selectionMade}
+                  isDisabled={!selectionMade}
                 >Apply
                 </Button>
               </div>

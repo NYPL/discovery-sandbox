@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Input, Label, Button, ButtonTypes, Select } from '@nypl/design-system-react-components'
+import { Checkbox, Input, Label, Button, Select } from '@nypl/design-system-react-components'
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -206,14 +206,9 @@ class AdvancedSearch extends React.Component {
           </div>
           <hr />
           <div id="advancedSearchButtons">
+            <Button type="submit">Submit</Button>
             <Button
-              buttonType={ButtonTypes.Primary}
-              type="submit"
-            >
-              Submit
-            </Button>
-            <Button
-              buttonType={ButtonTypes.Secondary}
+              buttonType="secondary"
               className="clearButton"
               type="button"
               onClick={clearFields}

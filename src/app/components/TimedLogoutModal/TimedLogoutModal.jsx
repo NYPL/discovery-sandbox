@@ -3,9 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  ButtonTypes,
   Modal,
-  Card,
 } from '@nypl/design-system-react-components';
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
@@ -73,14 +71,13 @@ const TimedLogoutModal = (props) => {
         Do you want to stay logged in?
         <div className="button-container">
           <Button
-            buttonType={ButtonTypes.Secondary}
+            buttonType="secondary"
             className="button"
             onClick={logOutAndRedirect}
           >
             Log off
           </Button>
           <Button
-            buttonType={ButtonTypes.Primary}
             className="button"
             onClick={stayLoggedIn}
           >

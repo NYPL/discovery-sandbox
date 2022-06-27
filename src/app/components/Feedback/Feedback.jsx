@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, ButtonTypes, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
+import { Button, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -97,12 +97,10 @@ class Feedback extends React.Component {
         <Button
           className="feedback-button"
           onClick={() => this.toggleForm()}
-          attributes={{
-            'aria-haspopup': 'true',
-            'aria-expanded': showForm,
-            'aria-controls': 'feedback-menu',
-          }}
-          buttonType={ButtonTypes.Secondary}
+          aria-haspopup={true}
+          aria-expanded={showForm}
+          aria-controls='feedback-menu'
+          buttonType="secondary"
         >
           Help & Feedback
         </Button>
@@ -177,14 +175,13 @@ class Feedback extends React.Component {
                       'aria-expanded': !showForm,
                       'aria-controls': 'feedback-menu',
                     }}
-                    buttonType={ButtonTypes.Secondary}
+                    buttonType="secondary"
                   >
                     Cancel
                   </Button>
 
                   <Button
                     type="submit"
-                    buttonType={ButtonTypes.Primary}
                     className="submit-button"
                   >Submit
                   </Button>
