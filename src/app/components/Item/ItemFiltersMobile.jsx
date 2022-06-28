@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Modal, Icon } from '@nypl/design-system-react-components';
+import { Button, ModalTrigger, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
 
 import { itemFilters } from '../../data/constants';
@@ -21,6 +21,7 @@ const ItemFiltersMobile = ({
   if (!displayFilters) {
     return (
       <Button
+        id="filters-mobile-btn"
         onClick={() => toggleFilterDisplay(true)}
         buttonType="outline"
         className="item-table-filters"
@@ -40,43 +41,43 @@ const ItemFiltersMobile = ({
   };
 
   return (
-    <Modal
-      buttonType="outline"
+    <ModalTrigger
+      id="item-filters-mobile"
       className="scc-item-filters nypl-ds"
+      buttonText="Go Back"
+      modalProps={{
+        bodyContent: (
+          <>
+            <Button
+              id="filters-show-results-btn"
+              className="show-results-button"
+              onClick={showResultsAction}
+            >
+              Show Results
+            </Button>
+            <h1>Filters</h1>
+            <div id="item-filters" className="item-table-filters">
+              {
+                itemFilters.map(filter => (
+                  <ItemFilter
+                    filter={filter.type}
+                    options={options[filter.type]}
+                    manageFilterDisplay={manageFilterDisplay}
+                    key={filter.type}
+                    mobile
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    submitFilterSelections={submitFilterSelections}
+                    initialFilters={initialFilters}
+                  />
+                ))
+              }
+            </div>
+          </>
+        )
+      }}
     >
-      <Button
-        buttonType="link"
-        onClick={goBackAction}
-        className="go-back-button"
-        type="reset"
-      >
-        <Icon name="arrow" iconRotation="rotate-90" />Go Back
-      </Button>
-      <Button
-        className="show-results-button"
-        onClick={showResultsAction}
-      >
-        Show Results
-      </Button>
-      <h1>Filters</h1>
-      <div id="item-filters" className="item-table-filters">
-        {
-          itemFilters.map(filter => (
-            <ItemFilter
-              filter={filter.type}
-              options={options[filter.type]}
-              manageFilterDisplay={manageFilterDisplay}
-              key={filter.type}
-              mobile
-              selectedFilters={selectedFilters}
-              setSelectedFilters={setSelectedFilters}
-              submitFilterSelections={submitFilterSelections}
-              initialFilters={initialFilters}
-            />
-          ))
-        }
-      </div>
-    </Modal>
+    </ModalTrigger>
   );
 };
 

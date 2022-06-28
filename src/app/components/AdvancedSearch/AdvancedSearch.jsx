@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Input, Label, Button, Select } from '@nypl/design-system-react-components'
+import { Checkbox, TextInput, Label, Button, Select } from '@nypl/design-system-react-components'
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -110,10 +110,10 @@ class AdvancedSearch extends React.Component {
                     (
                       <li key={key}>
                         <Label htmlFor={key} id={`${key}-input-label`}>{labelsForFields[key]}</Label>
-                        <Input
+                        <TextInput
                           id={key}
                           type="text"
-                          attributes={{ name: key }}
+                          name={key}
                           ariaLabelledBy={`${key}-input-label`}
                         />
                       </li>
@@ -148,7 +148,7 @@ class AdvancedSearch extends React.Component {
                         (
                           <li key={key} id={`${key}-li`}>
                             <Label htmlFor={key} id={`${key}-li-label`}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" attributes={{ name: key }} ariaLabelledBy={`${key}-li-label`} />
+                            <TextInput id={key} type="text" name={key} ariaLabelledBy={`${key}-li-label`} />
                           </li>
                         ),
                       )
@@ -165,12 +165,9 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(0, 4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
+                              id={materialType.value}
+                              labelText={materialType.label}
                               showLabel
-                              checkboxId={materialType.value}
                               value={materialType.value}
                               key={materialType.value}
                               name={materialType.value}
@@ -184,12 +181,9 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
+                              id={materialType.value}
+                              labelText={materialType.label}
                               showLabel
-                              checkboxId={materialType.value}
                               value={materialType.value}
                               key={materialType.value}
                               name={materialType.value}
@@ -206,8 +200,9 @@ class AdvancedSearch extends React.Component {
           </div>
           <hr />
           <div id="advancedSearchButtons">
-            <Button type="submit">Submit</Button>
+            <Button id="advance-submit-btn" type="submit">Submit</Button>
             <Button
+              id="advance-clear-btn" 
               buttonType="secondary"
               className="clearButton"
               type="button"

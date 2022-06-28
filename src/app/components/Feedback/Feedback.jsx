@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
+import { Button, TextInput, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -95,6 +95,7 @@ class Feedback extends React.Component {
     return (
       <div className="feedback nypl-ds">
         <Button
+          id="feedback-help-btn"
           className="feedback-button"
           onClick={() => this.toggleForm()}
           aria-haspopup={true}
@@ -124,7 +125,7 @@ class Feedback extends React.Component {
                   onSubmit={this.onSubmitForm}
                 >
                   <div>
-                    <Label htmlFor="feedback-textarea-comment">
+                    <Label htmlFor="feedback-textarea-comment" id="comments-label">
                       Comments*
                     </Label>
                     <textarea
@@ -139,17 +140,17 @@ class Feedback extends React.Component {
                     />
                     <HelperErrorText
                       id="helper-text"
-                      isError={commentInputError}
+                      isInvalid={commentInputError}
                     >
                       {commentInputError ? 'Please fill out this field' : ''}
                     </HelperErrorText>
                   </div>
                   <div>
-                    <Label htmlFor="feedback-input-email">
+                    <Label htmlFor="feedback-input-email" id="email-label">
                       Email <span>(required if you would like a response from us)</span>
                     </Label>
-                    <Input
-                      required
+                    <TextInput
+                      isRequired
                       attributes={{
                         name: 'email',
                         onChange: this.handleInputChange,
@@ -168,6 +169,7 @@ class Feedback extends React.Component {
                     </Link>
                   </div>
                   <Button
+                    id="feedback-reset-btn"
                     type="reset"
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}
@@ -181,9 +183,11 @@ class Feedback extends React.Component {
                   </Button>
 
                   <Button
+                    id="feedback-submit-btn"
                     type="submit"
                     className="submit-button"
-                  >Submit
+                  >
+                    Submit
                   </Button>
                 </form>
               </>

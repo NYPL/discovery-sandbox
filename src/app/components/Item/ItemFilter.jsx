@@ -104,8 +104,8 @@ const ItemFilter = ({
       className="item-filter"
     >
       <Button
-        className={`item-filter-button ${
-          open ? ' open' : ''}`}
+        id="item-filter-btn"
+        className={`item-filter-button ${open ? ' open' : ''}`}
         buttonType="outline"
         onClick={clickHandler}
         type="button"
@@ -132,12 +132,14 @@ const ItemFilter = ({
             (
               <div className="item-filter-buttons">
                 <Button
+                  id="item-filter-clear-btn"
                   buttonType="link"
                   onClick={() => clear()}
                   isDisabled={!selectedFilters[filter].length}
                 >Clear
                 </Button>
                 <Button
+                  id="item-filter-apply-btn"
                   onClick={() => submitFilterSelections(selectedFilters)}
                   isDisabled={!selectionMade}
                 >Apply

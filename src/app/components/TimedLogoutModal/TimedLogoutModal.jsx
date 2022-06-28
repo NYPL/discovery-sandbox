@@ -71,6 +71,7 @@ const TimedLogoutModal = (props) => {
         Do you want to stay logged in?
         <div className="button-container">
           <Button
+            id="modal-logout-btn"
             buttonType="secondary"
             className="button"
             onClick={logOutAndRedirect}
@@ -78,6 +79,7 @@ const TimedLogoutModal = (props) => {
             Log off
           </Button>
           <Button
+            id="modal-login-btn"
             className="button"
             onClick={stayLoggedIn}
           >

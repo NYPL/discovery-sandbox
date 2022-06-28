@@ -21,7 +21,7 @@ const CancelConfirmationModal = ({
           onClick={() => setItemToCancel(null)}
         >Back
         </Button>
-        <Button onClick={cancelItem}>Confirm</Button>
+        <Button id="confirm-modal-btn" onClick={cancelItem}>Confirm</Button>
       </div>
     </div>
   </Modal>

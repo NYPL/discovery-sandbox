@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import {
-  Input,
   SearchBar,
   Select,
+  TextInput,
 } from '@nypl/design-system-react-components';
 
 import SearchButton from '../Buttons/SearchButton';
@@ -148,7 +148,7 @@ class Search extends React.Component {
             <option value="standard_number">Standard Numbers</option>
             <option value="subject">Subject</option>
           </Select>
-          <Input
+          <TextInput
             type="text"
             id="search-query"
             aria-label="Search by keyword, title, journal title, or author/contributor"
