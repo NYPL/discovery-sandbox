@@ -15,6 +15,7 @@ import logger from '../../../logger';
 import ResearchNow from './ResearchNow';
 import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
+import { noOnsiteEddCheck } from '../utils/noOnsiteEddCheck';
 import {
   addHoldingDefinition,
   addCheckInItems,
@@ -31,7 +32,7 @@ const createAPIQuery = basicQuery({
 });
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
-  const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
+  const requestOptions = noOnsiteEddCheck(appConfig.features, urlEnabledFeatures)
 
   return nyplApiClient()
     .then(client =>
@@ -40,7 +41,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
 };
 
 function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
-  const encodedResultsQueryString = createAPIQuery({
+  const encodedQueryString = createAPIQuery({
     searchKeywords,
     contributor,
     title,
@@ -52,17 +53,10 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
     identifierNumbers,
   });
 
-  const encodedAggregationsQueryString = createAPIQuery({
-    searchKeywords,
-    selectedFilters: filters,
-    field,
-    identifierNumbers
-  });
-
-  const aggregationQuery = `/aggregations?${encodedAggregationsQueryString}`;
+  const aggregationQuery = `/aggregations?${encodedQueryString}`;
   // TODO: Why are we hard-coding per_page=50? Could we set this to the number
   // shown on Search Results pages (3)?
-  const resultsQuery = `?${encodedResultsQueryString}&per_page=50`;
+  const resultsQuery = `?${encodedQueryString}&per_page=50`;
   const queryObj = {
     query: { q: searchKeywords, contributor, title, subject, sortBy, order, field, filters },
   };
