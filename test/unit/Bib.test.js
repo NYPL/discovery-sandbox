@@ -53,7 +53,7 @@ describe('Bib', () => {
       },
     ],
   };
-
+  
   describe('addCheckInItems', () => {
     it('should add correctly structured checkInItems', () => {
       addCheckInItems(mockBib);
