@@ -1,55 +1,54 @@
 language: node_js
 node_js:
-  - 10.17.0
+- 10.17.0
 install: npm rebuild node-sass && npm install
 before_script: npm run dist
 script: npm test
-before_deploy:
-  echo 'All unit tests passed; Successfull built distribution assets;
+before_deploy: echo 'All unit tests passed; Successfull built distribution assets;
   Preparing to deploy Discovery Research Catalog to AWS.'
 deploy:
-  - provider: elasticbeanstalk
-    skip_cleanup: true
-    access_key_id: '$AWS_ACCESS_KEY_ID_DEVELOPMENT'
-    secret_access_key: '$AWS_SECRET_ACCESS_KEY_DEVELOPMENT'
-    region: us-east-1
-    app: discovery-ui
-    env: discovery-ui-shep-development
-    bucket_name: elasticbeanstalk-us-east-1-224280085904
-    bucket_path: discovery-ui-development
-    on:
-      repo: NYPL/discovery-front-end
-      branch: development
-  - provider: elasticbeanstalk
-    skip_cleanup: false
-    access_key_id: '$AWS_ACCESS_KEY_ID_QA'
-    secret_access_key: '$AWS_SECRET_ACCESS_KEY_QA'
-    region: us-east-1
-    app: discovery-ui
-    env: DiscoveryUi-production
-    bucket_name: elasticbeanstalk-us-east-1-946183545209
-    bucket_path: discovery-ui-shep
-    on:
-      repo: NYPL/discovery-front-end
-      branch: production
-  - provider: elasticbeanstalk
-    skip_cleanup: false
-    access_key_id: '$AWS_ACCESS_KEY_ID_QA'
-    secret_access_key: '$AWS_SECRET_ACCESS_KEY_QA'
-    region: us-east-1
-    app: discovery-ui
-    env: DiscoveryUi-10-17-qa
-    bucket_name: elasticbeanstalk-us-east-1-946183545209
-    bucket_path: discovery-ui-shep
-    on:
-      repo: NYPL/discovery-front-end
-      all_branches: true
-      condition: $TRAVIS_TAG =~ ^qa-.*
-
-after_deploy: echo 'Successfully executed deploy trigger for Discovery Research
-  Catalog on AWS'
+- provider: elasticbeanstalk
+  skip_cleanup: true
+  access_key_id: "$AWS_ACCESS_KEY_ID_DEVELOPMENT"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_DEVELOPMENT"
+  region: us-east-1
+  app: discovery-ui
+  env: discovery-ui-shep-development
+  bucket_name: elasticbeanstalk-us-east-1-224280085904
+  bucket_path: discovery-ui-development
+  on:
+    repo: NYPL/discovery-front-end
+    branch: development
+- provider: elasticbeanstalk
+  skip_cleanup: false
+  access_key_id: "$AWS_ACCESS_KEY_ID_QA"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
+  region: us-east-1
+  app: discovery-ui
+  env: DiscoveryUi-production
+  bucket_name: elasticbeanstalk-us-east-1-946183545209
+  bucket_path: discovery-ui-shep
+  on:
+    repo: NYPL/discovery-front-end
+    branch: production
+- provider: elasticbeanstalk
+  skip_cleanup: false
+  access_key_id: "$AWS_ACCESS_KEY_ID_QA"
+  secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
+  region: us-east-1
+  app: discovery-ui
+  env: DiscoveryUi-10-17-qa
+  bucket_name: elasticbeanstalk-us-east-1-946183545209
+  bucket_path: discovery-ui-shep
+  on:
+    repo: NYPL/discovery-front-end
+    all_branches: true
+    condition: "$TRAVIS_TAG =~ ^qa-.*"
+after_deploy: echo 'Successfully executed deploy trigger for Discovery Research Catalog
+  on AWS'
 env:
   global:
-    - secure: GfEx9zdPWq4s8Q2vkPUMnnOl+j7eDmWQrM9un8dIQOj2hhWfAqVbes1iACnaueG/6JSR5lvr4sS/uZ2ukcVyvOwT0F9uDnejPt0gqi4mx5Q/Ztr2s0rHjY1lEn18NjWJzxEaeMzHOKbcAqG8R4d5wOvx7VEn6IRdTpZY/8oI4iqo7E9uonX1lJ6o2dc8KTtA4qnENLlnzKXN2W04MVK55CkWbQNtYOzgmyGj6/VYb3PQggweceSUapCl4+FWiqIS+BGY9yKWvZyfuvtxWCtG7wh+yEfvchFlfzR10FbSgBM/WsT07LrXXxF64H3xh/2D46QmCj4WQGwoDVG0itVSQbL201ujmTc2CTZRp5J0YxLOFnIG8OxqcvWc4zN7R4hhdsJ0Bn8+7TAoqY7f+3jAjdthjm2CD24Z2qxWKl/rtfT/YggxFsxJygsVTq9OO8D3la0RB7WO/pBy5uXcajc2ExcUE3DQGipgEqSYMBI0M0t2qghoUycManIpfs/PK87LZ7HOv55J1Yxq68xG2Y5d105RO+rHiE9+29UZXJdqxKU2ZLpuekiuINxbX0/qF4sG3Rt2b26IZn7mSOtj0UrPk7ueSunVVWAVio1wgDNekMYnbbkV3cd/JHvkPD0KiCziN6UFEmP89meDo82VoZRMnydr1y66sGzTLcTtO8nibAE=
-    - secure: cdnfdgDqBQadxSeNOmrImzfXQJyCy+StFyZXFa8Za36DWoL75LyIH8fYR9T9KJJSKc1LKPUrVLuXXJ9DmWNBByTXd35Qgkvd+AyurMvYj9F5zNLsMCLuQZkIQl2gkmMfmAZuOPZRnRLaKjMg/BuBdo/oI2j48uhPasq07aMfnncHUqQAkJ1hU3jqTuydSacrGXIxC6ONPL92z57CK5kBvb1Gx389SZKChJ7VpOd529n8K+KqXNmvZuz2i1dkNSOvtqNIcz9ljN8aDuBAka3fsvkB4HgqvrEDDBM03uZ1rKM2Ac7pSRYrQdBKceDzitxtoWP7d95gypLDeAoiY112tZfIyLRDTSxpNQGWJUMMstEs//ZtRoERnndZEC+qXrniqGu7PbtHxIZx041TgvOs2T2ImVACAvi6Btth7lEEzMZKz6bhttFaLLBsbH4b4HYArtHE2vl7FkcmcIkUO9iGghB1nx2grV2+Rx/ixh1KrSaye/8/0I69D9fSl4SReBIsn3bKt1QXNJqrODBVLsp2Eox72D2YWL04TzcaABdZNgsuHvzwxbOaJ5kFqVTB+cLHdjVm8RcXcBGTdw6SIs5QkwkcmKflyQliDwnqvihM8H7caAcFL3Cup0MH2amik10S66e0HT14tPKMBTiyFwDiQeRMsh9jQPjgTn/wxCNMp+M=
-    - secure: QlhELo/yrCO2QcREmWed5EMHpEMQd3w53j4cR5qYyJ5UXWcNLGYfczRBFKXkpdAdplCjsugWauQ6DnhX36oFv7ZKmpblkrWXW7cWXnXKa15j3+CCvq+/pi1XvXFKpbUPopr18BoXZbfZaHcbsKQktwyw5F0mXZois7M6t7MqkulS694NKvmdJTunAHixWkkA4md5udYO9IsGM4xua1BvWra6YsnLDT2VzYdKR+1Yq5YjJ42HFsTharRl/6FPuLLJ5jp5YawTquPD24YARJog8RT9/jbsqiIaooYf4Udl4n1aFOZmy4alhs5etq1+v2eF+0aIiAsmrfGKM2rGXKTOpKpr+WwjG+n5klRMBqaU9o9jkvXjx5Koa2m3yojC4vBonP3XQrhbRxf+6yLnu2QIEguuL7heLyRpW6aicyrJqAVa1ZRzbuMQdiAU3FCRxNKJdKGW2pXww3dpZb7gV0yjF9B8BSrwa2j9jG/REhVz7SZUz6txp9WcV9wyRdmUJ3h+h2zsNpOTFN6qnV08USErNLNw7JGwYRn/JuBNEdrlGIw6YznwkK1HkbG5yR3g/KSwJ/c5q2UX/KV+mNDe0r9lbJVpEpJw87sR4GDrJI4J2ne1nzAwQJ6nzsqmZmjn0momYPKIRcDSGsEPnlzBcpTHl3zEWD1c/AkHGgT3A0CRXP4=
+  - secure: GfEx9zdPWq4s8Q2vkPUMnnOl+j7eDmWQrM9un8dIQOj2hhWfAqVbes1iACnaueG/6JSR5lvr4sS/uZ2ukcVyvOwT0F9uDnejPt0gqi4mx5Q/Ztr2s0rHjY1lEn18NjWJzxEaeMzHOKbcAqG8R4d5wOvx7VEn6IRdTpZY/8oI4iqo7E9uonX1lJ6o2dc8KTtA4qnENLlnzKXN2W04MVK55CkWbQNtYOzgmyGj6/VYb3PQggweceSUapCl4+FWiqIS+BGY9yKWvZyfuvtxWCtG7wh+yEfvchFlfzR10FbSgBM/WsT07LrXXxF64H3xh/2D46QmCj4WQGwoDVG0itVSQbL201ujmTc2CTZRp5J0YxLOFnIG8OxqcvWc4zN7R4hhdsJ0Bn8+7TAoqY7f+3jAjdthjm2CD24Z2qxWKl/rtfT/YggxFsxJygsVTq9OO8D3la0RB7WO/pBy5uXcajc2ExcUE3DQGipgEqSYMBI0M0t2qghoUycManIpfs/PK87LZ7HOv55J1Yxq68xG2Y5d105RO+rHiE9+29UZXJdqxKU2ZLpuekiuINxbX0/qF4sG3Rt2b26IZn7mSOtj0UrPk7ueSunVVWAVio1wgDNekMYnbbkV3cd/JHvkPD0KiCziN6UFEmP89meDo82VoZRMnydr1y66sGzTLcTtO8nibAE=
+  - secure: cdnfdgDqBQadxSeNOmrImzfXQJyCy+StFyZXFa8Za36DWoL75LyIH8fYR9T9KJJSKc1LKPUrVLuXXJ9DmWNBByTXd35Qgkvd+AyurMvYj9F5zNLsMCLuQZkIQl2gkmMfmAZuOPZRnRLaKjMg/BuBdo/oI2j48uhPasq07aMfnncHUqQAkJ1hU3jqTuydSacrGXIxC6ONPL92z57CK5kBvb1Gx389SZKChJ7VpOd529n8K+KqXNmvZuz2i1dkNSOvtqNIcz9ljN8aDuBAka3fsvkB4HgqvrEDDBM03uZ1rKM2Ac7pSRYrQdBKceDzitxtoWP7d95gypLDeAoiY112tZfIyLRDTSxpNQGWJUMMstEs//ZtRoERnndZEC+qXrniqGu7PbtHxIZx041TgvOs2T2ImVACAvi6Btth7lEEzMZKz6bhttFaLLBsbH4b4HYArtHE2vl7FkcmcIkUO9iGghB1nx2grV2+Rx/ixh1KrSaye/8/0I69D9fSl4SReBIsn3bKt1QXNJqrODBVLsp2Eox72D2YWL04TzcaABdZNgsuHvzwxbOaJ5kFqVTB+cLHdjVm8RcXcBGTdw6SIs5QkwkcmKflyQliDwnqvihM8H7caAcFL3Cup0MH2amik10S66e0HT14tPKMBTiyFwDiQeRMsh9jQPjgTn/wxCNMp+M=
+  - secure: QlhELo/yrCO2QcREmWed5EMHpEMQd3w53j4cR5qYyJ5UXWcNLGYfczRBFKXkpdAdplCjsugWauQ6DnhX36oFv7ZKmpblkrWXW7cWXnXKa15j3+CCvq+/pi1XvXFKpbUPopr18BoXZbfZaHcbsKQktwyw5F0mXZois7M6t7MqkulS694NKvmdJTunAHixWkkA4md5udYO9IsGM4xua1BvWra6YsnLDT2VzYdKR+1Yq5YjJ42HFsTharRl/6FPuLLJ5jp5YawTquPD24YARJog8RT9/jbsqiIaooYf4Udl4n1aFOZmy4alhs5etq1+v2eF+0aIiAsmrfGKM2rGXKTOpKpr+WwjG+n5klRMBqaU9o9jkvXjx5Koa2m3yojC4vBonP3XQrhbRxf+6yLnu2QIEguuL7heLyRpW6aicyrJqAVa1ZRzbuMQdiAU3FCRxNKJdKGW2pXww3dpZb7gV0yjF9B8BSrwa2j9jG/REhVz7SZUz6txp9WcV9wyRdmUJ3h+h2zsNpOTFN6qnV08USErNLNw7JGwYRn/JuBNEdrlGIw6YznwkK1HkbG5yR3g/KSwJ/c5q2UX/KV+mNDe0r9lbJVpEpJw87sR4GDrJI4J2ne1nzAwQJ6nzsqmZmjn0momYPKIRcDSGsEPnlzBcpTHl3zEWD1c/AkHGgT3A0CRXP4=
+  - secure: sVdhBO7r8CtSeggAGNx9n5GIRby0QZjqJSM/4WSZzs2c7vObPpbCAcaD0NPNXyfkoDJUrPt89a3ZCvBJLpJn4Bnicy2EDCTZQCSYdurvNw2ExMW0a+Yyplm3EIVbnkMrKMp8uhP6L70dksm3IIIGTlDynqmcNazExE+Tf+3zagfBnP8qhRZTCAwhaKsNZ8EdhqzSsoNQXZblwdFxXXHRpkZ05EBBgNnPj1P0QiobNvSUqDxDGtheCNpbjAcssO9okGjNmxgVsTtckgbEM/7n81RHHHusEqLCVVZUuI+A5CVu+j8HMiD4LuWPH1AzKYAfJ18NUTYjRNyLHECzp16Qmp1888LiVKMlB1NSInokgugAX/DxX9/lzCJe1dIZh7Xm1SSfo9KzTSpikM/N1x2B7DYZYWLuaIJWjI7E4+9uUobRQdlbihg+Jgsb9HAhMWlZ8EQYWWiBypBuH7fU2j7xBVfJwdJfPcF2dO8NyUFBFeWBQe10gYmSaQCFWqAtpxoG2x51fQ1kxneffNgMt2RtLS3S1sdIiacjci+ofnXs/1HUS0OYxttvIbYBJBdumOJVcmaNUH1biISkYH71XH89W/xui4xJ2N4mipB09YaI8/PloVxkkKTIFGJm3ObAlNn5QOg3B1QfODCAPTfyVez5gLDWG6nxushUAo4Ab1YI+nE=
