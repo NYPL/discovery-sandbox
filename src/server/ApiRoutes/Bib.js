@@ -6,13 +6,23 @@ import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
+import { noOnsiteEddCheck } from '../utils/noOnsiteEddCheck';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
-  // If on-site-edd feature enabled in front-end, enable it in discovery-api:
-  const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
-  const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
+  // If no-onsite-edd feature enabled in front-end, enable it in discovery-api:
+  const queryForItemPage =
+    typeof itemFrom !== 'undefined'
+      ? `?items_size=${itemBatchSize}&items_from=${itemFrom}`
+      : '';
+  const requestOptions = noOnsiteEddCheck(appConfig.features, urlEnabledFeatures)
+  
+  return nyplApiClient().then((client) =>
+    client.get(
+      `/discovery/resources/${query}${queryForItemPage}`,
+      requestOptions,
+    ),
+  );
 };
 
 const shepApiCall = bibId => axios({
@@ -32,7 +42,7 @@ const holdingsMappings = {
 export const addHoldingDefinition = (holding) => {
   holding.holdingDefinition = Object.entries(holdingsMappings)
     .map(([key, value]) => ({ term: key, definition: holding[value] }))
-    .filter(data => data.definition);
+    .filter((data) => data.definition);
 };
 
 export const findUrl = (location, urls) => {
@@ -173,8 +183,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       appendDimensionsToExtent(bib)
-      return addLocationUrls(bib)
-    })
+      return addLocationUrls(bib)})
     .then((bib) => {
       if (bib.holdings) {
         addCheckInItems(bib);
@@ -230,6 +239,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
-  addLocationUrls,
-  appendDimensionsToExtent,
+  addLocationUrls
 };
