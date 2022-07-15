@@ -76,7 +76,7 @@ class BibDetails extends React.Component {
           >
             {
               isRtl(bibValue.prefLabel) ?
-                (<span dir='rtl'>{bibValue.prefLabel}</span>) :
+                (<div dir='rtl'>{bibValue.prefLabel}</div>) :
                 bibValue.prefLabel
             }
           </Link>
@@ -100,7 +100,7 @@ class BibDetails extends React.Component {
         );
       }
 
-      return <span dir={stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</span>;
+      return <div dir={stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</div>;
     }
 
     return (
@@ -293,7 +293,7 @@ class BibDetails extends React.Component {
         >
           {
             isRtl(bibValue) ?
-            (<span dir='rtl'>{bibValue}</span>) :
+            (<div dir='rtl'>{bibValue}</div>) :
             bibValue
           }
         </Link>
@@ -318,7 +318,7 @@ class BibDetails extends React.Component {
       );
     }
 
-    return <span dir={stringDirection(bibValue)}>{bibValue}</span>;
+    return <div dir={stringDirection(bibValue)}>{bibValue}</div>;
   }
 
   /**

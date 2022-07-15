@@ -102,7 +102,7 @@ export const BibPage = (
         <Heading level={2}>
           {
             isRtl(mainHeading) ?
-            <span dir='rtl'>{mainHeading}</span> :
+            <div dir='rtl'>{mainHeading}</div> :
             mainHeading
           }
         </Heading>
