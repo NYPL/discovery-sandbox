@@ -232,14 +232,14 @@ describe('BibDetails', () => {
       )
 
       expect(rtlComponent.find('dd')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('div').prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('dd')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span').prop('dir')).to.not.eql('rtl')
+      expect(ltrComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('div').prop('dir')).to.not.eql('rtl')
 
     })
 
@@ -256,11 +256,11 @@ describe('BibDetails', () => {
 
       expect(rtlComponent.find('dd')).to.have.lengthOf(1)
       expect(rtlComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('span')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('span').at(0).prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('div')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a').at(0).find('div').at(0).prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('a').at(0).find('span')).to.have.lengthOf(0)
+      expect(ltrComponent.find('dd').at(0).find('a').at(0).find('div')).to.have.lengthOf(0)
     })
 
     it('should handle rtl text in a single self-linkable object value', () => {
@@ -350,12 +350,12 @@ describe('BibDetails', () => {
       )
 
       expect(rtlComponent.find('dd')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('div').prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('dd')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span').prop('dir')).to.not.eql('rtl')
+      expect(ltrComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('div').prop('dir')).to.not.eql('rtl')
     })
 
     it('should handle rtl text in a linkable string value', () => {
@@ -369,11 +369,11 @@ describe('BibDetails', () => {
       )
 
       expect(rtlComponent.find('dd')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
-      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('div').prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('dd')).to.have.lengthOf(1)
-      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(0)
+      expect(ltrComponent.find('dd').at(0).find('div')).to.have.lengthOf(0)
     })
   })
 });

@@ -284,8 +284,8 @@ describe('BibPage', () => {
         },
       );
 
-      expect(component.find(Heading).at(1).find('span').length).to.eql(1)
-      expect(component.find(Heading).at(1).find('span').at(0).prop('dir')).to.eql('rtl')
+      expect(component.find(Heading).at(1).find('div').length).to.eql(1)
+      expect(component.find(Heading).at(1).find('div').at(0).prop('dir')).to.eql('rtl')
     })
 
     it('should display parallel title ltr if ltr', () => {
@@ -314,7 +314,7 @@ describe('BibPage', () => {
         },
       );
 
-      expect(component.find(Heading).at(1).find('span').length).to.eql(0)
+      expect(component.find(Heading).at(1).find('div').length).to.eql(0)
     })
   });
 });
