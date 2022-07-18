@@ -5,21 +5,33 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+
+// Components
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
+import BibDetails from '../components/BibPage/BibDetails';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
-import BottomBibDetails from '../components/BibPage/BottomBibDetails';
-import LibraryHoldings from '../components/BibPage/LibraryHoldings';
-import TopBibDetails from '../components/BibPage/TopBibDetails';
 import itemsContainerModule from '../components/Item/ItemsContainer';
 import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
+import LibraryHoldings from '../components/BibPage/LibraryHoldings';
+import LibraryItem from '../utils/item';
 import SccContainer from '../components/SccContainer/SccContainer';
+// Utils and configs
+import {
+  allFields,
+  annotatedMarcDetails,
+  compressSubjectLiteral,
+  getGroupedNotes,
+  getIdentifiers,
+} from '../utils/bibDetailsUtils';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
-import LibraryItem from '../utils/item';
 import {
   getAggregatedElectronicResources,
+  isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import getOwner from '../utils/getOwner';
+import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -89,51 +101,84 @@ export const BibPage = (
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
 
+  const topFields = allFields.top;
+  const bottomFields = allFields.bottom(bib);
+  // Make a copy of the `bib` so we can add additional fields with
+  // computed data values that will make rendering them easier in
+  // the `BibDetails` component.
+  const newBibModel = { ...bib };
+  newBibModel['notesGroupedByNoteType'] = getGroupedNotes(bib);
+  newBibModel['owner'] = getOwner(bib);
+  newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
+  newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
+
   return (
-    <SccContainer
-      useLoadingLayer
-      className="nypl-item-details"
-      pageTitle="Item Details"
-    >
-      <section className="nypl-item-details__heading">
-        <Heading level={2}>
-          {bib.title && bib.title.length ? bib.title[0] : ' '}
-        </Heading>
-        <BackToSearchResults result={resultSelection} bibId={bibId} />
-      </section>
+    <RouterProvider value={context}>
+      <SccContainer
+        useLoadingLayer
+        className='nypl-item-details'
+        pageTitle='Item Details'
+      >
+        <section className='nypl-item-details__heading'>
+          <Heading level={2}>
+            {newBibModel.title && newBibModel.title.length
+              ? newBibModel.title[0]
+              : ' '}
+          </Heading>
+          <BackToSearchResults result={resultSelection} bibId={bibId} />
+        </section>
 
-      <TopBibDetails
-        bib={bib}
-        resources={pluckAeonLinksFromResource(
-          aggregatedElectronicResources,
-          items,
-        )}
-      />
-
-      {items.length && !isElectronicResources && (
         <section style={{ marginTop: '20px' }}>
-          <ItemsContainer
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={bib.holdings}
+          <BibDetails
+            bib={newBibModel}
+            electronicResources={pluckAeonLinksFromResource(
+              aggregatedElectronicResources,
+              items,
+            )}
+            fields={topFields}
           />
         </section>
-      )}
 
-      {bib.holdings && (
+        {items.length && !isElectronicResources && (
+          <section style={{ marginTop: '20px' }}>
+            <ItemsContainer
+              key={bibId}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              items={items}
+              bibId={bibId}
+              itemPage={location.search}
+              searchKeywords={searchKeywords}
+              holdings={newBibModel.holdings}
+            />
+          </section>
+        )}
+
+        {newBibModel.holdings && (
+          <section style={{ marginTop: '20px' }}>
+            <LibraryHoldings holdings={newBibModel.holdings} />
+          </section>
+        )}
+
         <section style={{ marginTop: '20px' }}>
-          <LibraryHoldings holdings={bib.holdings} />
+          <Heading level={3}>Details</Heading>
+          <BibDetails
+            additionalData={
+              isNyplBnumber(newBibModel.uri) && newBibModel.annotatedMarc
+                ? annotatedMarcDetails(newBibModel)
+                : []
+            }
+            bib={newBibModel}
+            electronicResources={aggregatedElectronicResources}
+            fields={bottomFields}
+          />
         </section>
-      )}
 
-      <BottomBibDetails bib={bib} resources={aggregatedElectronicResources} />
-
-      <LegacyCatalogLink recordNumber={bibId} display={bibId.startsWith('b')} />
-    </SccContainer>
+        <LegacyCatalogLink
+          recordNumber={bibId}
+          display={bibId.startsWith('b')}
+        />
+      </SccContainer>
+    </RouterProvider>
   );
 };
 
