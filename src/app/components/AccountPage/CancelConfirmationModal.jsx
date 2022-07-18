@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  ButtonTypes,
-  Modal,
-  Card,
+  // ModalTrigger,
 } from '@nypl/design-system-react-components';
 
 const CancelConfirmationModal = ({
@@ -12,24 +10,27 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-  <Modal className="research-modal cancel-confirmation">
+  // Todo
+  <div className="research-modal cancel-confirmation">
     <div className="research-modal__content">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
       <div className="button-container">
         <Button
-          buttonType={ButtonTypes.Secondary}
+          buttonType="secondary"
+          id="back-button"
           onClick={() => setItemToCancel(null)}
         >Back
         </Button>
         <Button
-          buttonType={ButtonTypes.Primary}
+          buttonType="primary"
+          id="confirm-button"
           onClick={cancelItem}
         >Confirm
         </Button>
       </div>
     </div>
-  </Modal>
+  </div>
 );
 
 CancelConfirmationModal.propTypes = {

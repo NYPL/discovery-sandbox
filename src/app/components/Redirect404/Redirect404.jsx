@@ -23,7 +23,7 @@ const Redirect404 = (props, context) => {
     <DocumentTitle title={`404 | ${appConfig.displayTitle} | NYPL`}>
       <div className="redirect404 .nypl-ds">
         <div className="redirect404text">
-          <Heading level={1}>
+          <Heading level="one">
             We&apos;re Sorry...
           </Heading>
           <p>

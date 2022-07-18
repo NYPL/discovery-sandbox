@@ -14,10 +14,7 @@ import {
 } from 'underscore';
 import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
 
-import {
-  Button,
-  ButtonTypes,
-} from '@nypl/design-system-react-components';
+import { Button } from '@nypl/design-system-react-components';
 
 import {
   trackDiscovery,
@@ -425,13 +422,12 @@ export class FilterPopup extends React.Component {
     );
     const openPopupButton = js ? (
       <Button
+        aria-haspopup={'true'}
+        aria-expanded={showForm || null}
+        aria-controls={'filter-popup-menu'}
+        buttonType="secondary"
+        id="refine-search-button"
         onClick={() => this.openForm()}
-        buttonType={ButtonTypes.Secondary}
-        attributes={{
-          'aria-haspopup': 'true',
-          'aria-expanded': showForm || null,
-          'aria-controls': 'filter-popup-menu',
-        }}
       >
         Refine Search
       </Button>) :

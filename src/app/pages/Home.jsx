@@ -31,8 +31,8 @@ const Home = (props, context) => (
     </div>
 
     <Notification notificationType="searchResultsNotification" />
-    <Heading level={2}>
-      Explore the Library’s Vast Research Collections & More
+    <Heading level="two">
+      Explore the Library's Vast Research Collections & More
     </Heading>
     <div className="nypl-column-full">
       <p className="nypl-lead">
@@ -44,7 +44,7 @@ const Home = (props, context) => (
     </div>
     <div>
       <Heading
-        level={3}
+        level="three"
       >
         Research at NYPL
       </Heading>
@@ -54,9 +54,7 @@ const Home = (props, context) => (
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/archives-portal.jpg?itok=-oYtHmeO" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
-          <Heading
-            level={4}
-          >
+          <Heading level="four">
             <a href="/research/collections" onClick={() => trackDiscovery('Research Links', 'Collections')}>Collections</a>
           </Heading>
           <p>Discover our world-renowned research collections, featuring more than 46
@@ -70,9 +68,7 @@ const Home = (props, context) => (
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/sasb.jpg?itok=sdQBITR7" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
-          <Heading
-            level={4}
-          >
+          <Heading level="four">
             <a href="/locations/map?libraries=research" onClick={() => trackDiscovery('Research Links', 'Locations')}>Locations</a>
           </Heading>
           <p>Access items, one-on-one reference help, and dedicated research study rooms.</p>
@@ -84,9 +80,7 @@ const Home = (props, context) => (
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/divisions.jpg?itok=O4uSedcp" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
-          <Heading
-            level={4}
-          >
+          <Heading level="four">
             <a href="/research-divisions/" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</a>
           </Heading>
           <p>Learn about the subject and media specializations of our research divisions.</p>
@@ -98,9 +92,7 @@ const Home = (props, context) => (
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/plan-you-visit.jpg?itok=scG6cFgy" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
-          <Heading
-            level={4}
-          >
+          <Heading level="four">
             <a href="/research/support" onClick={() => trackDiscovery('Research Links', 'Support')}>Support</a>
           </Heading>
           <p>
@@ -115,9 +107,7 @@ const Home = (props, context) => (
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
-          <Heading
-            level={4}
-          >
+          <Heading level="four">
             <a href="/research/services" onClick={() => trackDiscovery('Research Links', 'Services')}>Services</a>
           </Heading>
           <p>

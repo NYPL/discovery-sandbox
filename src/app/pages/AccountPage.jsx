@@ -170,7 +170,7 @@ const AccountPage = (props, context) => {
       </div>
       <div className="nypl-patron-page">
         <Heading
-          level={2}
+          level="two"
           id="2"
           text="My Account"
         />

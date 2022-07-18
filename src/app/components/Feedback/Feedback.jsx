@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, ButtonTypes, Input, Label, HelperErrorText, Link } from '@nypl/design-system-react-components';
+import { Button, Label, HelperErrorText, Link, TextInput } from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -97,12 +97,11 @@ class Feedback extends React.Component {
         <Button
           className="feedback-button"
           onClick={() => this.toggleForm()}
-          attributes={{
-            'aria-haspopup': 'true',
-            'aria-expanded': showForm,
-            'aria-controls': 'feedback-menu',
-          }}
-          buttonType={ButtonTypes.Secondary}
+          aria-haspopup={'true'}
+          aria-expanded={showForm}
+          aria-controls={'feedback-menu'}
+          buttonType="secondary"
+          id="help-feedback"
         >
           Help & Feedback
         </Button>
@@ -126,7 +125,7 @@ class Feedback extends React.Component {
                   onSubmit={this.onSubmitForm}
                 >
                   <div>
-                    <Label htmlFor="feedback-textarea-comment">
+                    <Label htmlFor="feedback-textarea-comment" id="feedback-textarea">
                       Comments*
                     </Label>
                     <textarea
@@ -141,23 +140,21 @@ class Feedback extends React.Component {
                     />
                     <HelperErrorText
                       id="helper-text"
-                      isError={commentInputError}
+                      isInvalid={commentInputError}
                     >
                       {commentInputError ? 'Please fill out this field' : ''}
                     </HelperErrorText>
                   </div>
                   <div>
-                    <Label htmlFor="feedback-input-email">
-                      Email <span>(required if you would like a response from us)</span>
-                    </Label>
-                    <Input
+                    <TextInput
                       required
-                      attributes={{
-                        name: 'email',
-                        onChange: this.handleInputChange,
-                        ref: this.emailInput,
-                      }}
+                      name={'email'}
+                      onChange={this.handleInputChange}
+                      ref={this.emailInput}
                       id="feedback-input-email"
+                      labelText={
+                        <>Email <span>(required if you would like a response from us)</span></>
+                      }
                       type="email"
                       value={fields.email}
                     />
@@ -173,19 +170,19 @@ class Feedback extends React.Component {
                     type="reset"
                     className={`cancel-button ${!showForm ? 'hidden' : ''}`}
                     onClick={e => this.deactivateForm(e)}
-                    attributes={{
-                      'aria-expanded': !showForm,
-                      'aria-controls': 'feedback-menu',
-                    }}
-                    buttonType={ButtonTypes.Secondary}
+                    aria-expanded={!showForm}
+                    aria-controls={'feedback-menu'}
+                    buttonType="secondary"
+                    id="cancel-feedback"
                   >
                     Cancel
                   </Button>
 
                   <Button
                     type="submit"
-                    buttonType={ButtonTypes.Primary}
+                    buttonType="primary"
                     className="submit-button"
+                    id="submit-feedback"
                   >Submit
                   </Button>
                 </form>

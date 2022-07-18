@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Button, Modal, Icon } from '@nypl/design-system-react-components';
+import { Button, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
 
 import { itemFilters } from '../../data/constants';
@@ -24,6 +24,7 @@ const ItemFiltersMobile = ({
         onClick={() => toggleFilterDisplay(true)}
         buttonType="outline"
         className="item-table-filters"
+        id="filters-button"
       >Filters
       </Button>
     );
@@ -39,14 +40,13 @@ const ItemFiltersMobile = ({
     setSelectedFilters(initialFilters);
   };
 
+  // @TODO update this to use the ModalTrigger component.
   return (
-    <Modal
-      buttonType="outline"
-      className="scc-item-filters nypl-ds"
-    >
+    <div buttonType="outline" className="scc-item-filters nypl-ds">
       <Button
         buttonType="link"
         onClick={goBackAction}
+        id="filters-back-button"
         className="go-back-button"
         type="reset"
       >
@@ -55,6 +55,7 @@ const ItemFiltersMobile = ({
       <Button
         className="show-results-button"
         onClick={showResultsAction}
+        id="show-results-button"
       >
         Show Results
       </Button>
@@ -76,7 +77,7 @@ const ItemFiltersMobile = ({
           ))
         }
       </div>
-    </Modal>
+    </div>
   );
 };
 

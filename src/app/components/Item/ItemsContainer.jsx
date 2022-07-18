@@ -224,7 +224,7 @@ class ItemsContainer extends React.Component {
 
     return (
       <>
-        <Heading level={3}>Items in the Library & Offsite</Heading>
+        <Heading level="three">Items in the Library & Offsite</Heading>
         <div className="nypl-results-item">
           {bibDone ? (
             <ItemFilters

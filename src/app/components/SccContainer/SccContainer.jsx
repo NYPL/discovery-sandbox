@@ -32,7 +32,7 @@ const SccContainer = (props) => {
         <main className="main main-page">
           <div className="content-header catalog__header">
             <Breadcrumbs
-              breadcrumbs={[
+              breadcrumbsData={[
                 { url: 'https://www.nypl.org/', text: 'Home' },
                 { url: 'https://www.nypl.org/research', text: 'Research' },
                 { url: appConfig.baseUrl, text: appConfig.displayTitle },
@@ -40,7 +40,7 @@ const SccContainer = (props) => {
               className="breadcrumbs"
             />
             <div className="catalog__heading">
-              <Heading level={1} id="1" blockName="hero">
+              <Heading level="one" id="1">
                 {appConfig.displayTitle}
               </Heading>
             </div>

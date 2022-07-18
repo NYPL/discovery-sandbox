@@ -3,9 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Button,
-  ButtonTypes,
-  Modal,
-  Card,
+  // Modal,
 } from '@nypl/design-system-react-components';
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
@@ -58,7 +56,7 @@ const TimedLogoutModal = (props) => {
   if (!open) return null;
 
   return (
-    <Modal
+    <div
       open
       className="research-modal timed-logout"
     >
@@ -73,22 +71,24 @@ const TimedLogoutModal = (props) => {
         Do you want to stay logged in?
         <div className="button-container">
           <Button
-            buttonType={ButtonTypes.Secondary}
+            buttonType="secondary"
             className="button"
             onClick={logOutAndRedirect}
+            id="logoff-button"
           >
             Log off
           </Button>
           <Button
-            buttonType={ButtonTypes.Primary}
+            buttonType="primary"
             className="button"
             onClick={stayLoggedIn}
+            id="logged-in-button"
           >
             Stay logged in
           </Button>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };
 

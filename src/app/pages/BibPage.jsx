@@ -96,7 +96,7 @@ export const BibPage = (
       pageTitle="Item Details"
     >
       <section className="nypl-item-details__heading">
-        <Heading level={2}>
+        <Heading level="two">
           {bib.title && bib.title.length ? bib.title[0] : ' '}
         </Heading>
         <BackToSearchResults result={resultSelection} bibId={bibId} />

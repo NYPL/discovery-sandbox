@@ -28,7 +28,7 @@ const SubjectHeadingShowPage = (props) => {
         className="subject-heading-page-header"
       >
         <Heading
-          level={2}
+          level="two"
           className="page-title"
         >
           { `Subject Heading "${label}"` }

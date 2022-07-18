@@ -107,6 +107,7 @@ const ItemFilter = ({
         className={`item-filter-button ${
           open ? ' open' : ''}`}
         buttonType="outline"
+        id="item-filter-button"
         onClick={clickHandler}
         type="button"
       >
@@ -119,14 +120,11 @@ const ItemFilter = ({
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
-                labelOptions={{
-                  id: option.id,
-                  labelContent: option.label,
-                }}
+                id={option.id}
+                labelText={option.label}
                 onChange={() => handleCheckbox(option)}
                 key={option.id || i}
-                checkboxId={option.id}
-                checked={isSelected(option)}
+                isChecked={isSelected(option)}
               />
             ))}
           </fieldset>
@@ -137,12 +135,14 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
-                  disabled={!selectedFilters[filter].length}
+                  isDisabled={!selectedFilters[filter].length}
+                  id="clear-filter-button"
                 >Clear
                 </Button>
                 <Button
                   onClick={() => submitFilterSelections(selectedFilters)}
-                  disabled={!selectionMade}
+                  isDisabled={!selectionMade}
+                  id="apply-filter-button"
                 >Apply
                 </Button>
               </div>

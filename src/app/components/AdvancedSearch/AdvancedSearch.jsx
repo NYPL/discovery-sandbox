@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Input, Label, Button, ButtonTypes, Select } from '@nypl/design-system-react-components'
+import { Checkbox, Label, Button, Select, TextInput } from '@nypl/design-system-react-components';
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -109,20 +109,23 @@ class AdvancedSearch extends React.Component {
                   leftInputs.map(key =>
                     (
                       <li key={key}>
-                        <Label htmlFor={key} id={`${key}-input-label`}>{labelsForFields[key]}</Label>
-                        <Input
+                        <TextInput
                           id={key}
+                          labelText={labelsForFields[key]}
                           type="text"
-                          attributes={{ name: key }}
-                          ariaLabelledBy={`${key}-input-label`}
+                          name={key}
                         />
                       </li>
                     ),
                   )
                 }
                 <li>
-                  <Label htmlFor="languageSelect" id="languageSelect-label">Language</Label>
-                  <Select id="languageSelect" name="language" aria-labelledby="languageSelect-label">
+                  <Select
+                    id="languageSelect"
+                    name="language"
+                    labelText="Language"
+                    aria-labelledby="languageSelect-label"
+                  >
                     {
                       languages.map((language) => {
                         return (
@@ -147,8 +150,13 @@ class AdvancedSearch extends React.Component {
                       rightInputs.map(key =>
                         (
                           <li key={key} id={`${key}-li`}>
-                            <Label htmlFor={key} id={`${key}-li-label`}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" attributes={{ name: key }} ariaLabelledBy={`${key}-li-label`} />
+                            <TextInput
+                              ariaLabelledBy={`${key}-li-label`}
+                              id={key}
+                              labelText={labelsForFields[key]}
+                              name={key}
+                              type="text"
+                            />
                           </li>
                         ),
                       )
@@ -165,12 +173,8 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(0, 4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
-                              showLabel
-                              checkboxId={materialType.value}
+                              id={materialType.value}
+                              labelText={materialType.label}
                               value={materialType.value}
                               key={materialType.value}
                               name={materialType.value}
@@ -184,12 +188,9 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
+                              id={materialType.value}
+                              labelText={materialType.label}
                               showLabel
-                              checkboxId={materialType.value}
                               value={materialType.value}
                               key={materialType.value}
                               name={materialType.value}
@@ -207,14 +208,16 @@ class AdvancedSearch extends React.Component {
           <hr />
           <div id="advancedSearchButtons">
             <Button
-              buttonType={ButtonTypes.Primary}
+              buttonType="primary"
+              id="advancedSearchSubmit"
               type="submit"
             >
               Submit
             </Button>
             <Button
-              buttonType={ButtonTypes.Secondary}
+              buttonType="secondary"
               className="clearButton"
+              id="advancedSearchClear"
               type="button"
               onClick={clearFields}
             >

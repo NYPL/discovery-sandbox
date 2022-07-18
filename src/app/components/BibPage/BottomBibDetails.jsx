@@ -42,7 +42,7 @@ const BottomBibDetails = ({ bib, resources }) => {
 
   return (
     <section style={{ marginTop: '20px' }}>
-      <Heading level={3}>Details</Heading>
+      <Heading level="three">Details</Heading>
       <BibDetails
         bib={bib}
         fields={detailsFields}
