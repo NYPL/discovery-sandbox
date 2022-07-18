@@ -1,65 +1,70 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
+
 import appConfig from '../../data/appConfig';
 
-const constructSubjectHeading = (heading, i) => {
+/**
+ * React-router Link with href set to the appropriate subject_headings URL.
+ */
+const shepLink = (uuid, label, subjectComponent) => (
+  <Link
+    key={uuid}
+    to={`${
+      appConfig.baseUrl
+    }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
+  >
+    {subjectComponent}
+  </Link>
+);
+
+/**
+ * Recurvisely create a list of subject heading links.
+ */
+const constructSubjectHeading = (heading) => {
   const { uuid, parent, label } = heading;
   let subjectComponent;
-  if (label) subjectComponent = label.split(' -- ').pop();
+  let subjectLink;
+
+  if (label) {
+    subjectComponent = label.split(' -- ').pop();
+  }
+  subjectLink = shepLink(uuid, label, subjectComponent);
+
   if (!parent) {
-    return (
-      <Link
-        key={`${uuid} ${i}`}
-        to={`${
-          appConfig.baseUrl
-        }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
-      >
-        {subjectComponent}
-      </Link>
-    );
+    return subjectLink;
   }
 
   return [
     constructSubjectHeading(parent),
-    <span key={`${uuid} ${i}`}> {'>'} </span>,
-    <Link
-      key={uuid}
-      to={`${
-        appConfig.baseUrl
-      }/subject_headings/${uuid}?label=${encodeURIComponent(label)}`}
-    >
-      {subjectComponent}
-    </Link>,
+    <span key={`${uuid}-span`}> &gt; </span>,
+    subjectLink,
   ];
 };
 
-const generateHeadingLi = (heading, i) => (
-  <li key={heading.uuid}>{constructSubjectHeading(heading, i)}</li>
+const generateHeadingLi = (heading) => (
+  <li key={heading.uuid}>{constructSubjectHeading(heading)}</li>
 );
 
-const SubjectHeadings = (props) => {
-  const { headings, i } = props;
-
-  if (!headings) return null;
+/**
+ * Returns the HTML description and definition elements for the
+ * "Subject" term and its related list of links.
+ */
+const SubjectHeadings = ({ headings }) => {
+  if (!headings || !headings.length > 0) return null;
 
   return (
-    <div>
-      <dt key={`term-${i}`}>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
-      <dd data={`definition-${i}`} key={`definition-${i}`}>
+    <>
+      <dt>{headings.length > 1 ? 'Subjects' : 'Subject'}</dt>
+      <dd>
         <ul>{headings.map(generateHeadingLi)}</ul>
       </dd>
-    </div>
+    </>
   );
 };
 
 SubjectHeadings.propTypes = {
   headings: PropTypes.array,
-  i: PropTypes.number,
-};
-
-SubjectHeadings.defaultProps = {
-  i: 0,
 };
 
 export default SubjectHeadings;
