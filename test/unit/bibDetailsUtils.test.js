@@ -170,8 +170,8 @@ describe('bibDetailsUtils', () => {
       expect(stringDirection('\u200F\u00E9')).to.eql('rtl')
     })
 
-    it('should return \'ltr\' for left-to-right strings', () => {
-      expect(stringDirection('\u00E9')).to.eql('ltr')
+    it('should return null for left-to-right strings', () => {
+      expect(stringDirection('\u00E9')).to.eql(null)
     })
   })
 

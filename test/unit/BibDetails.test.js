@@ -231,6 +231,8 @@ describe('BibDetails', () => {
         React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields }),
       )
 
+      console.log('log: ', rtlComponent.html())
+
       expect(rtlComponent.find('dd')).to.have.lengthOf(1)
       expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
       expect(rtlComponent.find('dd').at(0).find('div')).to.have.lengthOf(1)
@@ -277,7 +279,7 @@ describe('BibDetails', () => {
       expect(rtlComponent.find('a').at(0).prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('a')).to.have.lengthOf(1)
-      expect(ltrComponent.find('a').at(0).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('a').at(0).prop('dir')).to.eql(null)
     })
 
     it('should handle rtl text in a list of object values', () => {
@@ -295,8 +297,8 @@ describe('BibDetails', () => {
       expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('li')).to.have.lengthOf(2)
-      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
-      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql(null)
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql(null)
     })
 
     it('should handle rtl text in a list of linkable object values', () => {
@@ -315,8 +317,8 @@ describe('BibDetails', () => {
       expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('li')).to.have.lengthOf(2)
-      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
-      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql(null)
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql(null)
     })
 
     it('should handle rtl text in a list of self-linkable object values', () => {
@@ -335,8 +337,8 @@ describe('BibDetails', () => {
       expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
 
       expect(ltrComponent.find('li')).to.have.lengthOf(2)
-      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql('ltr')
-      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql('ltr')
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql(null)
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql(null)
     })
 
     it('should handle rtl text in a string value', () => {

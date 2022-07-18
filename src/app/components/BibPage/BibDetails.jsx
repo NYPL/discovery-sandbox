@@ -55,6 +55,7 @@ class BibDetails extends React.Component {
     fieldSelfLinkable,
     fieldLabel,
   ) {
+    let direction
     // If there's only one value, we just want that value and not a list.
     if (bibValues.length === 1) {
       const bibValue = bibValues[0];
@@ -76,7 +77,7 @@ class BibDetails extends React.Component {
           >
             {
               isRtl(bibValue.prefLabel) ?
-                (<div dir='rtl'>{bibValue.prefLabel}</div>) :
+                (<div dir='rtl' className="rtl">{bibValue.prefLabel}</div>) :
                 bibValue.prefLabel
             }
           </Link>
@@ -84,9 +85,11 @@ class BibDetails extends React.Component {
       }
 
       if (fieldSelfLinkable) {
+        direction = stringDirection(bibValue.prefLabel)
         return (
           <a
-            dir={stringDirection(bibValue.prefLabel)}
+            dir={direction}
+            className={direction}
             href={bibValue['@id']}
             onClick={() =>
               trackDiscovery(
@@ -100,7 +103,14 @@ class BibDetails extends React.Component {
         );
       }
 
-      return <div dir={stringDirection(bibValue.prefLabel)}>{bibValue.prefLabel}</div>;
+      direction = stringDirection(bibValue.prefLabel)
+      return (
+        <div
+          dir={direction}
+          className={direction}
+        >
+          {bibValue.prefLabel}
+        </div>);
     }
 
     return (
@@ -135,7 +145,15 @@ class BibDetails extends React.Component {
             );
           }
 
-          return <li key={value.prefLabel} dir={stringDirection(value.prefLabel)}>{itemValue}</li>;
+          direction = stringDirection(value.prefLabel)
+          return (
+            <li
+              key={value.prefLabel}
+              dir={direction}
+              className={direction}
+            >
+              {itemValue}
+            </li>);
         })}
       </ul>
     );
@@ -274,6 +292,7 @@ class BibDetails extends React.Component {
     fieldSelfLinkable,
     fieldLabel,
   ) {
+    let direction
     if (fieldValue === 'subjectLiteral') {
       return this.constructSubjectHeading(
         bibValue,
@@ -293,7 +312,7 @@ class BibDetails extends React.Component {
         >
           {
             isRtl(bibValue) ?
-            (<div dir='rtl'>{bibValue}</div>) :
+            (<div dir='rtl' className="rtl">{bibValue}</div>) :
             bibValue
           }
         </Link>
@@ -302,9 +321,11 @@ class BibDetails extends React.Component {
 
     if (fieldSelfLinkable) {
       const textValue = bibValue.prefLabel || bibValue.label || bibValue.url
+      direction = stringDirection(textValue)
       return (
         <a
-          dir={stringDirection(textValue)}
+          dir={direction}
+          className={direction}
           href={bibValue.url}
           onClick={() =>
             trackDiscovery(
@@ -318,7 +339,8 @@ class BibDetails extends React.Component {
       );
     }
 
-    return <div dir={stringDirection(bibValue)}>{bibValue}</div>;
+    direction = stringDirection(bibValue)
+    return <div dir={direction} className={direction}>{bibValue}</div>;
   }
 
   /**

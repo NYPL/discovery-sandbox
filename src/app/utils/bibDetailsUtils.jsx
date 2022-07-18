@@ -43,14 +43,13 @@ const isRtl  = (string) => {
 
 /**
  * stringDirection(string)
- * 'rtl' if the string needs to be read right to left, otherwise ltr
+ * 'rtl' if the string needs to be read right to left, otherwise null
  * @param {string} string
  * @return {string}
  */
 const stringDirection = (string) => {
-  return isRtl(string) ? 'rtl' : 'ltr'
+  return isRtl(string) ? 'rtl' : null
 }
-
 
 
 /**
@@ -87,4 +86,12 @@ const matchParallels = (bib) => {
   return Object.assign({}, bib, ...parallelFieldMatches)
 }
 
-export { definitionItem, annotatedMarcDetails, combineBibDetailsData, isRtl, stringDirection, interleave, matchParallels };
+export {
+  definitionItem,
+  annotatedMarcDetails,
+  combineBibDetailsData,
+  isRtl,
+  stringDirection,
+  interleave,
+  matchParallels,
+};
