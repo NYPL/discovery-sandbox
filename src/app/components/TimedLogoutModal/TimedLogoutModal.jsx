@@ -1,10 +1,7 @@
 /* global window, document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  // Modal,
-} from '@nypl/design-system-react-components';
+import { Button } from '@nypl/design-system-react-components';
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
@@ -56,10 +53,8 @@ const TimedLogoutModal = (props) => {
   if (!open) return null;
 
   return (
-    <div
-      open
-      className="research-modal timed-logout"
-    >
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+    <div tabIndex="0" className="research-modal timed-logout old-ds-modal">
       <div className="research-modal__content">
         <p>
           Your session is about to expire
@@ -72,15 +67,12 @@ const TimedLogoutModal = (props) => {
         <div className="button-container">
           <Button
             buttonType="secondary"
-            className="button"
             onClick={logOutAndRedirect}
             id="logoff-button"
           >
             Log off
           </Button>
           <Button
-            buttonType="primary"
-            className="button"
             onClick={stayLoggedIn}
             id="logged-in-button"
           >

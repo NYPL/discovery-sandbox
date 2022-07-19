@@ -97,7 +97,7 @@
     font-size: 1rem;
     line-height: 1.2;
     box-sizing: border-box;
-    border: 1px solid var(--ui-gray-medium);
+    border: 1px solid var(--nypl-colors-ui-gray-medium);
   }
 
   textarea {
@@ -126,7 +126,7 @@
 .privacy-policy {
   display: flow-root;
   a {
-    color: var(--ui-link-primary);
+    color: var(--nypl-colors-ui-link-primary);
     float: right;
     font-size: .75rem;
   }
@@ -162,5 +162,4 @@
       padding: 0;
     }
   }
-
 }

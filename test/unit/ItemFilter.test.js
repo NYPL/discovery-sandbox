@@ -7,7 +7,7 @@ import { shallow, mount } from 'enzyme';
 import ItemFilter from './../../src/app/components/Item/ItemFilter';
 import { locationFilters } from '../fixtures/itemFilterOptions';
 
-describe('ItemFilters', () => {
+describe('ItemFilter', () => {
   describe('missing props', () => {
     let component;
     it('should not render without props', () => {
@@ -84,7 +84,7 @@ describe('ItemFilters', () => {
           }}
         />);
       const clearButton = component.find('button').at(1);
-      expect(clearButton.prop('disabled')).to.equal(false);
+      expect(clearButton.prop('disabled')).to.equal(undefined);
       expect(clearButton.text()).to.equal('Clear');
       clearButton.simulate('click');
       expect(updatedFilters).to.deep.equal({ location: [], status: ['status:a'] });

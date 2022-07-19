@@ -120,35 +120,40 @@ class Search extends React.Component {
 
   render() {
     return (
-      <SearchBar
-        id="mainContent"
-        onSubmit={this.triggerSubmit}
-        className="content-primary"
-        method='POST'
-        action={`${appConfig.baseUrl}/search`}
-        labelText="SearchBar Label"
-        selectProps={{
-          labelText: 'Select a category',
-          name: 'search_scope',
-          optionsData: [
-            "All fields",
-            "Title",
-            "Journal Title",
-            "Author/Contributor",
-            "Standard Numbers",
-            "Subject",
-          ],
-          onChange: this.onFieldChange,
-          value: this.state.field
-        }}
-        textInputProps={{
-          labelText: 'Item Search',
-          name: 'q',
-          placeholder: 'Keyword, title, journal title, or author/contributor',
-          onChange: this.inputChange,
-          value: this.state.searchKeywords
-        }}
-      />
+      <>
+        <SearchBar
+          id="mainContent"
+          onSubmit={this.triggerSubmit}
+          className="content-primary"
+          method='POST'
+          action={`${appConfig.baseUrl}/search`}
+          labelText="SearchBar Label"
+          selectProps={{
+            labelText: 'Select a category',
+            name: 'search_scope',
+            optionsData: [
+              "All fields",
+              "Title",
+              "Journal Title",
+              "Author/Contributor",
+              "Standard Numbers",
+              "Subject",
+            ],
+            onChange: this.onFieldChange,
+            value: this.state.field
+          }}
+          textInputProps={{
+            labelText: 'Item Search',
+            name: 'q',
+            placeholder: 'Keyword, title, journal title, or author/contributor',
+            onChange: this.inputChange,
+            value: this.state.searchKeywords
+          }}
+        />
+        <div id="advanced-search-link-container">
+          <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
+        </div>
+      </>
     );
   }
 }

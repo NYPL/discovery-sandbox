@@ -27,7 +27,7 @@ const SccContainer = (props) => {
 
   return (
     <DocumentTitle title={documentTitle}>
-      <div className="nypl-ds nypl--research layout-container">
+      <div className="nypl--research layout-container">
         {useLoadingLayer ? <LoadingLayer loading={loading} /> : null}
         <main className="main main-page">
           <div className="content-header catalog__header">
@@ -37,7 +37,19 @@ const SccContainer = (props) => {
                 { url: 'https://www.nypl.org/research', text: 'Research' },
                 { url: appConfig.baseUrl, text: appConfig.displayTitle },
               ]}
+              breadcrumbsType="research"
               className="breadcrumbs"
+              __css={{
+                span: {
+                  color: 'ui.white',
+                },
+                "a:visited": {
+                  color: "ui.white",
+                },
+                "li:last-child": {
+                  fontWeight: "400",
+                }
+              }}
             />
             <div className="catalog__heading">
               <Heading level="one" id="1">

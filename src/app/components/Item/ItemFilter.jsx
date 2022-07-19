@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
+import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
@@ -106,7 +106,7 @@ const ItemFilter = ({
       <Button
         className={`item-filter-button ${
           open ? ' open' : ''}`}
-        buttonType="outline"
+        buttonType="secondary"
         id="item-filter-button"
         onClick={clickHandler}
         type="button"
@@ -114,9 +114,7 @@ const ItemFilter = ({
         {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
       </Button>
       {open ? (
-        <div
-          className="item-filter-content"
-        >
+        <div className="item-filter-content">
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
@@ -125,6 +123,12 @@ const ItemFilter = ({
                 onChange={() => handleCheckbox(option)}
                 key={option.id || i}
                 isChecked={isSelected(option)}
+                __css={{
+                  span: {
+                    fontSize: '15px',
+                    fontWeight: 'medium',
+                  }
+                }}
               />
             ))}
           </fieldset>
@@ -137,13 +141,15 @@ const ItemFilter = ({
                   onClick={() => clear()}
                   isDisabled={!selectedFilters[filter].length}
                   id="clear-filter-button"
-                >Clear
+                >
+                  Clear
                 </Button>
                 <Button
                   onClick={() => submitFilterSelections(selectedFilters)}
                   isDisabled={!selectionMade}
                   id="apply-filter-button"
-                >Apply
+                >
+                  Apply
                 </Button>
               </div>
             ) : null

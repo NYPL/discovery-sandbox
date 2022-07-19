@@ -9,9 +9,33 @@
   }
 
   .item-filter-button {
-    border: 1px solid var(--ui-gray-medium);
+    border: 1px solid var(--nypl-colors-ui-gray-medium);
+    justify-content: space-between;
+    text-transform: capitalize;
+    width: 100%;
+
+    svg {
+      width: initial;
+    }
+    
     &.open {
       border-bottom: 0;
+      svg {
+        width: 100%;
+        margin-left: 118px;
+      }
+    }
+  }
+
+  @media (min-width: 600px) {
+    .item-filter-button {
+      width: 90%;
+
+      &.open {
+        svg {
+          margin-left: 7px;
+        }
+      }
     }
   }
 
@@ -36,24 +60,18 @@
 
 .item-filter-content {
   background-color: #ffffff;
-  border: 1px solid var(--ui-gray-medium);
+  border: 1px solid var(--nypl-colors-ui-gray-medium);
   position: absolute;
   width: 230px;
   z-index: 1;
 }
 
-.item-filter-button {
-  justify-content: space-between;
-  text-transform: capitalize;
-  width: 90%;
-}
-
 .item-table-filters {
-  margin: 15px 0;
+  margin: 10px 0;
 }
 
 div.item-table-filters {
-  background-color: var(--ui-gray-xlight);
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
   padding: 10px;
 }
 
@@ -63,14 +81,15 @@ button.item-table-filters {
 
 .item-filter-buttons {
   float: right;
-  margin-bottom: var(--space-xs);
-  margin-right: var(--space-xs);
+  margin-bottom: var(--nypl-space-xs);
+  margin-right: var(--nypl-space-xs);
 
-  .button {
-    display: initial;
+  button {
+    display: inline-block;
+    border: none;
 
     &:not(last-of-type) {
-      margin-right: var(--space-xs);
+      margin-right: var(--nypl-space-xs);
     }
 
     .button-icon {
@@ -90,6 +109,7 @@ button.item-table-filters {
   }
 
   button {
+    border: none;
     color: #d0343a;
     display: inline-block;
     padding-left: 0;
@@ -101,12 +121,13 @@ button.item-table-filters {
   }
 }
 
-.modal.scc-item-filters {
+.scc-item-filters.old-ds-modal {
   background-color: white;
   box-sizing: border-box;
 
   h1 {
     padding-left: 10px;
+    margin: 0;
   }
 
   .item-table-filters {
@@ -115,8 +136,10 @@ button.item-table-filters {
 }
 
 .go-back-button {
-  display: inline-block;
+  border: none;
+  display: inline-flex;
   padding: 0;
+  align-items: center;
 }
 
 .show-results-button {
@@ -127,7 +150,7 @@ button.item-table-filters {
 
 .nypl-results-item .nypl-basic-table#bib-item-table {
   thead > tr {
-    border-bottom: 1px solid var(--ui-gray-light);
+    border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
 
     th {
       padding-top: 0;
@@ -136,7 +159,7 @@ button.item-table-filters {
   }
 
   tbody tr, tbody tr:last-child {
-    border-bottom: 1px solid var(--ui-gray-light);
+    border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
   }
 }
 
@@ -154,6 +177,7 @@ button.item-table-filters {
   }
 
   .item-filter-button {
+    border-bottom: none;
     width: 100%;
   }
 
@@ -162,10 +186,6 @@ button.item-table-filters {
     width: 100%;
     float: left;
     margin-bottom: 10px;
-  }
-
-  .item-filter-button {
-    border-bottom: none;
   }
 }
 

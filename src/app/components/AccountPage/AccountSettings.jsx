@@ -34,9 +34,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
         <Link
           href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
           className="edit-link"
-          attributes={{
-            target: '_blank',
-          }}
+          target='_blank'
         >
           Edit
         </Link>

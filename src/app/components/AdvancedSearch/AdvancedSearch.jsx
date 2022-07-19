@@ -1,5 +1,11 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Label, Button, Select, TextInput } from '@nypl/design-system-react-components';
+import {
+  Button,
+  Checkbox,
+  Label,
+  Select,
+  TextInput
+} from '@nypl/design-system-react-components';
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -174,10 +180,17 @@ class AdvancedSearch extends React.Component {
                           return (
                             <Checkbox
                               id={materialType.value}
-                              labelText={materialType.label}
-                              value={materialType.value}
                               key={materialType.value}
+                              labelText={materialType.label}
                               name={materialType.value}
+                              value={materialType.value}
+                              marginBottom="7px"
+                              __css={{
+                                span: {
+                                  fontSize: '16px',
+                                  fontWeight: 'bold',
+                                }
+                              }}
                             />
                           );
                         })
@@ -189,11 +202,17 @@ class AdvancedSearch extends React.Component {
                           return (
                             <Checkbox
                               id={materialType.value}
-                              labelText={materialType.label}
-                              showLabel
-                              value={materialType.value}
                               key={materialType.value}
+                              labelText={materialType.label}
                               name={materialType.value}
+                              value={materialType.value}
+                              marginBottom="7px"
+                              __css={{
+                                span: {
+                                  fontSize: '16px',
+                                  fontWeight: 'bold',
+                                }
+                              }}
                             />
                           );
                         })
@@ -207,19 +226,15 @@ class AdvancedSearch extends React.Component {
           </div>
           <hr />
           <div id="advancedSearchButtons">
-            <Button
-              buttonType="primary"
-              id="advancedSearchSubmit"
-              type="submit"
-            >
+            <Button id="advancedSearchSubmit" type="submit">
               Submit
             </Button>
             <Button
               buttonType="secondary"
               className="clearButton"
               id="advancedSearchClear"
-              type="button"
               onClick={clearFields}
+              type="button"
             >
               Clear
             </Button>

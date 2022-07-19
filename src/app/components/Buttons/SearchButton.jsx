@@ -19,9 +19,9 @@ const SearchButton = ({
     onClick={onClick}
   >
     <Icon
+      align="left"
       name="search"
-      decorative
-      modifiers={['small', 'icon-left']}
+      size="small"
     />
     {value}
   </Button>

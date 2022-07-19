@@ -1,17 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  // ModalTrigger,
-} from '@nypl/design-system-react-components';
+import { Button } from '@nypl/design-system-react-components';
 
 const CancelConfirmationModal = ({
   itemToCancel,
   cancelItem,
   setItemToCancel,
 }) => (
-  // Todo
-  <div className="research-modal cancel-confirmation">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+  <div tabIndex="0" className="research-modal cancel-confirmation old-ds-modal">
     <div className="research-modal__content">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
@@ -20,13 +17,14 @@ const CancelConfirmationModal = ({
           buttonType="secondary"
           id="back-button"
           onClick={() => setItemToCancel(null)}
-        >Back
+        >
+          Back
         </Button>
         <Button
-          buttonType="primary"
           id="confirm-button"
           onClick={cancelItem}
-        >Confirm
+        >
+          Confirm
         </Button>
       </div>
     </div>

@@ -2,7 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
-import { Button, Label, HelperErrorText, Link, TextInput } from '@nypl/design-system-react-components';
+import {
+  Button,
+  HelperErrorText,
+  Label,
+  Link,
+  TextInput
+} from '@nypl/design-system-react-components';
 
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -93,15 +99,15 @@ class Feedback extends React.Component {
     const { submit } = this.props;
 
     return (
-      <div className="feedback nypl-ds">
+      <div className="feedback">
         <Button
-          className="feedback-button"
-          onClick={() => this.toggleForm()}
-          aria-haspopup={'true'}
+          aria-haspopup='true'
           aria-expanded={showForm}
-          aria-controls={'feedback-menu'}
+          aria-controls='feedback-menu'
           buttonType="secondary"
           id="help-feedback"
+          className="feedback-button"
+          onClick={() => this.toggleForm()}
         >
           Help & Feedback
         </Button>
@@ -141,49 +147,50 @@ class Feedback extends React.Component {
                     <HelperErrorText
                       id="helper-text"
                       isInvalid={commentInputError}
-                    >
-                      {commentInputError ? 'Please fill out this field' : ''}
-                    </HelperErrorText>
+                      text={commentInputError ? 'Please fill out this field' : ''}
+                    />
                   </div>
                   <div>
                     <TextInput
-                      required
-                      name={'email'}
-                      onChange={this.handleInputChange}
-                      ref={this.emailInput}
                       id="feedback-input-email"
                       labelText={
                         <>Email <span>(required if you would like a response from us)</span></>
                       }
+                      name='email'
+                      onChange={this.handleInputChange}
+                      ref={this.emailInput}
+                      // isRequired
                       type="email"
                       value={fields.email}
+                      marginTop="l"
                     />
                   </div>
                   <div className="privacy-policy">
                     <Link
                       href="https://www.nypl.org/help/about-nypl/legal-notices/privacy-policy"
                       target="_blank"
-                    >Privacy Policy
+                    >
+                      Privacy Policy
                     </Link>
                   </div>
                   <Button
-                    type="reset"
-                    className={`cancel-button ${!showForm ? 'hidden' : ''}`}
-                    onClick={e => this.deactivateForm(e)}
                     aria-expanded={!showForm}
-                    aria-controls={'feedback-menu'}
+                    aria-controls='feedback-menu'
                     buttonType="secondary"
                     id="cancel-feedback"
+                    className={`cancel-button ${!showForm ? 'hidden' : ''}`}
+                    onClick={e => this.deactivateForm(e)}
+                    type="reset"
                   >
                     Cancel
                   </Button>
 
                   <Button
-                    type="submit"
-                    buttonType="primary"
                     className="submit-button"
                     id="submit-feedback"
-                  >Submit
+                    type="submit"
+                  >
+                    Submit
                   </Button>
                 </form>
               </>

@@ -34,7 +34,8 @@ div .tabbed {
     border-bottom: none;
   }
 
-  ul[role="tablist"] > li > a {
+  ul[role="tablist"] > li > a,
+  ul[role="tablist"] > li > span > a {
     color: $nypl-gray-brown;
     padding: 5px 8px;
     display: table-cell;

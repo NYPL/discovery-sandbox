@@ -20,9 +20,7 @@ const LinkTabSet = ({ tabs, activeTab }) => (
               aria-selected={isActiveTab}
               role="tab"
             >
-              <Link
-                to={tab.link}
-              >
+              <Link to={tab.link}>
                 {tab.label}
               </Link>
             </DSLink>

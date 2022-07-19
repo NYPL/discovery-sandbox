@@ -188,7 +188,7 @@ export const manipulateAccountPage = (
           button.textContent = 'Unfreeze';
           input.value = 'off';
         }
-        button.className = 'button button--outline';
+        button.className = 'account-button';
         const eventCb = (e) => {
           e.preventDefault();
           eventListenerCb(buildReqBody(
@@ -295,7 +295,7 @@ export const manipulateAccountPage = (
             eventListenerCb({ renewall: 'YES' });
           };
           button.addEventListener('click', renewAllCb);
-          button.className = 'button button--outline';
+          button.className = 'account-button';
           link.parentElement.replaceChild(button, link);
           eventListeners.push({ element: button, cb: button });
         } else {

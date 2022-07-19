@@ -21,7 +21,7 @@ const Home = (props, context) => (
     className="home"
     activeSection="search"
   >
-    <div className="content-header research-search">
+    <div className="research-search">
       <div className="research-search__inner-content">
         <Search
           createAPIQuery={basicQuery(props)}

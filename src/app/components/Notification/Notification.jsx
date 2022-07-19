@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-
-import AlertIcon from '../../../client/icons/Alert';
+import {
+  Notification as DSNotification
+} from '@nypl/design-system-react-components';
 
 const Notification = ({ notificationType }) => {
   const notification = useSelector(state => state.appConfig[notificationType]);
@@ -10,20 +11,24 @@ const Notification = ({ notificationType }) => {
   if (!notification) return null;
 
   return (
-    <aside
-      className="research-alert"
+    <DSNotification
       aria-label="research-catalog-alert"
-    >
-      <div className="research-alert__icon">
-        <AlertIcon />
-      </div>
-      <div>
-        <div className="research-alert__heading">New Service Announcement</div>
-        <div
-          dangerouslySetInnerHTML={{ __html: notification }}
-        />
-      </div>
-    </aside>
+      className="research-alert"
+      notificationHeading="New Service Announcement"
+      notificationContent={
+        <div dangerouslySetInnerHTML={{ __html: notification }} />
+      }
+      notificationType="announcement"
+      noMargin
+      __css={{
+        svg: {
+          width: "35px",
+          height: "35px",
+          margin: "0",
+          marginRight: "xxs",
+        }
+      }}
+    />
   );
 };
 

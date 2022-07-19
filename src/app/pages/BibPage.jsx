@@ -160,7 +160,7 @@ export const BibPage = (
         )}
 
         <section style={{ marginTop: '20px' }}>
-          <Heading level={3}>Details</Heading>
+          <Heading level="three">Details</Heading>
           <BibDetails
             additionalData={
               isNyplBnumber(newBibModel.uri) && newBibModel.annotatedMarc

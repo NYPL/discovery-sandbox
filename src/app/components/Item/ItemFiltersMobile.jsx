@@ -22,7 +22,7 @@ const ItemFiltersMobile = ({
     return (
       <Button
         onClick={() => toggleFilterDisplay(true)}
-        buttonType="outline"
+        buttonType="secondary"
         className="item-table-filters"
         id="filters-button"
       >Filters
@@ -40,9 +40,9 @@ const ItemFiltersMobile = ({
     setSelectedFilters(initialFilters);
   };
 
-  // @TODO update this to use the ModalTrigger component.
   return (
-    <div buttonType="outline" className="scc-item-filters nypl-ds">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+    <div tabIndex="0" className="scc-item-filters old-ds-modal">
       <Button
         buttonType="link"
         onClick={goBackAction}
@@ -50,7 +50,7 @@ const ItemFiltersMobile = ({
         className="go-back-button"
         type="reset"
       >
-        <Icon name="arrow" iconRotation="rotate-90" />Go Back
+        <Icon name="arrow" iconRotation="rotate90" size="large" />Go Back
       </Button>
       <Button
         className="show-results-button"

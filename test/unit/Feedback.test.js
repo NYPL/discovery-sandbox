@@ -38,7 +38,7 @@ describe('Feedback', () => {
   });
 
   it('should change showForm state on click and add .active class to #feedback-menu', () => {
-    component.find('Button').first().simulate('click');
+    component.find('button').first().simulate('click');
     expect(component.state().showForm).to.equal(true);
     expect(component.find('#feedback-menu').hasClass('active')).to.equal(true);
   });
@@ -62,7 +62,7 @@ describe('Feedback', () => {
   });
 
   it('should show an error if attempting to submit nothing', () => {
-    const submitButton = component.find('Button').at(2);
+    const submitButton = component.find('button').at(2);
     submitButton.simulate('click');
     const form = component.find('form');
     form.simulate('submit');
@@ -155,7 +155,7 @@ describe('Feedback', () => {
     const textarea = component.find('textarea');
     textarea.instance().value = 'Test text';
     textarea.simulate('change');
-    const submitButton = component.find('Button').at(2);
+    const submitButton = component.find('button').at(2);
     const originalError = console.error;
     let erroredCorrectly = false;
 
@@ -202,7 +202,7 @@ describe('Feedback', () => {
     const textarea = component.find('textarea');
     textarea.instance().value = 'Test text';
     textarea.simulate('change');
-    const submitButton = component.find('Button').at(2);
+    const submitButton = component.find('button').at(2);
     const originalLog = console.log;
     let loggedCorrectly = false;
 
