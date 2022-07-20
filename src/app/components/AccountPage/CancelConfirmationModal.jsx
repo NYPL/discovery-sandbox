@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@nypl/design-system-react-components';
 
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const CancelConfirmationModal = ({
   itemToCancel,
   cancelItem,

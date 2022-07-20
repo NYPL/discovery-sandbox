@@ -5,7 +5,10 @@ import { Button, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
 import { itemFilters } from '../../data/constants';
 
-
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const ItemFiltersMobile = ({
   options,
   manageFilterDisplay,

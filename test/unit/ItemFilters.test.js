@@ -77,11 +77,12 @@ describe('ItemFilters', () => {
     it('should have working checkboxes', () => {
       const itemFilter = component.find('ItemFilter').first();
       itemFilter.find('button').simulate('click');
-      const checkbox = component.find('Checkbox').first().find('input');
+      const checkbox = component.find('input[type="checkbox"]').first();
+
       expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
       expect(checkbox.html()).to.include('type="checkbox"');
-      checkbox.simulate('change');
-      // TODO Edwin test that the checkbox is checked
+      checkbox.simulate('click');
+
       expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
     });
   });

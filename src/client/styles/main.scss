@@ -48,6 +48,8 @@ html {
 .footer {
   box-sizing: initial !important;
 }
+// The Reservoir DS does not have a `Modal` component, so we need
+// to temporarily use its previous style rules for the UI component.
 .old-ds-modal {
   padding: var(--nypl-space-s);
   background-color: var(--nypl-colors-ui-gray-x-light-warm);

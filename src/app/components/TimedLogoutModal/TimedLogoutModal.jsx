@@ -6,6 +6,10 @@ import { Button } from '@nypl/design-system-react-components';
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
 
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const TimedLogoutModal = (props) => {
   const {
     stayLoggedIn,
