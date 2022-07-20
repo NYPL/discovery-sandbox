@@ -18,7 +18,7 @@ $break-breadcrumbs-mobile: max-width 599px;
   }
 
   &__link:hover {
-    text-decoration: underline;
+    text-decoration: underline !important;
   }
 
   &__link.active-section {

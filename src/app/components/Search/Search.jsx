@@ -1,11 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
-
 import { SearchBar } from '@nypl/design-system-react-components';
 
-import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
 } from '../../utils/utils';
@@ -32,7 +29,7 @@ class Search extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
 
-    // Build ref for search-by-field (aka search_scope) selector:
+    // Build ref for the select element (aka search_scope) selector:
     this.searchByFieldRef = null;
     this.setSearchByFieldRef = (element) => {
       this.searchByFieldRef = element;
@@ -97,7 +94,7 @@ class Search extends React.Component {
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    if (field === 'subject') {
+    if (field === 'Subject') {
       this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
       return;
     }
@@ -122,6 +119,7 @@ class Search extends React.Component {
     return (
       <>
         <SearchBar
+          buttonOnClick={this.submitSearchRequest}
           id="mainContent"
           onSubmit={this.triggerSubmit}
           className="content-primary"

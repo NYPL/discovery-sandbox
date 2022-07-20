@@ -17,8 +17,14 @@
       }
     }
 
+    select {
+      font-size: 16px;
+      padding-left: 8px;
+    }
+
     input::placeholder {
-      font-style: normal,
+      font-style: normal;
+      font-size: 16px;
     }
   }
 
@@ -31,7 +37,6 @@
 
 
 // Used in SearchResultsPage.jsx
-
 .nypl-sorter-row {
   align-items: center;
   border: 0;

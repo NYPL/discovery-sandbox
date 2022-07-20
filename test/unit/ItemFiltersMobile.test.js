@@ -69,9 +69,6 @@ describe('ItemFiltersMobile', () => {
       let goBackButton;
       let closedStateButton;
       let showResultsButton;
-      it('should render a `Modal` from Design System', () => {
-        expect(component.find('Modal').length).to.equal(1);
-      });
 
       it('should render `ItemFilter` for option types passed', () => {
         expect(component.find('.item-filter').hostNodes().length).to.equal(1);
@@ -80,7 +77,7 @@ describe('ItemFiltersMobile', () => {
       describe('"Go Back" button', () => {
         it('should render a "Go Back" button', () => {
           goBackButton = component.find('button').at(0);
-          expect(goBackButton.text()).to.equal('Go Back');
+          expect(goBackButton.text()).to.contain('Go Back');
         });
         it('should close when "Go Back" is clicked', () => {
           goBackButton.simulate('click');

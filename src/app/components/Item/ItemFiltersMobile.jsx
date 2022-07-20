@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-
 import { Button, Icon } from '@nypl/design-system-react-components';
-import ItemFilter from './ItemFilter';
 
+import ItemFilter from './ItemFilter';
 import { itemFilters } from '../../data/constants';
 
 
@@ -41,8 +40,12 @@ const ItemFiltersMobile = ({
   };
 
   return (
-    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-    <div tabIndex="0" className="scc-item-filters old-ds-modal">
+    <div
+      className="scc-item-filters old-ds-modal"
+      id="item-filters-mobile"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex="0"
+    >
       <Button
         buttonType="link"
         onClick={goBackAction}

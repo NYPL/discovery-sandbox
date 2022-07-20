@@ -526,10 +526,16 @@ function displayContext({
     contributorLiteral: 'author',
     titleDisplay: 'title',
     // From the search field dropdown:
-    contributor: 'author/contributor',
-    title: 'title',
-    standard_number: 'standard number',
-    journal_title: 'journal title',
+    // contributor: 'author/contributor',
+    // title: 'title',
+    // standard_number: 'standard number',
+    // journal_title: 'journal title',
+    // These values are updated until the DS `SearchBar` component is
+    // updated to allow `option` elements in the `select` element.
+    "Author/Contributor": "author/contributor",
+    "Title": "title",
+    "Standard Numbers": "standard number",
+    "Journal Title": "journal title",
   };
 
   // Build up an array of human-readable "clauses" representing the query:
@@ -573,7 +579,7 @@ function displayContext({
       fieldLabel = `the ${fieldLabel}`;
     }
     // Special case 2: if a search_scope used, use a friendly name for that:
-    if (field && field !== 'all') {
+    if (field && field !== 'All fields') {
       fieldLabel = keyMapping[field];
     }
     clauses.push(`${fieldLabel} "${searchKeywords}"`);

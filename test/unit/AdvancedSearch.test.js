@@ -47,51 +47,63 @@ describe('AdvancedSearch', () => {
     });
 
     it('should have labelled inputs for keyword', () => {
-      expect(component.find('Label').at(0).text()).to.eql('Keyword');
-      expect(component.find('Label').at(0).prop('htmlFor')).to.eql('searchKeywords');
-      expect(component.find('Label').at(0).prop('id')).to.eql('searchKeywords-input-label');
-      expect(component.find('Input').at(0).prop('id')).to.eql('searchKeywords');
-      expect(component.find('Input').at(0).prop('ariaLabelledBy')).to.eql('searchKeywords-input-label');
+      const keywordLabel = component.find('label').at(0);
+      const keywordInput = component.find('input').at(0);
+
+      expect(keywordLabel.text()).to.eql('Keyword');
+      expect(keywordLabel.prop('htmlFor')).to.eql('searchKeywords');
+      expect(keywordLabel.prop('id')).to.eql('searchKeywords-label');
+      expect(keywordInput.prop('id')).to.eql('searchKeywords');
     });
 
     it('should have labelled inputs for title', () => {
-      expect(component.find('Label').at(1).text()).to.eql('Title');
-      expect(component.find('Label').at(1).prop('htmlFor')).to.eql('title');
-      expect(component.find('Label').at(1).prop('id')).to.eql('title-input-label');
-      expect(component.find('Input').at(1).prop('id')).to.eql('title');
-      expect(component.find('Input').at(1).prop('ariaLabelledBy')).to.eql('title-input-label');
+      const titleLabel = component.find('label').at(1);
+      const titleInput = component.find('input').at(1);
+
+      expect(titleLabel.text()).to.eql('Title');
+      expect(titleLabel.prop('htmlFor')).to.eql('title');
+      expect(titleLabel.prop('id')).to.eql('title-label');
+      expect(titleInput.prop('id')).to.eql('title');
     });
 
     it('should have labelled inputs for author', () => {
-      expect(component.find('Label').at(2).text()).to.eql('Author');
-      expect(component.find('Label').at(2).prop('htmlFor')).to.eql('contributor');
-      expect(component.find('Label').at(2).prop('id')).to.eql('contributor-input-label');
-      expect(component.find('Input').at(2).prop('id')).to.eql('contributor');
-      expect(component.find('Input').at(2).prop('ariaLabelledBy')).to.eql('contributor-input-label');
+      const authorLabel = component.find('label').at(2);
+      const authorInput = component.find('input').at(2);
+
+      expect(authorLabel.text()).to.eql('Author');
+      expect(authorLabel.prop('htmlFor')).to.eql('contributor');
+      expect(authorLabel.prop('id')).to.eql('contributor-label');
+      expect(authorInput.prop('id')).to.eql('contributor');
     });
 
     it('should have labelled inputs for subject', () => {
-      expect(component.find('Label').at(3).text()).to.eql('Subject');
-      expect(component.find('Label').at(3).prop('htmlFor')).to.eql('subject');
-      expect(component.find('Label').at(3).prop('id')).to.eql('subject-input-label');
-      expect(component.find('Input').at(3).prop('id')).to.eql('subject');
-      expect(component.find('Input').at(3).prop('ariaLabelledBy')).to.eql('subject-input-label');
+      const subjectLabel = component.find('label').at(3);
+      const subjectInput = component.find('input').at(3);
+
+      expect(subjectLabel.text()).to.eql('Subject');
+      expect(subjectLabel.prop('htmlFor')).to.eql('subject');
+      expect(subjectLabel.prop('id')).to.eql('subject-label');
+      expect(subjectInput.prop('id')).to.eql('subject');
     });
 
     it('should have labelled inputs for dateBefore', () => {
-      expect(component.find('Label').at(7).text()).to.eql('To');
-      expect(component.find('Label').at(7).prop('htmlFor')).to.eql('dateBefore');
-      expect(component.find('Label').at(7).prop('id')).to.eql('dateBefore-li-label');
-      expect(component.find('Input').at(5).prop('id')).to.eql('dateBefore');
-      expect(component.find('Input').at(5).prop('ariaLabelledBy')).to.eql('dateBefore-li-label');
+      const dateBeforeLabel = component.find('label').at(7);
+      const dateBeforeInput = component.find('input').at(5);
+
+      expect(dateBeforeLabel.text()).to.eql('To');
+      expect(dateBeforeLabel.prop('htmlFor')).to.eql('dateBefore');
+      expect(dateBeforeLabel.prop('id')).to.eql('dateBefore-label');
+      expect(dateBeforeInput.prop('id')).to.eql('dateBefore');
     });
 
     it('should have labelled inputs for dateAfter', () => {
-      expect(component.find('Label').at(6).text()).to.eql('From');
-      expect(component.find('Label').at(6).prop('htmlFor')).to.eql('dateAfter');
-      expect(component.find('Label').at(6).prop('id')).to.eql('dateAfter-li-label');
-      expect(component.find('Input').at(4).prop('id')).to.eql('dateAfter');
-      expect(component.find('Input').at(4).prop('ariaLabelledBy')).to.eql('dateAfter-li-label');
+      const dateAfterLabel = component.find('label').at(6);
+      const dateAfterInput = component.find('input').at(4);
+
+      expect(dateAfterLabel.text()).to.eql('From');
+      expect(dateAfterLabel.prop('htmlFor')).to.eql('dateAfter');
+      expect(dateAfterLabel.prop('id')).to.eql('dateAfter-label');
+      expect(dateAfterInput.prop('id')).to.eql('dateAfter');
     });
 
     it('should have checkboxes for materialTypes', () => {
@@ -105,33 +117,31 @@ describe('AdvancedSearch', () => {
         { value: 'resourcetypes:img', label: 'Still image' },
         { value: 'resourcetypes:txt', label: 'Text' },
       ];
+      expect(component.find('label').at(8).text()).to.eql('Format');
+      expect(component.find('label').at(8).prop('htmlFor')).to.eql('formats');
+      expect(component.find('input[type="checkbox"]').length).to.eql(8);
 
-      expect(component.find('Label').at(8).text()).to.eql('Format');
-      expect(component.find('Label').at(8).prop('htmlFor')).to.eql('formats');
-
-      expect(component.find('Checkbox').length).to.eql(8);
+      // The structure for the checkboxes is:
+      //   <label><input type="checkbox" />{labelText}</label>
+      // In order to get the text, we first need to find the label which starts
+      // at the 9th index in the array of all `label` elements.
+      const firstCheckboxLabel = 9;
       for (let i = 0; i < materialTypes.length; i += 1) {
         const materialType = materialTypes[i];
-        expect(component.find('Checkbox').at(i).props()).to.eql({
-          labelOptions: {
-            id: materialType.value,
-            labelContent: materialType.label,
-          },
-          showLabel: true,
-          checkboxId: materialType.value,
-          value: materialType.value,
-          name: materialType.value,
-        });
+        expect(component.find('input[type="checkbox"]').at(i).prop("id")).to.equal(materialType.value);
+        expect(component.find('label').at(firstCheckboxLabel + i).text()).to.equal(materialType.label);
+        expect(component.find('input[type="checkbox"]').at(i).prop("value")).to.equal(materialType.value);
+        expect(component.find('input[type="checkbox"]').at(i).prop("name")).to.equal(materialType.value);
       }
     });
 
     it('should have a select for languages', () => {
-      expect(component.find('Select').length).to.eql(1);
-      expect(component.find('Select').prop('id')).to.eql('languageSelect');
-      expect(component.find('Select').find('option').length).to.eql(aggregations.language.length + 1);
-      expect(component.find('Label').at(4).text()).to.eql('Language');
-      expect(component.find('Label').at(4).prop('htmlFor')).to.eql('languageSelect');
-      expect(component.find('Label').at(4).prop('id')).to.eql('languageSelect-label');
+      expect(component.find('select').length).to.eql(1);
+      expect(component.find('select').prop('id')).to.eql('languageSelect');
+      expect(component.find('select').find('option').length).to.eql(aggregations.language.length + 1);
+      expect(component.find('label').at(4).text()).to.eql('Language');
+      expect(component.find('label').at(4).prop('htmlFor')).to.eql('languageSelect');
+      expect(component.find('label').at(4).prop('id')).to.eql('languageSelect-label');
     });
   });
 
