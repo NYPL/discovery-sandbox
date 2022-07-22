@@ -1,8 +1,8 @@
 /*
 Import style rules from NYPL Design Toolkit
 */
-@import "nypl-normalize";
-@import "toolkit";
+// @import "nypl-normalize";
+// @import "toolkit";
 
 /*
 Import style rules from NYPL Design System
@@ -10,6 +10,22 @@ Import style rules from NYPL Design System
 @import '~@nypl/design-system-react-components/dist/styles.css';
 @import '~@nypl/design-system-react-components/dist/resources.scss';
 
+$intermediate-breakpoint: 1120px;
+$mobile-breakpoint: 965px;
+$xtrasmall-breakpoint: 483px;
+$basefontraw: 16;
+$basefont: $basefontraw * 1px;
+$small-type: ($basefont * 0.9);
+$max-width-raw: 1315;
+$max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
+@mixin media(
+  $max-width,
+  $min-width: false,
+  $ignore-for-ie: false) {
+  @media (max-width: $max-width) {
+    @content;
+  }
+}
 /*
 App-specific utilities and defaults
 */
@@ -31,7 +47,7 @@ Import style rules from NYPL React module components
 @import "style-v2.scss";
 
 html {
-  @include font-settings;
+  // @include font-settings;
   background: #fff;
   color: #000;
 }

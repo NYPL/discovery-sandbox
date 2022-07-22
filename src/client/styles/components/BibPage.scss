@@ -1,4 +1,4 @@
-@import 'toolkit';
+// @import 'toolkit';
 
 .view-all-items-container {
   margin-top: 1.5rem;
@@ -36,7 +36,8 @@ div .tabbed {
 
   ul[role="tablist"] > li > a,
   ul[role="tablist"] > li > span > a {
-    color: $nypl-gray-brown;
+    // color: $nypl-gray-brown;
+    color: brown;
     padding: 5px 8px;
     display: table-cell;
     font-weight: 300;
