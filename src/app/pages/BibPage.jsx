@@ -22,6 +22,8 @@ import {
   compressSubjectLiteral,
   getGroupedNotes,
   getIdentifiers,
+  stringDirection,
+  matchParallels,
 } from '../utils/bibDetailsUtils';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -106,12 +108,14 @@ export const BibPage = (
   // Make a copy of the `bib` so we can add additional fields with
   // computed data values that will make rendering them easier in
   // the `BibDetails` component.
-  const newBibModel = { ...bib };
-  newBibModel['notesGroupedByNoteType'] = getGroupedNotes(bib);
+  const newBibModel = matchParallels(bib);
+  newBibModel['notesGroupedByNoteType'] = getGroupedNotes(newBibModel);
   newBibModel['owner'] = getOwner(bib);
   newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
+  const mainHeading = [ bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
+  if (typeof window !== 'undefined') window.bib = newBibModel;
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -119,11 +123,9 @@ export const BibPage = (
         className='nypl-item-details'
         pageTitle='Item Details'
       >
-        <section className='nypl-item-details__heading'>
+        <section className='nypl-item-details__heading' dir={stringDirection(mainHeading)}>
           <Heading level="two">
-            {newBibModel.title && newBibModel.title.length
-              ? newBibModel.title[0]
-              : ' '}
+            { mainHeading }
           </Heading>
           <BackToSearchResults result={resultSelection} bibId={bibId} />
         </section>

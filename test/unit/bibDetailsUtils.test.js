@@ -8,6 +8,10 @@ import {
   constructSubjectHeadingsArray,
   definitionItem,
   getGroupedNotes,
+  isRtl,
+  stringDirection,
+  interleave,
+  matchParallels,
 } from '../../src/app/utils/bibDetailsUtils';
 
 describe('bibDetailsUtils', () => {
@@ -250,5 +254,83 @@ describe('bibDetailsUtils', () => {
 
       expect(constructSubjectHeadingsArray(url)).to.deep.equal(expectedResult);
     });
+  });
+
+  describe('isRtl', () => {
+    it('should return true for right-to-left strings', () => {
+      expect(isRtl('\u200F\u00E9')).to.eql(true)
+    })
+
+    it('should return false for non right-to-left strings', () => {
+      expect(isRtl('\u00E9')).to.eql(false)
+    })
+  })
+
+  describe('stringDirection', () => {
+    it('should return \'rtl\' for right-to-left strings', () => {
+      expect(stringDirection('\u200F\u00E9')).to.eql('rtl')
+    })
+
+    it('should return null for left-to-right strings', () => {
+      expect(stringDirection('\u00E9')).to.eql(null)
+    })
+  })
+
+  describe('interleave', () => {
+    it('should interleave two arrays', () => {
+      expect(interleave([1,2,3], [4,5,6])).to.eql([1,4,2,5,3,6])
+    })
+
+    it('should drop falsey values', () => {
+      expect(interleave([1,2,null,3,8], [4,5,6,null,7])).to.eql([1,4,2,5,6,3,8,7])
+    })
+
+    it('should include excess values from second argument at the end', () => {
+      expect(interleave([1], [2,3,4])).to.eql([1,2,3,4])
+      expect(interleave([], [1,2,3])).to.eql([1,2,3])
+      expect(interleave([], [])).to.eql([])
+    })
+
+    it('should map notes to correct object structure', () => {
+      expect(
+        interleave(
+          ['parallel1', 'parallel2'],
+          [{ noteType: 'type1', '@type': '@type1', prefLabel: 'label1'}, { noteType: 'type2', '@type': '@type2', prefLabel: 'label2'}]
+        )
+      ).to.eql(
+        [
+          { noteType: 'type1', '@type': '@type1', prefLabel: 'parallel1'},
+          { noteType: 'type1', '@type': '@type1', prefLabel: 'label1'},
+          { noteType: 'type2', '@type': '@type2', prefLabel: 'parallel2'},
+          { noteType: 'type2', '@type': '@type2', prefLabel: 'label2'},
+        ]
+      )
+    })
+  })
+
+  describe('matchParallels', () => {
+    it('should overwrite paralleled fields with interleaving of parallel and paralleled field, excluding subjects', () => {
+      const fakeBib = {
+        subjectLiteral: ['sub1', 'sub2'],
+        parallelSubjectLiteral: ['sub3', 'sub4'],
+        electronicResource: ['here', 'there'],
+        publisher: ['pub1', 'pub2'],
+        parallelPublisher: ['pub3', 'pub4'],
+        title: ['t1', 't2'],
+        parallelTitle: ['t3', 't4']
+      }
+
+      const expectedBib = {
+        subjectLiteral: ['sub1', 'sub2'],
+        parallelSubjectLiteral: ['sub3', 'sub4'],
+        electronicResource: ['here', 'there'],
+        publisher: ['pub3', 'pub1', 'pub4', 'pub2'],
+        parallelPublisher: ['pub3', 'pub4'],
+        title: ['t3', 't1', 't4', 't2'],
+        parallelTitle: ['t3', 't4']
+      }
+
+      expect(matchParallels(fakeBib)).to.eql(expectedBib)
+    })
   });
 });

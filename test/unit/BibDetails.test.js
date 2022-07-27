@@ -313,4 +313,167 @@ describe('BibDetails', () => {
       );
     });
   });
+
+  describe('Bib with rtl fields', () => {
+    const mockFields = [
+      { label: 'Field1', value: 'field1' },
+      { label: 'Field2', value: 'field2', linkable: true },
+      { label: 'Field3', value: 'field3', selfLinkable: true },
+      { label: 'Notes'}
+    ];
+
+    it('should handle rtl text in a single self-linkable object value', () => {
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9' }]}
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9' }]}
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+
+      expect(rtlComponent.find('a')).to.have.lengthOf(1)
+      expect(rtlComponent.find('a').at(0).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('a')).to.have.lengthOf(1)
+      expect(ltrComponent.find('a').at(0).prop('dir')).to.eql(null)
+    })
+
+    it('should handle rtl text in a list of self-linkable object values', () => {
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9'}, { '@id': 'id', prefLabel: '\u200F\u00E9'}] }
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9\u00E9'}, { '@id': 'id', prefLabel: '\u00E9\u00E9'}] }
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+
+
+      expect(rtlComponent.find('li')).to.have.lengthOf(2)
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(rtlComponent.find('li').at(1).prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('li')).to.have.lengthOf(2)
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.eql(null)
+      expect(ltrComponent.find('li').at(1).prop('dir')).to.eql(null)
+    })
+
+    it('should handle rtl text in a string value', () => {
+      const mockBibRtl = { field1: ['\u200F\u00E9'] }
+      const mockBibLtr = { field1: ['\u00E9'] }
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('span').prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('span').prop('dir')).to.not.eql('rtl')
+    })
+
+    it('should include rtl class on li elements in list of string values', () => {
+      const mockBibRtl = { field1: ['\u200F\u00E9', '\u200F\u00E9', '\u200F\u00E9'] }
+      const mockBibLtr = { field1: ['\u00E9', '\u00E9', '\u00E9'] }
+
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+      expect(rtlComponent.find('li').at(0).prop('className')).to.eql('rtl')
+      expect(ltrComponent.find('li').at(0).prop('className')).to.not.eql('rtl')
+    })
+
+    it('should handle rtl text in a linkable string value', () => {
+      const mockBibRtl = { field2: ['\u200F\u00E9'] }
+      const mockBibLtr = { field2: ['\u00E9'] }
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+
+      expect(rtlComponent.find('dd')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
+      expect(rtlComponent.find('dd').at(0).find('a').prop('dir')).to.eql('rtl')
+
+      expect(ltrComponent.find('dd')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('a')).to.have.lengthOf(1)
+      expect(ltrComponent.find('dd').at(0).find('a').prop('dir')).to.eql(null)
+    })
+
+    it('should handle rtl text in parallel notes', () => {
+      const mockBibRtl = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u200F\u00E9' }] } }
+      const mockBibLtr = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u00E9' }] } }
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+          }
+        </RouterProvider>,
+      )
+
+      expect(rtlComponent.find('li').at(0).prop('className')).to.eql('rtl')
+      expect(ltrComponent.find('li').at(0).prop('className')).to.not.eql('rtl')
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.not.eql('rtl')
+      console.log('html: ', rtlComponent.html());
+    })
+  })
 });
