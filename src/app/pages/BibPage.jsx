@@ -115,7 +115,6 @@ export const BibPage = (
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   const mainHeading = [ bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
-  if (typeof window !== 'undefined') window.bib = newBibModel;
   return (
     <RouterProvider value={context}>
       <SccContainer

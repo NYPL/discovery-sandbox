@@ -17,7 +17,6 @@ describe('BibDetails', () => {
           <BibDetails />
         </RouterProvider>,
       );
-      console.log(component.children().html());
       expect(component.children().html()).to.equal(null);
     });
 
@@ -473,7 +472,6 @@ describe('BibDetails', () => {
       expect(ltrComponent.find('li').at(0).prop('className')).to.not.eql('rtl')
       expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
       expect(ltrComponent.find('li').at(0).prop('dir')).to.not.eql('rtl')
-      console.log('html: ', rtlComponent.html());
     })
   })
 });
