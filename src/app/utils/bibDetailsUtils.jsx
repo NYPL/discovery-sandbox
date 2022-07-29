@@ -214,12 +214,13 @@ const constructSubjectHeadingsArray = (url = '') => {
 
 /**
  * isRtl(string)
- * Returns true (or false) depending on whether the string needs to be read right to left
+ * Returns true (or false) depending on whether the string needs to be read right to left,
+ * by looking for the Unicode Right-to-Left mark (\u200F)
  * @param {string} string
  * @return  {boolean}
  */
 const isRtl  = (string) => {
-  if (typeof string !== 'string') { return null }
+  if (typeof string !== 'string') { return false }
   return string.substring(0, 1) === '\u200F'
 }
 
@@ -242,7 +243,11 @@ const stringDirection = (string) => {
  * @return {object}
  */
 
- const combineMatching = (el1, el2) => (el2 && el2.noteType) ? { noteType: el2.noteType, '@type' : el2['@type'], prefLabel: el1 } : el1;
+ const combineMatching = (el1, el2) => (
+   (el2 && el2.noteType) ?
+    { noteType: el2.noteType, '@type' : el2['@type'], prefLabel: el1 } :
+    el1
+  );
 
 
 /**

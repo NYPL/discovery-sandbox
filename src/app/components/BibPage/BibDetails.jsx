@@ -15,8 +15,6 @@ import {
   combineBibDetailsData,
   constructSubjectHeadingsArray,
   stringDirection,
-  isRtl,
-  matchParallels,
 } from '../../utils/bibDetailsUtils';
 import { RouterContext } from '../../context/RouterContext';
 import { trackDiscovery } from '../../utils/utils';
