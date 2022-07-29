@@ -161,7 +161,7 @@ describe('ResultsCount', () => {
           component = shallow(
             <ResultsCount
               searchKeywords="hamlet"
-              field="Title"
+              field="title"
               count={678}
             />,
           );
@@ -181,7 +181,7 @@ describe('ResultsCount', () => {
           component = shallow(
             <ResultsCount
               searchKeywords="shakespeare"
-              field="Author/Contributor"
+              field="contributor"
               count={135}
             />,
           );
