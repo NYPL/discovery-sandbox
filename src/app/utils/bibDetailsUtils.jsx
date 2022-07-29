@@ -251,9 +251,10 @@ const stringDirection = (string) => {
 
 
 /**
- * interleave(arr1, arr2)
+ * interleaveParallel(arr1, arr2)
  * Given two arrays, returns the elements interleaved, with falsey elements removed.
- * Example: interleave ([1, 2, null, 3], [5,6,7,8,9]) =>
+ * Also combines data from matching elements when necessary.
+ * Example: interleaveParallel ([1, 2, null, 3], [5,6,7,8,9]) =>
  * [1,5,2,6,7,3,8,9].
  * Assumes that arr2 is at least as long as arr1.
  *
@@ -261,7 +262,13 @@ const stringDirection = (string) => {
  * @param {array} arr2
  * @return {array}
  */
-const interleave = (arr1, arr2) => arr2.reduce((acc, el, id) => (arr1[id] && acc.push(combineMatching(arr1[id], el)), el && acc.push(el), acc), [])
+const interleaveParallel = (arr1, arr2) => arr2.reduce(
+  (acc, el, id) => {
+    if (arr1[id]) { acc.push(combineMatching(arr1[id], el)) }
+    if(el) { acc.push(el) }
+    return acc
+  }, []
+)
 
 
 /**
@@ -278,7 +285,7 @@ const matchParallels = (bib) => {
     const match = key.match(/parallel(.)(.*)/)
     const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
     const paralleledValues = paralleledField && bib[paralleledField]
-    return paralleledValues && { [paralleledField] : interleave(bib[key], paralleledValues)}
+    return paralleledValues && { [paralleledField] : interleaveParallel(bib[key], paralleledValues)}
   })
 
   return Object.assign({}, bib, ...parallelFieldMatches)
@@ -295,6 +302,6 @@ export {
   getIdentifiers,
   isRtl,
   stringDirection,
-  interleave,
+  interleaveParallel,
   matchParallels,
 };

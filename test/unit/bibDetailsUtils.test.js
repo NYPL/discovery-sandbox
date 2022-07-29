@@ -10,7 +10,7 @@ import {
   getGroupedNotes,
   isRtl,
   stringDirection,
-  interleave,
+  interleaveParallel,
   matchParallels,
 } from '../../src/app/utils/bibDetailsUtils';
 
@@ -278,22 +278,22 @@ describe('bibDetailsUtils', () => {
 
   describe('interleave', () => {
     it('should interleave two arrays', () => {
-      expect(interleave([1,2,3], [4,5,6])).to.eql([1,4,2,5,3,6])
+      expect(interleaveParallel([1,2,3], [4,5,6])).to.eql([1,4,2,5,3,6])
     })
 
     it('should drop falsey values', () => {
-      expect(interleave([1,2,null,3,8], [4,5,6,null,7])).to.eql([1,4,2,5,6,3,8,7])
+      expect(interleaveParallel([1,2,null,3,8], [4,5,6,null,7])).to.eql([1,4,2,5,6,3,8,7])
     })
 
     it('should include excess values from second argument at the end', () => {
-      expect(interleave([1], [2,3,4])).to.eql([1,2,3,4])
-      expect(interleave([], [1,2,3])).to.eql([1,2,3])
-      expect(interleave([], [])).to.eql([])
+      expect(interleaveParallel([1], [2,3,4])).to.eql([1,2,3,4])
+      expect(interleaveParallel([], [1,2,3])).to.eql([1,2,3])
+      expect(interleaveParallel([], [])).to.eql([])
     })
 
     it('should map notes to correct object structure', () => {
       expect(
-        interleave(
+        interleaveParallel(
           ['parallel1', 'parallel2'],
           [{ noteType: 'type1', '@type': '@type1', prefLabel: 'label1'}, { noteType: 'type2', '@type': '@type2', prefLabel: 'label2'}]
         )
