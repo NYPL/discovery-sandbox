@@ -1,3 +1,4 @@
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
@@ -53,9 +54,11 @@ const DrbbContainer = ({ drbbResults }) => {
 
   return (
     <div className="drbb-container">
-      <h3 className="drbb-main-header">
-        {hasWorks ? 'Results from' : 'No results found from'} Digital Research Books Beta
-      </h3>
+      <Heading level="three" className="drbb-main-header" size="tertiary">
+        <>
+          {hasWorks ? 'Results from' : 'No results found from'} Digital Research Books Beta
+        </>
+      </Heading>
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
         all free to read, download, and keep. No Library Card is Required.&nbsp;

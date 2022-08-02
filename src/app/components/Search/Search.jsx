@@ -130,12 +130,12 @@ class Search extends React.Component {
             labelText: 'Select a category',
             name: 'search_scope',
             optionsData: [
-              {text:"All fields", value: "all" },
-              {text:"Title", value: "title" },
-              {text:"Journal Title", value: "journal_title" },
-              {text:"Author/Contributor", value: "contributor" },
-              {text:"Standard Numbers", value: "standard_number" },
-              {text:"Subject", value: "subject" },
+              { text:"All fields", value: "all" },
+              { text:"Title", value: "title" },
+              { text:"Journal Title", value: "journal_title" },
+              { text:"Author/Contributor", value: "contributor" },
+              { text:"Standard Numbers", value: "standard_number" },
+              { text:"Subject", value: "subject" },
             ],
             onChange: this.onFieldChange,
             value: this.state.field
