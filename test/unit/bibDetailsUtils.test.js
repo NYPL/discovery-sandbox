@@ -267,12 +267,14 @@ describe('bibDetailsUtils', () => {
   })
 
   describe('stringDirection', () => {
+    const useParallels = true;
+
     it('should return \'rtl\' for right-to-left strings', () => {
-      expect(stringDirection('\u200F\u00E9', true)).to.eql('rtl')
+      expect(stringDirection('\u200F\u00E9', useParallels)).to.eql('rtl')
     })
 
     it('should return null for left-to-right strings', () => {
-      expect(stringDirection('\u00E9', true)).to.eql(null)
+      expect(stringDirection('\u00E9', useParallels)).to.eql(null)
     })
   })
 
