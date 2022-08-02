@@ -112,8 +112,6 @@ export const BibPage = (
   newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
-  if (typeof window !== 'undefined') { window.bib = newBibModel }
-
   return (
     <RouterProvider value={context}>
       <SccContainer
