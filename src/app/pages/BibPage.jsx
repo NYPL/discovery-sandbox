@@ -112,6 +112,8 @@ export const BibPage = (
   newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
+  if (typeof window !== 'undefined') { window.bib = newBibModel }
+
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -139,19 +141,23 @@ export const BibPage = (
           />
         </section>
 
-        {items.length && !isElectronicResources && (
-          <section style={{ marginTop: '20px' }}>
-            <ItemsContainer
-              key={bibId}
-              shortenItems={location.pathname.indexOf('all') !== -1}
-              items={items}
-              bibId={bibId}
-              itemPage={location.search}
-              searchKeywords={searchKeywords}
-              holdings={newBibModel.holdings}
-            />
-          </section>
-        )}
+        {
+          items.length && !isElectronicResources ?
+          (
+            <section style={{ marginTop: '20px' }}>
+              <ItemsContainer
+                key={bibId}
+                shortenItems={location.pathname.indexOf('all') !== -1}
+                items={items}
+                bibId={bibId}
+                itemPage={location.search}
+                searchKeywords={searchKeywords}
+                holdings={newBibModel.holdings}
+              />
+            </section>
+          ) :
+          null
+        }
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>
