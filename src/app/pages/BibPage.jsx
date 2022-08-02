@@ -76,9 +76,10 @@ const checkForMoreItems = (bib, dispatch) => {
 };
 
 export const BibPage = (
-  { bib, location, searchKeywords, dispatch, resultSelection },
+  { bib, location, searchKeywords, dispatch, resultSelection, features },
   context,
 ) => {
+  const useParallels = features && features.includes('parallels')
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
@@ -108,7 +109,7 @@ export const BibPage = (
   // Make a copy of the `bib` so we can add additional fields with
   // computed data values that will make rendering them easier in
   // the `BibDetails` component.
-  const newBibModel = matchParallels(bib);
+  const newBibModel = matchParallels(bib, useParallels);
   newBibModel['notesGroupedByNoteType'] = getGroupedNotes(newBibModel);
   newBibModel['owner'] = getOwner(bib);
   newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
@@ -122,7 +123,7 @@ export const BibPage = (
         className='nypl-item-details'
         pageTitle='Item Details'
       >
-        <section className='nypl-item-details__heading' dir={stringDirection(mainHeading)}>
+        <section className='nypl-item-details__heading' dir={stringDirection(mainHeading, useParallels)}>
           <Heading level="two">
             { mainHeading }
           </Heading>
@@ -137,6 +138,7 @@ export const BibPage = (
               items,
             )}
             fields={topFields}
+            features={features}
           />
         </section>
 
@@ -171,6 +173,7 @@ export const BibPage = (
             bib={newBibModel}
             electronicResources={aggregatedElectronicResources}
             fields={bottomFields}
+            features={features}
           />
         </section>
 
@@ -189,6 +192,7 @@ BibPage.propTypes = {
   bib: PropTypes.object,
   dispatch: PropTypes.func,
   resultSelection: PropTypes.object,
+  features: PropTypes.array,
 };
 
 BibPage.contextTypes = {
@@ -203,6 +207,7 @@ const mapStateToProps = ({
   page,
   sortBy,
   resultSelection,
+  features,
 }) => ({
   bib,
   searchKeywords,
@@ -211,6 +216,7 @@ const mapStateToProps = ({
   page,
   sortBy,
   resultSelection,
+  features,
 });
 
 export default withRouter(connect(mapStateToProps)(BibPage));

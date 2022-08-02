@@ -21,6 +21,7 @@ import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
+  const useParallels = props.features && props.features.includes('parallels');
 
   /**
    * getDefinition(bibValues, fieldValue, fieldLinkable,
@@ -144,14 +145,14 @@ const BibDetails = (props) => {
               `${fieldLabel} - ${bibValue.prefLabel}`,
             )
           }
-          dir={stringDirection(linkText)}
+          dir={stringDirection(linkText, useParallels)}
         >
           {linkText}
         </a>
       );
     }
 
-    return <span dir={stringDirection(bibValue)}>{bibValue}</span>;
+    return <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>;
   };
 
   /**
@@ -226,8 +227,8 @@ const BibDetails = (props) => {
             <ul>
               {notesGroupedByNoteType[noteType].map((note, index) => (
                 <li key={index}
-                  dir={stringDirection(note.prefLabel)}
-                  className={stringDirection(note.prefLabel)}
+                  dir={stringDirection(note.prefLabel, useParallels)}
+                  className={stringDirection(note.prefLabel, useParallels)}
                 >
                   {note.prefLabel}
                 </li>
@@ -361,7 +362,7 @@ const BibDetails = (props) => {
         key={label.trim().replace(/ /g, '')}
         onClick={onClick}
         to={`${appConfig.baseUrl}/search?${query}`}
-        dir={stringDirection(label)}
+        dir={stringDirection(label, useParallels)}
       >
         {label}
       </Link>
@@ -391,10 +392,12 @@ BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   electronicResources: PropTypes.array,
   additionalData: PropTypes.array,
+  features: PropTypes.array,
 };
 BibDetails.defaultProps = {
   electronicResources: [],
   additionalData: [],
+  features: [],
 };
 
 export default BibDetails;

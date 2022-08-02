@@ -230,7 +230,8 @@ const isRtl  = (string) => {
  * @param {string} string
  * @return {string}
  */
-const stringDirection = (string) => {
+const stringDirection = (string, useParallels) => {
+  if (!useParallels) return null;
   return isRtl(string) ? 'rtl' : null
 }
 
@@ -279,7 +280,8 @@ const interleaveParallel = (arr1, arr2) => arr2.reduce(
  * @param {object} bib
  * @return {object}
  */
-const matchParallels = (bib) => {
+const matchParallels = (bib, useParallels) => {
+  if (!useParallels) return bib;
   const parallelFieldMatches = Object.keys(bib).map((key) => {
     if (key.match(/subject/i)) { return null }
     const match = key.match(/parallel(.)(.*)/)
