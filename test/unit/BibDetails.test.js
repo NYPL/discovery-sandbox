@@ -7,15 +7,16 @@ import { mount } from 'enzyme';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import { getGroupedNotes } from '../../src/app/utils/bibDetailsUtils';
 import { RouterProvider } from './../../src/app/context/RouterContext';
+import { Provider } from 'react-redux';
 import bibs from '../fixtures/bibs';
 
 describe('BibDetails', () => {
   describe('Invalid props', () => {
     it('should return null with no props passed', () => {
       const component = mount(
-        <RouterProvider value={{ push: () => {} }}>
-          <BibDetails />
-        </RouterProvider>,
+          <RouterProvider value={{ push: () => {} }}>
+              <BibDetails />
+          </RouterProvider>,
       );
       expect(component.children().html()).to.equal(null);
     });
@@ -327,14 +328,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )
@@ -352,14 +353,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )
@@ -380,14 +381,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )
@@ -408,14 +409,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )
@@ -429,14 +430,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )
@@ -456,14 +457,14 @@ describe('BibDetails', () => {
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       );
       const ltrComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields })
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
           }
         </RouterProvider>,
       )

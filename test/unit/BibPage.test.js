@@ -247,6 +247,7 @@ describe('BibPage', () => {
               fromUrl: '',
               bibId: '',
             }}
+            features={['parallels']}
           />
         </Provider>,
         {
@@ -276,6 +277,7 @@ describe('BibPage', () => {
               fromUrl: '',
               bibId: '',
             }}
+            features={['parallels']}
           />
         </Provider>,
         {
@@ -305,6 +307,7 @@ describe('BibPage', () => {
               fromUrl: '',
               bibId: '',
             }}
+            features={['parallels']}
           />
         </Provider>,
         {
