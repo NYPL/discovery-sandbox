@@ -13,24 +13,24 @@
     max-width: 571px;
     min-width: 571px;
   }
-}
-
-.feedback-button {
-  background: $dsresearchprimary;
-  border: 1px solid $dsresearchprimary;
-  box-sizing: border-box;
-  color: #FFF;
-  display: inline-block;
-  font-size: 1rem;
-  padding: .5rem 1rem;
-  position: relative;
-  text-align: center;
-
-  &:hover {
-    background: #FFF;
-    color: $dsresearchprimary;
+  button.feedback-button {
+    background: $dsresearchprimary;
+    border: 1px solid $dsresearchprimary;
+    box-sizing: border-box;
+    color: #FFF;
+    display: inline-block;
+    font-size: 1rem;
+    padding: .5rem 1rem;
+    position: relative;
+    text-align: center;
+  
+    &:hover {
+      background: #FFF;
+      color: $dsresearchprimary;
+    }
   }
 }
+
 
 .cancel-button {
   border: 1px solid #E0E0E0;

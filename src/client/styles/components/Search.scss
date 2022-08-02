@@ -17,14 +17,16 @@
       }
     }
 
-    select {
-      font-size: 16px;
-      padding-left: 8px;
-    }
+    form {
+      select {
+        font-size: 16px;
+        padding-left: 8px;
+      }
 
-    input::placeholder {
-      font-style: normal;
-      font-size: 16px;
+      input::placeholder {
+        font-style: normal;
+        font-size: 16px;
+      }
     }
   }
 
