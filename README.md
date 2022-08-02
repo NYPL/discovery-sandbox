@@ -381,4 +381,5 @@ To close all locations, add `all`. This will also remove EDD as a request option
 
 `SEARCH_RESULTS_NOTIFICATION`: Same as above, but will be added on the SearchResults page
 
-Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false. 
+Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false.
+Specifying `parallels` as a feature will enable interleaving of Bib fields with parallel fields.
