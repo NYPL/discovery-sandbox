@@ -139,19 +139,23 @@ export const BibPage = (
           />
         </section>
 
-        {items.length && !isElectronicResources && (
-          <section style={{ marginTop: '20px' }}>
-            <ItemsContainer
-              key={bibId}
-              shortenItems={location.pathname.indexOf('all') !== -1}
-              items={items}
-              bibId={bibId}
-              itemPage={location.search}
-              searchKeywords={searchKeywords}
-              holdings={newBibModel.holdings}
-            />
-          </section>
-        )}
+        {
+          items.length && !isElectronicResources ?
+          (
+            <section style={{ marginTop: '20px' }}>
+              <ItemsContainer
+                key={bibId}
+                shortenItems={location.pathname.indexOf('all') !== -1}
+                items={items}
+                bibId={bibId}
+                itemPage={location.search}
+                searchKeywords={searchKeywords}
+                holdings={newBibModel.holdings}
+              />
+            </section>
+          ) :
+          null
+        }
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>

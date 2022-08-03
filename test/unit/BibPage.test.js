@@ -54,7 +54,7 @@ describe('BibPage', () => {
       );
       // The Bottom Bib Details Component has the original, Non altered, aggregated resources list.
       // It can be checked to see if the bib details would have been passed a list with Aeon links.
-      
+
       expect(bttBibComp.type()).to.equal(BibDetails);
       expect(bttBibComp.prop('electronicResources')).to.have.lengthOf(2);
 
@@ -123,6 +123,37 @@ describe('BibPage', () => {
       expect(linkToLegacy.length).to.equal(1);
       expect(linkToLegacy.is('a')).to.equal(true);
       expect(linkToLegacy.prop('href')).to.equal('https://legacyBaseUrl.nypl.org/record=b11417539~S1');
+    });
+  });
+
+  describe('No items', () => {
+    const testStore = makeTestStore({
+      bib: {
+        done: true,
+        numItems: 0,
+      },
+    });
+
+    let component;
+    before(() => {
+      const bib = { ...bibs[0], ...annotatedMarc };
+      bib.items = [];
+      component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => {}}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />
+        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+    });
+
+    it('should not display ItemsContainer', () => {
+      expect(component.find('ItemsContainer').length).to.equal(0);
     });
   });
 
