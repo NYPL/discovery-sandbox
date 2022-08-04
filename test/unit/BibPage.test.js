@@ -20,6 +20,7 @@ import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchRe
 import { Link } from 'react-router';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
 import { isAeonLink } from '../../src/app/utils/utils';
+import { Heading } from '@nypl/design-system-react-components';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
@@ -256,5 +257,97 @@ describe('BibPage', () => {
         component.find(BackToSearchResults).first().render().find(Link).length,
       ).to.equal(0);
     });
+  });
+
+  describe('Bib with parallel title', () => {
+    it('should display parallel title as main title', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+            features={['parallels']}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find(Heading).at(1).text()).to.eql('Parallel Title')
+    })
+
+    it('should display parallel title rtl if rtl', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['\u200FParallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+            features={['parallels']}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find('section').at(0).prop('dir')).to.eql('rtl')
+    })
+
+    it('should display parallel title ltr if ltr', () => {
+      const bib = {...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] }};
+      const testStore = makeTestStore({
+        bib: {
+          done: true,
+          numItems: 0,
+        },
+      });
+      const component = mount(
+        <Provider store={testStore}>
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={bib}
+            dispatch={() => undefined}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+            features={['parallels']}
+          />
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
+
+      expect(component.find('section').at(0).prop('dir')).to.eql(null)
+    })
   });
 });

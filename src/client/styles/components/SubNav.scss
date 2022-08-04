@@ -13,11 +13,11 @@ $break-breadcrumbs-mobile: max-width 599px;
   &__link:link,
   &__link:visited,
   &__link:focus {
-    color: var(--nypl-colors-ui-white);
+    color: var(--nypl-colors-ui-white) !important;
     text-decoration: none !important;
   }
-
   &__link:hover {
+    color: var(--nypl-colors-ui-white);
     text-decoration: underline !important;
   }
 

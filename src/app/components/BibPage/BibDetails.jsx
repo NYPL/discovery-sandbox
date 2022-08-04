@@ -14,12 +14,14 @@ import appConfig from '../../data/appConfig';
 import {
   combineBibDetailsData,
   constructSubjectHeadingsArray,
+  stringDirection,
 } from '../../utils/bibDetailsUtils';
 import { RouterContext } from '../../context/RouterContext';
 import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
+  const useParallels = props.features && props.features.includes('parallels');
 
   /**
    * getDefinition(bibValues, fieldValue, fieldLinkable,
@@ -71,18 +73,23 @@ const BibDetails = (props) => {
             queryString,
           )}`;
 
-          return (
-            <li key={`filter${fieldValue}-${index}`}>
-              {renderSingleValue(
-                value,
-                url,
-                fieldValue,
-                fieldLinkable,
-                fieldSelfLinkable,
-                fieldLabel,
-              )}
+          const liInner = renderSingleValue(
+            value,
+            url,
+            fieldValue,
+            fieldLinkable,
+            fieldSelfLinkable,
+            fieldLabel,
+          );
+
+          const direction = (liInner.props && liInner.props.dir) ? liInner.props.dir : null;
+          const listElement = (
+            <li key={`filter${fieldValue}-${index}`} dir={direction} className={direction}>
+              {liInner}
             </li>
           );
+
+          return listElement;
         })}
       </ul>
     );
@@ -128,6 +135,7 @@ const BibDetails = (props) => {
     }
 
     if (fieldSelfLinkable) {
+      const linkText = bibValue.prefLabel || bibValue.label || bibValue.url
       return (
         <a
           href={bibValue.url}
@@ -137,13 +145,14 @@ const BibDetails = (props) => {
               `${fieldLabel} - ${bibValue.prefLabel}`,
             )
           }
+          dir={stringDirection(linkText, useParallels)}
         >
-          {bibValue.prefLabel || bibValue.label || bibValue.url}
+          {linkText}
         </a>
       );
     }
 
-    return <span>{bibValue}</span>;
+    return <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>;
   };
 
   /**
@@ -210,14 +219,19 @@ const BibDetails = (props) => {
       // For each group of notes, add them to the definition list individually.
       if (
         fieldLabel === 'Notes' &&
-        !_isEmpty(props.bib.notesGroupedByNoteType)
+        !_isEmpty(bib.notesGroupedByNoteType)
       ) {
         const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
             <ul>
               {notesGroupedByNoteType[noteType].map((note, index) => (
-                <li key={index}>{note.prefLabel}</li>
+                <li key={index}
+                  dir={stringDirection(note.prefLabel, useParallels)}
+                  className={stringDirection(note.prefLabel, useParallels)}
+                >
+                  {note.prefLabel}
+                </li>
               ))}
             </ul>
           );
@@ -348,6 +362,7 @@ const BibDetails = (props) => {
         key={label.trim().replace(/ /g, '')}
         onClick={onClick}
         to={`${appConfig.baseUrl}/search?${query}`}
+        dir={stringDirection(label, useParallels)}
       >
         {label}
       </Link>
@@ -377,10 +392,12 @@ BibDetails.propTypes = {
   fields: PropTypes.array.isRequired,
   electronicResources: PropTypes.array,
   additionalData: PropTypes.array,
+  features: PropTypes.array,
 };
 BibDetails.defaultProps = {
   electronicResources: [],
   additionalData: [],
+  features: [],
 };
 
 export default BibDetails;
