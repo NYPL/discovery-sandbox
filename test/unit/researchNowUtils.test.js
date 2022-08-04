@@ -57,5 +57,22 @@ describe('researchNowUtils', () => {
     it('should handle dateAfter & dateBefore filter', () => {
       expect(getResearchNowQueryString({ filters: { dateAfter: 2000, dateBefore: 2020 } })).to.equal('?query=keyword%3A*&page=1&source=catalog&filter=startYear%3A2000,endYear%3A2020')
     })
+
+    it('should handle contributor param', () => {
+      expect(getResearchNowQueryString({ contributor: 'Poe' })).to.equal('?query=keyword%3A*%2Cauthor%3APoe&page=1&source=catalog')
+    })
+
+    it('should handle title param', () => {
+      expect(getResearchNowQueryString({ title: 'Raven' })).to.equal('?query=keyword%3A*%2Ctitle%3ARaven&page=1&source=catalog')
+    })
+
+    it('should handle subject param', () => {
+      expect(getResearchNowQueryString({ subject: 'corvids' })).to.equal('?query=keyword%3A*%2Csubject%3Acorvids&page=1&source=catalog')
+    })
+
+    it('should combine query params', () => {
+      expect(getResearchNowQueryString({ contributor: 'Poe', subject: 'corvids', q: 'Raven' }))
+        .to.equal('?query=keyword%3ARaven%2Cauthor%3APoe%2Csubject%3Acorvids&page=1&source=catalog')
+    })
   })
 })

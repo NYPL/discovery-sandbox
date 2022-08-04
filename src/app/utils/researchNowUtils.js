@@ -7,6 +7,7 @@ const mapSearchScope = {
   contributor: 'author',
   standard_number: 'standardNumber',
   title: 'title',
+  subject: 'subject',
   date: 'date',
 };
 
@@ -51,6 +52,9 @@ const createResearchNowQuery = (params) => {
 
   const {
     q,
+    contributor,
+    title,
+    subject,
     sort,
     sort_direction,
     filters,
@@ -58,10 +62,17 @@ const createResearchNowQuery = (params) => {
     per_page,
   } = params;
 
-  const mainQuery = [
+  const keywordQuery = [
     mapSearchScope[field] || 'keyword',
     q || '*'
   ].join(':')
+
+  const advancedQuery = ['contributor', 'title', 'subject'].map(fieldType => {
+    const fieldValue = params[fieldType];
+    return fieldValue && `${mapSearchScope[fieldType]}:${fieldValue}`
+  }).filter(str => str).join(",")
+
+  const mainQuery = keywordQuery + (advancedQuery ? ',' : '') + advancedQuery
 
   const query = {
     query: [ mainQuery ],
