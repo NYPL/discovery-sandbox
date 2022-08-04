@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import {
   Button,
   Checkbox,
+  Heading,
   Label,
   Select,
   TextInput
@@ -106,7 +107,9 @@ class AdvancedSearch extends React.Component {
             </aside>
           )
         }
-        <h2 id="advancedSearchHeading" className="page-title">Advanced Search</h2>
+        <Heading id="advancedSearchHeading" className="page-title">
+          Advanced Search
+        </Heading>
         <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">

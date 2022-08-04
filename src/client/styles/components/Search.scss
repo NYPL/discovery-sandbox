@@ -14,17 +14,29 @@
       a {
         float: right;
         margin-top: 3px;
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
+        }
       }
+
     }
 
-    select {
-      font-size: 16px;
-      padding-left: 8px;
-    }
+    form {
+      select {
+        font-size: 16px;
+        padding-left: 8px;
+      }
+      // Select down SVG arrow:
+      .chakra-select__icon-wrapper {
+        z-index: 999 !important;
+      }
 
-    input::placeholder {
-      font-style: normal;
-      font-size: 16px;
+      input::placeholder {
+        font-style: normal;
+        font-size: 16px;
+      }
     }
   }
 

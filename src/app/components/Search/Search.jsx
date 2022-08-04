@@ -94,7 +94,7 @@ class Search extends React.Component {
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    if (field === 'Subject') {
+    if (field === 'subject') {
       this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
       return;
     }
@@ -130,18 +130,18 @@ class Search extends React.Component {
             labelText: 'Select a category',
             name: 'search_scope',
             optionsData: [
-              "All fields",
-              "Title",
-              "Journal Title",
-              "Author/Contributor",
-              "Standard Numbers",
-              "Subject",
+              { text:"All fields", value: "all" },
+              { text:"Title", value: "title" },
+              { text:"Journal Title", value: "journal_title" },
+              { text:"Author/Contributor", value: "contributor" },
+              { text:"Standard Numbers", value: "standard_number" },
+              { text:"Subject", value: "subject" },
             ],
             onChange: this.onFieldChange,
             value: this.state.field
           }}
           textInputProps={{
-            labelText: 'Item Search',
+            labelText: 'Search by keyword, title, journal title, or author/contributor',
             name: 'q',
             placeholder: 'Keyword, title, journal title, or author/contributor',
             onChange: this.inputChange,
