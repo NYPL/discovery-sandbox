@@ -8,12 +8,20 @@
     max-width: 100%;
   }
 
-  .nypl-lead {
-    font-size: 16px;
-    font-weight: 300;
-  }
-
   .link {
     display: inline;
   }
+}
+
+
+.nypl-quarter-image {
+  width: 100%;
+}
+
+.nypl-column-one-quarter {
+  float: left;
+  margin-bottom: 1rem;
+  min-height: 1rem;
+  padding: 0 0.5rem;
+  width: 25%;
 }

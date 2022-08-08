@@ -1,13 +1,17 @@
 // buttons
-$button-background-color: $nypl-search-color-dark;
+$button-background-color: #776e64; // nypl-gray
 
 // status
-$status-available-color: darken($nypl-green-dark, 5%);
-$status-default-color: darken($nypl-orange, 30%);
-$status-unavailable-color: $nypl-gray;
+// $status-available-color: darken($nypl-green-dark, 5%);
+$status-available-color: darken(#497629, 5%);
+// $status-default-color: darken($nypl-orange, 30%);
+$status-default-color: darken(#ffb81d, 30%);
+// $status-unavailable-color: $nypl-gray;
+$status-unavailable-color: #776e64;
 
 // misc
-$border-color: $page-text-color;
+// $border-color: $page-text-color
+$border-color: darken(#776e64, 40%);
 $focus-width: 3px;
 $logo-width: 5rem;
 $logo-height: 3rem;
