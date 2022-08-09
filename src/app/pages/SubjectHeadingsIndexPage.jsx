@@ -44,7 +44,7 @@ const SubjectHeadingsIndexPage = (props) => {
         className="subject-heading-page-header"
       >
         <Heading
-          level={2}
+          level="two"
           className="page-title"
         >
           {filter ? `Subject Headings matching "${filter}"` : 'Subject Heading Index'}

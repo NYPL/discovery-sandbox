@@ -9,6 +9,7 @@ import SearchResultsContainer from '../../src/app/components/SearchResults/Searc
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 import appConfig from '../../src/app/data/appConfig';
+import { DSProvider } from '@nypl/design-system-react-components';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.
@@ -65,8 +66,13 @@ describe('SearchResultsPage', () => {
       expect(component.find('.main-page')).to.have.length(1);
     });
 
-    it('should render a <Breadcrumbs /> components', () => {
-      expect(component.find('Breadcrumbs')).to.have.length(1);
+    it('should render a Breadcrumbs navigation components', () => {
+      // There are two navigations. The first is the breadcrumbs and
+      // the second is the sub-navigation.
+      const breadcrumbs = component.find('nav').at(0);
+
+      expect(breadcrumbs).to.have.length(1);
+      expect(breadcrumbs.prop('aria-label')).to.equal('Breadcrumb');
     });
 
     it('should render a <Search /> components', () => {

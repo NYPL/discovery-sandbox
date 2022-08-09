@@ -26,7 +26,7 @@ const LibraryHoldings = ({ holdings }) => {
 
   return (
     <React.Fragment>
-      <Heading level={3}>Holdings</Heading>
+      <Heading level="three">Holdings</Heading>
       {holdings.map((holding) => (
         <DefinitionList
           data={htmlDefinitions(holding)}

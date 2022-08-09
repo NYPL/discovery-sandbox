@@ -36,6 +36,32 @@ html {
   color: #000;
 }
 
+// From older DS version
+.main {
+  margin: 0 auto;
+  max-width: 1280px;
+  padding: 0 var(--nypl-space-s);
+  width: 100%;
+  display: block;
+}
+// Override DS global setting
+.footer {
+  box-sizing: initial !important;
+}
+// The Reservoir DS does not have a `Modal` component, so we need
+// to temporarily use its previous style rules for the UI component.
+.old-ds-modal {
+  padding: var(--nypl-space-s);
+  background-color: var(--nypl-colors-ui-gray-x-light-warm);
+  height: 100vh;
+  left: 0;
+  overflow-y: auto;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  z-index: 999;
+}
+
 .hidden {
   display: none;
 }
@@ -192,7 +218,7 @@ select {
     }
 
     &:not(last-of-type) {
-      margin-bottom: var(--space-s);
+      margin-bottom: var(--nypl-space-s);
     }
   }
 }
@@ -201,11 +227,11 @@ select {
 .research-modal__content {
   align-items: flex-start;
   background: #F9F8F7;
-  border: 1px solid var(--ui-gray-light);
+  border: 1px solid var(--nypl-colors-ui-gray-light-cool);
   border-radius: 5px;
   flex-flow: column wrap;
   min-height: 200px;
-  padding: var(--space) var(--space-l);
+  padding: var(--nypl-space-s) var(--nypl-space-l);
 
   .button-container {
     display: flex;
@@ -221,7 +247,7 @@ a:focus {
 
 @media (max-width: 400px) {
   .research-modal__content {
-    padding-left: var(--space);
-    padding-right: var(--space);
+    padding-left: var(--nypl-space-s);
+    padding-right: var(--nypl-space-s);
   }
 }

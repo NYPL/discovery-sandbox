@@ -1,35 +1,38 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  ButtonTypes,
-  Modal,
-  Card,
-} from '@nypl/design-system-react-components';
+import { Button } from '@nypl/design-system-react-components';
 
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const CancelConfirmationModal = ({
   itemToCancel,
   cancelItem,
   setItemToCancel,
 }) => (
-  <Modal className="research-modal cancel-confirmation">
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+  <div tabIndex="0" className="research-modal cancel-confirmation old-ds-modal">
     <div className="research-modal__content">
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
       <div className="button-container">
         <Button
-          buttonType={ButtonTypes.Secondary}
+          buttonType="secondary"
+          id="back-button"
           onClick={() => setItemToCancel(null)}
-        >Back
+        >
+          Back
         </Button>
         <Button
-          buttonType={ButtonTypes.Primary}
+          id="confirm-button"
           onClick={cancelItem}
-        >Confirm
+        >
+          Confirm
         </Button>
       </div>
     </div>
-  </Modal>
+  </div>
 );
 
 CancelConfirmationModal.propTypes = {

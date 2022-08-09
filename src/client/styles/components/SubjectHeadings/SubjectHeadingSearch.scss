@@ -1,7 +1,19 @@
 .react-autosuggest__container {
   width: 40%;
+
   li {
     margin-bottom: 0;
+  }
+
+  input {
+    width: 100%;
+    margin-bottom: unset;
+    padding: var(--nypl-space-xs);
+    border: 1px solid var(--nypl-colors-ui-gray-medium);
+
+    &::placeholder {
+      color: var(--nypl-colors-ui-gray-dark);
+    }
   }
 }
 

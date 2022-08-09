@@ -1,5 +1,12 @@
 import PropTypes from 'prop-types';
-import { Checkbox, Input, Label, Button, ButtonTypes, Select } from '@nypl/design-system-react-components'
+import {
+  Button,
+  Checkbox,
+  Heading,
+  Label,
+  Select,
+  TextInput
+} from '@nypl/design-system-react-components';
 import appConfig from '@appConfig';
 import React from 'react';
 import { basicQuery } from '../../utils/utils';
@@ -100,7 +107,9 @@ class AdvancedSearch extends React.Component {
             </aside>
           )
         }
-        <h2 id="advancedSearchHeading" className="page-title">Advanced Search</h2>
+        <Heading id="advancedSearchHeading" className="page-title">
+          Advanced Search
+        </Heading>
         <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
           <div id="fields">
             <div className="advancedSearchColumnLeft">
@@ -109,20 +118,23 @@ class AdvancedSearch extends React.Component {
                   leftInputs.map(key =>
                     (
                       <li key={key}>
-                        <Label htmlFor={key} id={`${key}-input-label`}>{labelsForFields[key]}</Label>
-                        <Input
+                        <TextInput
                           id={key}
+                          labelText={labelsForFields[key]}
                           type="text"
-                          attributes={{ name: key }}
-                          ariaLabelledBy={`${key}-input-label`}
+                          name={key}
                         />
                       </li>
                     ),
                   )
                 }
                 <li>
-                  <Label htmlFor="languageSelect" id="languageSelect-label">Language</Label>
-                  <Select id="languageSelect" name="language" aria-labelledby="languageSelect-label">
+                  <Select
+                    id="languageSelect"
+                    name="language"
+                    labelText="Language"
+                    aria-labelledby="languageSelect-label"
+                  >
                     {
                       languages.map((language) => {
                         return (
@@ -147,8 +159,13 @@ class AdvancedSearch extends React.Component {
                       rightInputs.map(key =>
                         (
                           <li key={key} id={`${key}-li`}>
-                            <Label htmlFor={key} id={`${key}-li-label`}>{labelsForFields[key]}</Label>
-                            <Input id={key} type="text" attributes={{ name: key }} ariaLabelledBy={`${key}-li-label`} />
+                            <TextInput
+                              ariaLabelledBy={`${key}-li-label`}
+                              id={key}
+                              labelText={labelsForFields[key]}
+                              name={key}
+                              type="text"
+                            />
                           </li>
                         ),
                       )
@@ -165,15 +182,18 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(0, 4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
-                              showLabel
-                              checkboxId={materialType.value}
-                              value={materialType.value}
+                              id={materialType.value}
                               key={materialType.value}
+                              labelText={materialType.label}
                               name={materialType.value}
+                              value={materialType.value}
+                              marginBottom="7px"
+                              __css={{
+                                span: {
+                                  fontSize: '16px',
+                                  fontWeight: 'bold',
+                                }
+                              }}
                             />
                           );
                         })
@@ -184,15 +204,18 @@ class AdvancedSearch extends React.Component {
                         materialTypes.slice(4).map((materialType) => {
                           return (
                             <Checkbox
-                              labelOptions={{
-                                id: materialType.value,
-                                labelContent: materialType.label,
-                              }}
-                              showLabel
-                              checkboxId={materialType.value}
-                              value={materialType.value}
+                              id={materialType.value}
                               key={materialType.value}
+                              labelText={materialType.label}
                               name={materialType.value}
+                              value={materialType.value}
+                              marginBottom="7px"
+                              __css={{
+                                span: {
+                                  fontSize: '16px',
+                                  fontWeight: 'bold',
+                                }
+                              }}
                             />
                           );
                         })
@@ -206,17 +229,15 @@ class AdvancedSearch extends React.Component {
           </div>
           <hr />
           <div id="advancedSearchButtons">
-            <Button
-              buttonType={ButtonTypes.Primary}
-              type="submit"
-            >
+            <Button id="advancedSearchSubmit" type="submit">
               Submit
             </Button>
             <Button
-              buttonType={ButtonTypes.Secondary}
+              buttonType="secondary"
               className="clearButton"
-              type="button"
+              id="advancedSearchClear"
               onClick={clearFields}
+              type="button"
             >
               Clear
             </Button>

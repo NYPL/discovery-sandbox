@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Checkbox, Button, Icon } from '@nypl/design-system-react-components';
+import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
@@ -106,27 +106,29 @@ const ItemFilter = ({
       <Button
         className={`item-filter-button ${
           open ? ' open' : ''}`}
-        buttonType="outline"
+        buttonType="secondary"
+        id="item-filter-button"
         onClick={clickHandler}
         type="button"
       >
         {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
       </Button>
       {open ? (
-        <div
-          className="item-filter-content"
-        >
+        <div className="item-filter-content">
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
-                labelOptions={{
-                  id: option.id,
-                  labelContent: option.label,
-                }}
+                id={option.id}
+                labelText={option.label}
                 onChange={() => handleCheckbox(option)}
                 key={option.id || i}
-                checkboxId={option.id}
-                checked={isSelected(option)}
+                isChecked={isSelected(option)}
+                __css={{
+                  span: {
+                    fontSize: '15px',
+                    fontWeight: 'medium',
+                  }
+                }}
               />
             ))}
           </fieldset>
@@ -137,13 +139,17 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
-                  disabled={!selectedFilters[filter].length}
-                >Clear
+                  isDisabled={!selectedFilters[filter].length}
+                  id="clear-filter-button"
+                >
+                  Clear
                 </Button>
                 <Button
                   onClick={() => submitFilterSelections(selectedFilters)}
-                  disabled={!selectionMade}
-                >Apply
+                  isDisabled={!selectionMade}
+                  id="apply-filter-button"
+                >
+                  Apply
                 </Button>
               </div>
             ) : null

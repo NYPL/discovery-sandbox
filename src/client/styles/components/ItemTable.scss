@@ -80,7 +80,7 @@ dl dd.multi-item-list .nypl-basic-table a,
     }
 
     tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
-      border: 1px solid var(--ui-gray-light);
+      border: 1px solid var(--nypl-colors-ui-gray-light-cool);
     }
 
     .nypl-basic-table, .nypl-results-item .nypl-basic-table {
@@ -96,7 +96,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       }
 
       td.vol-date-col {
-        background-color: var(--ui-gray-light);
+        background-color: var(--nypl-colors-ui-gray-light-cool);
       }
 
       span {

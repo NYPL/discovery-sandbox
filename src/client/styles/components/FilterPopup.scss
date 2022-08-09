@@ -12,7 +12,8 @@
 }
 
 .filter-container {
-  margin-top: var(--space-xxs);
+  margin-top: var(--nypl-space-xxs);
+  width: 100% !important;
 
   .nypl-form-error {
     margin: 10px 0;
@@ -175,7 +176,7 @@
 
   .popup,
   .popup-no-js {
-    background: var(--ui-gray-xlight);
+    background: var(--nypl-colors-ui-gray-x-light-cool);
     width: auto;
     z-index: 10000;
 
@@ -214,7 +215,7 @@
 
   // need to override the background color
   .nypl-fieldset {
-    background-color: var(--ui-gray-xlight);
+    background-color: var(--nypl-colors-ui-gray-x-light-cool);
   }
 
   .nypl-generic-checkbox {
@@ -317,15 +318,15 @@
 }
 
 .nypl-name-field {
-  background: var(--ui-gray-xlight);
+  background: var(--nypl-colors-ui-gray-x-light-cool);
 
   .nypl-field-status {
-    background: var(--ui-gray-xlight);
+    background: var(--nypl-colors-ui-gray-x-light-cool);
   }
 }
 
 .date-hyphen {
-  background: var(--ui-gray-xlight);
+  background: var(--nypl-colors-ui-gray-x-light-cool);
   width: 25px;
   margin: 0px 15px;
   height: 10px;

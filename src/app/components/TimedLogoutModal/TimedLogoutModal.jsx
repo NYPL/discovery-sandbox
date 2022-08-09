@@ -1,16 +1,15 @@
 /* global window, document */
 import React from 'react';
 import PropTypes from 'prop-types';
-import {
-  Button,
-  ButtonTypes,
-  Modal,
-  Card,
-} from '@nypl/design-system-react-components';
+import { Button } from '@nypl/design-system-react-components';
 
 import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
 
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const TimedLogoutModal = (props) => {
   const {
     stayLoggedIn,
@@ -58,10 +57,8 @@ const TimedLogoutModal = (props) => {
   if (!open) return null;
 
   return (
-    <Modal
-      open
-      className="research-modal timed-logout"
-    >
+    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+    <div tabIndex="0" className="research-modal timed-logout old-ds-modal">
       <div className="research-modal__content">
         <p>
           Your session is about to expire
@@ -73,22 +70,21 @@ const TimedLogoutModal = (props) => {
         Do you want to stay logged in?
         <div className="button-container">
           <Button
-            buttonType={ButtonTypes.Secondary}
-            className="button"
+            buttonType="secondary"
             onClick={logOutAndRedirect}
+            id="logoff-button"
           >
             Log off
           </Button>
           <Button
-            buttonType={ButtonTypes.Primary}
-            className="button"
             onClick={stayLoggedIn}
+            id="logged-in-button"
           >
             Stay logged in
           </Button>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };
 

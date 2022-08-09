@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { Button, Icon } from '@nypl/design-system-react-components';
 
-import { Button, Modal, Icon } from '@nypl/design-system-react-components';
 import ItemFilter from './ItemFilter';
-
 import { itemFilters } from '../../data/constants';
 
-
+/**
+ * This renders a modal interface based on an early version from the
+ * Reservoir Design System through the `old-ds-modal` CSS class.
+ */
 const ItemFiltersMobile = ({
   options,
   manageFilterDisplay,
@@ -22,8 +24,9 @@ const ItemFiltersMobile = ({
     return (
       <Button
         onClick={() => toggleFilterDisplay(true)}
-        buttonType="outline"
+        buttonType="secondary"
         className="item-table-filters"
+        id="filters-button"
       >Filters
       </Button>
     );
@@ -40,21 +43,25 @@ const ItemFiltersMobile = ({
   };
 
   return (
-    <Modal
-      buttonType="outline"
-      className="scc-item-filters nypl-ds"
+    <div
+      className="scc-item-filters old-ds-modal"
+      id="item-filters-mobile"
+      // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+      tabIndex="0"
     >
       <Button
         buttonType="link"
         onClick={goBackAction}
+        id="filters-back-button"
         className="go-back-button"
         type="reset"
       >
-        <Icon name="arrow" iconRotation="rotate-90" />Go Back
+        <Icon name="arrow" iconRotation="rotate90" size="large" />Go Back
       </Button>
       <Button
         className="show-results-button"
         onClick={showResultsAction}
+        id="show-results-button"
       >
         Show Results
       </Button>
@@ -76,7 +83,7 @@ const ItemFiltersMobile = ({
           ))
         }
       </div>
-    </Modal>
+    </div>
   );
 };
 

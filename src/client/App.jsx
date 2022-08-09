@@ -3,6 +3,7 @@
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
+import { DSProvider } from '@nypl/design-system-react-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
@@ -30,14 +31,16 @@ window.onload = () => {
   }
   const appElement = global.document.getElementById('app');
   ReactDOM.render(
-    <Provider store={store}>
-      <Router
-        history={browserHistory}
-        render={applyRouterMiddleware(useScroll())}
-      >
-        {routes.client}
-      </Router>
-    </Provider>,
+    <DSProvider>
+      <Provider store={store}>
+        <Router
+          history={browserHistory}
+          render={applyRouterMiddleware(useScroll())}
+        >
+          {routes.client}
+        </Router>
+      </Provider>
+    </DSProvider>,
     appElement,
   );
   gaUtils.trackPageview(window.location.pathname);

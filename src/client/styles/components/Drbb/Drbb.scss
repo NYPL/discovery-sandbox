@@ -15,6 +15,10 @@
   .loadingDots {
     margin-top: unset;
   }
+
+  a {
+    text-decoration: underline;
+  }
 }
 
 .drbb-main-header {
@@ -134,6 +138,7 @@ a.drbb-download-pdf {
 
 .drbb-frontend-link {
   font-size: 14px;
+  text-decoration: underline;
 }
 
 .nypl-results-list.drbb-integration {
