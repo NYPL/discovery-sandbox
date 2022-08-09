@@ -77,10 +77,13 @@ describe('ItemFilters', () => {
     it('should have working checkboxes', () => {
       const itemFilter = component.find('ItemFilter').first();
       itemFilter.find('button').simulate('click');
-      const checkbox = component.find('Checkbox').first().find('input');
-      expect(checkbox.html()).to.equal('<input id="SASB M1 - General Research - Room 315" class="checkbox__input" type="checkbox" aria-checked="false">');
-      checkbox.simulate('change');
-      expect(checkbox.html()).to.equal('<input id="SASB M1 - General Research - Room 315" class="checkbox__input" type="checkbox" aria-checked="true">');
+      const checkbox = component.find('input[type="checkbox"]').first();
+
+      expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
+      expect(checkbox.html()).to.include('type="checkbox"');
+      checkbox.simulate('click');
+
+      expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
     });
   });
   // one filter will be a string in the router context

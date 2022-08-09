@@ -138,7 +138,7 @@ const ItemFilters = (
         ) : null}
         &nbsp;
         {hasFilterApplied ? (
-          <Button buttonType="link" onClick={() => resetFilters()}>
+          <Button id="clear-filters-button" buttonType="link" onClick={() => resetFilters()}>
             Clear all filters
           </Button>
         ) : null}

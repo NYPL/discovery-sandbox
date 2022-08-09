@@ -39,7 +39,7 @@ describe('Search', () => {
 
     it('should render a select element', () => {
       expect(component.find('select').length).to.equal(1);
-      expect(component.find('select').prop('id')).to.equal('search-by-field');
+      expect(component.find('select').prop('id')).to.equal('searchbar-select-mainContent');
     });
 
     it('should render four option elements', () => {

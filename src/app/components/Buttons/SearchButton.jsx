@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Button,
-  ButtonTypes,
   Icon,
-  IconNames,
 } from '@nypl/design-system-react-components';
 
 const SearchButton = ({
@@ -15,15 +13,15 @@ const SearchButton = ({
 }) => (
   <Button
     id={id}
-    buttonType={ButtonTypes.Primary}
+    buttonType="primary"
     type="submit"
     aria-controls="results-description"
     onClick={onClick}
   >
     <Icon
-      name={IconNames.search}
-      decorative
-      modifiers={['small', 'icon-left']}
+      align="left"
+      name="search"
+      size="small"
     />
     {value}
   </Button>

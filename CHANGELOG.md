@@ -1,5 +1,21 @@
 ## CHANGE LOG
 
+### 1.8.0
+
+#### Updates
+
+- Updates the Reservoir Design System to version `1.0.5` from version `0.21.0`. This updates minor UI elements throughout the app such as `Heading`s, `Button`s, and form-related components. Updates include:
+  - Removing enum types `LinkTypes`, `ButtonTypes`, and `IconNames`.
+  - Update props for the `Breadcrumbs`, `Button`, `Checkbox`, `Heading`, `HelperErrorText`, `Icon`, `Label`, `Link`, `SearchBar`, `Select`, and `SkeletonLoader` components.
+  - Updates the `Input` component implementation to `TextInput`.
+  - Refactors form-related component combination for the `Label` component, `<input>` HTML element, and `HelperErrorText` component.
+  - Updates layout styles from previous DS class rules.
+  - Tweaks style rules so that pages render appropriately.
+  - Updates unit tests accordingly.
+  - Removes the "nypl-ds" class name.
+  - Removes the `Modal` component but replaces it with the old `Modal` component implementation CSS for the `CancelConfirmationModal.jsx`, `ItemFiltersMobile.jsx`, and `TimedLogoutModal.jsx` components.
+  - Updated all CSS variable names to have the `--nypl` prefix.
+
 ### 1.7.1
 
 - Security Update: change CDN URL to point to ux-static.nypl.org.

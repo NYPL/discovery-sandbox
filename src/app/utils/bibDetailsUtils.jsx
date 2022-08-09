@@ -212,6 +212,87 @@ const constructSubjectHeadingsArray = (url = '') => {
     });
 };
 
+/**
+ * isRtl(string)
+ * Returns true (or false) depending on whether the string needs to be read right to left,
+ * by looking for the Unicode Right-to-Left mark (\u200F)
+ * @param {string} string
+ * @return  {boolean}
+ */
+const isRtl  = (string) => {
+  if (typeof string !== 'string') { return false }
+  return string.substring(0, 1) === '\u200F'
+}
+
+/**
+ * stringDirection(string)
+ * 'rtl' if the string needs to be read right to left, otherwise null
+ * @param {string} string
+ * @return {string}
+ */
+const stringDirection = (string, useParallels) => {
+  if (!useParallels) return null;
+  return isRtl(string) ? 'rtl' : null
+}
+
+/**
+ * combineMatching(el1, el2)
+ * Combines properties from matching (i.e. parallel) elements as necessary
+ * Right now, this is only needed to add the 'noteType' in case of parallel notes
+ * @param {string} el1
+ * @param {object} el2
+ * @return {object}
+ */
+
+ const combineMatching = (el1, el2) => (
+   (el2 && el2.noteType) ?
+    { noteType: el2.noteType, '@type' : el2['@type'], prefLabel: el1 } :
+    el1
+  );
+
+
+/**
+ * interleaveParallel(arr1, arr2)
+ * Given two arrays, returns the elements interleaved, with falsey elements removed.
+ * Also combines data from matching elements when necessary.
+ * Example: interleaveParallel ([1, 2, null, 3], [5,6,7,8,9]) =>
+ * [1,5,2,6,7,3,8,9].
+ * Assumes that arr2 is at least as long as arr1.
+ *
+ * @param {array} arr1
+ * @param {array} arr2
+ * @return {array}
+ */
+const interleaveParallel = (arr1, arr2) => arr2.reduce(
+  (acc, el, id) => {
+    if (arr1[id]) { acc.push(combineMatching(arr1[id], el)) }
+    if(el) { acc.push(el) }
+    return acc
+  }, []
+)
+
+
+/**
+ * matchParallels(bib)
+ * Given a bib object returns a new copy of the bib in which fields with parallels have been rewritten
+ * The new rewritten field interleaves the parallel field and the paralleled (i.e. original) field together.
+ * Skips over subject fields since these require changes to SHEP
+ * @param {object} bib
+ * @return {object}
+ */
+const matchParallels = (bib, useParallels) => {
+  if (!useParallels) return bib;
+  const parallelFieldMatches = Object.keys(bib).map((key) => {
+    if (key.match(/subject/i)) { return null }
+    const match = key.match(/parallel(.)(.*)/)
+    const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
+    const paralleledValues = paralleledField && bib[paralleledField]
+    return paralleledValues && { [paralleledField] : interleaveParallel(bib[key], paralleledValues)}
+  })
+
+  return Object.assign({}, bib, ...parallelFieldMatches)
+}
+
 export {
   allFields,
   annotatedMarcDetails,
@@ -221,4 +302,8 @@ export {
   definitionItem,
   getGroupedNotes,
   getIdentifiers,
+  isRtl,
+  stringDirection,
+  interleaveParallel,
+  matchParallels,
 };

@@ -7,7 +7,7 @@ As previously mentioned in the [README](README.md), we are using environment var
 - `PLATFORM_API_CLIENT_SECRET`: Platfrom client secret. If KMS_ENV is "encrypted", this value must be encrypted.
 - `PLATFORM_API_BASE_URL`: Platform api base url (e.g. "http://example.com/api/v0.1")
 
-### Encrypting
+## Encrypting
 
 Two variables are assumed encrypted when `KMS_ENV` is "encrypted": `PLATFORM_API_CLIENT_ID` and `PLATFORM_API_CLIENT_SECRET`. We need these variables to create an instance of the `nypl-data-api-client` npm package and make authorized requests to the NYPL Digital API endpoints. This is needed for the Discovery UI app to make requests itself to the APIs.
 
@@ -21,6 +21,6 @@ More information can be found in the [encrypt docs](http://docs.aws.amazon.com/c
 
 NOTE: This value is base64 encoded, so when decoding make sure to decode using base64.
 
-### Decrypting
+## Decrypting
 
 In order to decrypt, we are using the `aws-sdk` npm module. Please check the [nyplApiClient](src/server/routes/nyplApiClient/index.js) file for more information and implementation on decryption.

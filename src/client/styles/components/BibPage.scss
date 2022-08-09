@@ -1,5 +1,11 @@
 @import 'toolkit';
 
+.nypl-item-details {
+  a {
+    text-decoration: underline;
+  }
+}
+
 .view-all-items-container {
   margin-top: 1.5rem;
 }
@@ -34,7 +40,8 @@ div .tabbed {
     border-bottom: none;
   }
 
-  ul[role="tablist"] > li > a {
+  ul[role="tablist"] > li > a,
+  ul[role="tablist"] > li > span > a {
     color: $nypl-gray-brown;
     padding: 5px 8px;
     display: table-cell;

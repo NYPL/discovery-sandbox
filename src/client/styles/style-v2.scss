@@ -8,8 +8,8 @@
   }
 
   h2 {
-    padding-right: var(--space-s);
-    padding-top: var(--space-l);
+    padding-right: var(--nypl-space-s);
+    padding-top: var(--nypl-space-l);
   }
 
   #legacy-catalog-link {
@@ -67,7 +67,7 @@
 // /.nypl-item-details
 
 .tabbed dl {
-  border-bottom: 1px solid var(--ui-gray-light);
+  border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
   padding-top: 15px;
   &:first-of-type {
     padding-top: 0px;

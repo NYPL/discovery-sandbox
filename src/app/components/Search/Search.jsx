@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { SearchBar } from '@nypl/design-system-react-components';
 
-import {
-  Input,
-  SearchBar,
-  Select,
-} from '@nypl/design-system-react-components';
-
-import SearchButton from '../Buttons/SearchButton';
 import {
   trackDiscovery,
 } from '../../utils/utils';
@@ -36,7 +29,7 @@ class Search extends React.Component {
     this.triggerSubmit = this.triggerSubmit.bind(this);
     this.onFieldChange = this.onFieldChange.bind(this);
 
-    // Build ref for search-by-field (aka search_scope) selector:
+    // Build ref for the select element (aka search_scope) selector:
     this.searchByFieldRef = null;
     this.setSearchByFieldRef = (element) => {
       this.searchByFieldRef = element;
@@ -124,48 +117,41 @@ class Search extends React.Component {
 
   render() {
     return (
-
-      <SearchBar
-        id="mainContent"
-        onSubmit={this.triggerSubmit}
-        className="content-primary"
-        attributes={{
-          method: 'POST',
-          action: `${appConfig.baseUrl}/search`,
-        }}
-      >
-        <div id="search-container">
-          <Select
-            id="search-by-field"
-            onChange={this.onFieldChange}
-            selectedOption={this.state.field}
-            name="search_scope"
-            >
-            <option value="all">All fields</option>
-            <option value="title">Title</option>
-            <option value="journal_title">Journal Title</option>
-            <option value="contributor">Author/Contributor</option>
-            <option value="standard_number">Standard Numbers</option>
-            <option value="subject">Subject</option>
-          </Select>
-          <Input
-            type="text"
-            id="search-query"
-            aria-label="Search by keyword, title, journal title, or author/contributor"
-            aria-controls="results-description"
-            placeholder="Keyword, title, journal title, or author/contributor"
-            onChange={this.inputChange}
-            value={this.state.searchKeywords}
-            name="q"
-          />
-          <SearchButton
-            onClick={this.submitSearchRequest}
-          />
-        </div>
+      <>
+        <SearchBar
+          buttonOnClick={this.submitSearchRequest}
+          id="mainContent"
+          onSubmit={this.triggerSubmit}
+          className="content-primary"
+          method='POST'
+          action={`${appConfig.baseUrl}/search`}
+          labelText="SearchBar Label"
+          selectProps={{
+            labelText: 'Select a category',
+            name: 'search_scope',
+            optionsData: [
+              { text:"All fields", value: "all" },
+              { text:"Title", value: "title" },
+              { text:"Journal Title", value: "journal_title" },
+              { text:"Author/Contributor", value: "contributor" },
+              { text:"Standard Numbers", value: "standard_number" },
+              { text:"Subject", value: "subject" },
+            ],
+            onChange: this.onFieldChange,
+            value: this.state.field
+          }}
+          textInputProps={{
+            labelText: 'Search by keyword, title, journal title, or author/contributor',
+            name: 'q',
+            placeholder: 'Keyword, title, journal title, or author/contributor',
+            onChange: this.inputChange,
+            value: this.state.searchKeywords
+          }}
+        />
         <div id="advanced-search-link-container">
           <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
         </div>
-      </SearchBar>
+      </>
     );
   }
 }

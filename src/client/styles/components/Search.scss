@@ -1,45 +1,54 @@
 .research-search {
-  background-color: var(--ui-gray-xlight);
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
-  padding: var(--space-l) 0;
+  padding: var(--nypl-space-l) 0;
 
   &__inner-content {
     margin: 0 auto;
     max-width: 1280px;
-    padding: 0 var(--space);
+    padding: 0 var(--nypl-space-s);
     width: 100%;
 
-    form {
-      display: block;
-      #search-container {
-        display: flex;
-      }
-      #advanced-search-link-container {
-        a {
-          float: right;
+    #advanced-search-link-container {
+      a {
+        float: right;
+        margin-top: 3px;
+        text-decoration: underline;
+
+        &:hover {
+          text-decoration: none;
         }
       }
 
-      @media(max-width: 490px) {
-        #search-container {
-          display: block;
-          button {
-            width: 100%;
-          }
-        }
-
-      };
     }
 
-    @media (min-width: 870px) {
-      .search-bar {
-        width: 85%;
+    form {
+      select {
+        font-size: 16px;
+        padding-left: 8px;
       }
+      // Select down SVG arrow:
+      .chakra-select__icon-wrapper {
+        z-index: 999 !important;
+      }
+
+      input::placeholder {
+        font-style: normal;
+        font-size: 16px;
+      }
+    }
+  }
+
+  @media (min-width: 870px) {
+    &__inner-content > div {
+      width: 85%;
     }
   }
 }
 
+
+// Used in SearchResultsPage.jsx
 .nypl-sorter-row {
   align-items: center;
   border: 0;
@@ -47,15 +56,8 @@
   width: 100%;
 }
 
-
 @media (max-width: 490px) {
   .nypl-sorter-row {
     display: block;
   }
-}
-
-.select {
-  // manipulate padding coming from DS a bit because of longer option labels
-  padding-left: var(--space-xs);
-  padding-right: var(--space-l);
 }

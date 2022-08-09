@@ -6,11 +6,11 @@
 
 
 .advancedSearchContainer.content-primary {
-    min-height: 650px;
+  min-height: 650px;
 
-    .page-title {
-      padding-top: var(--space-l);
-    }
+  .page-title {
+    padding-top: var(--nypl-space-s);
+  }
 }
 
 #advancedSearchAside {
@@ -34,13 +34,16 @@
 #advancedSearchForm {
   display: flex;
   flex-direction: column;
+  margin-top: 15px;
 
   input {
     display: block;
+    margin-bottom: 5px;
   }
 
   li {
     list-style: none;
+    margin-bottom: 15px;
   }
 
   hr {
@@ -97,14 +100,6 @@
 
   ul {
     width: 80%;
-  }
-
-  .checkbox {
-    align-items: center;
-    input {
-      min-width: 22px;
-      min-height: 22px;
-    }
   }
 
   #dateList {
