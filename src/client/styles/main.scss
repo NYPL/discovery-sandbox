@@ -153,6 +153,10 @@ select {
 .nypl-basic-table {
   margin-top: 20px;
 
+  thead {
+    text-align: left;
+  }
+
   th, td {
     overflow: inherit;
     padding-right: 15px;
@@ -164,6 +168,11 @@ select {
   }
   td span {
     color: #000;
+  }
+
+  td {
+    padding-top: 0.25em;
+    padding-bottom: .5em;
   }
 }
 

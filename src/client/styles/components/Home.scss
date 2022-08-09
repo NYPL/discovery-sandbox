@@ -18,10 +18,26 @@
   width: 100%;
 }
 
+.nypl-row,
+.nypl-column-full {
+  &::after, &::before {
+    content: "";
+    display: table;
+  }
+  &::after {
+    clear: both;
+  }
+}
 .nypl-column-one-quarter {
   float: left;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  min-height: 1rem;
+  width: 25%;
+}
+.nypl-column-three-quarters {
+  float: left;
+  margin-bottom: 1.5rem;
   min-height: 1rem;
   padding: 0 0.5rem;
-  width: 25%;
+  width: 75%;
 }

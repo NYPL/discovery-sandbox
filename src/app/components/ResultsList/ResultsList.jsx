@@ -1,3 +1,4 @@
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -92,7 +93,7 @@ const ResultsList = ({
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <h3>
+        <Heading level="three">
           <Link
             onClick={() => {
               updateResultSelection({
@@ -106,7 +107,7 @@ const ResultsList = ({
           >
             {bibTitle}
           </Link>
-        </h3>
+        </Heading>
         <div className="nypl-results-item-description">
           <ul>
             <li className="nypl-results-media">{materialType}</li>

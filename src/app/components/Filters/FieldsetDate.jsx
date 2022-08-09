@@ -1,3 +1,4 @@
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import NumberFormat from 'react-number-format';
@@ -54,7 +55,7 @@ class FieldsetDate extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner date-fieldset">
-        <legend><h3>Date</h3></legend>
+        <legend><Heading level="three">Date</Heading></legend>
         <div id="input-container" className={`nypl-name-field nypl-filter-date-field ${errorClass}`}>
           <label htmlFor="dateAfter" id="dateAfter-label">Start Year
             <NumberFormat
