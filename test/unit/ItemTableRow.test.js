@@ -249,7 +249,7 @@ describe('ItemTableRow', () => {
       });
     });
 
-    describe('with default onsite edd behavior (absence of no-onsite-edd feature flag)', () => {
+    describe('with "on-site-edd" feature flag', () => {
       let component;
 
       describe('unrequestable NYPL item', () => {

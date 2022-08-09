@@ -183,13 +183,6 @@ Visit `localhost:3001` to see the web app locally.
 
 Formatting is not automatic unless you've installed the [prettier extension](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) (assuming you're using [vscode](https://code.visualstudio.com/)) in your editor.
 
-To run the formatter:
-
-```
-npm run format
-```
-
-
 WIP: Unfortunately we do not have a hook set up to run the formatter prior to commiting. If you do not have prettier installed and running on a document save you'll have to run it manually.
 
 ```
@@ -384,3 +377,4 @@ There are variables available in the `.env` file to configure the requestable lo
 
 Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false.
 Specifying `parallels` as a feature will enable interleaving of Bib fields with parallel fields.
+

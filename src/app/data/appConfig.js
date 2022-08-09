@@ -72,6 +72,10 @@ const appConfig = {
   },
   features: extractFeatures(process.env.FEATURES),
   generalResearchEmail: process.env.GENERAL_RESEARCH_EMAIL,
+  eddAboutUrl: {
+    onSiteEdd: 'https://www.nypl.org/research/scan-and-deliver',
+    default: 'https://www.nypl.org/help/request-research-materials#EDD',
+  },
   sourceEmail: process.env.SOURCE_EMAIL,
   libAnswersEmail: process.env.LIB_ANSWERS_EMAIL,
   itemBatchSize: process.env.ITEM_BATCH_SIZE || 100,

@@ -89,11 +89,9 @@ describe('Application', () => {
       window.matchMedia = () => ({ addListener: () => {} });
       window.matchMedia().addListener = stub();
       context.router = {
-        location: {
-          query: {
-            features: 'no-onsite-edd',
-          },
-        },
+        location: { query: {
+          features: 'on-site-edd',
+        } },
         listen: stub(),
       };
       component = shallow(
@@ -108,7 +106,7 @@ describe('Application', () => {
     });
 
     it('sets `urlEnabledFeatures` state from `router.location.query.features`', () => {
-      expect(component.state().urlEnabledFeatures).to.equal('no-onsite-edd');
+      expect(component.state().urlEnabledFeatures).to.equal('on-site-edd');
     });
   });
 });
