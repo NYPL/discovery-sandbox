@@ -118,6 +118,10 @@ export const BibPage = (
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
+  const electronicResources = pluckAeonLinksFromResource(
+    aggregatedElectronicResources,
+    items
+  )
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -135,14 +139,10 @@ export const BibPage = (
         <section style={{ marginTop: '20px' }}>
           <BibDetails
             bib={newBibModel}
-            electronicResources={pluckAeonLinksFromResource(
-              aggregatedElectronicResources,
-              items,
-            )}
             fields={topFields}
             features={features}
           />
-          <ElectronicResources/>
+          {electronicResources.length && <ElectronicResources electronicResources={electronicResources}/>}
         </section>
 
         {
