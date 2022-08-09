@@ -1,6 +1,6 @@
 import React from 'react'
 
-const doTheThing = (electronicResources) => {
+const generateElectronicResourceLinks = (electronicResources) => {
   const electronicResourcesLink = ({ href, label }) => (
     <a
       href={href}
@@ -46,4 +46,4 @@ const doTheThing = (electronicResources) => {
   return electronicElem
 }
 
-export default doTheThing
+export default generateElectronicResourceLinks
