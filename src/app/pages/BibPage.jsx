@@ -1,5 +1,5 @@
 import { updateBibPage } from '@Actions';
-import { Heading, Card, CardHeading, CardContent } from '@nypl/design-system-react-components';
+import { Heading } from '@nypl/design-system-react-components';
 import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
 import React from 'react';
