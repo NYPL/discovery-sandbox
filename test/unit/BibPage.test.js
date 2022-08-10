@@ -19,6 +19,7 @@ import { mockRouterContext } from '../helpers/routing';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import { Link } from 'react-router';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
+import ElectronicResources from '../../src/app/components/BibPage/ElectronicResources'
 import { isAeonLink } from '../../src/app/utils/utils';
 import { Heading } from '@nypl/design-system-react-components';
 
@@ -67,17 +68,12 @@ describe('BibPage', () => {
       expect(isAeonLink(resource.url)).to.be.true;
     });
 
-    it('should not include an Aeon link in top BibDetails', () => {
+    it('should not include an Aeon link in section of bib page', () => {
       const topBibComp = page.findWhere(
         (node) =>
-          node.type() === BibDetails && !node.prop('additionalData').length,
+          node.type() === ElectronicResources
       );
-      expect(topBibComp.type()).to.equal(BibDetails);
-      expect(
-        topBibComp.findWhere(
-          (el) => el.type() === 'dt' && el.text() === 'Electronic Resource',
-        ).length,
-      ).to.equal(1);
+      expect(topBibComp.type()).to.equal(ElectronicResources);
       expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
     });
   });
