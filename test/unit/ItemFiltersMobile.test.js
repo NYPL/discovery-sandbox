@@ -74,20 +74,6 @@ describe('ItemFiltersMobile', () => {
         expect(component.find('.item-filter').hostNodes().length).to.equal(1);
       });
 
-      describe('"Go Back" button', () => {
-        it('should render a "Go Back" button', () => {
-          goBackButton = component.find('button').at(0);
-          expect(goBackButton.text()).to.contain('Go Back');
-        });
-        it('should close when "Go Back" is clicked', () => {
-          goBackButton.simulate('click');
-          closedStateButton = component.find('button');
-          expect(component.find('Modal').length).to.equal(0);
-          expect(closedStateButton.length).to.equal(1);
-          expect(closedStateButton.find('button').text()).to.equal('Filters');
-        });
-      });
-
       describe('"Show Results" button', () => {
         it('should render a "Show Results" button', () => {
           // re-open modal
