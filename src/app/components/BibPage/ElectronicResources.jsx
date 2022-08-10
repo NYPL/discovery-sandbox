@@ -4,7 +4,7 @@ import React from 'react';
 
 const ElectronicResources = (props) => {
  const resources = generateERLinks(props.electronicResources)
-  return (<Card isBordered>
+  return (<Card isBordered style = {{ padding: 16 }}>
     <CardHeading level="three" id="no-img1-heading1">
       Available Online
     </CardHeading>

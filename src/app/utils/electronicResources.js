@@ -32,7 +32,7 @@ const generateElectronicResourceLinks = (electronicResources) => {
       <ul style={{ listStyle: 'none' }}
       >
         {electronicResources.map((resource) => (
-          <li key={resource.label}>
+          <li key={resource.label} style = {{ marginTop: 10, marginBottom:10 }}>
             {electronicResourcesLink({
               href: resource.url,
               label: resource.label,
