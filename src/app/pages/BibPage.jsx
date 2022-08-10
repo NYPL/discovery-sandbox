@@ -142,7 +142,7 @@ export const BibPage = (
             fields={topFields}
             features={features}
           />
-          {electronicResources.length && <ElectronicResources electronicResources={electronicResources}/>}
+          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} /> : null}
         </section>
 
         {
