@@ -2,8 +2,8 @@ import { Card, CardContent, CardHeading } from '@nypl/design-system-react-compon
 import generateERLinks from '../../utils/electronicResources'
 import React from 'react';
 
-const ElectronicResources = (props) => {
- const resources = generateERLinks(props.electronicResources)
+const ElectronicResources = ({ electronicResources }) => {
+ const resources = generateERLinks(electronicResources)
   return (<Card isBordered style = {{ padding: 16 }}>
     <CardHeading level="three" id="no-img1-heading1">
       Available Online
