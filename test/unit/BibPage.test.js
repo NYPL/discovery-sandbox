@@ -93,7 +93,7 @@ describe('BibPage', () => {
         </Provider>,
         { context, childContextTypes: { router: PropTypes.object } })
 
-      expect(noElectronicResourcesBibPage.find(ElectronicResources).length).to.equal(0)
+      expect(noElectronicResourcesBibPage.find(ElectronicResources)).to.have.lengthOf(0)
     })
 
 
