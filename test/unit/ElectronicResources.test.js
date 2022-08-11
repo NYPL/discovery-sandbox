@@ -7,7 +7,7 @@ import ElectronicResources from "../../src/app/components/BibPage/ElectronicReso
 const oneResource = [{ url: "books.com", label: "View on books.com" }]
 const threeResource = [{ url: "books.com/1", label: "View on books.com 1" }, { url: "books.com/2", label: "View on books.com 2" }, { url: "books.com/2", label: "View on books.com 3" }]
 
-describe.only('ElectronicResources', () => {
+describe('ElectronicResources', () => {
   it('should render one electronic resource', () => {
       const component = mount(<ElectronicResources electronicResources={oneResource}/>)
       const link = component.find('a')
