@@ -25,7 +25,7 @@ import { Heading } from '@nypl/design-system-react-components';
 
 describe('BibPage', () => {
   const context = mockRouterContext();
-  describe.only('Electronic Resources List', () => {
+  describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
       bib: {
         done: true,
