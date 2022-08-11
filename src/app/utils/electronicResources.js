@@ -1,8 +1,9 @@
 import React from 'react'
+import { Link } from '@nypl/design-system-react-components'
 
 const generateElectronicResourceLinks = (electronicResources) => {
   const electronicResourcesLink = ({ href, label }) => (
-    <a
+    <Link
       href={href}
       target='_blank'
       onClick={() =>
@@ -14,7 +15,7 @@ const generateElectronicResourceLinks = (electronicResources) => {
       rel='noreferrer'
     >
       {label || href}
-    </a>
+    </Link>
   );
   let electronicElem;
 
