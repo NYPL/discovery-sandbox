@@ -1,7 +1,12 @@
 import React from 'react'
 import { Link } from '@nypl/design-system-react-components'
 
-const generateElectronicResourceLinks = (electronicResources) => {
+
+/**
+ * Builds unordered list of electronic resources links 
+ * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the ElectronicResources component
+ */
+const generateElectronicResourceLinksList = (electronicResources) => {
   const electronicResourcesLink = ({ href, label }) => (
     <Link
       href={href}
@@ -47,4 +52,4 @@ const generateElectronicResourceLinks = (electronicResources) => {
   return electronicElem
 }
 
-export default generateElectronicResourceLinks
+export default generateElectronicResourceLinksList

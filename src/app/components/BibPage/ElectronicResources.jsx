@@ -1,9 +1,13 @@
 import { Card, CardContent, CardHeading } from '@nypl/design-system-react-components'
-import generateERLinks from '../../utils/electronicResources'
+import generateERLinksList from '../../utils/electronicResources'
 import React from 'react';
 
+/**
+ * ElectronicResources renders a list of electronic resources links, sans aeon links
+ * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the BibPage component
+ */
 const ElectronicResources = ({ electronicResources }) => {
- const resources = generateERLinks(electronicResources)
+ const resources = generateERLinksList(electronicResources)
   return (<Card isBordered padding="16px">
     <CardHeading level="three" id="no-img1-heading1">
       Available Online
