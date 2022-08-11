@@ -25,3 +25,141 @@
     display: inline;
   }
 }
+
+
+// For /hold/request/b# pages
+.nypl-request-item-summary {
+  .call-number {
+    margin: 1rem 0;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+}
+form.place-hold-form {
+  .nypl-request-radiobutton-field {
+    background-color: #fff;
+    border: 0;
+    margin: 1rem 0;
+    padding: 0;
+    position: relative;
+    border-radius: 0;
+
+    fieldset {
+      border: 0;
+      box-shadow: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    label {
+      background-color: #fff;
+      border-radius: 0;
+      font-weight: 400;
+      border: #d7d4d0 solid 0.0625rem;
+      margin: 0;
+      display: block;
+      padding: 1rem 1rem 2rem 4rem;
+      margin-bottom: 1rem;
+
+      input {
+        display: block;
+        position: relative;
+        top: 1.25rem;
+        left: -2.75rem;
+      }
+    }
+  }
+  .nypl-request-button {
+    background-color: #d0343a;
+    border: 0.04167rem solid #d0343a;
+    border-radius: 0.25rem;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: normal;
+    height: auto;
+    letter-spacing: normal;
+    padding: 0.2rem 0.75rem;
+    text-decoration: none;
+    text-transform: none;
+    white-space: normal;
+    -webkit-appearance: none;
+  }
+}
+
+// For /hold/request/b#/edd pages
+form.electronic-delivery-form {
+  .nypl-fieldset {
+    border: 0;
+    display: block;
+    margin: 1rem 0;
+    padding: 0;
+
+    legend {
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+
+    .nypl-required-field {
+      color: #aa272c;
+      font-size: 0.9rem;
+      font-weight: 400;
+    }
+
+    .nypl-field-status {
+      background-color: #fff;
+      color: #776e64;
+      display: block;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      padding-top: 0.5rem;
+    }
+
+    .nypl-column-half {
+      float: left;
+      margin-bottom: 1rem;
+      min-height: 1rem;
+      padding: 0;
+      width: 50%;
+
+      .nypl-text-field {
+        margin: 1rem 0;
+        padding: 0;
+        position: relative;
+      }
+
+      label {
+        background-color: transparent;
+        color: #080807;
+        display: inline-block;
+        font-weight: 400;
+        margin-bottom: 0.25rem;
+      }
+
+      input {
+        background-color: #fff;
+        border: 0;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+        box-shadow: inset 0 0 0 1px #080807;
+        height: 2rem;
+        padding: 1rem 0;
+        text-indent: 0.5rem;
+        width: 100%;
+        display: block;
+      }
+
+      textarea {
+        box-shadow: inset 0 0 0 1px #080807;
+        border: 0;
+        border-radius: 0.25rem;
+        box-sizing: border-box;
+        font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+        height: 12rem;
+        padding: 1rem;
+        width: 100%;
+      }
+    }
+  }
+}
