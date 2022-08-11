@@ -25,7 +25,7 @@ import {
 import { updateLoadingStatus } from '../actions/Actions';
 
 export class HoldRequest extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     const deliveryLocationsFromAPI = this.props.deliveryLocations;
     const isEddRequestable = this.props.isEddRequestable;
@@ -61,7 +61,7 @@ export class HoldRequest extends React.Component {
   }
 
 
-  componentDidMount () {
+  componentDidMount() {
     this.requireUser();
     this.conditionallyRedirect();
     const title = document.getElementById('item-title');
@@ -71,7 +71,7 @@ export class HoldRequest extends React.Component {
     if (this.state.serverRedirect) this.setState({ serverRedirect: false });
   }
 
-  onRadioSelect (e, i) {
+  onRadioSelect(e, i) {
     trackDiscovery('Delivery Location', e.target.value);
     this.setState({
       delivery: e.target.value,
@@ -83,7 +83,7 @@ export class HoldRequest extends React.Component {
    * submitRequest()
    * Client-side submit call.
    */
-  submitRequest (e, bibId, itemId, itemSource, title) {
+  submitRequest(e, bibId, itemId, itemSource, title) {
     e.preventDefault();
     const searchKeywordsQuery =
       (this.props.searchKeywords) ? `q=${this.props.searchKeywords}` : '';
@@ -132,7 +132,7 @@ export class HoldRequest extends React.Component {
    *
    * @return {Boolean}
    */
-  requireUser () {
+  requireUser() {
     if (this.props.patron && this.props.patron.id) {
       return true;
     }
@@ -151,7 +151,7 @@ export class HoldRequest extends React.Component {
    * @param {String} shortName
    * @return {String}
    */
-  modelDeliveryLocationName (prefLabel, shortName) {
+  modelDeliveryLocationName(prefLabel, shortName) {
     if (prefLabel && typeof prefLabel === 'string' && shortName) {
       const deliveryRoom = (prefLabel.split(' - ')[1]) ? ` - ${prefLabel.split(' - ')[1]}` : '';
 
@@ -163,7 +163,7 @@ export class HoldRequest extends React.Component {
 
   // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
   // checking for manual blocks, expired cards, and excessive fines.
-  conditionallyRedirect () {
+  conditionallyRedirect() {
     const { params } = this.props;
     return this.checkEligibility().then((eligibility) => {
       if (!eligibility.eligibility) {
@@ -180,34 +180,16 @@ export class HoldRequest extends React.Component {
     });
   }
   // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
-  checkEligibility () {
+  checkEligibility() {
     this.setState({ checkingPatronEligibility: true })
-    let checkingEligibility = true
-    const startTime = Date.now()
-    let eligible = false
-    setTimeout(() => {
-      if (checkingEligibility) console.log(`Patron eligibility check taking at least 3 seconds`)
-    }, 3000)
-    return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-      .then((response) => {
-        eligible = response.data.eligibility
-        return response.data
-      })
-      .catch(() => {
-        eligible = true
-        return { eligibility: true }
-      })
-      .finally(() => {
-        const elapsed = Date.now() - startTime
-        console.log(`Patron eligibility check took ${elapsed}ms. Patron eligibility: ${eligible}`)
-        // not 100% on this return, it was implicitly returned in the original code
-        checkingEligibility = false
-        return this.setState({ checkingPatronEligibility: false })
-      });
 
+    return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
+      .then(response => response.data)
+      .catch(() => ({ eligibility: true }))
+      .finally(() => this.setState({ checkingPatronEligibility: false }));
   }
 
-  redirectWithErrors (path, status, message) {
+  redirectWithErrors(path, status, message) {
     this.context.router.replace(
       `${path}?errorStatus=${status}` +
       `&errorMessage=${message}`,
@@ -220,7 +202,7 @@ export class HoldRequest extends React.Component {
      * @param {Array} deliveryLocations
      * @return {HTML Element}
      */
-  renderDeliveryLocation (deliveryLocations = []) {
+  renderDeliveryLocation(deliveryLocations = []) {
     const { closedLocations } = this.props;
     const { openLocations } = appConfig;
     return deliveryLocations.map((location, i) => {
@@ -260,7 +242,7 @@ export class HoldRequest extends React.Component {
   *
   * @return {HTML Element}
   */
-  renderEDD () {
+  renderEDD() {
     const { closedLocations } = this.props;
     if (closedLocations.includes('')) return null;
     return (
@@ -283,7 +265,7 @@ export class HoldRequest extends React.Component {
     );
   }
 
-  render () {
+  render() {
     const {
       closedLocations,
       recapClosedLocations,
@@ -343,10 +325,10 @@ export class HoldRequest extends React.Component {
       ((!deliveryLocations.length && !isEddRequestable) || allClosed) ?
         (
           <h2 className="nypl-request-form-title">
-            Delivery options for this item are currently unavailable. Please try again later or
-            contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+          Delivery options for this item are currently unavailable. Please try again later or
+          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
           </h2>) :
-        <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
+          <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
     let form = null;
 
     if (bib && selectedItemAvailable && !allClosed) {
@@ -373,9 +355,9 @@ export class HoldRequest extends React.Component {
           </div>
           {
             (deliveryLocations.length || isEddRequestable) &&
-            <button type="submit" className="nypl-request-button">
-              Submit Request
-            </button>
+              <button type="submit" className="nypl-request-button">
+                Submit Request
+              </button>
           }
           <input
             type="hidden"
@@ -392,6 +374,7 @@ export class HoldRequest extends React.Component {
     }
 
     const userLoggedIn = this.props.patron && this.props.patron.loggedIn;
+
     return (
       <>
         {
@@ -408,10 +391,10 @@ export class HoldRequest extends React.Component {
                 <div className="item">
                   {
                     (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
-                    <h2>
-                      This item cannot be requested at this time. Please try again later or
-                      contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
-                    </h2>
+                      <h2>
+                        This item cannot be requested at this time. Please try again later or
+                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                      </h2>
                   }
                   {bibLink}
                   {callNo}
