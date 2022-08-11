@@ -7,13 +7,16 @@ import React from 'react';
  * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the BibPage component
  */
 const ElectronicResources = ({ electronicResources }) => {
- const resources = generateERLinksList(electronicResources)
+  if (!electronicResources || !electronicResources.length) {
+    return null;
+  }
+  const resources = generateERLinksList(electronicResources)
   return (<Card isBordered padding="16px">
     <CardHeading level="three" id="no-img1-heading1">
       Available Online
     </CardHeading>
     <CardContent>
-    {resources}
+      {resources}
     </CardContent>
   </Card>)
 }

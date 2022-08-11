@@ -20,4 +20,12 @@ describe('ElectronicResources', () => {
     expect(component.html()).to.include("Available Online")
     expect(elements).to.have.lengthOf(3)
   })
+  it('should render nothing if electronic resources is undefined', () => {
+    const component = mount(<ElectronicResources />)
+    expect(component.html()).to.be.null
+  })
+  it('should render nothing if electronic resources is empty array', () => {
+    const component = mount(<ElectronicResources electronicResources={[]}/>)
+    expect(component.html()).to.be.null
+  })
 })
