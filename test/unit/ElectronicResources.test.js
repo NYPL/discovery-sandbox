@@ -16,9 +16,8 @@ describe('ElectronicResources', () => {
   })
   it('should render three electronic resources', () => {
     const component = mount(<ElectronicResources electronicResources={threeResource} />)
-    const list = component.find('ul')
-    const elements = list.find('li')
+    const elements = component.find('ul').find('li')
     expect(component.html()).to.include("Available Online")
-    expect(elements.length).to.equal(3)
+    expect(elements).to.have.lengthOf(3)
   })
 })
