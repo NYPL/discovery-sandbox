@@ -38,3 +38,8 @@ window.localStorage = global.localStorage;
 
 const noop = () => {};
 require.extensions['.png'] = noop;
+
+// Necessary with introduction of new Reservoir Design system
+window.requestAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};
