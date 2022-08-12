@@ -4,7 +4,8 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemFiltersMobile from './../../src/app/components/Item/ItemFiltersMobile';
+import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
+import ItemFilter from '../../src/app/components/Item/ItemFilter';
 
 const context = {
   router: {
@@ -27,17 +28,22 @@ const formatOptions = {
   ],
 };
 
-describe('ItemFiltersMobile', () => {
-  describe('default rendering', () => {
+describe.only('ItemFiltersMobile', () => {
+
+  describe('without props', () => {
     it('should not render without props', () => {
       const component = shallow(<ItemFiltersMobile />, { context });
       expect(component.type()).to.equal(null);
     });
   });
+
   describe('with props', () => {
+    let initialFilters;
     let component;
-    before(() => {
-      const initialFilters = {
+    let modalTrigger;
+
+    beforeEach(() => {
+      initialFilters = {
         format: [],
         status: [],
         location: [],
@@ -45,50 +51,56 @@ describe('ItemFiltersMobile', () => {
       component = mount(
         <ItemFiltersMobile
           options={formatOptions}
-          setSelectedFilters={() => {}}
-          submitFilterSelections={() => {}}
+          setSelectedFilters={() => { }}
+          submitFilterSelections={() => { }}
           initialFilters={initialFilters}
           selectedFilters={initialFilters}
         />,
       );
+      modalTrigger = component.findWhere(node => {
+        return node.type() === 'button' && node.text() === "Filters";
+      });
+    })
+
+    it('should render "Filters" button', () => {
+      expect(modalTrigger).to.have.lengthOf(1);
     });
 
-    describe('closed state', () => {
-      it('should render "Filters" button for closed state', () => {
-        const closedStateButton = component.find('button');
-        expect(closedStateButton.length).to.equal(1);
-        expect(closedStateButton.find('button').text()).to.equal('Filters');
-      });
-      it('should open on click of closed state button', () => {
-        const closedStateButton = component.find('button');
-        closedStateButton.simulate('click');
-      });
+    it('should render `ItemFilter` for option types passed', () => {
+      //failing because the itemfiltermobile does not render modal we ened ot simulate click
+      modalTrigger.simulate('click')
+      const itemFilters = component.find('.item-filter')
+      expect(itemFilters.hostNodes().length).to.equal(1);
     });
 
-    describe('open state', () => {
-      let goBackButton;
-      let closedStateButton;
-      let showResultsButton;
-
-      it('should render `ItemFilter` for option types passed', () => {
-        expect(component.find('.item-filter').hostNodes().length).to.equal(1);
-      });
-
-      describe('"Show Results" button', () => {
-        it('should render a "Show Results" button', () => {
-          // re-open modal
-          closedStateButton = component.find('button');
-          closedStateButton.simulate('click');
-          showResultsButton = component.find('button').at(1);
-          expect(showResultsButton.text()).to.equal('Show Results');
+    describe('"Show Results" button', () => {
+      let showResultsButton
+      beforeEach(() => {
+        modalTrigger.simulate('click')
+        showResultsButton = component.findWhere(node => {
+          return node.type() === 'button' && node.text() === "Show Results";
         });
-        it('should close when "Show Results" is clicked', () => {
-          showResultsButton.simulate('click');
-          expect(closedStateButton.length).to.equal(1);
-          expect(component.find('Modal').length).to.equal(0);
-          expect(closedStateButton.find('button').text()).to.equal('Filters');
-        });
+      }) 
+      it('should render a "Show Results" button', () => {
+        console.log(showResultsButton.debug())
+        expect(showResultsButton.text()).to.equal('Show Results');
       });
+      xit('should close when "Show Results" is clicked with no filters', () => {
+        showResultsButton.simulate('click');
+        expect(modalTrigger.length).to.equal(1);
+        expect(component.find('Modal').length).to.equal(0);
+        expect(modalTrigger.find('button').text()).to.equal('Filters');
+      });
+      it('should close when "Show Results" is clicked with filters', () => {
+        const filter = component.find('.item-filter')
+        filter.simulate('click')
+        const textFormat = component.findWhere(node => {
+          return node.text() === 'PRINT'
+        })
+        textFormat.simulate('click')
+        show
+      })
     });
   });
 });
+
