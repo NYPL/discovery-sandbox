@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Icon, Modal, ModalTrigger } from '@nypl/design-system-react-components';
+import { Button, ModalTrigger } from '@nypl/design-system-react-components';
 
 import ItemFilter from './ItemFilter';
 import { itemFilters } from '../../data/constants';
@@ -31,12 +31,9 @@ const ItemFiltersMobile = ({
   const modalProps = {
     bodyContent: (
       <div
-        className="scc-item-filters old-ds-modal"
+        className="scc-item-filters"
         id="item-filters-mobile"
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-        tabIndex="0"
       >
-        <h1>Filters</h1>
         <div id="item-filters" className="item-table-filters">
           {
             itemFilters.map(filter => (
@@ -89,3 +86,4 @@ ItemFiltersMobile.contextTypes = {
 };
 
 export default ItemFiltersMobile;
+
