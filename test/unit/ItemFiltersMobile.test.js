@@ -85,26 +85,15 @@ describe.only('ItemFiltersMobile', () => {
       it('should render a "Show Results" button', () => {
         expect(showResultsButton.exists())
       });
-      xit('should close when "Show Results" is clicked with no filters', () => {
+      it('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
-        expect(modalTrigger.length).to.equal(1);
-        expect(component.find('Modal').length).to.equal(0);
-        expect(modalTrigger.find('button').text()).to.equal('Filters');
+        setTimeout(() => {
+          component.update();
+          const filters = component.find('ItemFilter')
+          expect(filters).to.have.lengthOf(0)
+        }, 0)
+        done()
       });
-      it.only('should close when "Show Results" is clicked with filters', () => {
-        //I don't love this hardcoded value but I can't find any other way to get this dropdown selected :-\
-        // const filter = component.find('ItemFilter').at(1)
-        // filter.simulate('click')
-        // const textFormat = component.find(Checkbox)
-
-        // textFormat.simulate('change')
-        const filter = component.find('.item-filter-button').at(0)
-        filter.simulate('click')
-        showResultsButton.simulate('click')
-        expect(modalTrigger.length).to.equal(1);
-        expect(component.find('Modal').length).to.equal(0);
-        expect(modalTrigger.find('button').text()).to.equal('Filters');
-      })
     });
   });
 });
