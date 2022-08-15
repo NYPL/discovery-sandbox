@@ -45,14 +45,13 @@
       ".jsx"
     ],
     "require": [
-      "babel-register"
+      "@babel/register"
     ]
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.10.1",
     "@typescript-eslint/parser": "^5.10.1",
     "axios-mock-adapter": "1.21.2",
-    "babel-core": "6.26.3",
     "chai": "3.5.0",
     "doctoc": "^2.1.0",
     "enzyme": "3.11.0",
@@ -95,10 +94,7 @@
     "aws-sdk": "2.99.0",
     "axios": "0.27.2",
     "babel-loader": "8.2.5",
-    "babel-plugin-module-resolver": "^4.0.0",
-    "babel-preset-env": "1.6.1",
-    "babel-preset-react": "6.24.1",
-    "babel-register": "6.24.0",
+    "babel-plugin-module-resolver": "4.1.0",
     "body-parser": "^1.18.3",
     "clean-webpack-plugin": "^0.1.19",
     "compression": "^1.7.2",
