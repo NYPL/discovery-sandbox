@@ -6,9 +6,50 @@
 
 - Adds styling necessary to fix broken UIs after the `@nypl/design-toolkit` package was removed.
 
+### Updates
+
+- Updates the following npm packages
+  - `axios` to 0.27.2
+  - `axios-mock-adapter` to 1.21.2
+  - `babel-loader` to 8.2.5
+  - `babel-plugin-module-resolver` to 4.1.0
+  - `babel-register` to `@babel/register`
+  - `core-js` to 3.23.3
+  - `css-loader` to 1.0.0
+  - `ejs` to 3.1.6
+  - `enzyme` to 3.11.0
+  - `enzyme-adapter-react-16` to 1.15.6
+  - `nightwatch` to 2.3.0
+  - `nyc` to 15.1.0
+  - `prop-types` 15.8.1
+  - `sinon` to 9.2.4
+  - `style-loader` to 1.0.0
+  - `underscore` 1.10.0
+  - `validator` to 13.7.0
+  - `webpack-bundle-analyzer` to 4.5.0
+  - `webpack-dev-server` to 3.0.0
+  - `webpack-merge` to 5.8.0
+
 ### Removals
 
 - Removes the `@nypl/design-toolkit` package.
+- Removes the following packages:
+  - `babel-core`
+  - `babel-plugin-instanbul`
+  - `babel-preset-env`
+  - `babel-preset-react`
+  - `babel-register`
+  - `brace-expansion`
+  - `classnames`
+  - `create-react-class`
+  - `esdoc`
+  - `react-addons-test-utils`
+  - `react-doc-meta`
+  - `react-onclickout`
+  - `react-tappable`
+  - `regenerator-runtime`
+  - `scroll-behavior`
+  - `webpack-visualizer-plugin`
 
 ### 1.8.0
 
