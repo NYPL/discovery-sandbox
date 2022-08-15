@@ -85,7 +85,7 @@ describe.only('ItemFiltersMobile', () => {
       it('should render a "Show Results" button', () => {
         expect(showResultsButton.exists())
       });
-      it('should close when "Show Results" is clicked with no filters', (done) => {
+      xit('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
         setTimeout(() => {
           component.update();
@@ -94,6 +94,23 @@ describe.only('ItemFiltersMobile', () => {
         }, 0)
         done()
       });
+      it.only('should close when "Show Results is clicked with filters', (done) => {
+        let singleFilter
+        showResultsButton.simulate('click');
+        setTimeout(() => {
+          component.update();
+          singleFilter = component.find('.item-filter-button').at(0)
+          singleFilter.simulate('click')
+          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>", singleFilter.debug())
+        }, 500)
+        console.log('poopybutts')
+        setTimeout(() => {
+          component.update();
+          const filterOption = component.find('.item-filter-content')
+          expect()
+        }, 0)
+        done()
+      })
     });
   });
 });
