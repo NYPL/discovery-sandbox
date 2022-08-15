@@ -51,16 +51,13 @@ const ItemFiltersMobile = ({
             ))
           }
         </div>
-        <Button
-          className="show-results-button"
-          onClick={showResultsAction}
-          id="show-results-button"
-        >
-          Show Results
-        </Button>
       </div>
     ),
-    headingText: "Filters"
+    headingText: "Filters",
+    closeButtonLabel: "Show Results",
+    onClose: () => {
+      showResultsAction()
+    }
   }
   return (
     <ModalTrigger
