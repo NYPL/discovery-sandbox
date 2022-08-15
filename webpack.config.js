@@ -1,6 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
-const merge = require('webpack-merge');
+const { merge } = require('webpack-merge');
 const CleanBuild = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const globImporter = require('node-sass-glob-importer');
@@ -28,7 +28,6 @@ const commonSettings = {
   entry: {
     app: [
       'core-js/stable',
-      'regenerator-runtime/runtime',
       path.resolve(ROOT_PATH, 'src/client/App.jsx'),
     ],
   },
