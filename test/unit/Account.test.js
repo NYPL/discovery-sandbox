@@ -75,7 +75,6 @@ describe('`fetchAccountPage`', () => {
   });
 
   beforeEach(() => {
-    axiosGet.reset();
     redirectedTo = '';
 
     mockRes.redirect = (url) => {
@@ -145,8 +144,8 @@ describe('`fetchAccountPage`', () => {
     it('should fetch the "items" page', () => {
       Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
-      expect(axiosGet.calledOnce).to.equal(true);
-      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`);
+      expect(axiosGet.called).to.equal(true);
+      expect(axiosGet.secondCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`);
     });
   });
 });

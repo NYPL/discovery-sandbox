@@ -160,9 +160,7 @@ if (!isProduction && !isTest) {
   const WebpackDevServer = require('webpack-dev-server');
 
   new WebpackDevServer(webpack(webpackConfig), {
-    publicPath: webpackConfig.output.publicPath,
     hot: true,
-    stats: false,
     historyApiFallback: true,
     headers: {
       'Access-Control-Allow-Origin': 'http://localhost:3001',
