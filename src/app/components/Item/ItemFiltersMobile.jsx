@@ -24,10 +24,6 @@ const ItemFiltersMobile = ({
     submitFilterSelections(selectedFilters);
   };
 
-  const goBackAction = () => {
-    setSelectedFilters(initialFilters);
-  };
-
   const modalProps = {
     bodyContent: (
       <div
