@@ -3,10 +3,8 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
-import { Checkbox } from '@nypl/design-system-react-components'
 
 import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
-import ItemFilter from '../../src/app/components/Item/ItemFilter';
 
 const context = {
   router: {
@@ -29,7 +27,7 @@ const formatOptions = {
   ],
 };
 
-describe.only('ItemFiltersMobile', () => {
+describe('ItemFiltersMobile', () => {
 
   describe('without props', () => {
     it('should not render without props', () => {
@@ -85,7 +83,7 @@ describe.only('ItemFiltersMobile', () => {
       it('should render a "Show Results" button', () => {
         expect(showResultsButton.exists())
       });
-      xit('should close when "Show Results" is clicked with no filters', (done) => {
+      it('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
         setTimeout(() => {
           component.update();
@@ -94,23 +92,6 @@ describe.only('ItemFiltersMobile', () => {
         }, 0)
         done()
       });
-      it.only('should close when "Show Results is clicked with filters', (done) => {
-        let singleFilter
-        showResultsButton.simulate('click');
-        setTimeout(() => {
-          component.update();
-          singleFilter = component.find('.item-filter-button').at(0)
-          singleFilter.simulate('click')
-          console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>", singleFilter.debug())
-        }, 500)
-        console.log('poopybutts')
-        setTimeout(() => {
-          component.update();
-          const filterOption = component.find('.item-filter-content')
-          expect()
-        }, 0)
-        done()
-      })
     });
   });
 });
