@@ -100,7 +100,7 @@ Ensure you are running the proper [node version](#node-runtime). If misconfigure
 
 See `.env-sample` for supported environmental variables. Create a new `.env` file. Copy the contents of `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
-See [EBSVARS](EBSVARS.md) for more information.
+See [EBSVARS](EBSVARS.md) for futher information on all environment variables used in this app.
 
 #### VPN
 
@@ -371,7 +371,7 @@ There are variables available in the `.env` file to configure the requestable lo
 
 - `OPEN_LOCATIONS` is a comma-delimited list of strings. If set to anything other than an empty string, only locations matching one of these strings will be displayed.
 
-- `HOLD_REQUEST_NOTIFICATION`: This can be any string, not including html, which will be added as a notification to the `HoldRequest` landing page, and the EDD page.
+- `HOLD_REQUEST_NOTIFICATION`: This can be any string, including html, which will be added as a notification on the `HoldRequest` landing page and the EDD page.
 
 - `SEARCH_RESULTS_NOTIFICATION`: Same as above, but will be added on the `SearchResults` page
 
