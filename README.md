@@ -100,7 +100,7 @@ Ensure you are running the proper [node version](#node-runtime). If misconfigure
 
 See `.env-sample` for supported environmental variables. Create a new `.env` file. Copy the contents of `.env-sample` to `.env` and replace placeholder values with your own - or obtain a prefilled version from a coworker.
 
-See [EBSVARS](EBSVARS.md) for futher information on all environment variables used in this app.
+See [ENVIRONMENTVARS](ENVIRONMENTVARS.md) for futher information on all environment variables used in this app.
 
 #### VPN
 

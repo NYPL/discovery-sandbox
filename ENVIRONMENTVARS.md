@@ -1,4 +1,6 @@
-# Table of Contents
+# Research Catalog Environment Variables
+
+## Table of Contents
 
 - [General Information](#general-information)
 - [Server and Application-wide Variables](#server-and-application-wide-variables)
@@ -41,13 +43,13 @@ These environment variables control how certain elements on the page render and 
 | `CIRCULATING_CATALOG` | string | "" | The URL of the NYPL circulating catalog. |
 | `CLOSED_LOCATIONS` | string | "all; Library of the Performing Arts" | A semicolon-delimited list of strings. Include quotes around the string. All locations beginning with any string in this list will be removed from the list of request options in the `ElectronicDelivery`, `HoldRequest`, and `ItemTableRow` components. Currently used physical locations: `Schwarzman;Science;Library for the Performing Arts;Schomburg`. To close all locations, add `all`. This will also remove EDD as a request option, the 'Request' buttons, and also disable the hold request/edd forms. If `all` is not present, EDD and 'Request' buttons will still be available. |
 | `DRB_API_BASE_URL` | string | "" | The base URL for the DRB API. |
-| `FEATURES` | string | "first-feature,second-feature,yet-another-feature" | A comma-delimited list of features that should be turned on in the application. Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false. Specifying `parallels` as a feature will enable interleaving of Bib fields with parallel fields. |
+| `FEATURES` | string | "first-feature,second-feature,yet-another-feature" | A comma-delimited list of features that should be turned on in the application. <ul><li>Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false.</li><li>Specifying `parallels` as a feature will enable interleaving of Bib fields with parallel fields.</li><li>Specifying `my-account` as a feature will enable the "My Account" link in the `SubNav` component. This gets rendered in the app's banner as part of the sub-navigation links.</li></ul> |
 | `GENERAL_RESEARCH_EMAIL` | string | "email@email.com" | Not currently used in the app. |
 | `HOLD_REQUEST_NOTIFICATION` | string | "A notification on a hold request page." | This can be any string, including html, which will be added as a notification on the `HoldRequest` landing page and the EDD page. |
 | `ITEM_BATCH_SIZE` | number | 100 | The number of items to fetch in a single request for a bib. |
 | `LIB_ANSWERS_EMAIL` | string | "email@email.com" | The email used in the `Feedback` component for the destination field. |
 | `loada11y` | boolean | true, false | Used to turn on the `react-a11y` package for accessibility testing. Only use in development mode. |
-| `LOGIN_URL` | string | "" | The URL to log a user into the NYPL Catalog. The user will be redirected to sign in with their NYPL credentials. This controls whether the "My Account" link in the banner subnavigation displays or is hidden. |
+| `LOGIN_URL` | string | "" | The URL to log a user into the NYPL Catalog. The user will be redirected to sign in with their NYPL credentials. This needs a valid value in order to sign in successfully, and it needs the "my-account" value in the `FEATURES` environment variable set. |
 | `NON_RECAP_CLOSED_LOCATIONS` | string | "" | The list of closed locations that are not recap. |
 | `OPEN_LOCATIONS` |  string | "Library of the Performing Arts" | A comma-delimited list of locations. If set to anything other than an empty string, only locations matching one of these strings will be displayed. |
 | `RECAP_CLOSED_LOCATIONS` | string | "" | The list of closed locations that are recap. |
