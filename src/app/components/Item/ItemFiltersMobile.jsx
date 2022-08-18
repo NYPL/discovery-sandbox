@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, ModalTrigger } from '@nypl/design-system-react-components';
+import { ModalTrigger } from '@nypl/design-system-react-components';
 
 import ItemFilter from './ItemFilter';
 import { itemFilters } from '../../data/constants';
