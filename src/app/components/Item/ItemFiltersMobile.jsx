@@ -6,8 +6,9 @@ import ItemFilter from './ItemFilter';
 import { itemFilters } from '../../data/constants';
 
 /**
- * This renders a modal interface based on an early version from the
- * Reservoir Design System through the `old-ds-modal` CSS class.
+ * This renders the button that acts as a Modal Trigger. Clicking the button
+ * opens a Modal from the new Reservoir Design System, which contains the 
+ * items filters.
  */
 
 
