@@ -263,7 +263,11 @@ button.item-table-filters {
   }
 }
 
-//temporarily update DS styles
+// temporarily update styles for new DS Modal Component
 #chakra-modal--body-filters-button {
-  max-height: 230px;
+  max-height: 500px;
+  }
+  
+  .chakra-modal__close-btn {
+    background-color: #ffffff;
 }
