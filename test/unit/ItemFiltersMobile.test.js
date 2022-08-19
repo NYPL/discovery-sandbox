@@ -112,15 +112,14 @@ describe.only('ItemFiltersMobile', () => {
       it('should render a "Show Results" button', () => {
         expect(showResultsButton.exists())
       });
-
-      // TO DO: Make this test work! Enzyme is being a pain in the butt, but this work needs to move.
-      xit('should close when "Show Results" is clicked with no filters', () => {
-        showResultsButton.simulate('click')
-        showResultsButton = component.findWhere(node => {
-          return node.type() === 'button' && node.text() === "Show Results";
-        });
-        expect(showResultsButton).to.have.lengthOf(0)
-        expect(showResultsButton.exists()).to.be.false
+      it('should close when "Show Results" is clicked with no filters', (done) => {
+        showResultsButton.simulate('click');
+        setTimeout(() => {
+          component.update();
+          const filters = component.find('ItemFilter')
+          expect(filters).to.have.lengthOf(0)
+        }, 0)
+        done()
       });
     });
   });
