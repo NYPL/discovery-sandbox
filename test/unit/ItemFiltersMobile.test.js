@@ -27,7 +27,7 @@ const formatOptions = {
   ],
 };
 
-describe.only('ItemFiltersMobile', () => {
+describe('ItemFiltersMobile', () => {
   describe('without props', () => {
     it('should not render without props', () => {
       const component = shallow(<ItemFiltersMobile />, { context });
@@ -59,11 +59,8 @@ describe.only('ItemFiltersMobile', () => {
         return node.type() === 'button' && node.text() === "Filters";
       });
     })
-    afterEach(() => {
-      component.unmount()
-    })
 
-    it('should not render showResultsButton before clicking', () => {
+    it('should not render showResultsButton before clicking Filters', () => {
       const showResultsButton = component.findWhere(node => {
         return node.type() === 'button' && node.text() === "Show Results";
       });
@@ -83,31 +80,10 @@ describe.only('ItemFiltersMobile', () => {
     describe('"Show Results" button', () => {
       let showResultsButton
       beforeEach(() => {
-        initialFilters = {
-          format: [],
-          status: [],
-          location: [],
-        };
-        component = mount(
-          <ItemFiltersMobile
-            options={formatOptions}
-            setSelectedFilters={() => { }}
-            submitFilterSelections={() => { }}
-            initialFilters={initialFilters}
-            selectedFilters={initialFilters}
-          />,
-        );
-        modalTrigger = component.findWhere(node => {
-          return node.type() === 'button' && node.text() === "Filters";
-        });
         modalTrigger.simulate('click')
         showResultsButton = component.findWhere(node => {
           return node.type() === 'button' && node.text() === "Show Results";
         });
-      })
-      afterEach(() => {
-        showResultsButton.simulate('click')
-        component.unmount
       })
       it('should render a "Show Results" button', () => {
         expect(showResultsButton.exists())
@@ -115,8 +91,12 @@ describe.only('ItemFiltersMobile', () => {
       it('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
         setTimeout(() => {
-          component.update();
+          // component.update();
+          showResultsButton = component.findWhere(node => {
+            return node.type() === 'button' && node.text() === "Show Results";
+          });
           const filters = component.find('ItemFilter')
+          expect(showResultsButton).to.have.lengthOf(0)
           expect(filters).to.have.lengthOf(0)
         }, 0)
         done()
