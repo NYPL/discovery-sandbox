@@ -91,7 +91,6 @@ describe('ItemFiltersMobile', () => {
       it('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
         setTimeout(() => {
-          // component.update();
           showResultsButton = component.findWhere(node => {
             return node.type() === 'button' && node.text() === "Show Results";
           });
