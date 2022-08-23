@@ -241,58 +241,6 @@ const BibDetails = (props) => {
           });
         });
       }
-
-      if (
-        fieldLabel === 'Electronic Resource' &&
-        props.electronicResources.length > 0
-      ) {
-        const electronicResources = props.electronicResources;
-        const electronicResourcesLink = ({ href, label }) => (
-          <a
-            href={href}
-            target='_blank'
-            onClick={() =>
-              trackDiscovery(
-                'Bib fields',
-                `Electronic Resource - ${label} - ${href}`,
-              )
-            }
-            rel='noreferrer'
-          >
-            {label || href}
-          </a>
-        );
-        let electronicElem;
-
-        // If there is only one electronic resource, then
-        // just render a single anchor element.
-        if (electronicResources.length === 1) {
-          const electronicItem = electronicResources[0];
-          electronicElem = electronicResourcesLink({
-            href: electronicItem.url,
-            label: electronicItem.label,
-          });
-        } else {
-          // Otherwise, create a list of anchors.
-          electronicElem = (
-            <ul>
-              {electronicResources.map((resource) => (
-                <li key={resource.label}>
-                  {electronicResourcesLink({
-                    href: resource.url,
-                    label: resource.label,
-                  })}
-                </li>
-              ))}
-            </ul>
-          );
-        }
-
-        fieldsToRender.push({
-          term: fieldLabel,
-          definition: electronicElem,
-        });
-      }
     }); // End of the forEach loop
 
     return fieldsToRender;
