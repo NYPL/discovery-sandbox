@@ -1,18 +1,21 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { expect } from 'chai'
+import sinon from 'sinon'
+import { Card } from '@nypl/design-system-react-components'
 
 import ElectronicResources from "../../src/app/components/BibPage/ElectronicResources";
 
 const oneResource = [{ url: "books.com", label: "View on books.com" }]
 const threeResource = [{ url: "books.com/1", label: "View on books.com 1" }, { url: "books.com/2", label: "View on books.com 2" }, { url: "books.com/2", label: "View on books.com 3" }]
+const fourResource = [{ url: "books.com/1", label: "View on books.com 1" }, { url: "books.com/2", label: "View on books.com 2" }, { url: "books.com/2", label: "View on books.com 3" }, { url: 'books.com/4', label: 'View on books.com 4' }]
 
 describe('ElectronicResources', () => {
   it('should render one electronic resource', () => {
-      const component = mount(<ElectronicResources electronicResources={oneResource}/>)
-      const link = component.find('a')
-      expect(component.html()).to.include('Available Online')
-      expect(link.text()).to.equal(oneResource[0].label)
+    const component = mount(<ElectronicResources electronicResources={oneResource} />)
+    const link = component.find('a')
+    expect(component.html()).to.include('Available Online')
+    expect(link.text()).to.equal(oneResource[0].label)
   })
   it('should render three electronic resources', () => {
     const component = mount(<ElectronicResources electronicResources={threeResource} />)
@@ -25,7 +28,36 @@ describe('ElectronicResources', () => {
     expect(component.html()).to.be.null
   })
   it('should render nothing if electronic resources is empty array', () => {
-    const component = mount(<ElectronicResources electronicResources={[]}/>)
+    const component = mount(<ElectronicResources electronicResources={[]} />)
     expect(component.html()).to.be.null
+  })
+  describe.only('show more/less button', () => {
+    it('should render with more than 3 electronic resources', () => {
+      const component = mount(<ElectronicResources electronicResources={fourResource} />)
+      expect(component.html()).to.include('See all')
+    })
+    it('should not render with less than 3 resources', () => {
+      const component = mount(<ElectronicResources electronicResources={oneResource} />)
+      expect(component.html()).to.not.include('See all')
+    })
+    it('should show all resources', () => {
+      const component = mount(<ElectronicResources electronicResources={fourResource} isTestMode />)
+      const elements = component.find('ul').find('li')
+      expect(elements).to.have.lengthOf(3)
+      const showMore = component.find('button')
+      showMore.simulate('click')
+      const moreElements = component.find('ul').find('li')
+      expect(moreElements).to.have.lengthOf(4)
+    })
+    xit('should hide resources', () => {
+      const component = mount(<ElectronicResources electronicResources={fourResource} isTestMode />)
+      const elements = component.find('ul').find('li')
+      expect(elements).to.have.lengthOf(3)
+      const showMore = component.find('button')
+      showMore.simulate('click')
+      showMore.simulate('click')
+      const lessElements = component.find('ul').find('li')
+      expect(lessElements).to.have.lengthOf(0)
+    })
   })
 })
