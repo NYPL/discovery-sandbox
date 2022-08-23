@@ -214,9 +214,9 @@
   }
 
   // need to override the background color
-  .nypl-fieldset {
-    background-color: var(--nypl-colors-ui-gray-x-light-cool);
-  }
+.nypl-fieldset {
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+}
 
   .nypl-generic-checkbox {
     label {
@@ -381,4 +381,13 @@
   .date-divider {
     margin: 0 20px;
   }
+}
+
+// temporarily update styles for new DS Modal Component
+#chakra-modal--body-filters-button {
+  max-height: 500px;
+}
+
+.chakra-modal__close-btn {
+  background-color: #ffffff;
 }

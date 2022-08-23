@@ -36,5 +36,8 @@ global.navigator = {
 window.sessionStorage = global.sessionStorage;
 window.localStorage = global.localStorage;
 
-const noop = () => {};
+const noop = () => { };
 require.extensions['.png'] = noop;
+
+// Necessary with introduction of new Reservoir Design system
+window.requestAnimationFrame = noop

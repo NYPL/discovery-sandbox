@@ -15,6 +15,7 @@ describe('TimedLogoutModal', () => {
     let component;
     let sandbox;
     let clock;
+    let timeoutStub;
 
     before(() => {
       sandbox = sinon.sandbox.create();
@@ -23,10 +24,11 @@ describe('TimedLogoutModal', () => {
       window.location = { replace: () => {} };
       global.document.cookie = 'accountPageExp=1615496302599';
       sandbox.stub(window.location, 'replace').callsFake(() => { callRecord.push({ replace: true }); });
-      sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
+      timeoutStub = sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
       });
+
       sandbox.stub(React, 'useState').callsFake((arg) => {
         global.update = arg;
         return [
@@ -45,6 +47,12 @@ describe('TimedLogoutModal', () => {
       );
     });
 
+    after(() => {
+      sandbox.restore();
+      timeoutStub.restore();
+      clock.restore();
+    });
+
     it('should set a timeout to update in 1 second', () => {
       expect(callRecord.some(call => call.setTimeout === 1000)).to.equal(true);
       expect(callRecord.some(call => call.setUpdate === true)).to.equal(true);
@@ -56,11 +64,6 @@ describe('TimedLogoutModal', () => {
 
     it('should render null', () => {
       expect(component.instance()).to.equal(null);
-    });
-
-    after(() => {
-      sandbox.restore();
-      clock.restore();
     });
   });
 
