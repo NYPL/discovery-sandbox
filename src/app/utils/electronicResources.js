@@ -7,6 +7,7 @@ import { Link } from '@nypl/design-system-react-components'
  * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the ElectronicResources component
  */
 const generateElectronicResourceLinksList = (electronicResources) => {
+  if (!electronicResources) return null
   const electronicResourcesLink = ({ href, label }) => (
     <Link
       href={href}
