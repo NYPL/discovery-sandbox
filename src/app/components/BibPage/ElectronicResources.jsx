@@ -10,14 +10,17 @@ import React, { useRef, useState } from 'react';
 
 
 const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
+  const [showMore, setShowMore] = useState(true)
+  const scrollToRef = useRef();
+
+  if (!electronicResources || !electronicResources.length) {
+    return null;
+  }
+
   const allResources = generateERLinksList(electronicResources)
   const threeResources = generateERLinksList(electronicResources.slice(0, 3))
   const more = `all ${electronicResources.length}`
   const less = 'fewer'
-
-  const [showMore, setShowMore] = useState(true)
-
-  const scrollToRef = useRef();
 
   const onClick = () => {
     if (!isTestMode) scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
@@ -26,9 +29,6 @@ const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
     })
   }
 
-  if (!electronicResources || !electronicResources.length) {
-    return null;
-  }
   return (<Card ref={scrollToRef} isBordered padding="16px">
     <CardHeading level="three" id="no-img1-heading1">
       Available Online
