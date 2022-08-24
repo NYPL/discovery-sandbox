@@ -1,8 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
 import { expect } from 'chai'
-import sinon from 'sinon'
-import { Card } from '@nypl/design-system-react-components'
 
 import ElectronicResources from "../../src/app/components/BibPage/ElectronicResources";
 
@@ -31,7 +29,7 @@ describe('ElectronicResources', () => {
     const component = mount(<ElectronicResources electronicResources={[]} />)
     expect(component.html()).to.be.null
   })
-  describe.only('show more/less button', () => {
+  describe('show more/less button', () => {
     it('should render with more than 3 electronic resources', () => {
       const component = mount(<ElectronicResources electronicResources={fourResource} />)
       expect(component.html()).to.include('See all')
@@ -49,15 +47,18 @@ describe('ElectronicResources', () => {
       const moreElements = component.find('ul').find('li')
       expect(moreElements).to.have.lengthOf(4)
     })
-    xit('should hide resources', () => {
+    it('should hide resources', () => {
       const component = mount(<ElectronicResources electronicResources={fourResource} isTestMode />)
       const elements = component.find('ul').find('li')
       expect(elements).to.have.lengthOf(3)
       const showMore = component.find('button')
-      showMore.simulate('click')
-      showMore.simulate('click')
+      showMore.invoke('onClick')()
+      showMore.invoke('onClick')()
+      setTimeout(() => {
+        component.update()
       const lessElements = component.find('ul').find('li')
       expect(lessElements).to.have.lengthOf(0)
+      }, 0)
     })
   })
 })
