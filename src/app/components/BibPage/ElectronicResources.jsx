@@ -36,7 +36,7 @@ const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
     <CardContent>
       {showMore ? threeResources : allResources}
       {electronicResources.length > 3 ?
-        <Button style={{ textDecoration: 'none' }} isBordered='false' id='see-more-button' onClick={onClick} buttonType='link'>
+        <Button textDecoration='none' border='none' id='see-more-button' onClick={onClick} buttonType='link'>
           See {showMore ? more : less} resources
           <Icon style={{ marginLeft: '5px' }} iconRotation={`rotate${showMore ? 0 : 180}`} name="arrow" size="small" />
         </Button> : null}
