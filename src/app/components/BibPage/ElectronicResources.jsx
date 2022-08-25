@@ -8,29 +8,26 @@ import React, { useRef, useState } from 'react';
  * @param {boolean} isTestMode - a boolean value only used while running unit tests on this component
  */
 
-
 const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
+  const defaultNumResources = 3
   const [showMore, setShowMore] = useState(true)
-  const [electronicResourcesToDisplay, setElectronicResourcesToDisplay] = useState(electronicResources);
+  const [electronicResourcesToDisplay, setElectronicResourcesToDisplay] = useState(electronicResources && electronicResources.slice(0, defaultNumResources));
   const scrollToRef = useRef();
 
   if (!electronicResources || !electronicResources.length) {
     return null;
   }
 
-  const allResources = generateERLinksList(electronicResources)
-  const threeResources = generateERLinksList(electronicResources.slice(0, 3))
+  const resources = generateERLinksList(electronicResourcesToDisplay)
   const more = `all ${electronicResources.length}`
   const less = 'fewer'
 
   const onClick = () => {
     if (!isTestMode) scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
-    let prevShowMore
     setShowMore((prev) => {
-      prevShowMore = prev
+      setElectronicResourcesToDisplay(prev ? electronicResources : electronicResources.slice(0, defaultNumResources))
       return !prev
     })
-    setElectronicResourcesToDisplay(prevShowMore ? electronicResources : electronicResources.slice(0, 3))
   }
 
   return (<Card ref={scrollToRef} isBordered padding="16px">
@@ -38,8 +35,8 @@ const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
       Available Online
     </CardHeading>
     <CardContent>
-      {showMore ? threeResources : allResources}
-      {electronicResources.length > 3 ?
+      {resources}
+      {electronicResources.length > defaultNumResources ?
         <Button textDecoration='none' border='none' id='see-more-button' onClick={onClick} buttonType='link'>
           See {showMore ? more : less} resources
           <Icon style={{ marginLeft: '5px' }} iconRotation={`rotate${showMore ? 0 : 180}`} name="arrow" size="small" />
