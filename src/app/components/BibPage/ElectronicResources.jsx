@@ -11,6 +11,7 @@ import React, { useRef, useState } from 'react';
 
 const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
   const [showMore, setShowMore] = useState(true)
+  const [electronicResourcesToDisplay, setElectronicResourcesToDisplay] = useState(electronicResources);
   const scrollToRef = useRef();
 
   if (!electronicResources || !electronicResources.length) {
@@ -24,9 +25,12 @@ const ElectronicResources = ({ electronicResources, isTestMode = false }) => {
 
   const onClick = () => {
     if (!isTestMode) scrollToRef.current.scrollIntoView({ behavior: 'smooth' })
+    let prevShowMore
     setShowMore((prev) => {
+      prevShowMore = prev
       return !prev
     })
+    setElectronicResourcesToDisplay(prevShowMore ? electronicResources : electronicResources.slice(0, 3))
   }
 
   return (<Card ref={scrollToRef} isBordered padding="16px">

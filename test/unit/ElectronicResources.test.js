@@ -39,6 +39,7 @@ describe('ElectronicResources', () => {
       expect(component.html()).to.not.include('See all')
     })
     it('should show all resources', () => {
+      //isTestMode prop is here to circumvent invocation of scrollIntoView during testing
       const component = mount(<ElectronicResources electronicResources={fourResource} isTestMode />)
       const elements = component.find('ul').find('li')
       expect(elements).to.have.lengthOf(3)
