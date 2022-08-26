@@ -142,13 +142,13 @@ export const BibPage = (
             fields={topFields}
             features={features}
           />
-          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} /> : null}
+          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
         {
           items.length && !isElectronicResources ?
             (
-              <section style={{ marginTop: '20px' }}>
+              <section style={{ marginTop: '20px' }} id="items-table">
                 <ItemsContainer
                   key={bibId}
                   shortenItems={location.pathname.indexOf('all') !== -1}

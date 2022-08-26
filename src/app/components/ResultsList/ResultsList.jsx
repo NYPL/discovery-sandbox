@@ -10,11 +10,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import LibraryItem from '../../utils/item';
 import {
   trackDiscovery,
+  getElectronicResources,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 import ItemSorter from '../../utils/itemSorter';
+import ElectronicResourcesSearch from '../ElectronicResourcesSearch/ElectronicResourcesSearch';
 
 
 export const getBibTitle = (bib) => {
@@ -71,6 +73,7 @@ const ResultsList = ({
   }
 
   const generateBibLi = (bib, i) => {
+    console.log('bib: ', bib);
     // eslint-disable-next-line no-mixed-operators
     if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
       return null;
@@ -89,6 +92,18 @@ const ResultsList = ({
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
+    const { totalPhysicalItems, eResources } = getElectronicResources(result);
+    const resourcesOnClick = () => {
+      updateResultSelection({
+        fromUrl: `${pathname}${search}`,
+        bibId,
+      })
+    }
+
+    const hasPhysicalItems = totalPhysicalItems > 0;
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length;
+    const resourceType = hasPhysicalItems ? 'item' : 'resource';
+    const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
 
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -115,21 +130,40 @@ const ResultsList = ({
             {
               totalItems > 0 ?
                 <li className="nypl-results-info">
-                  {totalItems} item{totalItems !== 1 ? 's' : ''}
+                  {itemMessage}
                 </li>
                 : ''
             }
           </ul>
         </div>
+        <ElectronicResourcesSearch
+          resources={eResources}
+          onClick={resourcesOnClick}
+          bibUrl={bibUrl}
+        />
         {
           hasRequestTable &&
-          <ItemTable
-            items={items.slice(0, itemTableLimit)}
-            bibId={bibId}
-            id={null}
-            searchKeywords={searchKeywords}
-            page="SearchResults"
-          />
+          <>
+            <ItemTable
+              items={items.slice(0, itemTableLimit)}
+              bibId={bibId}
+              id={null}
+              searchKeywords={searchKeywords}
+              page="SearchResults"
+            />
+            {
+              totalPhysicalItems > 3 ?
+              (
+                <Link
+                  onClick={resourcesOnClick}
+                  href={`bibUrl#items-table`}
+                >
+                  {`See all ${totalPhysicalItems} in Library & Offsite Items`}
+                </Link>
+              ) :
+              null
+            }
+          </>
         }
       </li>
     );

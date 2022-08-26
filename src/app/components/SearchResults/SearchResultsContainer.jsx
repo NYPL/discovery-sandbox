@@ -15,6 +15,7 @@ import { MediaContext } from '../Application/Application';
 // Renders ResultsList and Pagination components
 const SearchResultsContainer = (props) => {
   const searchResults = useSelector(state => state.searchResults);
+  console.log('searchResults: ', searchResults);
   const features = useSelector(state => state.features);
   const searchKeywords = useSelector(state => state.searchKeywords);
   const page = useSelector(state => state.page);
