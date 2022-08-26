@@ -1,40 +1,31 @@
 import React from 'react'
 import { Link } from '@nypl/design-system-react-components'
 import generateERLinksList from '../../utils/electronicResources'
+import {
+  RightWedgeIcon,
+} from '@nypl/dgx-svg-icons';
 
 const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
   if (!resources.length) return null;
   return (
-    <table className="nypl-basic-table">
-      <caption className="hidden">Electronic Resources</caption>
-      <thead>
-        <th scope="col">Available Online</th>
-      </thead>
-      <tbody>
+    <>
+      <h3 className="electronic-resources-search-header">Available Online</h3>
         {
           resources.length === 1 ?
             (
-              <tr>
-                <td>
-                  { generateERLinksList(resources) }
-                </td>
-              </tr>
+                generateERLinksList(resources)
             ) :
             (
-              <tr>
-                <td>
-                  <Link
-                    onClick={onClick}
-                    href={`${bibUrl}#electronic-resources`}
-                  >
-                    See All Available Online Resources
-                  </Link>
-                </td>
-              </tr>
+                <Link
+                  onClick={onClick}
+                  href={`${bibUrl}#electronic-resources`}
+                  className="search-results-list-link"
+                >
+                  See All Available Online Resources <RightWedgeIcon />
+                </Link>
             )
         }
-      </tbody>
-    </table>
+    </>
   )
 }
 

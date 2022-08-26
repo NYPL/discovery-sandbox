@@ -17,6 +17,9 @@ import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 import ItemSorter from '../../utils/itemSorter';
 import ElectronicResourcesSearch from '../ElectronicResourcesSearch/ElectronicResourcesSearch';
+import {
+  RightWedgeIcon,
+} from '@nypl/dgx-svg-icons';
 
 
 export const getBibTitle = (bib) => {
@@ -157,8 +160,9 @@ const ResultsList = ({
                 <Link
                   onClick={resourcesOnClick}
                   href={`bibUrl#items-table`}
+                  className="search-results-list-link"
                 >
-                  {`See all ${totalPhysicalItems} in Library & Offsite Items`}
+                  {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
                 </Link>
               ) :
               null
