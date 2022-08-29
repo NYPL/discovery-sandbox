@@ -8,7 +8,7 @@ import {
 const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
   if (!resources.length) return null;
   return (
-    <>
+    <section className="electronic-resources-search-section">
       <h3 className="electronic-resources-search-header">Available Online</h3>
         {
           resources.length === 1 ?
@@ -25,7 +25,7 @@ const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
                 </Link>
             )
         }
-    </>
+    </section>
   )
 }
 
