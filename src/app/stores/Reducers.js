@@ -46,8 +46,6 @@ function appReducer(state = initialState, action) {
     case Actions.UPDATE_FEATURES:
       return { ...state, features: action.payload };
     case Actions.UPDATE_RESULT_SELECTION:
-      console.log('UPDATE RESULT SELECTION ', action.payload);
-      // return state;
       return { ...state, resultSelection: action.payload };
     case Actions.SET_APP_CONFIG:
       return { ...state, appConfig };
