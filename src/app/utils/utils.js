@@ -763,6 +763,7 @@ function isNyplBnumber(bnum) {
  * Given a bib, return the electronic resources and the number of physical items
  */
  function getElectronicResources(bib) {
+   // console.log('bib: ', JSON.stringify(bib.items, null, 2));
    const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
    const aggregatedElectronicResources = getAggregatedElectronicResources(items);
    const eResources = pluckAeonLinksFromResource(aggregatedElectronicResources, items);

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from '@nypl/design-system-react-components'
+import { Link } from 'react-router'
 import generateERLinksList from '../../utils/electronicResources'
 import {
   RightWedgeIcon,
@@ -10,21 +10,24 @@ const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
   return (
     <section className="electronic-resources-search-section">
       <h3 className="electronic-resources-search-header">Available Online</h3>
-        {
-          resources.length === 1 ?
-            (
-                generateERLinksList(resources)
-            ) :
-            (
-                <Link
-                  onClick={onClick}
-                  href={`${bibUrl}#electronic-resources`}
-                  className="search-results-list-link"
-                >
-                  See All Available Online Resources <RightWedgeIcon />
-                </Link>
-            )
-        }
+          <Link
+            onClick={onClick}
+            to={
+              resources.length === 1 ?
+                resources[0].url  :
+                `${bibUrl}#electronic-resources`
+
+            }
+            className="search-results-list-link"
+          >
+            {
+              resources.length === 1 ?
+                (resources[0].label || resources[0].url) :
+                (
+                  <>See All Available Online Resources <RightWedgeIcon /></>
+                )
+            }
+          </Link>
     </section>
   )
 }

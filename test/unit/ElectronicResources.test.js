@@ -28,4 +28,8 @@ describe('ElectronicResources', () => {
     const component = mount(<ElectronicResources electronicResources={[]}/>)
     expect(component.html()).to.be.null
   })
+  it('should have id if id is passed', () => {
+    const component = mount(<ElectronicResources electronicResources={threeResource} id="1234" />)
+    expect(component.find('div').at(0).prop('id')).to.equal('1234')
+  })
 })

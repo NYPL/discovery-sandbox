@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import {
@@ -53,21 +53,29 @@ const ResultsList = ({
   subjectHeadingShow,
   searchKeywords,
 }, { router }) => {
+
   const { features, loading } = useSelector(state => ({
     features: state.features,
     loading: state.loading,
   }));
 
   const dispatch = useDispatch();
-  const updateResultSelection = data => dispatch({
+  const updateResultSelection = data => {
+    console.log('updateResultSelection: ', data);
+    return dispatch({
     type: 'UPDATE_RESULT_SELECTION',
     payload: data,
   });
+}
 
   const {
     pathname,
     search,
   } = router.location;
+
+  useEffect(() => {
+
+  })
 
   const includeDrbb = features.includes('drb-integration');
 
@@ -76,6 +84,7 @@ const ResultsList = ({
   }
 
   const generateBibLi = (bib, i) => {
+    console.log('bib: ', bib);
     // eslint-disable-next-line no-mixed-operators
     if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
       return null;
@@ -106,18 +115,20 @@ const ResultsList = ({
     const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length;
     const resourceType = hasPhysicalItems ? 'item' : 'resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
-
+    console.log('totalItems: ', totalItems)
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <h3>
           <Link
-            onClick={() => {
+            onClick={
+              () => {
               updateResultSelection({
                 fromUrl: `${pathname}${search}`,
                 bibId,
               });
               trackDiscovery('Bib', bibTitle);
-            }}
+            }
+          }
             to={bibUrl}
             className="title"
           >
@@ -158,8 +169,9 @@ const ResultsList = ({
               (
                 <Link
                   onClick={resourcesOnClick}
-                  href={`bibUrl#items-table`}
+                  to={`${bibUrl}#items-table`}
                   className="search-results-list-link"
+                  id="physical-items-link"
                 >
                   {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
                 </Link>
