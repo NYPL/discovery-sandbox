@@ -14,6 +14,7 @@ import {
 } from 'underscore';
 import appConfig from '../data/appConfig';
 import { noticePreferenceMapping } from '../data/constants';
+import LibraryItem from './item';
 
 const { features } = appConfig;
 
@@ -758,6 +759,17 @@ function isNyplBnumber(bnum) {
   return /^b/.test(bnum);
 }
 
+/**
+ * Given a bib, return the electronic resources and the number of physical items
+ */
+ function getElectronicResources(bib) {
+   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
+   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+   const eResources = pluckAeonLinksFromResource(aggregatedElectronicResources, items);
+   const totalPhysicalItems = items.filter(item => !item.isElectronicResource).length;
+   return { eResources, totalPhysicalItems }
+ }
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -772,6 +784,7 @@ export {
   getReqParams,
   parseServerSelectedFilters,
   getAggregatedElectronicResources,
+  getElectronicResources,
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,

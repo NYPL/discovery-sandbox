@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import axios from 'axios';
 import sinon from 'sinon';
 import { useQueries } from 'history';
+import sampleBib from '../fixtures/electronicAndPhysicalItemsBib';
 
 import {
   ajaxCall,
@@ -14,6 +15,7 @@ import {
   getIdentifierQuery,
   getFilterParam,
   getFieldParam,
+  getElectronicResources,
   basicQuery,
   getReqParams,
   getAggregatedElectronicResources,
@@ -136,6 +138,20 @@ describe('getDefaultFilters', () => {
 });
 
 /**
+ * getElectronicResources
+ */
+ describe('getElectronicResources', () => {
+
+   it('should return object with eResources, including checkInItems but not Aeon links, and count of physcial items', () => {
+     const eResources = getElectronicResources(sampleBib);
+     expect(eResources.eResources.length).to.equal(1)
+     expect(eResources.eResources[0].label).to.equal('Full text available via HathiTrust')
+     expect(eResources.totalPhysicalItems).to.equal(2)
+   });
+
+ });
+
+/**
  * createAppHistory
  */
 describe('createAppHistory', () => {
@@ -157,6 +173,7 @@ describe('createAppHistory', () => {
  * destructureFilters
  */
 describe('destructureFilters', () => {
+
   const apiFilters = { '@context':
    'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
   '@type': 'itemList',

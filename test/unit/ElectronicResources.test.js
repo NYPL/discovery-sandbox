@@ -29,7 +29,10 @@ describe('ElectronicResources', () => {
     const component = mount(<ElectronicResources electronicResources={[]} />)
     expect(component.html()).to.be.null
   })
-  describe('show more/less button', () => {
+  it('should have id if id is passed', () => {
+    const component = mount(<ElectronicResources electronicResources={threeResource} id="1234" />)
+    expect(component.find('div').at(0).prop('id')).to.equal('1234')
+    describe('show more/less button', () => {
     it('should render with more than 3 electronic resources', () => {
       const component = mount(<ElectronicResources electronicResources={fourResource} />)
       expect(component.html()).to.include('See all')
@@ -62,4 +65,5 @@ describe('ElectronicResources', () => {
       }, 0)
     })
   })
+})
 })

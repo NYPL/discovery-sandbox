@@ -75,6 +75,7 @@ describe('BibPage', () => {
       );
       expect(topBibComp.type()).to.equal(ElectronicResources);
       expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
+      expect(topBibComp.prop('id')).to.equal('electronic-resources');
     });
 
     it('should not render Electronic Resources component when there are no electronic resources', () => {
@@ -131,6 +132,10 @@ describe('BibPage', () => {
     it('has Details section', () => {
       expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
     });
+
+    it('has section with id items-table', () => {
+      expect(component.find('#items-table').length).to.equal(1)
+    })
 
     it('combines details sections', () => {
       expect(component.findWhere(el => el.type() === 'dt' && el.text() === 'Abbreviated Title').length).to.equal(1);
