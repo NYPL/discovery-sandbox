@@ -142,8 +142,10 @@ describe('getDefaultFilters', () => {
  */
  describe('getElectronicResources', () => {
 
-   it('should return object with eResources, including checkInItems but not Aeon links, and count of physcial items', () => {
+   it('should return object with eResources, including checkInItems but not Aeon links, and count of physical items', () => {
      const eResources = getElectronicResources(sampleBib);
+     // the sample bib has 1 checkinitem, 1 regular physical item, 1 electronic item, and
+     // 1 aeon link
      expect(eResources.eResources.length).to.equal(1)
      expect(eResources.eResources[0].label).to.equal('Full text available via HathiTrust')
      expect(eResources.totalPhysicalItems).to.equal(2)

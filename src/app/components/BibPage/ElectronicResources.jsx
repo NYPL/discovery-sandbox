@@ -5,6 +5,7 @@ import React from 'react';
 /**
  * ElectronicResources renders a list of electronic resources links, sans aeon links
  * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the BibPage component
+ * @param {string} id
  */
 const ElectronicResources = ({ electronicResources, id }) => {
   if (!electronicResources || !electronicResources.length) {

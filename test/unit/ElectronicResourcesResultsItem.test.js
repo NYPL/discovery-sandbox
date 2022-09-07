@@ -3,12 +3,12 @@ import { mount } from 'enzyme'
 import { expect } from 'chai'
 import { Link } from 'react-router'
 
-import ElectronicResourcesSearch from "../../src/app/components/ElectronicResourcesSearch/ElectronicResourcesSearch";
+import ElectronicResourcesResultsItem from "../../src/app/components/ElectronicResourcesResultsItem/ElectronicResourcesResultsItem";
 
-describe('ElectronicResourcesSearch', () => {
+describe('ElectronicResourcesResultsItem', () => {
   describe('with no resources', () => {
     it('should render null', () => {
-      const component = mount(<ElectronicResourcesSearch resources={[]}/>);
+      const component = mount(<ElectronicResourcesResultsItem resources={[]}/>);
       expect(component.html()).to.be.null
     });
   });
@@ -17,7 +17,7 @@ describe('ElectronicResourcesSearch', () => {
     let onClickRecord;
     const onClick = (e) => { e.preventDefault(); onClickRecord = 'clicked'; };
     const component = mount(
-        <ElectronicResourcesSearch resources={[ { url: 'fakeurl', label: 'fakelabel' } ]} onClick={onClick} bibUrl='fakebiburl'/>
+        <ElectronicResourcesResultsItem resources={[ { url: 'fakeurl', label: 'fakelabel' } ]} onClick={onClick} bibUrl='fakebiburl'/>
     )
     it('should have a section with class electronic-resources-search-section', () => {
       const section = component.find('section')
@@ -28,7 +28,7 @@ describe('ElectronicResourcesSearch', () => {
     it('should have an h3 with correct class and text', () => {
       const h3 = component.find('h3')
       expect(h3.length).to.equal(1)
-      expect(h3.at(0).prop('className')).to.equal('electronic-resources-search-header')
+      expect(h3.at(0).prop('className')).to.include('electronic-resources-search-header')
       expect(h3.at(0).text()).to.equal('Available Online')
     })
 
@@ -44,7 +44,7 @@ describe('ElectronicResourcesSearch', () => {
   describe('with one resource', () => {
     it('should point link to resource', () => {
       const component = mount(
-          <ElectronicResourcesSearch resources={[ { url: 'fakeurl', label: 'fakelabel' } ]} onClick={null} bibUrl='fakebiburl'/>
+          <ElectronicResourcesResultsItem resources={[ { url: 'fakeurl', label: 'fakelabel' } ]} onClick={null} bibUrl='fakebiburl'/>
       )
       const link = component.find(Link)
       expect(link.length).to.equal(1)
@@ -54,7 +54,7 @@ describe('ElectronicResourcesSearch', () => {
 
     it('should use url as default text', () => {
       const component = mount(
-          <ElectronicResourcesSearch resources={[ { url: 'fakeurl' } ]} onClick={null} bibUrl='fakebiburl'/>
+          <ElectronicResourcesResultsItem resources={[ { url: 'fakeurl' } ]} onClick={null} bibUrl='fakebiburl'/>
       )
       const link = component.find(Link)
       expect(link.length).to.equal(1)
@@ -65,7 +65,7 @@ describe('ElectronicResourcesSearch', () => {
   describe('with multiple resources', () => {
     it('should point link to the list of resources', () => {
       const component = mount(
-          <ElectronicResourcesSearch
+          <ElectronicResourcesResultsItem
             resources={[ { url: 'fakeurl1', label: 'fakelabel1' }, { url: 'fakeurl2', label: 'fakelabel2' } ]} onClick={null} bibUrl='fakebiburl'
           />
       )

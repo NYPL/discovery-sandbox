@@ -3,12 +3,25 @@ import { Link } from 'react-router'
 import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
+import { Heading } from '@nypl/design-system-react-components';
 
-const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
+
+/**
+ React component for displaying links to electronic resources on the
+ Search Results page
+ */
+
+const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
   if (!resources.length) return null;
   return (
     <section className="electronic-resources-search-section">
-      <h3 className="electronic-resources-search-header">Available Online</h3>
+      <Heading
+        level="three"
+        className="electronic-resources-search-header"
+        id="available-online-heading"
+      >
+        Available Online
+      </Heading>
           <Link
             onClick={onClick}
             to={
@@ -31,4 +44,4 @@ const ElectronicResourcesSearch = ({ resources, onClick, bibUrl }) => {
   )
 }
 
-export default ElectronicResourcesSearch
+export default ElectronicResourcesResultsItem
