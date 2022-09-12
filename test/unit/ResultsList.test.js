@@ -16,7 +16,7 @@ import appConfig from '../../src/app/data/appConfig';
 import { mockRouterContext } from '../helpers/routing';
 import electronicAndPhysicalItemsBib from '../fixtures/electronicAndPhysicalItemsBib';
 import electronicItemsBib from '../fixtures/electronicItemsBib';
-import ElectronicResourcesSearch from '../../src/app/components/ElectronicResourcesSearch/ElectronicResourcesSearch';
+import ElectronicResourcesResultsItem from '../../src/app/components/ElectronicResourcesResultsItem/ElectronicResourcesResultsItem';
 import bibs from '../fixtures/bibs';
 
 const results = [{}, {}, {}];
@@ -443,7 +443,7 @@ describe('ResultsList', () => {
     });
 
     it('should display electronic resources', () => {
-      const electronicResources = component.find(ElectronicResourcesSearch)
+      const electronicResources = component.find(ElectronicResourcesResultsItem)
       expect(electronicResources.length).to.equal(1);
       expect(electronicResources.at(0).prop('resources').length).to.equal(1);
       expect(electronicResources.at(0).prop('resources')[0].label).to.equal('Full text available via HathiTrust')

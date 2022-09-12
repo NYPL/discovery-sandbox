@@ -16,7 +16,7 @@ import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 import ItemSorter from '../../utils/itemSorter';
-import ElectronicResourcesSearch from '../ElectronicResourcesSearch/ElectronicResourcesSearch';
+import ElectronicResourcesResultsItem from '../ElectronicResourcesResultsItem/ElectronicResourcesResultsItem';
 import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
@@ -140,7 +140,7 @@ const ResultsList = ({
             }
           </ul>
         </div>
-        <ElectronicResourcesSearch
+        <ElectronicResourcesResultsItem
           resources={eResources}
           onClick={resourcesOnClick}
           bibUrl={bibUrl}
