@@ -41,7 +41,7 @@ const ElectronicResources = ({ electronicResources, isTestMode = false, id }) =>
         {resources}
         {electronicResources.length > defaultNumResources ?
           <Button textDecoration='none' border='none' id='see-more-button' onClick={onClick} buttonType='link'>
-            See {showMore ? more : less} resources
+            See {showMore ? more : less} Available Online resources
             <Icon style={{ marginLeft: '5px' }} iconRotation={`rotate${showMore ? 0 : 180}`} name="arrow" size="small" />
           </Button> : null}
       </CardContent>
