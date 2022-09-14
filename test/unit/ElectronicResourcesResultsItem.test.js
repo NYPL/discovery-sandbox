@@ -46,17 +46,18 @@ describe('ElectronicResourcesResultsItem', () => {
       const component = mount(
           <ElectronicResourcesResultsItem resources={[ { url: 'fakeurl', label: 'fakelabel' } ]} onClick={null} bibUrl='fakebiburl'/>
       )
-      const link = component.find(Link)
+      const link = component.find('a')
       expect(link.length).to.equal(1)
-      expect(link.at(0).prop('to')).to.equal('fakeurl')
+      expect(link.at(0).prop('href')).to.equal('fakeurl')
       expect(link.at(0).text()).to.equal('fakelabel')
+      expect(link.at(0).prop('className')).to.equal('search-results-list-link')
     })
 
     it('should use url as default text', () => {
       const component = mount(
           <ElectronicResourcesResultsItem resources={[ { url: 'fakeurl' } ]} onClick={null} bibUrl='fakebiburl'/>
       )
-      const link = component.find(Link)
+      const link = component.find('a')
       expect(link.length).to.equal(1)
       expect(link.at(0).text()).to.equal('fakeurl')
     })
