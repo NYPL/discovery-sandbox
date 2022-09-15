@@ -10,6 +10,7 @@ const generateElectronicResourceLinksList = (electronicResources) => {
   if (!electronicResources) return null
   const electronicResourcesLink = ({ href, label }) => (
     <Link
+      style={{ color: '#0576D3' }}
       href={href}
       target='_blank'
       onClick={() =>
