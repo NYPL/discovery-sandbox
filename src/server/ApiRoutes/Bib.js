@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AbortController } from 'axios';
 
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -15,11 +15,26 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
-const shepApiCall = bibId => axios({
-  method: 'get',
-  url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
-  timeout: 5000,
-});
+const shepApiCall = (bibId) => {
+  const source = axios.CancelToken.source()
+  const timeout = setTimeout(() => {
+    source.cancel()
+  }, 5000)
+
+  return axios({
+    method: 'get',
+    url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
+    timeout: 4000,
+    cancelToken: source.token
+  }).then((response) => {
+    clearTimeout(timeout)
+    return response
+  }).catch((e) => {
+    if (axios.isCancel(e)) {
+      console.log('SHEP Api connection timeout')
+    }
+  })
+};
 
 const holdingsMappings = {
   Location: 'location',
@@ -129,7 +144,7 @@ const addLocationUrls = (bib) => {
     .catch((err) => { console.log('catching nypl client ', err); });
 };
 
-function fetchBib(bibId, cb, errorcb, reqOptions, res) {
+function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
@@ -206,7 +221,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
     }); /* end axios call */
 }
 
-function bibSearch(req, res, resolve) {
+function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);

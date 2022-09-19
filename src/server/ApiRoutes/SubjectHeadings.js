@@ -50,19 +50,27 @@ const convertShepBibsToDiscoveryBibs = response =>
  *    https://www.npmjs.com/package/axios#handling-errors )
  */
 const shepApiCall = (path, queryParams) => {
-  logger.debug(`Making shep api call: ${appConfig.shepApi}${path}`);
-
+  const source = axios.CancelToken.source()
+  const timeout = setTimeout(() => {
+    source.cancel()
+  }, 5000)
   return axios({
     method: 'GET',
     url: `${appConfig.shepApi}${path}`,
     params: queryParams,
+    timeout: 4000,
+    cancelToken: source.token
   }).then((response) => {
     if (/\/bibs/.test(path)) {
       return convertShepBibsToDiscoveryBibs(response);
     }
-
+    clearTimeout(timeout)
     return response;
-  });
+  }).catch((e) => {
+    if (axios.isCancel(e)) {
+      console.log('connection timeout')
+    }
+  })
 };
 
 /**
