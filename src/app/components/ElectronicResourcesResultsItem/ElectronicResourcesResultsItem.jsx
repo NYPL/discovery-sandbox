@@ -22,24 +22,27 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
       >
         Available Online
       </Heading>
-          <Link
-            onClick={onClick}
-            to={
-              resources.length === 1 ?
-                resources[0].url  :
+        {
+          resources.length === 1 ?
+            <a
+              href={resources[0].url}
+              onClick={onClick}
+              className="search-results-list-link"
+            >
+              {resources[0].label || resources[0].url}
+            </a> :
+            <Link
+              onClick={onClick}
+              to={
                 `${bibUrl}#electronic-resources`
-
-            }
-            className="search-results-list-link"
-          >
-            {
-              resources.length === 1 ?
-                (resources[0].label || resources[0].url) :
-                (
-                  <>See All Available Online Resources <RightWedgeIcon /></>
-                )
-            }
-          </Link>
+              }
+              className="search-results-list-link"
+            >
+              {
+                <>See All Available Online Resources <RightWedgeIcon /></>
+              }
+            </Link>
+        }
     </section>
   )
 }
