@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
   isArray as _isArray,
 } from 'underscore';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, CardHeading, SimpleGrid, CardContent, CardActions, Link } from '@nypl/design-system-react-components'
+import { Card, SimpleGrid } from '@nypl/design-system-react-components'
 
 import LibraryItem from '../../utils/item';
 import {
@@ -92,16 +93,22 @@ const ResultsList = ({
 
     return (
       <Card key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <CardHeading level="three" url={bibUrl} onClick={() => {
-          updateResultSelection({
-            fromUrl: `${pathname}${search}`,
-            bibId,
-          });
-          trackDiscovery('Bib', bibTitle);
-        }}>
-          {bibTitle}
-        </CardHeading>
-        <CardContent >
+        <h3>
+          <Link
+            onClick={() => {
+              updateResultSelection({
+                fromUrl: `${pathname}${search}`,
+                bibId,
+              });
+              trackDiscovery('Bib', bibTitle);
+            }}
+            to={bibUrl}
+            className="title"
+          >
+            {bibTitle}
+          </Link>
+        </h3>
+        <div className="nypl-results-item-description">
           <ul>
             <li className="nypl-results-media">{materialType}</li>
             <li className="nypl-results-publication">{publicationStatement}</li>
@@ -114,7 +121,8 @@ const ResultsList = ({
                 : ''
             }
           </ul>
-          {
+        </div>
+        {
           hasRequestTable &&
           <ItemTable
             items={items.slice(0, itemTableLimit)}
@@ -124,12 +132,8 @@ const ResultsList = ({
             page="SearchResults"
           />
         }
-          {totalItems >= 3 && <CardActions>
-            <Link href={`${bibUrl}#items-in-library-and-offsite`}>{`View all ${totalItems} items`}</Link>
-          </CardActions>}
-        </CardContent>
       </Card>
-    )
+    );
   };
 
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
