@@ -1,4 +1,4 @@
-import axios, { AbortController } from 'axios';
+import axios from 'axios';
 
 import nyplApiClient from '../routes/nyplApiClient';
 import logger from '../../../logger';
@@ -20,7 +20,6 @@ const shepApiCall = (bibId) => {
   const timeout = setTimeout(() => {
     source.cancel()
   }, 5000)
-
   return axios({
     method: 'get',
     url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
