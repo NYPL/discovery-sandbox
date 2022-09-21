@@ -85,11 +85,12 @@
   font-size: 14px;
   font-weight: 600;
   align-items: center;
+  display: flex;
 
   svg {
     height: 1.8rem;
     width: 1.8rem;
     margin-top: 0;
-    fill: #1b7fa7;
+    fill: var(--nypl-colors-ui-link-primary);
   }
 }
