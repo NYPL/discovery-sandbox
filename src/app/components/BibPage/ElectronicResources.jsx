@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeading, Button, Icon } from '@nypl/design-system-react-components'
+import { Card, CardContent, CardHeading, Button, Icon, Text } from '@nypl/design-system-react-components'
 import generateERLinksList from '../../utils/electronicResources'
 import React, { useRef, useState } from 'react';
 
@@ -41,8 +41,8 @@ const ElectronicResources = ({ electronicResources, isTestMode = false, id }) =>
         {resources}
         {electronicResources.length > defaultNumResources ?
           <Button textDecoration='none' border='none' id='see-more-button' onClick={onClick} buttonType='link'>
-            See {showMore ? more : less} Available Online resources
-            <Icon style={{ marginLeft: '5px' }} iconRotation={`rotate${showMore ? 0 : 180}`} name="arrow" size="small" />
+            <Text isBold>View {showMore ? more : less} Available Online resources
+              <Icon style={{ marginLeft: '11px' }} iconRotation={`rotate${showMore ? 0 : 180}`} name="arrow" size="small" /></Text>
           </Button> : null}
       </CardContent>
   </Card>
