@@ -1,4 +1,4 @@
-import { Heading } from '@nypl/design-system-react-components';
+import { Heading, Text } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -165,7 +165,9 @@ const ResultsList = ({
                   className="search-results-list-link"
                   id="physical-items-link"
                 >
-                  {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
+                  <Text isBold size="caption">
+                    {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
+                  </Text>
                 </Link>
               ) :
               null

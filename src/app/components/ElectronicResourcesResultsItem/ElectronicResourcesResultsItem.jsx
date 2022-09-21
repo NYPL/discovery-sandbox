@@ -1,9 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router'
+import { Link as DSLink } from '@nypl/design-system-react-components'
 import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
-import { Heading } from '@nypl/design-system-react-components';
+import { Heading, Text } from '@nypl/design-system-react-components';
 
 
 /**
@@ -17,20 +18,24 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
     <section className="electronic-resources-search-section">
       <Heading
         level="three"
+        size="secondary"
         className="electronic-resources-search-header"
         id="available-online-heading"
+        fontWeight="bold"
       >
         Available Online
       </Heading>
         {
           resources.length === 1 ?
-            <a
+            <DSLink
               href={resources[0].url}
               onClick={onClick}
-              className="search-results-list-link"
+              target='_blank'
+              rel='noreferrer'
+              className="search-results-single-resource-link"
             >
               {resources[0].label || resources[0].url}
-            </a> :
+            </DSLink> :
             <Link
               onClick={onClick}
               to={
@@ -39,7 +44,7 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
               className="search-results-list-link"
             >
               {
-                <>See All Available Online Resources <RightWedgeIcon /></>
+                <Text isBold size="caption">See All Available Online Resources <RightWedgeIcon /></Text>
               }
             </Link>
         }
