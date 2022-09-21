@@ -1,3 +1,4 @@
+import {Heading } from "@nypl/design-system-react-components"
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -66,14 +67,15 @@ export class ResultsCount extends React.Component {
       <div
         className={`nypl-results-summary${count === 0 ? ' no-scc-results' : ''}${includeDrbb ? ' drbb-integration' : ''}`}
       >
-        <h2
+        <Heading
           id="results-description"
           aria-live="polite"
           aria-atomic="true"
           role="alert"
+          level="two"
         >
           {results}
-        </h2>
+        </Heading>
       </div>
     );
   }

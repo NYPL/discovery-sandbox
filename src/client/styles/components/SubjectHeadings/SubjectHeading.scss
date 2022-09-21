@@ -15,6 +15,7 @@
   text-align: center;
 
   @include removeDefaultButtonStyle;
+  padding: 5px 0;
 
   &:focus {
     outline-offset: -6px;
