@@ -36,11 +36,11 @@ describe('ElectronicResources', () => {
   describe('show more/less button', () => {
     it('should render with more than 3 electronic resources', () => {
       const component = mount(<ElectronicResources electronicResources={fourResource} />)
-      expect(component.html()).to.include('See all')
+      expect(component.html()).to.include('View all')
     })
     it('should not render with less than 3 resources', () => {
       const component = mount(<ElectronicResources electronicResources={oneResource} />)
-      expect(component.html()).to.not.include('See all')
+      expect(component.html()).to.not.include('View all')
     })
     it('should show all resources', () => {
       //isTestMode prop is here to circumvent invocation of scrollIntoView during testing
