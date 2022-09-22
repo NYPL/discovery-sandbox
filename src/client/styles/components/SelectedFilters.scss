@@ -40,6 +40,10 @@
     background: #fff;
     border: 1px solid #000;
     color: #000;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
 
     svg {
       fill: #000;
@@ -70,7 +74,6 @@
     width: 25px;
     margin: 0 0 0 0px;
     padding: 0;
-    float: right;
     @include transition-list(all 0.1s ease-in 0s);
   }
 

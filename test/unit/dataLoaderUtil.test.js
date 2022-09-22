@@ -269,9 +269,9 @@ describe('dataLoaderUtil', () => {
     const realAccountAction = routes.account.action;
     before(() => {
       mock = new MockAdapter(axios);
-      mock.onGet(`${process.env.BASE_URL}/api/account`).reply(200, '<div>html for account page default view</div>');
-      mock.onGet(`${process.env.BASE_URL}/api/account/items`).reply(200, '<div>html for account page items view</div>');
-      mock.onGet(`${process.env.BASE_URL}/api/account/settings`).reply(200, '');
+      mock.onGet(`${appConfig.baseUrl}/api/account`).reply(200, '<div>html for account page default view</div>');
+      mock.onGet(`${appConfig.baseUrl}/api/account/items`).reply(200, '<div>html for account page items view</div>');
+      mock.onGet(`${appConfig.baseUrl}/api/account/settings`).reply(200, '');
       routes.account.action = mockAccountPageAction;
     });
 
@@ -381,7 +381,7 @@ describe('dataLoaderUtil', () => {
     describe('unsuccessful request', () => {
       before(() => {
         axiosSpy = sandbox.spy(axios, 'get');
-        mock.onGet(`${process.env.BASE_URL}/api/account`).reply(400, {});
+        mock.onGet(`${appConfig.baseUrl}/api/account`).reply(400, {});
         consoleStub = sandbox.stub(console, 'error');
         const mockLocation = {
           pathname: `${appConfig.baseUrl}/account/random`,

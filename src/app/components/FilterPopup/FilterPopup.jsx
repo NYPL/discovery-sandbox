@@ -388,7 +388,7 @@ export class FilterPopup extends React.Component {
       js ? (<button
         type="button"
         name="Clear-Filters"
-        className="nypl-basic-button clear-filters-button"
+        className="clear-filters-button"
         aria-controls="results-description"
         onClick={e => this.clearFilters(e, position)}
         ref={ref}
@@ -405,7 +405,7 @@ export class FilterPopup extends React.Component {
           type="button"
           role="button"
           name="Clear-Filters"
-          className="nypl-basic-button clear-filters-button"
+          className="clear-filters-button"
           aria-controls="results-description"
           onClick={e => this.clearFilters(e, position)}
           ref={ref}
@@ -515,7 +515,7 @@ export class FilterPopup extends React.Component {
                     </div>
                   </div>
 
-                  <fieldset className="nypl-fieldset">
+                  <fieldset>
                     <div className="nypl-column-full">
                       <FieldsetList
                         legend="Format"

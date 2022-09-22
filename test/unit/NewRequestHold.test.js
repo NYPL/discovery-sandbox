@@ -5,6 +5,7 @@ import LibraryItem from '../../src/app/utils/item';
 import Bib from '../../src/server/ApiRoutes/Bib';
 import bibs from '../fixtures/bibs';
 import app from '../../server';
+import appConfig from '@appConfig';
 
 describe('Hold Request', () => {
   const sandbox = sinon.createSandbox();
@@ -32,7 +33,7 @@ describe('Hold Request', () => {
       const itemId = 'i34755671';
 
       request(app)
-        .get(`${process.env.BASE_URL}/hold/request/${bibId}-${itemId}`)
+        .get(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`)
         .expect(302)
         .then((res) => {
           expect(res.redirect, 'Not a redirect').to.be.true;
@@ -52,7 +53,7 @@ describe('Hold Request', () => {
       const itemId = 'i13183119';
 
       request(app)
-        .get(`${process.env.BASE_URL}/hold/request/${bibId}-${itemId}`)
+        .get(`${appConfig.baseUrl}/hold/request/${bibId}-${itemId}`)
         .expect(302)
         .then((res) => {
           expect(res.redirect, 'Not a redirect').to.be.true;

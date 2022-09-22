@@ -29,7 +29,7 @@
           "@undefinedundefinedundefinedundefined.": "./.travis.yml",
           "@CHANGELOG": "./CHANGELOG.md",
           "@DEPLOYMENT": "./DEPLOYMENT.md",
-          "@EBSVARS": "./EBSVARS.md",
+          "@ENVIRONMENTVARS": "./ENVIRONMENTVARS.md",
           "@Procfile": "./Procfile",
           "@README": "./README.md",
           "@easyImports": "./easyImports.js",
