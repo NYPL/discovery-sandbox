@@ -1,5 +1,3 @@
-@import 'toolkit';
-
 .nypl-item-details {
   a {
     text-decoration: underline;
@@ -42,7 +40,8 @@ div .tabbed {
 
   ul[role="tablist"] > li > a,
   ul[role="tablist"] > li > span > a {
-    color: $nypl-gray-brown;
+    // color: $nypl-gray-brown;
+    color: #54514a;
     padding: 5px 8px;
     display: table-cell;
     font-weight: 300;

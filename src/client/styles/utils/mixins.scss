@@ -197,6 +197,11 @@
   border: 1px solid #d0343a;
   color: #d0343a;
   background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px 10px;
+  border-radius: 0.25rem;
 
   svg {
     fill: #d0343a;

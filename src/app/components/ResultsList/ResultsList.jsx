@@ -1,3 +1,4 @@
+import { Heading, Text } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -10,11 +11,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import LibraryItem from '../../utils/item';
 import {
   trackDiscovery,
+  getElectronicResources,
 } from '../../utils/utils';
 import ItemTable from '../Item/ItemTable';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 import ItemSorter from '../../utils/itemSorter';
+import ElectronicResourcesResultsItem from '../ElectronicResourcesResultsItem/ElectronicResourcesResultsItem';
+import {
+  RightWedgeIcon,
+} from '@nypl/dgx-svg-icons';
 
 
 export const getBibTitle = (bib) => {
@@ -48,6 +54,7 @@ const ResultsList = ({
   subjectHeadingShow,
   searchKeywords,
 }, { router }) => {
+
   const { features, loading } = useSelector(state => ({
     features: state.features,
     loading: state.loading,
@@ -89,24 +96,37 @@ const ResultsList = ({
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
+    const { totalPhysicalItems, eResources } = getElectronicResources(result);
+    const resourcesOnClick = () => {
+      updateResultSelection({
+        fromUrl: `${pathname}${search}`,
+        bibId,
+      })
+    }
 
+    const hasPhysicalItems = totalPhysicalItems > 0;
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length;
+    const resourceType = hasPhysicalItems ? 'item' : 'resource';
+    const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <h3>
+        <Heading level="three">
           <Link
-            onClick={() => {
+            onClick={
+              () => {
               updateResultSelection({
                 fromUrl: `${pathname}${search}`,
                 bibId,
               });
               trackDiscovery('Bib', bibTitle);
-            }}
+            }
+          }
             to={bibUrl}
             className="title"
           >
             {bibTitle}
           </Link>
-        </h3>
+        </Heading>
         <div className="nypl-results-item-description">
           <ul>
             <li className="nypl-results-media">{materialType}</li>
@@ -115,21 +135,44 @@ const ResultsList = ({
             {
               totalItems > 0 ?
                 <li className="nypl-results-info">
-                  {totalItems} item{totalItems !== 1 ? 's' : ''}
+                  {itemMessage}
                 </li>
                 : ''
             }
           </ul>
         </div>
+        <ElectronicResourcesResultsItem
+          resources={eResources}
+          onClick={resourcesOnClick}
+          bibUrl={bibUrl}
+        />
         {
           hasRequestTable &&
-          <ItemTable
-            items={items.slice(0, itemTableLimit)}
-            bibId={bibId}
-            id={null}
-            searchKeywords={searchKeywords}
-            page="SearchResults"
-          />
+          <>
+            <ItemTable
+              items={items.slice(0, itemTableLimit)}
+              bibId={bibId}
+              id={null}
+              searchKeywords={searchKeywords}
+              page="SearchResults"
+            />
+            {
+              totalPhysicalItems > 3 ?
+              (
+                <Link
+                  onClick={resourcesOnClick}
+                  to={`${bibUrl}#items-table`}
+                  className="search-results-list-link"
+                  id="physical-items-link"
+                >
+                  <Text isBold size="caption">
+                    {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
+                  </Text>
+                </Link>
+              ) :
+              null
+            }
+          </>
         }
       </li>
     );

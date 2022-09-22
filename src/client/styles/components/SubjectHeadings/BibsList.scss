@@ -3,6 +3,11 @@
 
   &.nypl-column-half {
     padding-left: 0;
+    float: left;
+    margin-bottom: 1rem;
+    padding-right: 10px;
+    min-height: 1rem;
+    width: 50%;
   }
 
   &.subjectHeadingShowLoadingWrapper {

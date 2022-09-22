@@ -1,11 +1,11 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import sinon from 'sinon';
 
-import WrappedResultsCount, { ResultsCount } from '../../src/app/components/ResultsCount/ResultsCount';
+import { ResultsCount } from '../../src/app/components/ResultsCount/ResultsCount';
 
 const filters = {
   subjectLiteral: {
@@ -33,7 +33,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = shallow(<ResultsCount />);
+        component = mount(<ResultsCount />);
       });
 
       it('should be wrapped in an .nypl-results-summary class', () => {
@@ -51,7 +51,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = shallow(<ResultsCount searchKeywords="locofocos" count={0} />);
+        component = mount(<ResultsCount searchKeywords="locofocos" count={0} />);
       });
 
       it('should output that no results were found', () => {
@@ -65,7 +65,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = shallow(<ResultsCount searchKeywords="harry potter" count={0} />);
+        component = mount(<ResultsCount searchKeywords="harry potter" count={0} />);
       });
 
       it('should output that no results were found', () => {
@@ -79,7 +79,7 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = shallow(
+        component = mount(
           <ResultsCount
             searchKeywords="harry potter"
             count={0}
@@ -104,7 +104,7 @@ describe('ResultsCount', () => {
     let component;
 
     before(() => {
-      component = shallow(<ResultsCount searchKeywords="locofocos" />);
+      component = mount(<ResultsCount searchKeywords="locofocos" />);
     });
 
     // the Store is handling loading now. TODO: How to test Store/Component interaction here?
@@ -120,7 +120,7 @@ describe('ResultsCount', () => {
         let component;
 
         before(() => {
-          component = shallow(
+          component = mount(
             <ResultsCount
               searchKeywords="hamlet"
               count={2345}
@@ -139,7 +139,7 @@ describe('ResultsCount', () => {
         let component;
 
         before(() => {
-          component = shallow(
+          component = mount(
             <ResultsCount
               searchKeywords="harry potter"
               count={2345}
@@ -158,7 +158,7 @@ describe('ResultsCount', () => {
         let component;
 
         before(() => {
-          component = shallow(
+          component = mount(
             <ResultsCount
               searchKeywords="hamlet"
               field="title"
@@ -178,7 +178,7 @@ describe('ResultsCount', () => {
         let component;
 
         before(() => {
-          component = shallow(
+          component = mount(
             <ResultsCount
               searchKeywords="shakespeare"
               field="contributor"
@@ -243,7 +243,7 @@ describe('ResultsCount', () => {
     let component;
 
     it('should display all the advanced search params', () => {
-      component = shallow(
+      component = mount(
         <ResultsCount
           count={100}
           subject="ravens"
@@ -262,19 +262,19 @@ describe('ResultsCount', () => {
     let component;
 
     it('should output that 40 results were found', () => {
-      component = shallow(<ResultsCount count={40} />);
+      component = mount(<ResultsCount count={40} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 1-40 of 40 results ');
     });
 
     it('should output that 4,000 results were found from input 4000', () => {
-      component = shallow(<ResultsCount count={4000} />);
+      component = mount(<ResultsCount count={4000} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 1-50 of 4,000 results ');
     });
 
     it('should output that 4,000,000 results were found from input 4000000', () => {
-      component = shallow(<ResultsCount count={4000000} />);
+      component = mount(<ResultsCount count={4000000} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 1-50 of 4,000,000 results ');
     });
@@ -284,19 +284,19 @@ describe('ResultsCount', () => {
     let component;
 
     it('should output the first 50 results', () => {
-      component = shallow(<ResultsCount count={500} />);
+      component = mount(<ResultsCount count={500} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 1-50 of 500 results ');
     });
 
     it('should output 101-150 on the third page', () => {
-      component = shallow(<ResultsCount count={500} page={3} />);
+      component = mount(<ResultsCount count={500} page={3} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 101-150 of 500 results ');
     });
 
     it('should output 451-489 on the last page', () => {
-      component = shallow(<ResultsCount count={489} page={10} />);
+      component = mount(<ResultsCount count={489} page={10} />);
       expect(component.find('h2').text())
         .to.equal('Displaying 451-489 of 489 results ');
     });
@@ -306,7 +306,7 @@ describe('ResultsCount', () => {
     // ResultsCount is rerendering 1 extra time when running locally.
     // The spy is counting more. Disabling this test for now.
     xit('Should only rerender when loading is done', (done) => {
-      const component = shallow(<ResultsCount count={0} searchKeywords="locofocos" />);
+      const component = mount(<ResultsCount count={0} searchKeywords="locofocos" />);
       const spy = sinon.spy(ResultsCount.prototype, 'render');
       component.setProps({ field: null });
       component.setProps({ searchKeywords: 'locofoci' });

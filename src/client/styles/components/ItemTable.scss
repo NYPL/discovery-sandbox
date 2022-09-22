@@ -43,31 +43,37 @@ dl dd.multi-item-list .nypl-basic-table a,
     letter-spacing: unset;
 
     &:link {
-      color: $link-color;
+      // color: $link-color;
+      color: #1b7fa7;
     }
 
     &:visited {
-      color: $link-visited-color;
+      // color: $link-visited-color;
+      color: darken(#1b7fa7, 15%);
     }
 
     &:hover,
     &:visited:hover {
-      color: $link-hover-color;
+      // color: $link-hover-color;
+      color: darken(#1b7fa7, 5%);;
       text-decoration: none;
     }
 
     &.inverted {
       &:link {
-        color: $inverted-link-color;
+        // color: $inverted-link-color;
+        color: white;
       }
 
       &:visited {
-        color: $inverted-link-visited-color;
+        // color: $inverted-link-visited-color;
+        color: darken(white, 10%);;
       }
 
       &:hover,
       &:visited:hover {
-        color: $inverted-link-color;
+        // color: $inverted-link-color;
+        color: white;
       }
     }
   }
