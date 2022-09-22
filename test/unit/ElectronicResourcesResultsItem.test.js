@@ -35,7 +35,7 @@ describe('ElectronicResourcesResultsItem', () => {
     it('should have a link', () => {
       const link = component.find('a')
       expect(link.length).to.equal(1)
-      expect(link.at(0).prop('className')).to.equal('search-results-list-link')
+      expect(link.at(0).prop('className')).to.include('search-results-single-resource-link')
       link.at(0).simulate('click')
       expect(onClickRecord).to.equal('clicked')
     })
@@ -50,7 +50,7 @@ describe('ElectronicResourcesResultsItem', () => {
       expect(link.length).to.equal(1)
       expect(link.at(0).prop('href')).to.equal('fakeurl')
       expect(link.at(0).text()).to.equal('fakelabel')
-      expect(link.at(0).prop('className')).to.equal('search-results-list-link')
+      expect(link.at(0).prop('className')).to.include('search-results-single-resource-link')
     })
 
     it('should use url as default text', () => {

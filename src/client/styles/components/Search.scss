@@ -70,22 +70,32 @@
 // Used for electronic resources links
 
 .nypl-results-list > .nypl-results-item > .electronic-resources-search-section > h3.electronic-resources-search-header {
-  font-size: 0.85rem;
-  padding-bottom: 0.5em;
+  font-size: var(--nypl-fontSizes-text-default);
+  font-family: var(--nypl-fonts-body);
   width: 25%;
   font-weight: bold;
+  margin-bottom: var(--nypl-space-xs)
 }
 
-.electronic-resources-search-section {
-  padding: 0.125rem 0.25rem;
+.nypl-results-list {
+  .nypl-results-item  {
+
+    .search-results-single-resource-link{
+      text-decoration: underline;
+    }
+  }
 }
 
 .search-results-list-link {
-  text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   align-items: center;
   display: flex;
+
+  p {
+    align-items: center;
+    display: flex;
+  }
 
   svg {
     height: 1.8rem;
