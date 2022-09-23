@@ -93,7 +93,7 @@ describe('`fetchAccountPage`', () => {
     it('should redirect', () => {
       Account.fetchAccountPage(renderMockReq('blahblah', validMockPatronTokenResponse, patron), mockRes, mockResolve);
 
-      expect(redirectedTo).to.equal(`${process.env.BASE_URL}/account`);
+      expect(redirectedTo).to.equal(`${appConfig.baseUrl}/account`);
     });
 
     it('should not make axios request', () => {

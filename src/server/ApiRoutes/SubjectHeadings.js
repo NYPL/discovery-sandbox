@@ -42,7 +42,7 @@ const convertShepBibsToDiscoveryBibs = response =>
 /**
  *  This method handles all calls on the SHEP API
  *
- *  @param {string} path The path relative to `process.env.SHEP_API`
+ *  @param {string} path The path relative to `appConfig.SHEP_API`
  *  @param {object} queryParams An object containing query parameters
  *
  *  @return {Promise<Object>} A promise that resolves the response (or rejects

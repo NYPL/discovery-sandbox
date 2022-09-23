@@ -10,6 +10,7 @@
   h2 {
     padding-right: var(--nypl-space-s);
     padding-top: var(--nypl-space-l);
+    max-width: 35rem;
   }
 
   #legacy-catalog-link {
@@ -44,7 +45,7 @@
       margin: 0 0 1rem 0;
       width: 20%;
       float: left;
-      clear: left;
+      clear: both;
 
       @media (max-width: 600px) {
         float: none;

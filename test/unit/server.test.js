@@ -2,6 +2,7 @@ const request = require('supertest');
 const sinon = require('sinon');
 import { expect } from 'chai';
 import DocumentTitle from 'react-document-title';
+import appConfig from '@appConfig';
 
 let app = require('./../../server');
 
@@ -19,7 +20,7 @@ describe('server', () => {
     // `DocumentTitle.rewind()` throws an error.
     // The important thing is that our template uses the value that
     // `DocumentTitle.rewind()` returns, so let's stub it:
-    sandbox.stub(DocumentTitle, 'rewind').callsFake(() => process.env.DISPLAY_TITLE);
+    sandbox.stub(DocumentTitle, 'rewind').callsFake(() => appConfig.displayTitle);
   });
 
   after(() => {
@@ -31,7 +32,7 @@ describe('server', () => {
       request(app)
       .get('/')
       .expect('Content-Type', /text/)
-      .expect('Location', `${process.env.BASE_URL}/`)
+      .expect('Location', `${appConfig.baseUrl}/`)
       .expect(302)
       .then((response) => {
         done();
@@ -42,14 +43,14 @@ describe('server', () => {
     
     it('serves meta tags with DISPLAY_TITLE', (done) => {
       request(app)
-      .get(`${process.env.BASE_URL}/`)
+      .get(`${appConfig.baseUrl}/`)
       .expect(200)
       .then((response) => {
-        expect(response.text).to.include(`<title>${process.env.DISPLAY_TITLE}</title>`)
-        expect(response.text).to.include(`<meta property="og:title" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta property="og:site_name" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta name="twitter:title" content="${process.env.DISPLAY_TITLE}">`)
-        expect(response.text).to.include(`<meta property="og:url" content="https://www.nypl.org${process.env.BASE_URL}">`)
+        expect(response.text).to.include(`<title>${appConfig.displayTitle}</title>`)
+        expect(response.text).to.include(`<meta property="og:title" content="${appConfig.displayTitle}">`)
+        expect(response.text).to.include(`<meta property="og:site_name" content="${appConfig.displayTitle}">`)
+        expect(response.text).to.include(`<meta name="twitter:title" content="${appConfig.displayTitle}">`)
+        expect(response.text).to.include(`<meta property="og:url" content="https://www.nypl.org${appConfig.baseUrl}">`)
         done();
       })
       .catch(err => done(err));
