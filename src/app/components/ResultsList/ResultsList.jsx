@@ -182,14 +182,14 @@ const ResultsList = ({
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
 
   return (
-    <li
+    <ul
       id="nypl-results-list"
       className={
         `nypl-results-list${loading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
       }
     >
       {resultsElm}
-    </li>
+    </ul>
   );
 };
 
