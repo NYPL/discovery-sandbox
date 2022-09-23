@@ -1,4 +1,4 @@
-import { Heading, Text, Card, CardHeading, CardAction, SimpleGrid, CardContent } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardAction, CardContent } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -156,7 +156,7 @@ const ResultsList = ({
                 />
                 {
                   totalPhysicalItems > 3 ?
-                    (
+                    (<CardAction>
                       <Link
                         onClick={resourcesOnClick}
                         to={`${bibUrl}#items-table`}
@@ -164,9 +164,10 @@ const ResultsList = ({
                         id="physical-items-link"
                       >
                         <Text isBold size="caption">
-                          {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
+                          {`View all ${totalPhysicalItems} in Items`} <RightWedgeIcon />
                         </Text>
                       </Link>
+                    </CardAction>
                     ) :
                     null
                 }
@@ -181,14 +182,14 @@ const ResultsList = ({
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
 
   return (
-    <ul
+    <li
       id="nypl-results-list"
       className={
         `nypl-results-list${loading ? ' hide-results-list' : ''}${includeDrbb && !subjectHeadingShow ? ' drbb-integration' : ''}`
       }
     >
       {resultsElm}
-    </ul>
+    </li>
   );
 };
 
