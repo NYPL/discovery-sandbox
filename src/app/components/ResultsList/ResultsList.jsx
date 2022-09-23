@@ -1,4 +1,4 @@
-import { Text, Card, CardHeading, CardAction, CardContent } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardActions, CardContent } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -156,7 +156,7 @@ const ResultsList = ({
                 />
                 {
                   totalPhysicalItems > 3 ?
-                    (<CardAction>
+                    (<CardActions>
                       <Link
                         onClick={resourcesOnClick}
                         to={`${bibUrl}#items-table`}
@@ -167,7 +167,7 @@ const ResultsList = ({
                           {`View all ${totalPhysicalItems} in Items`} <RightWedgeIcon />
                         </Text>
                       </Link>
-                    </CardAction>
+                    </CardActions>
                     ) :
                     null
                 }
