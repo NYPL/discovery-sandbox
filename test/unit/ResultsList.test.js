@@ -484,7 +484,7 @@ describe('ResultsList', () => {
     it('should display link to item table in case > 3 items', () => {
       const link = component.find("#physical-items-link")
       expect(link.at(0).prop('to')).to.equal('/research/research-catalog/bib/b22030125#items-table')
-      expect(link.at(0).text()).to.include('See all 5 in Library & Offsite Items')
+      expect(link.at(0).text()).to.include('View all 5 Items')
       expect(link.at(0).prop('className')).to.equal('search-results-list-link')
     })
 
