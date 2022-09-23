@@ -109,8 +109,8 @@ const ResultsList = ({
     const resourceType = hasPhysicalItems ? 'item' : 'resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
-      <li>
-        <Card key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
+      <li key={i}>c
+        <Card className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
           <CardHeading level="three">
             <Link onClick={
               () => {
