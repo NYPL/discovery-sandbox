@@ -164,7 +164,7 @@ const ResultsList = ({
                         id="physical-items-link"
                       >
                         <Text isBold size="caption">
-                          {`View all ${totalPhysicalItems} Items`} <RightWedgeIcon />
+                          {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
                         </Text>
                       </Link>
                     </CardActions>
