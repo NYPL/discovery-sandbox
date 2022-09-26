@@ -1,14 +1,25 @@
 /*
-Import style rules from NYPL Design Toolkit
-*/
-@import "nypl-normalize";
-@import "toolkit";
-
-/*
 Import style rules from NYPL Design System
 */
 @import '~@nypl/design-system-react-components/dist/styles.css';
 @import '~@nypl/design-system-react-components/dist/resources.scss';
+
+$intermediate-breakpoint: 1120px;
+$mobile-breakpoint: 965px;
+$xtrasmall-breakpoint: 483px;
+$basefontraw: 16;
+$basefont: $basefontraw * 1px;
+$small-type: ($basefont * 0.9);
+$max-width-raw: 1315;
+$max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
+@mixin media(
+  $max-width,
+  $min-width: false,
+  $ignore-for-ie: false) {
+  @media (max-width: $max-width) {
+    @content;
+  }
+}
 
 /*
 App-specific utilities and defaults
@@ -31,7 +42,6 @@ Import style rules from NYPL React module components
 @import "style-v2.scss";
 
 html {
-  @include font-settings;
   background: #fff;
   color: #000;
 }
@@ -125,14 +135,35 @@ input[type=submit]:focus {
 }
 
 .nypl-results-pagination {
+  margin-top: 1.5rem;
+  margin-bottom: 3rem;
+
   a {
     padding: 0.5rem;
+    border: 0.08333rem solid #d7d4d0;
+    border-radius: 0.2rem;
+    font-weight: 500;
+    width: 15%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:last-child {
+      flex-direction: row-reverse;
+    }
 
     svg {
       height: 1.8rem;
       width: 1.8rem;
       margin-top: 0;
+      fill: var(--nypl-colors-ui-link-primary);
     }
+  }
+
+  &::after,
+  &::before {
+    content: "";
+    display: table;
   }
 }
 
@@ -142,6 +173,10 @@ select {
 
 .nypl-basic-table {
   margin-top: 20px;
+
+  thead {
+    text-align: left;
+  }
 
   th, td {
     overflow: inherit;
@@ -155,9 +190,13 @@ select {
   td span {
     color: #000;
   }
+
+  td {
+    padding-top: 0.25em;
+    padding-bottom: .5em;
+  }
 }
 
-// For now until it's in the Design Toolkit
 .nypl-results-publication {
   display: inline-block;
   margin-right: 1rem;

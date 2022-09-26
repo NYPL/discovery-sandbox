@@ -1,5 +1,15 @@
 ## CHANGE LOG
 
+### 1.8.1
+
+### Adds
+
+- Adds styling necessary to fix broken UIs after the `@nypl/design-toolkit` package was removed.
+
+### Removals
+
+- Removes the `@nypl/design-toolkit` package.
+
 ### 1.8.0
 
 #### Updates

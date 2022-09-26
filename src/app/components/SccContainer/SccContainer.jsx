@@ -27,7 +27,7 @@ const SccContainer = (props) => {
 
   return (
     <DocumentTitle title={documentTitle}>
-      <div className="nypl--research layout-container">
+      <div className="nypl--research">
         {useLoadingLayer ? <LoadingLayer loading={loading} /> : null}
         <main className="main main-page">
           <div className="content-header catalog__header">

@@ -7,6 +7,13 @@
     min-width: 100%;
     width: fit-content;
   }
+
+  &.nypl-column-half {
+    float: left;
+    margin-bottom: 1rem;
+    min-height: 1rem;
+    width: 50%;
+  }
 }
 
 .subjectHeadingInfoBox {
@@ -26,6 +33,7 @@
     min-height: 32px;
     text-decoration: none;
     font-weight: 500;
+    margin-left: 5px;
   }
 
   .toIndex:hover {

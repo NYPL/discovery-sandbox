@@ -14,6 +14,10 @@ import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/componen
 import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
 import { mockRouterContext } from '../helpers/routing';
+import electronicAndPhysicalItemsBib from '../fixtures/electronicAndPhysicalItemsBib';
+import electronicItemsBib from '../fixtures/electronicItemsBib';
+import ElectronicResourcesResultsItem from '../../src/app/components/ElectronicResourcesResultsItem/ElectronicResourcesResultsItem';
+import bibs from '../fixtures/bibs';
 
 const results = [{}, {}, {}];
 const singleBibNoTitleDisplay = {
@@ -196,7 +200,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
+      expect(yearPublished.text()).to.equal('4 items');
     });
 
     it('should have a table', () => {
@@ -225,7 +229,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal(`${bib.result.numItems} items`);
+      expect(yearPublished.text()).to.equal('1 item');
     });
 
     it('should have one table', () => {
@@ -414,5 +418,107 @@ describe('ResultsList', () => {
     after(() => {
       appConfigMock.restore();
     });
+  });
+
+  describe('physical and electronic items', () => {
+    let component;
+    let appConfigMock;
+
+    before(() => {
+      appConfigMock = sinonMock(appConfig);
+      const mockDrbFeatureStore = makeTestStore({
+        loading: false,
+        features: ['drb-integration', 'aeon-links'],
+      });
+      component = mountTestRender(
+        <ResultsList results={[electronicAndPhysicalItemsBib]} />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
+    });
+
+    after(() => {
+      appConfigMock.restore();
+    });
+
+    it('should display electronic resources', () => {
+      const electronicResources = component.find(ElectronicResourcesResultsItem)
+      expect(electronicResources.length).to.equal(1);
+      expect(electronicResources.at(0).prop('resources').length).to.equal(1);
+      expect(electronicResources.at(0).prop('resources')[0].label).to.equal('Full text available via HathiTrust')
+      expect(electronicResources.at(0).prop('bibUrl')).to.equal('/research/research-catalog/bib/b15523285')
+    })
+
+
+    it('should only count physical items in description', () => {
+      const info = component.find('.nypl-results-info')
+      expect(info.length).to.equal(1);
+      expect(info.at(0).text()).to.equal('2 items')
+    })
+
+    it('should not display item table link for < 4 items', () => {
+      const physicalItemsLink = component.find("#physical-items-link")
+      expect(physicalItemsLink.length).to.equal(0)
+    })
+  });
+
+  describe('results with multiple items', () => {
+    let component;
+    let appConfigMock;
+
+    before(() => {
+      appConfigMock = sinonMock(appConfig);
+      const mockDrbFeatureStore = makeTestStore({
+        loading: false,
+        features: ['drb-integration', 'aeon-links'],
+      });
+      component = mountTestRender(
+        <ResultsList results={[bibs[2]]} />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
+    });
+
+    it('should display link to item table in case > 3 items', () => {
+      const link = component.find("#physical-items-link")
+      expect(link.at(0).prop('to')).to.equal('/research/research-catalog/bib/b22030125#items-table')
+      expect(link.at(0).text()).to.include('View All 5 Items')
+      expect(link.at(0).prop('className')).to.equal('search-results-list-link')
+    })
+
+    after(() => {
+      appConfigMock.restore();
+    });
+  });
+
+  describe('electronic items only', () => {
+    let component;
+    let appConfigMock;
+
+    before(() => {
+      appConfigMock = sinonMock(appConfig);
+      const mockDrbFeatureStore = makeTestStore({
+        loading: false,
+        features: ['drb-integration', 'aeon-links'],
+      });
+      component = mountTestRender(
+        <ResultsList results={[electronicItemsBib]} />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
+    });
+
+    after(() => {
+      appConfigMock.restore();
+    });
+
+    it('should announce resources in case no physical items', () => {
+      const info = component.find('.nypl-results-info')
+      expect(info.length).to.equal(1);
+      expect(info.at(0).text()).to.equal('1 resource')
+    })
   });
 });

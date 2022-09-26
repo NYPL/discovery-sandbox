@@ -1,3 +1,4 @@
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -53,7 +54,7 @@ class FieldsetList extends React.Component {
 
     return (
       <fieldset className="nypl-fieldset inner">
-        {legend && <legend><h3>{legend}</h3></legend>}
+        {legend && <legend><Heading level="three">{legend}</Heading></legend>}
         <ul className="nypl-generic-checkbox nypl-generic-columns">
           {
             values.map((filter) => {

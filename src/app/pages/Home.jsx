@@ -35,7 +35,7 @@ const Home = (props, context) => (
       Explore the Library's Vast Research Collections & More
     </Heading>
     <div className="nypl-column-full">
-      <p className="nypl-lead">
+      <p>
         Discover millions of items from The New York Public Library's Stephen A. Schwarzman Building, Schomburg Center for Research in Black Culture, and The New York Public Library for the Performing Arts. Plus, access materials from library collections at Columbia University, Harvard University, and Princeton University. <Link href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</Link>
       </p>
       <p>
@@ -43,14 +43,12 @@ const Home = (props, context) => (
       </p>
     </div>
     <div>
-      <Heading
-        level="three"
-      >
+      <Heading level="three">
         Research at NYPL
       </Heading>
 
       <div className="nypl-row nypl-quarter-image">
-        <div className="nypl-column-one-quarter image-column-one-quarter">
+        <div className="nypl-column-one-quarter">
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/archives-portal.jpg?itok=-oYtHmeO" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
@@ -64,7 +62,7 @@ const Home = (props, context) => (
       </div>
 
       <div className="nypl-row nypl-quarter-image">
-        <div className="nypl-column-one-quarter image-column-one-quarter">
+        <div className="nypl-column-one-quarter">
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/sasb.jpg?itok=sdQBITR7" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
@@ -76,7 +74,7 @@ const Home = (props, context) => (
       </div>
 
       <div className="nypl-row nypl-quarter-image">
-        <div className="nypl-column-one-quarter image-column-one-quarter">
+        <div className="nypl-column-one-quarter">
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/divisions.jpg?itok=O4uSedcp" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
@@ -88,7 +86,7 @@ const Home = (props, context) => (
       </div>
 
       <div className="nypl-row nypl-quarter-image">
-        <div className="nypl-column-one-quarter image-column-one-quarter">
+        <div className="nypl-column-one-quarter">
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/plan-you-visit.jpg?itok=scG6cFgy" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
@@ -103,7 +101,7 @@ const Home = (props, context) => (
       </div>
 
       <div className="nypl-row nypl-quarter-image">
-        <div className="nypl-column-one-quarter image-column-one-quarter">
+        <div className="nypl-column-one-quarter">
           <img className="nypl-quarter-image" src="https://cdn-petrol.nypl.org/sites/default/media/styles/extralarge/public/research-services.jpg?itok=rSo9t1VF" alt="" role="presentation" />
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">

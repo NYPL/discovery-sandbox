@@ -54,10 +54,50 @@
   border: 0;
   display: flex;
   width: 100%;
+
+  .nypl-results-summary {
+    flex-grow: 2;
+    display: inline-block;
+  }
 }
 
 @media (max-width: 490px) {
   .nypl-sorter-row {
     display: block;
+  }
+}
+
+// Used for electronic resources links
+
+h3.electronic-resources-search-header {
+  font-size: var(--nypl-fontSizes-text-default);
+  margin-bottom: var(--nypl-space-xs)
+}
+
+.nypl-results-list {
+  .nypl-results-item  {
+
+    .search-results-single-resource-link{
+      text-decoration: underline;
+    }
+  }
+}
+
+.search-results-list-link {
+  font-size: 14px;
+  font-weight: 600;
+  align-items: center;
+  display: flex;
+
+  p {
+    align-items: center;
+    display: flex;
+  }
+
+  svg {
+    height: 1.8rem;
+    width: 1.8rem;
+    margin-top: 0;
+    fill: var(--nypl-colors-ui-link-primary);
   }
 }

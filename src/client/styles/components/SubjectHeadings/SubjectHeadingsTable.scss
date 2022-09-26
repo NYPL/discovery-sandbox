@@ -16,6 +16,7 @@
 
   .subjectSortButton {
     @include removeDefaultButtonStyle;
+    padding: 10px 0;
   }
 
   &.index {
