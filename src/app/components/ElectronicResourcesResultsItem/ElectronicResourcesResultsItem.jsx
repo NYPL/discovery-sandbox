@@ -18,7 +18,7 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
     <section className="electronic-resources-search-section">
       <Heading
         level="three"
-        size="secondary"
+        size="callout"
         className="electronic-resources-search-header"
         id="available-online-heading"
         fontWeight="bold"
