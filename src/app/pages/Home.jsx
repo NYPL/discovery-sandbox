@@ -79,7 +79,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/research-divisions/" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</a>
+            <a href="/about/divisions" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</a>
           </Heading>
           <p>Learn about the subject and media specializations of our research divisions.</p>
         </div>
