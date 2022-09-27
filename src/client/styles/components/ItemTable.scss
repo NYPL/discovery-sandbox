@@ -19,6 +19,18 @@ dl dd.multi-item-list .nypl-basic-table a,
   transition: all, 0.1s, ease-in;
   margin-top: 0;
 
+  &.avail-request-button {
+    background-color: white;
+    color: var(--nypl-colors-ui-link-primary);
+    border: 0.08333rem solid var(--nypl-colors-ui-link-primary)
+  }
+
+  &.unavail-request-button {
+    background-color: var(--nypl-colors-ui-gray-light-cool);
+    color: var(--nypl-colors-ui-gray-dark);
+    border: 0.08333rem solid var(--nypl-colors-ui-gray-x-light-cool);
+  }
+
   &:hover {
     background-color: #fff;
     color: $results-list-item-button;
