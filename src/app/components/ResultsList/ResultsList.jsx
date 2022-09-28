@@ -1,4 +1,4 @@
-import { Heading, Text } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardActions, CardContent } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -110,70 +110,71 @@ const ResultsList = ({
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <Heading level="three">
-          <Link
-            onClick={
+        <Card>
+          <CardHeading level="three">
+            <Link onClick={
               () => {
-              updateResultSelection({
-                fromUrl: `${pathname}${search}`,
-                bibId,
-              });
-              trackDiscovery('Bib', bibTitle);
+                updateResultSelection({
+                  fromUrl: `${pathname}${search}`,
+                  bibId,
+                });
+                trackDiscovery('Bib', bibTitle);
+              }
             }
-          }
-            to={bibUrl}
-            className="title"
-          >
-            {bibTitle}
-          </Link>
-        </Heading>
-        <div className="nypl-results-item-description">
-          <ul>
-            <li className="nypl-results-media">{materialType}</li>
-            <li className="nypl-results-publication">{publicationStatement}</li>
-            {yearPublished}
-            {
-              totalItems > 0 ?
-                <li className="nypl-results-info">
-                  {itemMessage}
-                </li>
-                : ''
-            }
-          </ul>
-        </div>
-        <ElectronicResourcesResultsItem
-          resources={eResources}
-          onClick={resourcesOnClick}
-          bibUrl={bibUrl}
-        />
-        {
-          hasRequestTable &&
-          <>
-            <ItemTable
-              items={items.slice(0, itemTableLimit)}
-              bibId={bibId}
-              id={null}
-              searchKeywords={searchKeywords}
-              page="SearchResults"
+              to={bibUrl}
+              className="title">
+              {bibTitle}
+            </Link>
+          </CardHeading>
+          <CardContent className="nypl-results-item-description">
+            <ul>
+              <li className="nypl-results-media">{materialType}</li>
+              <li className="nypl-results-publication">{publicationStatement}</li>
+              {yearPublished}
+              {
+                totalItems > 0 ?
+                  <li className="nypl-results-info">
+                    {itemMessage}
+                  </li>
+                  : ''
+              }
+            </ul>
+            <ElectronicResourcesResultsItem
+              resources={eResources}
+              onClick={resourcesOnClick}
+              bibUrl={bibUrl}
             />
             {
-              totalPhysicalItems > 3 ?
-              (
-                <Link
-                  onClick={resourcesOnClick}
-                  to={`${bibUrl}#items-table`}
-                  className="search-results-list-link"
-                  id="physical-items-link"
-                >
-                  <Text isBold size="caption">
-                    {`See all ${totalPhysicalItems} in Library & Offsite Items`} <RightWedgeIcon />
-                  </Text>
-                </Link>
-              ) :
-              null
+              hasRequestTable &&
+              <>
+                <ItemTable
+                  items={items.slice(0, itemTableLimit)}
+                  bibId={bibId}
+                  id={null}
+                  searchKeywords={searchKeywords}
+                  page="SearchResults"
+                />
+                {
+                  totalPhysicalItems > 3 ?
+                    (<CardActions>
+                      <Link
+                        onClick={resourcesOnClick}
+                        to={`${bibUrl}#items-table`}
+                        className="search-results-list-link"
+                        id="physical-items-link"
+                      >
+                        <Text isBold size="caption">
+                          {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
+                        </Text>
+                      </Link>
+                    </CardActions>
+                    ) :
+                    null
+                }
+              </>
             }
-          </>
-        }
+          </CardContent>
+        </Card>
       </li>
     );
   };
