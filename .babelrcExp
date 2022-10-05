@@ -33,7 +33,6 @@
           "@Procfile": "./Procfile",
           "@README": "./README.md",
           "@easyImports": "./easyImports.js",
-          "@esdoc": "./esdoc.json",
           "@index": "./index.js",
           "@locations": "./locations.js",
           "@nightwatch": "./nightwatch.json",

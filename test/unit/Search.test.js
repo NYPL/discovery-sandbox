@@ -175,7 +175,7 @@ describe('Search', () => {
 
     afterEach(() => {
       contextRoutesPushed = [];
-      submitSearchRequestSpy.reset();
+      submitSearchRequestSpy.restore();
     });
 
     it('should submit the input entered when clicking the submit button', (done) => {
