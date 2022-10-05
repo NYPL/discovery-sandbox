@@ -29,7 +29,6 @@
           "@caughtfields": "./caughtfields.js",
           "@discovery-items-2": "./discovery-items-2.js",
           "@easyImports": "./easyImports.js",
-          "@esdoc": "./esdoc.json",
           "@fields": "./fields.js",
           "@generateObj": "./generateObj.js",
           "@html_sample": "./html_sample.html",

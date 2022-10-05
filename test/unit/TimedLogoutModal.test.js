@@ -18,7 +18,7 @@ describe('TimedLogoutModal', () => {
     let timeoutStub;
 
     before(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       clock = sinon.useFakeTimers();
 
       window.location = { replace: () => {} };
@@ -73,7 +73,7 @@ describe('TimedLogoutModal', () => {
     let sandbox;
 
     before(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
 
       window.location = { replace: () => {} };
       global.document.cookie = `accountPageExp=${((60) + 3) * 1000}`;
@@ -139,7 +139,7 @@ describe('TimedLogoutModal', () => {
     let sandbox;
 
     before(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       const iframes = global.document.getElementsByTagName('iframe');
 
       for (let index = iframes.length - 1; index >= 0; index -= 1) {
@@ -198,7 +198,7 @@ describe('TimedLogoutModal', () => {
     let replace;
 
     before(() => {
-      sandbox = sinon.sandbox.create();
+      sandbox = sinon.createSandbox();
       const iframes = global.document.getElementsByTagName('iframe');
 
       for (let index = iframes.length - 1; index >= 0; index -= 1) {

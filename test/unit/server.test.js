@@ -10,7 +10,7 @@ describe('server', () => {
   let sandbox;
 
   before(() => {
-    sandbox = sinon.sandbox.create();
+    sandbox = sinon.createSandbox();
 
     // DocumentTitle.rewind() is used in server.js to build the document title
     // but it can only be used "server-side". It's built on `react-side-effect`,
