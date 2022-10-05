@@ -160,6 +160,8 @@ if (!isProduction && !isTest) {
   const WebpackDevServer = require('webpack-dev-server');
 
   new WebpackDevServer(webpack(webpackConfig), {
+    disableHostCheck: true,
+    publicPath: webpackConfig.output.publicPath,
     hot: true,
     historyApiFallback: true,
     headers: {
