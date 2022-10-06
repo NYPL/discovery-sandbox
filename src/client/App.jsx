@@ -1,7 +1,6 @@
 /* global loadA11y, window */
 // lines 2 and 3 replace deprecated "babel-polyfill"
 import 'core-js/stable';
-import 'regenerator-runtime/runtime';
 
 import { DSProvider } from '@nypl/design-system-react-components';
 import React from 'react';

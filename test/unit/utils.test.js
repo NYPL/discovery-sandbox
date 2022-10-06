@@ -69,8 +69,6 @@ describe('ajaxCall', () => {
         expect(cbSpy.callCount).to.equal(1);
         done();
       }, 0);
-
-      cbSpy.reset();
     });
   });
 
@@ -98,9 +96,6 @@ describe('ajaxCall', () => {
         done();
         // expect(consoleError.callCount).to.equal(1);
       }, 0);
-
-      cbSpy.reset();
-      // consoleError.reset();
     });
 
     it('should invoke the error callback function', () => {
@@ -111,9 +106,6 @@ describe('ajaxCall', () => {
           expect(cbSpy.callCount).to.equal(0);
           expect(cbErrorSpy.callCount).to.equal(1);
         });
-
-      cbSpy.reset();
-      cbErrorSpy.reset();
     });
   });
 });
@@ -166,8 +158,6 @@ describe('createAppHistory', () => {
     setTimeout(() => {
       expect(useQueriesSpy.callCount).to.equal(1);
     }, 0);
-
-    useQueriesSpy.reset();
   });
 });
 
@@ -397,7 +387,7 @@ describe('getFieldParam', () => {
 //
 //     expect(trackEventSpy.callCount).to.equal(1);
 //
-//     trackEventSpy.reset();
+//     trackEventSpy.restore();
 //   });
 // });
 
