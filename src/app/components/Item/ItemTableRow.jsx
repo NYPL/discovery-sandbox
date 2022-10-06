@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
+import { Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import {
@@ -147,22 +148,28 @@ class ItemTableRow extends React.Component {
     return this.isAeonValue;
   }
 
+  ifAvailableHandler(handler, available) {
+    return available ? handler : (e) => { e.preventDefault() }
+  }
+
   physRequestButton() {
     const { item, bibId, searchKeywords } = this.props;
     if (this.isAeon() || this.allClosed() || !item.physRequestable) {
       return null;
     }
-    return this.requestButton(
-      <Link
+    return (
+      this.requestButton(
+        <Link
         to={
           `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
         }
-        onClick={e => this.getItemRecord(e, bibId, item.id)}
-        tabIndex="0"
-        className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
-      >
-        Request for Onsite Use
-      </Link>
+          onClick={this.ifAvailableHandler(e => this.getItemRecord(e, bibId, item.id), item.available)}
+          tabIndex="0"
+          aria-disabled={!item.available}
+          className={ false && item.available ? 'avail-request-button' : 'unavail-request-button' }
+        >
+          Request for Onsite Use
+        </Link>)
     )
   }
 
@@ -176,8 +183,9 @@ class ItemTableRow extends React.Component {
         to={
           `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`
         }
-        onClick={e => this.getItemRecord(e, bibId, item.id)}
+        onClick={this.ifAvailableHandler(e => this.getItemRecord(e, bibId, item.id), item.available)}
         tabIndex="0"
+        aria-disabled={!item.available}
         className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
       >
         Request Scan
@@ -192,6 +200,8 @@ class ItemTableRow extends React.Component {
       <a
         href={this.aeonUrl(item)}
         tabIndex="0"
+        onClick={this.ifAvailableHandler(() => { return null }, item.available)}
+        aria-disabled={!item.available}
         className={`aeonRequestButton ${item.available ? 'avail-request-button' : 'unavail-request-button'}`}
       >
         Request Appointment
