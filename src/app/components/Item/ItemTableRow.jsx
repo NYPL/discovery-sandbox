@@ -166,7 +166,7 @@ class ItemTableRow extends React.Component {
           onClick={this.ifAvailableHandler(e => this.getItemRecord(e, bibId, item.id), item.available)}
           tabIndex="0"
           aria-disabled={!item.available}
-          className={ false && item.available ? 'avail-request-button' : 'unavail-request-button' }
+          className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
         >
           Request for Onsite Use
         </Link>)
