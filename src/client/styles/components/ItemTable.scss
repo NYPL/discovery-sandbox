@@ -1,5 +1,5 @@
 dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a {
+.nypl-results-item .nypl-basic-table a{
   &.info-link {
     font-size: var(--nypl-fontSizes--2);
     font-weight: var(--nypl-fontWeights-link-default);
@@ -9,6 +9,7 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
   &.avail-request-button,
   &.unavail-request-button {
+    padding: var(--nypl-space-xs) var(--nypl-space-m);
     text-decoration: none;
     color: #fff;
     cursor: pointer;
@@ -29,7 +30,6 @@ dl dd.multi-item-list .nypl-basic-table a,
     min-width: var(--nypl-sizes-10);
     font-size: var(--nypl-fontSizes-button-default);
     margin-right: var(--nypl-space-xs);
-
 
     @media screen and (min-width: 38em) {
       min-height: auto;
