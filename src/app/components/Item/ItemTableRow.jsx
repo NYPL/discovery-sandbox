@@ -23,11 +23,9 @@ class ItemTableRow extends React.Component {
     this.physRequestButton = this.physRequestButton.bind(this);
     this.eddRequestButton = this.eddRequestButton.bind(this);
     this.aeonRequestButton = this.aeonRequestButton.bind(this);
-    this.requestButton = this.requestButton.bind(this);
   }
 
-  getItemRecord (e) {
-    e.preventDefault();
+  getItemRecord(e) {
     const {
       bibId,
       item,
@@ -44,7 +42,6 @@ class ItemTableRow extends React.Component {
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
 
     trackDiscovery('Item Request', gaLabel);
-    this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
   }
 
   message () {
@@ -76,65 +73,7 @@ class ItemTableRow extends React.Component {
     return AeonUrl.toString();
   }
 
-  // requestButton() {
-  //   const {
-  //     item,
-  //     bibId,
-  //     searchKeywords,
-  //   } = this.props;
-  //   const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
-  //   const isRecap = item.isRecap;
-  //   const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
-  //   const status = item.status && item.status.prefLabel ? item.status.prefLabel : ' ';
-  //   let itemRequestBtn = status;
-  //
-  //   if (item.aeonUrl && features.includes('aeon-links')) {
-  //     itemRequestBtn = (
-  //       <React.Fragment>
-  //         <a
-  //           href={this.aeonUrl(item)}
-  //           tabIndex="0"
-  //           className="aeonRequestButton"
-  //         >
-  //           Request
-  //         </a>
-  //         <br />
-  //         <span
-  //           className="aeonRequestText"
-  //         >
-  //           Appointment Required
-  //         </span>
-  //       </React.Fragment>
-  //     );
-  //     return itemRequestBtn;
-  //   }
-  //
-  //   if (item.requestable && !allClosed) {
-  //     itemRequestBtn = item.available ? (
-  //       <Link
-  //         to={
-  //           `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-  //         }
-  //         onClick={e => this.getItemRecord(e, bibId, item.id)}
-  //         tabIndex="0"
-  //       >
-  //         Request
-  //       </Link>) :
-  //       'In Use';
-  //   }
-  //   return itemRequestBtn;
-  // }
-
-  requestButton (inner) {
-    const { item } = this.props;
-    return inner && (
-      <td data-th="Status">
-        <span>{inner}</span>
-      </td>
-    )
-  }
-
-  allClosed () {
+  allClosed() {
     if (this.allClosedValue) return this.allClosedValue;
     const { item } = this.props;
     const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
@@ -160,7 +99,6 @@ class ItemTableRow extends React.Component {
       return null;
     }
     return (
-      this.requestButton(
         <Link
           to={
             `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
@@ -172,7 +110,6 @@ class ItemTableRow extends React.Component {
         >
           Request for Onsite Use
         </Link>)
-    )
   }
 
   eddRequestButton () {
@@ -180,7 +117,7 @@ class ItemTableRow extends React.Component {
     if (this.isAeon() || this.allClosed() || !item.eddRequestable) {
       return null;
     }
-    return this.requestButton(
+    return (
       <Link
         to={
           `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`
@@ -198,7 +135,7 @@ class ItemTableRow extends React.Component {
   aeonRequestButton () {
     if (!this.isAeon()) { return null }
     const { item } = this.props;
-    return this.requestButton(
+    return (
       <a
         href={this.aeonUrl(item)}
         tabIndex="0"
@@ -251,25 +188,20 @@ class ItemTableRow extends React.Component {
               <span>{item.volume || ''}</span>
             </td>
           ) : null}
-          {page !== 'SearchResults' ? (
-            <td data-th="Format">
-              <span>{item.format || ' '}</span>
-            </td>
-          ) : null}
-          <td data-th="Message"><span>{this.message()}</span></td>
+          <td data-th="Format">
+            <span>{item.format || ' '}</span>
+          </td>
           <td data-th="Call Number"><span>{itemCallNumber}</span></td>
           <td data-th="Location"><span>{itemLocation}</span></td>
         </tr>
         <tr>
-          <div>
-            {this.physRequestButton()}
-            {this.eddRequestButton()}
-            {this.aeonRequestButton()}
-          </div>
-          <RequestInfo available={item.available}
-            isRecap={item.isRecap}
-            locationUrl={item.locationUrl}
-            aeonUrl={item.aeonUrl} />
+          <td colSpan={includeVolColumn ? "4" : "3" }>
+            <div style={{ display: 'flex' }}>
+              {this.physRequestButton()}
+              {this.eddRequestButton()}
+              {this.aeonRequestButton()}
+            </div>
+          </td>
         </tr>
       </>
     );
