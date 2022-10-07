@@ -1,8 +1,14 @@
 dl dd.multi-item-list .nypl-basic-table a,
 .nypl-results-item .nypl-basic-table a {
+  &.info-link {
+    font-size: var(--nypl-fontSizes--2);
+    font-weight: var(--nypl-fontWeights-link-default);
+    white-space: nowrap;
+    // this is inheriting text-decoration: none from style-v2.scss line 100
+    text-decoration: underline;
+  }
   &.avail-request-button,
   &.unavail-request-button {
-    white-space: nowrap;
     text-decoration: none;
     color: #fff;
     cursor: pointer;

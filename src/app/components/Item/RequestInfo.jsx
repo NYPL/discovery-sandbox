@@ -15,6 +15,7 @@ const RequestInfo = ({ isRecap, isAeon, available, division, locationUrl }) => {
   if (available) {
     if (isRecap) {
       return <Link
+        className='info-link'
         href='https://www.nypl.org/help/request-research-materials'>
         How do I pick up this item and when will it be ready?
       </Link>
