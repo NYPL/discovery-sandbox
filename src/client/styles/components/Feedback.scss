@@ -4,8 +4,8 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: #FFF;
-  color: #000;
+  background: var(--nypl-colors-ui-white);
+  color: var(--nypl-colors-ui-black);
 
   @include min-screen($tablet-portrait) {
     position: fixed;
@@ -17,7 +17,7 @@
     background: $dsresearchprimary;
     border: 1px solid $dsresearchprimary;
     box-sizing: border-box;
-    color: #FFF;
+    color: var(--nypl-colors-ui-white);
     display: inline-block;
     font-size: 1rem;
     padding: .5rem 1rem;
@@ -25,7 +25,7 @@
     text-align: center;
   
     &:hover {
-      background: #FFF;
+      background: var(--nypl-colors-ui-white);
       color: $dsresearchprimary;
     }
   }
@@ -33,7 +33,7 @@
 
 
 .cancel-button {
-  border: 1px solid #E0E0E0;
+  border: 1px solid $feedbackBorder;
   font-size: 1rem;
   margin-right: 15px;
   text-align: center;
@@ -42,7 +42,7 @@
 
 #feedback-menu {
   display: none;
-  background: #FFF;
+  background: var(--nypl-colors-ui-white);
   border: 1px solid $border-color;
   box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
   padding: 50px 42px;

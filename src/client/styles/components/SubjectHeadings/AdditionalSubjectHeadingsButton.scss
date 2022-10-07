@@ -1,5 +1,5 @@
 .seeMoreButton {
-  color: #104d65;
+  color: $generalDarkerBlueColor;
   font-size: 14px;
   cursor: default;
   @include removeDefaultButtonStyle;
@@ -9,6 +9,6 @@
   }
 
   &:hover {
-    color: #1b7fa7;
+    color: $generalBlueColor;
   }
 }

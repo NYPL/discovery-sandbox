@@ -1,5 +1,3 @@
-@import "utils/colors.scss";
-
 .nestedTableHeader {
   border-bottom: $table-row-border;
   line-height: 32px;
@@ -16,7 +14,7 @@
   }
 
   .emph {
-    color: #000000;
+    color: var(--nypl-colors-ui-black);
   }
 
   .subjectHeadingLabelInner,

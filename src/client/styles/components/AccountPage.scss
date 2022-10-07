@@ -90,15 +90,15 @@
 
   .tabbed ul[role="tablist"] {
     &> li {
-      border-color: #0576D3;
+      border-color: $accountBlue;
     }
 
     &> li > span > a[aria-selected='true'] {
-      color: #0576D3;
+      color: $accountBlue;
     }
 
     &> li.activeTab {
-      border-color: #0576D3;
+      border-color: $accountBlue;
     }
   }
 
@@ -119,7 +119,7 @@
   }
 
   tr.patFuncHeaders {
-    background-color: #F5F5F5;
+    background-color: $accountBGLight;
     width: 100%;
   }
 
@@ -152,7 +152,7 @@
   }
 
   tr.patFuncFinesEntryTitle {
-    border-top: solid 1px #C4C4C4;
+    border-top: solid 1px $accountLightBorder;
   }
 
   td {
@@ -201,13 +201,13 @@
     }
 
     tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
-      border-bottom: solid 1px #C4C4C4;
+      border-bottom: solid 1px $accountLightBorder;
     }
   }
 
   .items, .holds {
     tr {
-      border-bottom: solid 1px #C4C4C4;
+      border-bottom: solid 1px $accountLightBorder;
     }
   }
 }
@@ -228,7 +228,7 @@
   }
 
   .edit-link {
-    color: #0071CE;
+    color: $colorBlueText;
     float: right;
     font-size: 20px;
     font-weight: 600;
@@ -282,7 +282,7 @@
 @media (max-width: 600px) {
   .nypl-patron-page .tabbed ul[role="tablist"] {
     &> li:last-of-type {
-      border-bottom: 1px solid #0576D3;
+      border-bottom: 1px solid $accountBlue;
     }
 
     a {
@@ -300,8 +300,8 @@
 
     .items, .holds {
       td {
-        border-left: 1px solid #C4C4C4;
-        border-right: 1px solid #C4C4C4;
+        border-left: 1px solid $accountLightBorder;
+        border-right: 1px solid $accountLightBorder;
         display: block;
         padding-right: 1%;
         width: auto;
@@ -314,7 +314,7 @@
       }
 
       td.patFuncTitle {
-        border-top: 1px solid #C4C4C4;
+        border-top: 1px solid $accountLightBorder;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
       }
@@ -386,7 +386,7 @@
     }
 
     .account-table-buttons {
-      border-bottom: 1px solid #c4c4c4;
+      border-bottom: 1px solid $accountLightBorder;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       display: flex;

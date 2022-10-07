@@ -1,7 +1,5 @@
-$light-border: 1px solid #d7d4d0;
-
 .alphabeticalPagination {
-  border: $light-border;
+  border: 1px solid $lightBorder;
   border-radius: .2rem;
   box-sizing: border-box;
   display: flex;
@@ -10,13 +8,13 @@ $light-border: 1px solid #d7d4d0;
   margin-top: 1.5rem;
   max-width: 100%;
   text-align: center;
-  background-color: #d7d4d0;
+  background-color: $lightBorder;
   line-height: 32px;
   padding: 1px;
 
   a {
     box-sizing: border-box;
-    background-color: #ffffff;
+    background-color: var(--nypl-colors-ui-white);
     display: inline-block;
     flex: auto;
     font-size: 14px;
@@ -24,13 +22,13 @@ $light-border: 1px solid #d7d4d0;
     text-align: center;
     text-decoration: none;
     min-width: 32px;
-    border: 1px solid #d7d4d0;
+    border: 1px solid $lightBorder;
     border-radius: 1px;
     margin: -1px;
 
     &:focus {
       z-index: 1;
-      background-color: #ffffff;
+      background-color: var(--nypl-colors-ui-white);
     }
   }
 }

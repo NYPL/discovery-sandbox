@@ -16,7 +16,7 @@
     }
 
     em {
-      color: #31806a;
+      color: $previewComponentsTextColor;
     }
   }
 
@@ -43,7 +43,7 @@
     }
 
     &.bibCount {
-      color: #31806a;
+      color: $previewComponentsTextColor;
     }
   }
 }

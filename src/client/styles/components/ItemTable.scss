@@ -3,7 +3,7 @@ dl dd.multi-item-list .nypl-basic-table a,
   background-color: $results-list-item-button;
   border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
-  color: #fff;
+  color: var(--nypl-colors-ui-white);
   cursor: pointer;
   display: inline-block;
   font-size: 12px;
@@ -20,12 +20,12 @@ dl dd.multi-item-list .nypl-basic-table a,
   margin-top: 0;
 
   &:hover {
-    background-color: #fff;
+    background-color: var(--nypl-colors-ui-white);
     color: $results-list-item-button;
   }
 
   &:focus {
-    background-color: #fff;
+    background-color: var(--nypl-colors-ui-white);
     color: $results-list-item-button;
   }
 }
@@ -44,18 +44,18 @@ dl dd.multi-item-list .nypl-basic-table a,
 
     &:link {
       // color: $link-color;
-      color: #1b7fa7;
+      color: $generalBlueColor;
     }
 
     &:visited {
       // color: $link-visited-color;
-      color: darken(#1b7fa7, 15%);
+      color: darken($generalBlueColor, 15%);
     }
 
     &:hover,
     &:visited:hover {
       // color: $link-hover-color;
-      color: darken(#1b7fa7, 5%);;
+      color: darken($generalBlueColor, 5%);;
       text-decoration: none;
     }
 
