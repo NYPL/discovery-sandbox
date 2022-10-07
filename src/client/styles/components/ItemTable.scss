@@ -1,25 +1,11 @@
 dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a:not(.itemLocationLink) {
-  background-color: $results-list-item-button;
-  border: 0.08333rem solid $results-list-item-button;
-  border-radius: 0.13333rem;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: 0.06rem;
-  text-decoration: none;
-  padding: 8px 28px;
-  white-space: nowrap;
-  -webkit-transition: all, 0.1s, ease-in;
-  -moz-transition: all, 0.1s, ease-in;
-  -ms-transition: all, 0.1s, ease-in;
-  -o-transition: all, 0.1s, ease-in;
-  transition: all, 0.1s, ease-in;
-  margin-top: 0;
-
-  &.avail-request-button, &.unavail-request-button {
+.nypl-results-item .nypl-basic-table a {
+  &.avail-request-button,
+  &.unavail-request-button {
+    white-space: nowrap;
+    text-decoration: none;
+    color: #fff;
+    cursor: pointer;
     border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
     line-height: 1.5;
     border-radius: var(--nypl-radii-sm);
@@ -89,7 +75,7 @@ dl dd.multi-item-list .nypl-basic-table a,
     &:hover,
     &:visited:hover {
       // color: $link-hover-color;
-      color: darken(#1b7fa7, 5%);;
+      color: darken(#1b7fa7, 5%);
       text-decoration: none;
     }
 
@@ -101,7 +87,7 @@ dl dd.multi-item-list .nypl-basic-table a,
 
       &:visited {
         // color: $inverted-link-visited-color;
-        color: darken(white, 10%);;
+        color: darken(white, 10%);
       }
 
       &:hover,
@@ -119,11 +105,13 @@ dl dd.multi-item-list .nypl-basic-table a,
       display: none;
     }
 
-    tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
+    tr,
+    .nypl-results-item .nypl-basic-table tbody tr:last-child {
       border: 1px solid var(--nypl-colors-ui-gray-light-cool);
     }
 
-    .nypl-basic-table, .nypl-results-item .nypl-basic-table {
+    .nypl-basic-table,
+    .nypl-results-item .nypl-basic-table {
       display: revert;
 
       td {
@@ -151,7 +139,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       margin-bottom: 0;
     }
 
-    td[data-th]:before  {
+    td[data-th]:before {
       content: attr(data-th);
       display: inline-block;
       font-weight: 500;
