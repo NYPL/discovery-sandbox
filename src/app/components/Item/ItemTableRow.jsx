@@ -4,6 +4,8 @@ import { Link } from 'react-router';
 import { Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
 
+import RequestInfo from './RequestInfo';
+
 import {
   trackDiscovery,
 } from '../../utils/utils';
@@ -13,7 +15,7 @@ import appConfig from '../../data/appConfig';
 const { features } = appConfig;
 
 class ItemTableRow extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
     this.getItemRecord = this.getItemRecord.bind(this);
     this.allClosed = this.allClosed.bind(this);
@@ -24,7 +26,7 @@ class ItemTableRow extends React.Component {
     this.requestButton = this.requestButton.bind(this);
   }
 
-  getItemRecord(e) {
+  getItemRecord (e) {
     e.preventDefault();
     const {
       bibId,
@@ -45,13 +47,13 @@ class ItemTableRow extends React.Component {
     this.context.router.push(`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}`);
   }
 
-  message() {
+  message () {
     const { item } = this.props;
 
     return item.accessMessage.prefLabel || ' ';
   }
 
-  aeonUrl(item) {
+  aeonUrl (item) {
     const itemUrl = Array.isArray(item.aeonUrl)
       ? item.aeonUrl[0]
       : item.aeonUrl;
@@ -123,7 +125,7 @@ class ItemTableRow extends React.Component {
   //   return itemRequestBtn;
   // }
 
-  requestButton(inner) {
+  requestButton (inner) {
     const { item } = this.props;
     return inner && (
       <td data-th="Status">
@@ -132,7 +134,7 @@ class ItemTableRow extends React.Component {
     )
   }
 
-  allClosed() {
+  allClosed () {
     if (this.allClosedValue) return this.allClosedValue;
     const { item } = this.props;
     const { closedLocations, recapClosedLocations, nonRecapClosedLocations } = appConfig;
@@ -141,18 +143,18 @@ class ItemTableRow extends React.Component {
     return this.allClosedValue;
   }
 
-  isAeon() {
+  isAeon () {
     if (this.isAeonValue) return this.isAeonValue;
     const { item } = this.props;
     this.isAeonValue = item.aeonUrl && features.includes('aeon-links')
     return this.isAeonValue;
   }
 
-  ifAvailableHandler(handler, available) {
+  ifAvailableHandler (handler, available) {
     return available ? handler : (e) => { e.preventDefault() }
   }
 
-  physRequestButton() {
+  physRequestButton () {
     const { item, bibId, searchKeywords } = this.props;
     if (this.isAeon() || this.allClosed() || !item.physRequestable) {
       return null;
@@ -160,20 +162,20 @@ class ItemTableRow extends React.Component {
     return (
       this.requestButton(
         <Link
-        to={
-          `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
-        }
+          to={
+            `${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`
+          }
           onClick={this.ifAvailableHandler(e => this.getItemRecord(e, bibId, item.id), item.available)}
           tabIndex="0"
           aria-disabled={!item.available}
-          className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
+          className={item.available ? 'avail-request-button' : 'unavail-request-button'}
         >
           Request for Onsite Use
         </Link>)
     )
   }
 
-  eddRequestButton() {
+  eddRequestButton () {
     const { item, bibId, searchKeywords } = this.props;
     if (this.isAeon() || this.allClosed() || !item.eddRequestable) {
       return null;
@@ -186,14 +188,14 @@ class ItemTableRow extends React.Component {
         onClick={this.ifAvailableHandler(e => this.getItemRecord(e, bibId, item.id), item.available)}
         tabIndex="0"
         aria-disabled={!item.available}
-        className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
+        className={item.available ? 'avail-request-button' : 'unavail-request-button'}
       >
         Request Scan
       </Link>
     )
   }
 
-  aeonRequestButton() {
+  aeonRequestButton () {
     if (!this.isAeon()) { return null }
     const { item } = this.props;
     return this.requestButton(
@@ -209,7 +211,7 @@ class ItemTableRow extends React.Component {
     );
   }
 
-  render() {
+  render () {
     const {
       item,
       includeVolColumn,
@@ -244,14 +246,14 @@ class ItemTableRow extends React.Component {
     return (
       <>
         <tr className={item.availability}>
-          { includeVolColumn ? (
+          {includeVolColumn ? (
             <td className="vol-date-col" data-th="Vol/Date">
-            <span>{item.volume || ''}</span>
+              <span>{item.volume || ''}</span>
             </td>
           ) : null}
           {page !== 'SearchResults' ? (
             <td data-th="Format">
-            <span>{item.format || ' '}</span>
+              <span>{item.format || ' '}</span>
             </td>
           ) : null}
           <td data-th="Message"><span>{this.message()}</span></td>
@@ -259,9 +261,15 @@ class ItemTableRow extends React.Component {
           <td data-th="Location"><span>{itemLocation}</span></td>
         </tr>
         <tr>
-          {this.physRequestButton()}
-          {this.eddRequestButton()}
-          {this.aeonRequestButton()}
+          <div>
+            {this.physRequestButton()}
+            {this.eddRequestButton()}
+            {this.aeonRequestButton()}
+          </div>
+          <RequestInfo available={item.available}
+            isRecap={item.isRecap}
+            locationUrl={item.locationUrl}
+            aeonUrl={item.aeonUrl} />
         </tr>
       </>
     );
