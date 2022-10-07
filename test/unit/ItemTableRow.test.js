@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
+import { Link } from 'react-router';
 import { expect } from 'chai';
 import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
@@ -325,6 +326,78 @@ describe('ItemTableRow', () => {
           expect(component.find('td').at(2).render().text()).to.equal('Request');
           expect(component.find('td').find('Link').length).to.equal(1);
         });
+      });
+    });
+
+    describe.only('Request Buttons', () => {
+      describe('Physical Request', () => {
+        describe('should be present when item eligible for physical request', () => {
+          describe('should be enabled when item available', () => {
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { physRequestable: true }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with avail-request-button class', () => {
+              const links = component.find(Link)
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              console.log('props: ', link.props())
+              expect(link.prop('className')).to.equal('avail-request-button')
+            })
+
+            it('should have link with aria-disabled false', () => {
+              const links = component.find(Link)
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(false)
+            })
+
+            it('should have a link with correct handler', () => {
+              const link = component.find(Link).at(0)
+              const handler = link.prop('onClick')
+              console.log('handler: ', typeof handler, handler)
+              expect(handler)
+            })
+
+            it('should have a link pointing to hold request page', () => {
+              const link = component.find(Link).at(0)
+              expect(link.prop('to')).to.include('/hold/request/b12345-i17326129')
+            })
+          })
+
+          describe('should be disabled when item not available', () => {
+            it('should have a link with unavail-request-button class')
+            it('should have a link with aria-disabled true')
+            it('should have a link with click handler to prevent default')
+          })
+
+        })
+
+        describe('should not be present when item not eligible for physical request', () => {
+          it('should not be present in case it is an Aeon item')
+          it('should not be present in case of closure')
+          it('should not be present if not physRequestable')
+        })
+
+
+
+      });
+
+      describe('EDD Request', () => {
+
+      });
+
+      describe('Aeon Request', () => {
+
       });
     });
   });
