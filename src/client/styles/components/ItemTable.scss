@@ -45,18 +45,6 @@ dl dd.multi-item-list .nypl-basic-table a,
     color: var(--nypl-colors-ui-gray-dark);
     border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
   }
-
-// i think these behaviors need the ui-link-secondary color, also the not 
-// selector is complicating other links in the table
-  // &:hover:not(.unavail-request-button) {
-  //   background-color: #fff;
-  //   color: $results-list-item-button;
-  // }
-
-  // &:focus:not(.unavail-request-button):not(.avail-request-button) {
-  //   background-color: #fff;
-  //   color: $results-list-item-button;
-  // }
 }
 
 .nypl-results-item .nypl-basic-table span{
