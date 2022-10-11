@@ -107,7 +107,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
       itemListElement.forEach((resultObj) => {
         const { result } = resultObj;
         const { holdings } = resultObj.result;
-        if (!result.items || !result.holdings) return;
+        if (!result.items && !result.holdings) return;
         if (holdings) {
           addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
@@ -134,7 +134,10 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
           const items = (result.checkInItems || []).concat(result.items);
           items.slice(0, itemTableLimit).forEach((item) => {
             if (!item) return;
-            if (item.holdingLocation) item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
+            if (item.holdingLocation) {
+              item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
+              item.locationUrl = item.holdingLocation[0].url
+            }
             if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
           });
         });
