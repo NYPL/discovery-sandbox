@@ -11,10 +11,11 @@ const RequestInfo = ({ isRecap, aeonUrl, available, divisionUrl, dueDate, locati
         href='https://www.nypl.org/help/request-research-materials'>
         How do I pick up this item and when will it be ready?
       </Link>
-    } else if (aeonUrl.length > 0) {
+    } else if (aeonUrl.length > 0 && divisionUrl) {
       return <Text className='availability-alert'>
-        <span className='available-text'>Available by appointment </span>
-        {divisionUrl && <Link href={divisionUrl}>{location}</Link>}
+        <span className='available-text'>Available by appointment</span>
+        <span> at </span>
+        <Link className='division-link' href={divisionUrl}>{location}</Link>
       </Text>
     }
     else {

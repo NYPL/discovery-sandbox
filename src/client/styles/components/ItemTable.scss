@@ -1,5 +1,5 @@
 dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a{
+.nypl-results-item .nypl-basic-table a {
   &.info-link {
     font-size: var(--nypl-fontSizes-text-tag);
     font-weight: var(--nypl-fontWeights-text-tag);
@@ -36,7 +36,7 @@ dl dd.multi-item-list .nypl-basic-table a,
     &:hover {
       background-color: var(--nypl-colors-ui-bg-hover);
       border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
-      color: var(--nypl-colors-ui-link-secondary)
+      color: var(--nypl-colors-ui-link-secondary);
     }
   }
 
@@ -52,13 +52,17 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
 }
 
-.nypl-results-item .nypl-basic-table span{
-  &.available-text {
-    color: var(--nypl-colors-ui-success-primary)
-  }
-  &.unavailable-text {
-    color: var(--nypl-colors-ui-warning-primary)
-  }
+.availability-alert{
+  margin-top: var(--nypl-space-s);
+}
+.available-text {
+  color: var(--nypl-colors-ui-success-primary);
+}
+.unavailable-text {
+  color: var(--nypl-colors-ui-warning-primary);
+}
+.division-link {
+  text-decoration: underline;
 }
 
 .nypl-results-item .nypl-basic-table .item-email-inquiry {
