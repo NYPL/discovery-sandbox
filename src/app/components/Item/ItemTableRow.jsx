@@ -113,8 +113,10 @@ class ItemTableRow extends React.Component {
   eddRequestButton() {
     const { item, bibId, searchKeywords } = this.props;
     if (this.isAeon() || this.allClosed() || !item.eddRequestable) {
+      console.log('Not rendering edd request button', this.isAeon(), this.allClosed(), !item.eddRequestable)
       return null;
     }
+    console.log('rendering edd request button')
     return (
       <Link
         to={
@@ -131,7 +133,7 @@ class ItemTableRow extends React.Component {
   }
 
   aeonRequestButton() {
-    if (!this.isAeon()) { return null }
+    if (!this.isAeon() || this.allClosed()) { return null }
     const { item } = this.props;
     return (
       <a
