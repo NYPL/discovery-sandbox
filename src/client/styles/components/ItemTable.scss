@@ -1,9 +1,8 @@
 dl dd.multi-item-list .nypl-basic-table a,
 .nypl-results-item .nypl-basic-table a{
   &.info-link {
-    font-size: var(--nypl-fontSizes--2);
-    font-weight: var(--nypl-fontWeights-link-default);
-    white-space: nowrap;
+    font-size: var(--nypl-fontSizes-text-tag);
+    font-weight: var(--nypl-fontWeights-text-tag);
     // this is inheriting text-decoration: none from style-v2.scss line 100
     text-decoration: underline;
   }
@@ -47,14 +46,25 @@ dl dd.multi-item-list .nypl-basic-table a,
     border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
   }
 
-  &:hover:not(.unavail-request-button) {
-    background-color: #fff;
-    color: $results-list-item-button;
-  }
+// i think these behaviors need the ui-link-secondary color, also the not 
+// selector is complicating other links in the table
+  // &:hover:not(.unavail-request-button) {
+  //   background-color: #fff;
+  //   color: $results-list-item-button;
+  // }
 
-  &:focus:not(.unavail-request-button):not(.avail-request-button) {
-    background-color: #fff;
-    color: $results-list-item-button;
+  // &:focus:not(.unavail-request-button):not(.avail-request-button) {
+  //   background-color: #fff;
+  //   color: $results-list-item-button;
+  // }
+}
+
+.nypl-results-item .nypl-basic-table span{
+  &.available-text {
+    color: var(--nypl-colors-ui-success-primary)
+  }
+  &.unavailable-text {
+    color: var(--nypl-colors-ui-warning-primary)
   }
 }
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
-import { Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import RequestInfo from './RequestInfo';
@@ -201,7 +200,7 @@ class ItemTableRow extends React.Component {
               {this.eddRequestButton()}
               {this.aeonRequestButton()}
             </div>
-            <RequestInfo available={item.available} isRecap={item.isRecap} />
+            <RequestInfo available={item.available} isRecap={item.isRecap} isAeon={features.includes('aeon-links') ? this.aeonUrl(item) : ''} />
           </td>
         </tr>
       </>
