@@ -11,7 +11,7 @@ import appConfig from '../../data/appConfig';
 
 const { features } = appConfig;
 
-const RequestInfo = ({ isRecap, aeonUrl, available, division, locationUrl, dueDate }) => {
+const RequestInfo = ({ isRecap, aeonUrl, available, division, divisionUrl, dueDate }) => {
   if (available) {
     if (isRecap) {
       //available recap item
@@ -39,7 +39,6 @@ const RequestInfo = ({ isRecap, aeonUrl, available, division, locationUrl, dueDa
       {dueDate && dueDateAlert}
       <Link href='https://www.nypl.org/about/divisions'>. See a librarian for assistance</Link>
     </div>
-
   }
 }
 

@@ -202,7 +202,8 @@ class ItemTableRow extends React.Component {
               {this.eddRequestButton()}
               {this.aeonRequestButton()}
             </div>
-            <RequestInfo available={item.available} isRecap={item.isRecap} isAeon={features.includes('aeon-links') ? this.aeonUrl(item) : ''} />
+            <RequestInfo available={item.available} isRecap={item.isRecap} isAeon={features.includes('aeon-links') ? this.aeonUrl(item) : ''}
+              divisionUrl={item.locationUrl} />
           </td>
         </tr>
       </>
