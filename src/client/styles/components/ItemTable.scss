@@ -33,6 +33,12 @@ dl dd.multi-item-list .nypl-basic-table a,
     @media screen and (min-width: 38em) {
       min-height: auto;
     }
+    &:hover {
+      //** tried to use this color but it's not compiling --nypl-colors-ui-bg-hover
+      background-color: var(--nypl-colors-ui-disabled-primary);
+      border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
+      color: var(--nypl-colors-ui-link-secondary)
+    }
   }
 
   &.avail-request-button {
