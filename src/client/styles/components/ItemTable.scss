@@ -34,8 +34,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       min-height: auto;
     }
     &:hover {
-      //** tried to use this color but it's not compiling --nypl-colors-ui-bg-hover
-      background-color: var(--nypl-colors-ui-disabled-primary);
+      background-color: var(--nypl-colors-ui-bg-hover);
       border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
       color: var(--nypl-colors-ui-link-secondary)
     }
