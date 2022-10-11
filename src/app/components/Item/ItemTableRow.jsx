@@ -168,7 +168,6 @@ class ItemTableRow extends React.Component {
     }
 
     let itemLocation;
-
     if (item.location && item.locationUrl) {
       itemLocation = (
         <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
@@ -201,7 +200,7 @@ class ItemTableRow extends React.Component {
               {this.aeonRequestButton()}
             </div>
             <RequestInfo available={item.available} isRecap={item.isRecap} aeonUrl={features.includes('aeon-links') && this.isAeon() ? this.aeonUrl(item) : ''}
-              divisionUrl={item.locationUrl} />
+              divisionUrl={item.locationUrl} location={item.location} />
           </td>
         </tr>
       </>

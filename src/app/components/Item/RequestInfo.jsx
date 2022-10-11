@@ -1,17 +1,8 @@
 import React from 'react';
-import { } from 'react-router';
 import { Text, Link } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
 
-import {
-  trackDiscovery,
-} from '../../utils/utils';
-
-import appConfig from '../../data/appConfig';
-
-const { features } = appConfig;
-
-const RequestInfo = ({ isRecap, aeonUrl, available, division, divisionUrl, dueDate }) => {
+const RequestInfo = ({ isRecap, aeonUrl, available, divisionUrl, dueDate, location }) => {
   if (available) {
     if (isRecap) {
       //available recap item
@@ -23,7 +14,7 @@ const RequestInfo = ({ isRecap, aeonUrl, available, division, divisionUrl, dueDa
     } else if (aeonUrl.length > 0) {
       return <Text className='availability-alert'>
         <span className='available-text'>Available by appointment </span>
-        at [DIVISION LINK]
+        {divisionUrl && <Link href={divisionUrl}>{location}</Link>}
       </Text>
     }
     else {
