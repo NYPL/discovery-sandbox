@@ -351,7 +351,6 @@ describe('ItemTableRow', () => {
               const links = component.find(Link)
               expect(links.length).to.equal(1);
               const link = links.at(0);
-              console.log('props: ', link.props())
               expect(link.prop('className')).to.equal('avail-request-button')
             })
 
@@ -361,43 +360,513 @@ describe('ItemTableRow', () => {
               expect(link.prop('aria-disabled')).to.equal(false)
             })
 
-            it('should have a link with correct handler', () => {
+            it('should have a link with non-disabling handler', () => {
               const link = component.find(Link).at(0)
               const handler = link.prop('onClick')
-              console.log('handler: ', typeof handler, handler)
-              expect(handler)
+              const event = { preventDefault: () => {event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(false);
             })
 
             it('should have a link pointing to hold request page', () => {
               const link = component.find(Link).at(0)
               expect(link.prop('to')).to.include('/hold/request/b12345-i17326129')
             })
+
+            it('should say Request for Onsite Use', () => {
+              const link = component.find(Link).at(0)
+              expect(link.text()).to.equal('Request for Onsite Use')
+            })
           })
 
           describe('should be disabled when item not available', () => {
-            it('should have a link with unavail-request-button class')
-            it('should have a link with aria-disabled true')
-            it('should have a link with click handler to prevent default')
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { physRequestable: true, available: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with unavail-request-button class', () => {
+              const links = component.find(Link)
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              expect(link.prop('className')).to.equal('unavail-request-button')
+            })
+
+            it('should have a link with aria-disabled true', () => {
+              const links = component.find(Link)
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(true)
+            })
+
+            it('should have a link with click handler to prevent default', () => {
+              const link = component.find(Link).at(0)
+              const handler = link.prop('onClick')
+              const event = { preventDefault: () => { event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(true);
+            })
+
+            it('should say Request for Onsite Use', () => {
+              const link = component.find(Link).at(0)
+              expect(link.text()).to.equal('Request for Onsite Use')
+            })
           })
 
         })
 
         describe('should not be present when item not eligible for physical request', () => {
-          it('should not be present in case it is an Aeon item')
-          it('should not be present in case of closure')
-          it('should not be present if not physRequestable')
+          describe('should not be present in case it is an Aeon item', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.features = ['aeon-links']
+              const data = Object.assign(
+                {},
+                item.full,
+                { physRequestable: true, aeonUrl: 'http://www.aeon.com' }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
+
+          describe('should not be present in case of closure', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.closedLocations = ['']
+              const data = Object.assign(
+                {},
+                item.full,
+                { physRequestable: true }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+              appConfig.closedLocations = savedConfig.closedLocations
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
+
+          describe('should not be present if not physRequestable', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { physRequestable: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+              appConfig.closedLocations = savedConfig.closedLocations
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
         })
-
-
-
       });
 
       describe('EDD Request', () => {
+        describe('should be present when item eligible for edd request', () => {
+          describe('should be enabled when item available', () => {
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: true }
+              );
 
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with avail-request-button class', () => {
+              console.log('edd request appConfig: ', appConfig.closedLocations)
+              const links = component.find(Link)
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              expect(link.prop('className')).to.equal('avail-request-button')
+            })
+
+            it('should have link with aria-disabled false', () => {
+              const links = component.find(Link)
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(false)
+            })
+
+            it('should have a link with non-disabling handler', () => {
+              const link = component.find(Link).at(0)
+              const handler = link.prop('onClick')
+              const event = { preventDefault: () => {event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(false);
+            })
+
+            it('should have a link pointing to hold request page', () => {
+              const link = component.find(Link).at(0)
+              expect(link.prop('to')).to.include('/hold/request/b12345-i17326129/edd')
+            })
+
+            it('should say Request Scan', () => {
+              const link = component.find(Link).at(0)
+              expect(link.text()).to.equal('Request Scan')
+            })
+          })
+
+          describe('should be disabled when item not available', () => {
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: true, available: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with unavail-request-button class', () => {
+              const links = component.find(Link)
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              expect(link.prop('className')).to.equal('unavail-request-button')
+            })
+
+            it('should have a link with aria-disabled true', () => {
+              const links = component.find(Link)
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(true)
+            })
+
+            it('should have a link with click handler to prevent default', () => {
+              const link = component.find(Link).at(0)
+              const handler = link.prop('onClick')
+              const event = { preventDefault: () => { event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(true);
+            })
+
+            it('should say Request Scan', () => {
+              const link = component.find(Link).at(0)
+              expect(link.text()).to.equal('Request Scan')
+            })
+          })
+
+        })
+
+        describe('should not be present when item not eligible for EDD request', () => {
+          describe('should not be present in case it is an Aeon item', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.features = ['aeon-links']
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: true, aeonUrl: 'http://www.aeon.com' }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
+
+          describe('should not be present in case of closure', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.closedLocations = ['']
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: true }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+              appConfig.closedLocations = savedConfig.closedLocations
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
+
+          describe('should not be present if not eddRequestable', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+              appConfig.closedLocations = savedConfig.closedLocations
+            })
+
+            it('should not have a link', () => {
+              expect(component.find(Link).length).to.equal(0)
+            })
+          })
+        })
       });
 
       describe('Aeon Request', () => {
+        describe('should be present when item eligible for aeon request', () => {
+          describe('should be enabled when item available', () => {
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { aeonUrl: 'http://www.aeon.com' }
+              );
 
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with avail-request-button class', () => {
+              console.log('edd request appConfig: ', appConfig.closedLocations)
+              const links = component.find('a')
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              expect(link.prop('className')).to.equal('aeonRequestButton avail-request-button')
+            })
+
+            it('should have link with aria-disabled false', () => {
+              const links = component.find('a')
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(false)
+            })
+
+            it('should have a link with non-disabling handler', () => {
+              const link = component.find('a').at(0)
+              const handler = link.prop('onClick')
+              const event = { preventDefault: () => {event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(false);
+            })
+
+            it('should have a link pointing to hold aeon url', () => {
+              const link = component.find('a').at(0)
+              expect(link.prop('href')).to.include('http://www.aeon.com')
+            })
+
+            it('should say Request Appointment', () => {
+              const link = component.find('a').at(0)
+              expect(link.text()).to.equal('Request Appointment')
+            })
+          })
+
+          describe('should be disabled when item not available', () => {
+            let component;
+            before(() => {
+              const data = Object.assign(
+                {},
+                item.full,
+                { aeonUrl: 'http://www.aeon.com', available: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            it('should have a link with unavail-request-button class', () => {
+              const links = component.find('a')
+              expect(links.length).to.equal(1);
+              const link = links.at(0);
+              expect(link.prop('className')).to.equal('aeonRequestButton unavail-request-button')
+            })
+
+            it('should have a link with aria-disabled true', () => {
+              const links = component.find('a')
+              const link = links.at(0);
+              expect(link.prop('aria-disabled')).to.equal(true)
+            })
+
+            it('should have a link with click handler to prevent default', () => {
+              const link = component.find('a').at(0)
+              const handler = link.prop('onClick')
+              const event = { preventDefault: () => { event.called = true } }
+              handler(event)
+              expect(!!event.called).to.equal(true);
+            })
+
+            it('should say Request Appointment', () => {
+              const link = component.find('a').at(0)
+              expect(link.text()).to.equal('Request Appointment')
+            })
+          })
+        });
+
+        describe('should not be present when item not eligible for Aeon request', () => {
+          describe('should not be present in case it is not an Aeon item', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.features = ['aeon-links']
+              const data = Object.assign(
+                {},
+                item.full,
+                { eddRequestable: true }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+            })
+
+            it('should not have an aeon link', () => {
+              expect(component.find('a').length).to.equal(1)
+              expect(component.find('a').at(0).text()).to.not.equal('Request Appointment')
+            })
+          })
+
+          describe('should not be present in case Aeon is not being displayed', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.features = []
+              const data = Object.assign(
+                {},
+                item.full,
+                { aeonUrl: 'http://www.aeon.com', eddRequestable: true }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+            })
+
+            it('should not have an aeon link', () => {
+              expect(component.find('a').length).to.equal(1)
+              console.log('aeon test: ', component.find('a').at(0).text())
+              console.log('test features: ', appConfig.features)
+              expect(component.find('a').at(0).text()).to.not.equal('Request Appointment')
+            })
+          })
+
+          describe('should not be present in case of closure', () => {
+            const savedConfig = Object.assign({}, appConfig)
+            let component;
+
+            before(() => {
+              appConfig.closedLocations = ['']
+              const data = Object.assign(
+                {},
+                item.full,
+                { aeonUrl: 'http://www.aeon.com', available: false }
+              );
+
+              component = mount(
+                <ItemTableRow item={data} bibId="b12345"/>,
+                { context }
+              );
+            })
+
+            after(() => {
+              appConfig.features = savedConfig.features
+              appConfig.closedLocations = savedConfig.closedLocations
+            })
+
+            it('should not have a link', () => {
+              expect(component.find('a').length).to.equal(0)
+            })
+          })
+        })
       });
     });
   });
