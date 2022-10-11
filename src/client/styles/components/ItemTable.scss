@@ -36,6 +36,8 @@ dl dd.multi-item-list .nypl-basic-table a,
     word-wrap: normal;
     min-width: var(--nypl-sizes-10);
     font-size: var(--nypl-fontSizes-button-default);
+    margin-right: var(--nypl-space-xs);
+
 
     @media screen and (min-width: 38em) {
       min-height: auto;
