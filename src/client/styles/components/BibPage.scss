@@ -1,20 +1,5 @@
-.nypl-item-details {
-  a {
-    text-decoration: underline;
-  }
-}
-
 .view-all-items-container {
   margin-top: 1.5rem;
-}
-
-.search-control {
-  svg {
-    height: 2rem;
-    width: 2rem;
-    top: 11px;
-    margin-right: -10px;
-  }
 }
 
 div .tabbed {
@@ -75,11 +60,11 @@ div .tabbed {
   }
 }
 
+// For Tabbed.jsx
 .default {
   display: block;
   padding-top: 15px;
 }
-
 .non-default {
   display: none;
 }
@@ -92,7 +77,6 @@ div .tabbed {
 }
 
 // Start styles for subject highlighting on hover
-
 .tabbed ul section dd {
   width: fit-content;
 }

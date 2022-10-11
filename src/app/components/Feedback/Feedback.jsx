@@ -4,6 +4,7 @@ import FocusTrap from 'focus-trap-react';
 import axios from 'axios';
 import {
   Button,
+  Heading,
   HelperErrorText,
   Label,
   Link,
@@ -125,7 +126,7 @@ class Feedback extends React.Component {
           >
             {!success && (
               <>
-                <h1>We are here to help!</h1>
+                <Heading level="one" size="secondary">We are here to help!</Heading>
                 <form
                   target="hidden_feedback_iframe"
                   onSubmit={this.onSubmitForm}

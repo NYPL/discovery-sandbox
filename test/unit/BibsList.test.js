@@ -130,7 +130,8 @@ describe('BibsList', () => {
           setTimeout(() => {
             component.setProps({});
             setImmediate(() => {
-              expect(component.childAt(0).childAt(0).type()).to.equal('h3');
+              // The h3 text is "Viewing 1 - 10 of 10 items"
+              expect(component.childAt(0).childAt(0).text()).to.contain('Viewing');
               expect(component.childAt(0).childAt(1).name()).to.equal('Sorter');
             });
             setImmediate(() => resolve());

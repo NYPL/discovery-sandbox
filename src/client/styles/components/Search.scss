@@ -8,25 +8,17 @@
     margin: 0 auto;
     max-width: 1280px;
     padding: 0 var(--nypl-space-s);
-    width: 100%;
 
     #advanced-search-link-container {
       a {
         float: right;
         margin-top: 3px;
-        text-decoration: underline;
-
-        &:hover {
-          text-decoration: none;
-        }
       }
-
     }
 
     form {
       select {
         font-size: 16px;
-        padding-left: 8px;
       }
       // Select down SVG arrow:
       .chakra-select__icon-wrapper {

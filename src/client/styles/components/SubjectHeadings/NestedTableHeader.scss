@@ -13,16 +13,8 @@
     font-weight: $emphasis-font-weight;
   }
 
-  .emph {
-    color: var(--nypl-colors-ui-black);
-  }
-
   .subjectHeadingLabelInner,
   .subjectHeadingAttributeInner {
     display: inline-flex;
-  }
-
-  .sortCharacter {
-    font-size: 15px;
   }
 }

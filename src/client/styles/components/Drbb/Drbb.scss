@@ -15,20 +15,6 @@
   .loadingDots {
     margin-top: unset;
   }
-
-  a {
-    text-decoration: underline;
-  }
-}
-
-.drbb-main-header {
-  font-size: 1.4375rem;
-  margin: 0 0 10px;
-}
-
-.drbb-main-header,
-.drbb-description {
-  padding: 0 5px;
 }
 
 .drbb-description {
@@ -38,7 +24,6 @@
 
   a {
     display: contents;
-    padding: 0;
   }
 }
 
@@ -60,20 +45,11 @@
   text-align: center;
 }
 
-.drbb-result-author {
-  display: inline;
-}
-
-.drbb-result-title {
-  display: block;
-}
-
 a.drbb-read-online {
   background-color: $results-list-item-button;
   border: 0.08333rem solid $results-list-item-button;
   border-radius: 0.13333rem;
   color: var(--nypl-colors-ui-white);
-  cursor: pointer;
   display: inline-block;
   font-size: 12px;
   font-weight: normal;
@@ -82,11 +58,7 @@ a.drbb-read-online {
   padding: 4px 13px;
   margin-right: 6px;
 
-  &:hover {
-    background-color: var(--nypl-colors-ui-white);
-    color: $results-list-item-button;
-  }
-
+  &:hover,
   &:focus {
     color: $results-list-item-button;
     background-color: var(--nypl-colors-ui-white);
@@ -187,10 +159,6 @@ a.drbb-download-pdf {
       padding: 0 1.25rem 0 0.75rem;
     }
   }
-}
-
-.nypl-results-summary h2 {
-  font-size: 22px;
 }
 
 .nypl-results-summary.no-scc-results.drbb-integration {

@@ -1,14 +1,12 @@
 .seeMoreButton {
-  color: $generalDarkerBlueColor;
+  color: var(--nypl-colors-ui-link-primary);
   font-size: 14px;
-  cursor: default;
-  @include removeDefaultButtonStyle;
 
   em {
     padding-left: 10px;
   }
 
   &:hover {
-    color: $generalBlueColor;
+    color: var(--nypl-colors-ui-link-secondary);
   }
 }
