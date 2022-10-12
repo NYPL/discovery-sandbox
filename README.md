@@ -196,6 +196,7 @@ This app has an unusual Git Workflow / deployment scheme:
 - Cut feature branches off of the `development` branch
 - Post a PR targeting `development`
 - After an approved PR to `development`, tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
+  - Alternatively, use `qa2-` as a tag prefix to deploy the change to ["edd-training"](https://discoveryui-edd-training.nypl.org/), our "QA2" server. This may be preferable when QA is locked up with another review and/or when you're seeking feedback on a feature while it's in active development.
 - Only after feature branch is approved in QA, merge to `development`
 - Merge `development` into `production` to deploy to production
 
