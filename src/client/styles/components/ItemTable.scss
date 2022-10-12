@@ -33,16 +33,16 @@ dl dd.multi-item-list .nypl-basic-table a,
     @media screen and (min-width: 38em) {
       min-height: auto;
     }
+  }
+  
+  &.avail-request-button {
+    background-color: white;
+    color: var(--nypl-colors-ui-link-primary);
     &:hover {
       background-color: var(--nypl-colors-ui-bg-hover);
       border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
       color: var(--nypl-colors-ui-link-secondary);
     }
-  }
-
-  &.avail-request-button {
-    background-color: white;
-    color: var(--nypl-colors-ui-link-primary);
   }
 
   &.unavail-request-button {
@@ -52,17 +52,17 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
 }
 
-.availability-alert{
+.nypl-results-item .nypl-basic-table .availability-alert{
   margin-top: var(--nypl-space-s);
+  & a{
+    text-decoration: underline;
+  }
 }
 .available-text {
   color: var(--nypl-colors-ui-success-primary);
 }
 .unavailable-text {
   color: var(--nypl-colors-ui-warning-primary);
-}
-.division-link {
-  text-decoration: underline;
 }
 
 .nypl-results-item .nypl-basic-table .item-email-inquiry {
