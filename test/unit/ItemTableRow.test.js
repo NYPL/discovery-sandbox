@@ -329,7 +329,7 @@ describe('ItemTableRow', () => {
       });
     });
 
-    describe.only('Request Buttons', () => {
+    describe('Request Buttons', () => {
       describe('Physical Request', () => {
         describe('should be present when item eligible for physical request', () => {
           describe('should be enabled when item available', () => {
