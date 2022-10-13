@@ -770,6 +770,33 @@ function isNyplBnumber(bnum) {
    return { eResources, totalPhysicalItems }
  }
 
+ /**
+  * Given an item, return Aeon url with params added to pre-populate the form
+  */
+
+ function aeonUrl(item) {
+   const itemUrl = Array.isArray(item.aeonUrl)
+     ? item.aeonUrl[0]
+     : item.aeonUrl;
+
+   const AeonUrl = new URL(itemUrl);
+
+   const paramDict = {
+     ItemISxN: 'id',
+     itemNumber: 'barcode',
+     CallNumber: 'callNumber',
+   };
+
+   // Add/Replace query parameters on AeonURL with item key values
+   Object.entries(paramDict).forEach(([param, key]) => {
+     // If item doesn't have a value use searchParams value
+     const value = item[key] ?? AeonUrl.searchParams.get(param);
+     if (value) AeonUrl.searchParams.set(param, value);
+   });
+
+   return AeonUrl.toString();
+ }
+
 export {
   trackDiscovery,
   ajaxCall,
@@ -798,4 +825,5 @@ export {
   isNyplBnumber,
   pluckAeonLinksFromResource,
   isAeonLink,
+  aeonUrl,
 };

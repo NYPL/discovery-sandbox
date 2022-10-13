@@ -1,60 +1,57 @@
-dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a {
-  &.info-link {
-    font-size: var(--nypl-fontSizes-text-tag);
-    font-weight: var(--nypl-fontWeights-text-tag);
-    // this is inheriting text-decoration: none from style-v2.scss line 100
-    text-decoration: underline;
-  }
-  &.avail-request-button,
-  &.unavail-request-button {
-    padding: var(--nypl-space-xs) var(--nypl-space-m);
-    text-decoration: none;
-    color: #fff;
-    cursor: pointer;
-    border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
-    line-height: 1.5;
-    border-radius: var(--nypl-radii-sm);
-    font-weight: var(--nypl-fontWeights-button-default);
-    align-items: center;
-    display: flex;
-    height: var(--nypl-sizes-10);
-    justify-content: center;
-    max-height: 2.5rem;
-    min-height: 44px;
-    padding-top: var(--nypl-space-inset-narrow);
-    padding-bottom: var(--nypl-space-inset-narrow);
-    text-decoration: none;
-    word-wrap: normal;
-    min-width: var(--nypl-sizes-10);
-    font-size: var(--nypl-fontSizes-button-default);
-    margin-right: var(--nypl-space-xs);
+.avail-request-button,
+.unavail-request-button {
+  padding: var(--nypl-space-xs) var(--nypl-space-m);
+  text-decoration: none;
+  color: #fff;
+  cursor: pointer;
+  border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
+  line-height: 1.5;
+  border-radius: var(--nypl-radii-sm);
+  font-weight: var(--nypl-fontWeights-button-default);
+  align-items: center;
+  display: flex;
+  height: var(--nypl-sizes-10);
+  justify-content: center;
+  max-height: 2.5rem;
+  min-height: 44px;
+  padding-top: var(--nypl-space-inset-narrow);
+  padding-bottom: var(--nypl-space-inset-narrow);
+  text-decoration: none;
+  word-wrap: normal;
+  min-width: var(--nypl-sizes-10);
+  font-size: var(--nypl-fontSizes-button-default);
+  margin-right: var(--nypl-space-xs);
 
-    @media screen and (min-width: 38em) {
-      min-height: auto;
-    }
-  }
-  
-  &.avail-request-button {
-    background-color: white;
-    color: var(--nypl-colors-ui-link-primary);
-    &:hover {
-      background-color: var(--nypl-colors-ui-bg-hover);
-      border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
-      color: var(--nypl-colors-ui-link-secondary);
-    }
-  }
-
-  &.unavail-request-button {
-    background-color: var(--nypl-colors-ui-gray-x-light-cool);
-    color: var(--nypl-colors-ui-gray-dark);
-    border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
+  @media screen and (min-width: 38em) {
+    min-height: auto;
   }
 }
 
-.nypl-results-item .nypl-basic-table .availability-alert{
+.avail-request-button {
+  background-color: white;
+  color: var(--nypl-colors-ui-link-primary);
+  &:hover {
+    background-color: var(--nypl-colors-ui-bg-hover);
+    border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
+    color: var(--nypl-colors-ui-link-secondary);
+  }
+}
+.unavail-request-button {
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+  color: var(--nypl-colors-ui-gray-dark);
+  border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
+}
+
+.info-link {
+  font-size: var(--nypl-fontSizes-text-tag);
+  font-weight: var(--nypl-fontWeights-text-tag);
+  // this is inheriting text-decoration: none from style-v2.scss line 100
+  text-decoration: underline;
+}
+
+.nypl-results-item .nypl-basic-table .availability-alert {
   margin-top: var(--nypl-space-s);
-  & a{
+  & a {
     text-decoration: underline;
   }
 }
