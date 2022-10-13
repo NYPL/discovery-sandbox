@@ -16,7 +16,7 @@ const context = {
   },
 };
 
-describe('ItemFilters', () => {
+xdescribe('ItemFilters', () => {
   describe('default rendering', () => {
     let component;
     it('should not render without an `items` prop', () => {

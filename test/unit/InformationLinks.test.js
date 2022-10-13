@@ -37,7 +37,7 @@ describe('information links', () => {
 
   describe('onsite items - available', () => {
     it('should display green available', () => {
-      const item = libraryItems.requestable_nonReCAP_NYPL
+      const item = libraryItems.requestable_nonReCAP_NYPL_schwarzman
       const component = shallow(<InformationLinks {...item} />)
       expect(component.html()).to.include('<span class="available-text">Available </span>')
     })
@@ -47,7 +47,7 @@ describe('information links', () => {
       expect(component.html()).to.include('href="https://www.nypl.org/locations/lpa"')
     })
     it('should link to Schwarzman', () => {
-      const item = libraryItems.requestable_nonReCAP_NYPL
+      const item = libraryItems.requestable_nonReCAP_NYPL_schwarzman
       const component = shallow(<InformationLinks {...item} />)
       expect(component.html()).to.include('href="https://www.nypl.org/locations/schwarzman"')
     })
