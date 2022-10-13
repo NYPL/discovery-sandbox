@@ -7,7 +7,7 @@ import {
 
 const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
 
-const RequestButtons = ({item, bibId, searchKeywords, tr, colSpan, appConfig, page}) => {
+const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
 
   const { closedLocations, recapClosedLocations, nonRecapClosedLocations, features } = appConfig;
   const isRecap = item.isRecap;
@@ -76,16 +76,13 @@ const RequestButtons = ({item, bibId, searchKeywords, tr, colSpan, appConfig, pa
   }
 
 
-  const tableCell = (
-    <td colSpan={colSpan}>
+  return (
       <div style={{ display: 'flex' }}>
         {physRequestButton()}
         {eddRequestButton()}
         {aeonRequestButton()}
       </div>
-    </td>
   )
-  return tr ? (<tr>{tableCell}</tr>) : tableCell;
 }
 
 export default RequestButtons;

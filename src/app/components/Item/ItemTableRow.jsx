@@ -1,14 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
-import { Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
-
-import {
-  trackDiscovery,
-} from '../../utils/utils';
-
-import appConfig from '../../data/appConfig';
 
 class ItemTableRow extends React.Component {
   constructor(props) {
@@ -24,17 +16,8 @@ class ItemTableRow extends React.Component {
   render() {
     const {
       item,
-      bibId,
-      searchKeywords,
       includeVolColumn,
-      page,
     } = this.props;
-
-    const {
-      routes,
-    } = this.context.router;
-
-    const requestButtonsPage = routes[routes.length - 1].component.name;
 
     if (_isEmpty(item)) {
       return null;

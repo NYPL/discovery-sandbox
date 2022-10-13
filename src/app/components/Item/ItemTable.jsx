@@ -62,7 +62,6 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
               searchKeywords={searchKeywords}
               appConfig={appConfig}
               page={page}
-              colSpan={includeVolColumn ? "4" : "3"}
             />
           }
       </div>
