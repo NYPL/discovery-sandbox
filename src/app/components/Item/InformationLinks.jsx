@@ -12,7 +12,7 @@ const locationUrlEndpoint = (location) => {
   return urls[loc]
 }
 
-const RequestInfo = ({ isRecap, aeonUrl, available, divisionUrl, dueDate, location }) => {
+const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
   if (available) {
     if (isRecap) {
       //available recap item
@@ -40,6 +40,7 @@ const RequestInfo = ({ isRecap, aeonUrl, available, divisionUrl, dueDate, locati
         </Text>)
     }
   } else {
+
     const dueDateAlert = <span>{` - In use until ${dueDate}`}</span>
     return (
       <div className='availability-alert'>
@@ -52,4 +53,4 @@ const RequestInfo = ({ isRecap, aeonUrl, available, divisionUrl, dueDate, locati
   }
 }
 
-export default RequestInfo
+export default InformationLinks
