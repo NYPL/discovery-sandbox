@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
 import { Button } from '@nypl/design-system-react-components';
-import RequestButtons from './RequestButtons';
 import { isEmpty as _isEmpty } from 'underscore';
 
 import {
@@ -63,29 +62,18 @@ class ItemTableRow extends React.Component {
     }
 
     return (
-      <>
-        <tr className={item.availability}>
-          { includeVolColumn ? (
-            <td className="vol-date-col" data-th="Vol/Date">
-            <span>{item.volume || ''}</span>
-            </td>
-          ) : null}
-          <td data-th="Format">
-            <span>{item.format || ' '}</span>
+      <tr className={item.availability}>
+        { includeVolColumn ? (
+          <td className="vol-date-col" data-th="Vol/Date">
+          <span>{item.volume || ''}</span>
           </td>
-          <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-          <td data-th="Location"><span>{itemLocation}</span></td>
-        </tr>
-        <RequestButtons
-          item={item}
-          bibId={bibId}
-          searchKeywords={searchKeywords}
-          appConfig={appConfig}
-          page={requestButtonsPage}
-          tr
-          colSpan={includeVolColumn ? "4" : "3"}
-        />
-      </>
+        ) : null}
+        <td data-th="Format">
+          <span>{item.format || ' '}</span>
+        </td>
+        <td data-th="Call Number"><span>{itemCallNumber}</span></td>
+        <td data-th="Location"><span>{itemLocation}</span></td>
+      </tr>
     );
   }
 }
