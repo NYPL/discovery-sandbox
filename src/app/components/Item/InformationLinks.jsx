@@ -6,7 +6,7 @@ const locationUrlEndpoint = (location) => {
   const loc = location.split(' ')[0]
   const urls = {
     'Schwarzman': 'schwarzman',
-    'Library': 'lpa',
+    'Performing': 'lpa',
     'Schomburg': 'schomburg'
   }
   return urls[loc]
@@ -21,7 +21,7 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
         href='https://www.nypl.org/help/request-research-materials'>
         How do I pick up this item and when will it be ready?
       </Link>
-    } else if (aeonUrl.length > 0 && divisionUrl) {
+    } else if (aeonUrl && aeonUrl.length > 0 && divisionUrl) {
       return <Text className='availability-alert'>
         <span className='available-text'>Available by appointment</span>
         <span> at </span>
@@ -40,7 +40,6 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
         </Text>)
     }
   } else {
-
     const dueDateAlert = <span>{` - In use until ${dueDate}`}</span>
     return (
       <div className='availability-alert'>
