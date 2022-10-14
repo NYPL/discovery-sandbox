@@ -19,10 +19,6 @@ class ItemTableRow extends React.Component {
       includeVolColumn,
     } = this.props;
 
-    const {
-      routes,
-    } = this.context.router;
-
     if (_isEmpty(item)) {
       return null;
     }
