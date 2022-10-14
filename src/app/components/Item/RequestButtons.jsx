@@ -4,6 +4,7 @@ import {
   trackDiscovery,
   aeonUrl,
 } from '../../utils/utils';
+import InformationLinks from './InformationLinks';
 
 const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
 
@@ -83,6 +84,7 @@ const RequestButtons = ({item, bibId, searchKeywords, tr, colSpan, appConfig, pa
         {eddRequestButton()}
         {aeonRequestButton()}
       </div>
+      <InformationLinks {...item} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
     </td>
   )
   return tr ? (<tr>{tableCell}</tr>) : tableCell;
