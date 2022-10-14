@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 
 import ItemTableRow from './ItemTableRow';
-import RequestButtons from './RequestButtons';
+import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
 
 const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
@@ -56,13 +56,12 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           </table>
           {
             page === 'SearchResults' &&
-            <RequestButtons
+            <StatusLinks
               item={group[0]}
               bibId={bibId}
               searchKeywords={searchKeywords}
               appConfig={appConfig}
               page={page}
-              colSpan={includeVolColumn ? "4" : "3"}
             />
           }
       </div>

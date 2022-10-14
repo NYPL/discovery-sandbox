@@ -153,8 +153,8 @@ describe('ResultsList', () => {
       expect(component.find('li').length).to.equal(15);
     });
 
-    it('should render one table for each bib', () => {
-      expect(component.find('table').length).to.equal(3);
+    it('should render one table for each item', () => {
+      expect(component.find('table').length).to.equal(5);
     });
   });
 
@@ -204,7 +204,7 @@ describe('ResultsList', () => {
     });
 
     it('should have a table', () => {
-      expect(component.find('table').length).to.equal(1);
+      expect(component.find('table').length).to.equal(3);
     });
 
     it('table should only render three rows', () => {
