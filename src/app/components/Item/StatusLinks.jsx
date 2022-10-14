@@ -6,12 +6,12 @@ import {
   aeonUrl,
 } from '../../utils/utils';
 
-const StatusTableCell = ({ item, bibId, searchKeywords, colSpan, appConfig, page }) => {
+const StatusLinks = ({ item, bibId, searchKeywords, appConfig, page }) => {
   const { features } = appConfig;
   const isAeon = item.aeonUrl && features.includes('aeon-links')
 
   return(
-    <td colSpan={colSpan}>
+    <div>
       <RequestButtons
         item={item}
         bibId={bibId}
@@ -20,8 +20,8 @@ const StatusTableCell = ({ item, bibId, searchKeywords, colSpan, appConfig, page
         page={page}
       />
       <InformationLinks {...item} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
-    </td>
+    </div>
   )
 }
 
-export default StatusTableCell;
+export default StatusLinks;
