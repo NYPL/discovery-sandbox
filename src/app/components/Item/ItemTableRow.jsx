@@ -15,7 +15,7 @@ class ItemTableRow extends React.Component {
 
   render() {
     const {
-      item
+      item,
       includeVolColumn,
     } = this.props;
 
