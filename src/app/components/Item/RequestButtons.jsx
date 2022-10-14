@@ -8,7 +8,7 @@ import InformationLinks from './InformationLinks';
 
 const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
 
-const RequestButtons = ({item, bibId, searchKeywords, tr, colSpan, appConfig, page}) => {
+const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
 
   const { closedLocations, recapClosedLocations, nonRecapClosedLocations, features } = appConfig;
   const isRecap = item.isRecap;
@@ -77,17 +77,13 @@ const RequestButtons = ({item, bibId, searchKeywords, tr, colSpan, appConfig, pa
   }
 
 
-  const tableCell = (
-    <td colSpan={colSpan}>
-      <div style={{ display: 'flex' }}>
-        {physRequestButton()}
-        {eddRequestButton()}
-        {aeonRequestButton()}
-      </div>
-      <InformationLinks {...item} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
-    </td>
+  return (
+    <div style={{ display: 'flex' }}>
+      {physRequestButton()}
+      {eddRequestButton()}
+      {aeonRequestButton()}
+    </div>
   )
-  return tr ? (<tr>{tableCell}</tr>) : tableCell;
 }
 
 export default RequestButtons;
