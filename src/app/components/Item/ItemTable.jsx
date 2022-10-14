@@ -32,16 +32,18 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`}>
         <table className="nypl-basic-table" id={id} >
-        <caption className="hidden">Item details</caption>
-        <tbody>
-          <tr>
-            {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
-            <th scope="col">Format</th>
-            <th scope="col">Call Number</th>
-            <th scope="col">Location</th>
-          </tr>
-          {
-            group.map(item =>
+          <caption className="hidden">Item details</caption>
+          <thead>
+            <tr>
+              {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
+              <th scope="col">Format</th>
+              <th scope="col">Call Number</th>
+              <th scope="col">Location</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
+              group.map(item =>
               (<ItemTableRow
                 key={item.id}
                 item={item}
