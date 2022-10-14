@@ -11,7 +11,7 @@ import item from '../fixtures/libraryItems';
 
 
 
-describe.only('Request Buttons', () => {
+describe('Request Buttons', () => {
   describe('Search Page', () => {
     let page = 'SearchResults'
     describe('Physical Request', () => {
