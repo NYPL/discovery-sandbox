@@ -99,7 +99,7 @@ const testBib = {
   numItems: 0,
 };
 
-describe.only('ItemsContainer', () => {
+describe('ItemsContainer', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemsContainer bib={testBib} />, {
