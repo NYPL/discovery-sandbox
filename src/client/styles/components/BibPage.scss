@@ -1,5 +1,5 @@
 .nypl-item-details {
-  a {
+  :where(a) {
     text-decoration: underline;
   }
 }
