@@ -78,11 +78,11 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
 
 
   return (
-    <div style={{ display: 'flex' }}>
-      {physRequestButton()}
-      {eddRequestButton()}
-      {aeonRequestButton()}
-    </div>
+      <div style={{ display: 'flex' }}>
+        {physRequestButton()}
+        {eddRequestButton()}
+        {aeonRequestButton()}
+      </div>
   )
 }
 
