@@ -36,8 +36,9 @@ const ItemTable = ({ items, isBibPage, bibId, id, searchKeywords, page }) => {
           <thead>
             <tr>
               {isBibPage ? <th scope="col">Status</th> : null}
-              {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
+              {isBibPage || includeVolColumn ? <th scope="col">Vol/Date</th> : null}
               <th scope="col">Format</th>
+              {isBibPage ? <th scope="col">Access</th> : null}
               <th scope="col">Call Number</th>
               <th scope="col">Item Location</th>
             </tr>
