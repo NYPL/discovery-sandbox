@@ -8,6 +8,7 @@ import StatusLinks from './StatusLinks';
 class ItemTableRow extends React.Component {
   constructor (props) {
     super(props);
+    this.message = this.message.bind(this)
   }
 
   message () {
@@ -69,8 +70,8 @@ class ItemTableRow extends React.Component {
         <td data-th="Format">
           <span>{item.format || ' '}</span>
         </td>
+        {isBibPage ? <td data-th="Access">{this.message()}</td> : null}
         <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        {isBibPage ? <td data-th="Access">Acessmessage</td> : null}
         <td data-th="Location"><span>{itemLocation}</span></td>
       </tr>
     );
