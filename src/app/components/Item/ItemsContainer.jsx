@@ -83,6 +83,7 @@ class ItemsContainer extends React.Component {
         ? items.slice(0, itemsListPageLimit)
         : items;
     const bibId = this.props.bibId;
+    const isBibPage = this.context.router.location.pathname.includes('/bib/')
 
     return itemsToDisplay &&
       _isArray(itemsToDisplay) &&
@@ -93,6 +94,7 @@ class ItemsContainer extends React.Component {
         id="bib-item-table"
         searchKeywords={this.props.searchKeywords}
         holdings={this.props.holdings}
+          isBibPage={isBibPage}
       />
     ) : null;
   }

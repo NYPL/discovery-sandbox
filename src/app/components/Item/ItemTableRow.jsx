@@ -2,6 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty as _isEmpty } from 'underscore';
 
+import appConfig from '../../data/appConfig';
+import StatusLinks from './StatusLinks';
+
 class ItemTableRow extends React.Component {
   constructor (props) {
     super(props);
@@ -17,6 +20,10 @@ class ItemTableRow extends React.Component {
     const {
       item,
       includeVolColumn,
+      isBibPage,
+      bibId,
+      searchKeywords,
+      page
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -45,6 +52,15 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
+        {isBibPage ? (
+          <td><StatusLinks
+            item={item}
+            bibId={bibId}
+            searchKeywords={searchKeywords}
+            appConfig={appConfig}
+            page={page}
+          /></td>
+        ) : null}
         { includeVolColumn ? (
           <td className="vol-date-col" data-th="Vol/Date">
           <span>{item.volume || ''}</span>

@@ -6,7 +6,7 @@ import ItemTableRow from './ItemTableRow';
 import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
 
-const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
+const ItemTable = ({ items, isBibPage, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
@@ -35,6 +35,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           <caption className="hidden">Item details</caption>
           <thead>
             <tr>
+              {isBibPage ? <th scope="col">Status</th> : null}
               {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
               <th scope="col">Format</th>
               <th scope="col">Call Number</th>
@@ -45,6 +46,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
             {
               group.map(item =>
               (<ItemTableRow
+                isBibPage={isBibPage}
                 key={item.id}
                 item={item}
                 bibId={bibId}
