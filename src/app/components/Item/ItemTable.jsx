@@ -38,7 +38,7 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
               {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
               <th scope="col">Format</th>
               <th scope="col">Call Number</th>
-              <th scope="col">Location</th>
+              <th scope="col">Item Location</th>
             </tr>
           </thead>
           <tbody>
