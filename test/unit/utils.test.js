@@ -84,17 +84,18 @@ describe('ajaxCall', () => {
 
     after(() => {
       mock.restore();
+      console.error.restore()
     });
 
     it('should invoke the default error callback function', (done) => {
+      const consoleError = sinon.stub(console, 'error')
       const cbSpy = sinon.spy();
-      // const consoleError = sinon.spy(console, 'error');
-      ajaxCall('/api?q=locofocos', cbSpy);
+      ajaxCall('/api?q=locofocos', cbSpy, consoleError);
 
       setTimeout(() => {
         expect(cbSpy.callCount).to.equal(0);
         done();
-        // expect(consoleError.callCount).to.equal(1);
+        expect(consoleError.callCount).to.equal(1);
       }, 0);
     });
 
