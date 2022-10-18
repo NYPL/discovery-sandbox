@@ -20,7 +20,6 @@ import { RouterContext } from '../../context/RouterContext';
 import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {
-  return null
   const { router } = React.useContext(RouterContext);
   const useParallels = props.features && props.features.includes('parallels');
 
