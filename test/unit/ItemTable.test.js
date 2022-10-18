@@ -77,7 +77,7 @@ describe('ItemTable', () => {
       });
     });
 
-    describe.only('Search Results page', () => {
+    describe('Search Results page', () => {
       before(() => {
         component = shallow(<ItemTable items={data} page="SearchResults" />);
       });
