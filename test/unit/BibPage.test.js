@@ -209,7 +209,7 @@ describe('BibPage', () => {
         context,
         childContextTypes: { router: PropTypes.object },
       });
-      itemTable = component.find('ItemTable');
+
     });
 
     it('has ItemsContainer', () => {
@@ -224,12 +224,13 @@ describe('BibPage', () => {
       expect(component.find('LibraryHoldings').length).to.equal(1);
     });
 
-    it('has item table with volume column', () => {
-      expect(itemTable.find('th').at(0).text()).to.equal('Vol/Date');
+    it('has an item table', () => {
+      itemTable = component.find('ItemTable');
+      expect(itemTable.length).to.be.at.least(1)
     });
 
     it('gets the format from holdings statement', () => {
-      expect(itemTable.find('td').at(1).text()).to.equal('PRINT');
+      expect(itemTable.find('td').at(0).text()).to.equal('PRINT');
     });
 
     it('displays any notes in the "Library Holdings" tab', () => {
