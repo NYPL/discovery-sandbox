@@ -5,8 +5,9 @@ import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import ItemTableRow from './ItemTableRow';
 import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
+import { RouterContext } from '../../context/RouterContext';
 
-const ItemTable = ({ items, isBibPage, bibId, id, searchKeywords, page }) => {
+const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
@@ -14,6 +15,10 @@ const ItemTable = ({ items, isBibPage, bibId, id, searchKeywords, page }) => {
   ) {
     return null;
   }
+
+  const { router: { location: { pathname } } } = React.useContext(RouterContext);
+
+  const isBibPage = pathname.includes('/bib/')
 
   const includeVolColumn = (
     items.some(item => item.volume && item.volume.length) && page !== 'SearchResults'
@@ -54,23 +59,23 @@ const ItemTable = ({ items, isBibPage, bibId, id, searchKeywords, page }) => {
                 searchKeywords={searchKeywords}
                 includeVolColumn={includeVolColumn}
                 page={page}
-                />),
+              />),
               )
             }
           </tbody>
-          </table>
-          {
-            page === 'SearchResults' &&
-            <StatusLinks
-              item={group[0]}
-              bibId={bibId}
-              searchKeywords={searchKeywords}
-              appConfig={appConfig}
-              page={page}
-            />
-          }
+        </table>
+        {
+          page === 'SearchResults' &&
+          <StatusLinks
+            item={group[0]}
+            bibId={bibId}
+            searchKeywords={searchKeywords}
+            appConfig={appConfig}
+            page={page}
+          />
+        }
       </div>
-      )
+    )
     )
   );
 };

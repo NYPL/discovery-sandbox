@@ -1,12 +1,19 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { RouterProvider } from './../../src/app/context/RouterContext';
 
 // Import the component that is going to be tested
 import ItemTable from './../../src/app/components/Item/ItemTable';
 
-describe('ItemTable', () => {
+describe.only('ItemTable', () => {
+  const data = [
+    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+  ];
+
   describe('No rendered table', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemTable />);
@@ -28,11 +35,6 @@ describe('ItemTable', () => {
   });
 
   describe('Basic <table> structure', () => {
-    const data = [
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-      { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-    ];
     let component;
 
     before(() => {
@@ -54,43 +56,43 @@ describe('ItemTable', () => {
       expect(component.find('thead').length).to.equal(1);
       expect(component.find('tbody').length).to.equal(1);
     });
+  });
 
-    // these tests will be updated in scc-3232
-    xdescribe('bib page', () => {
-      it('should have five headings <th> in the <thead>', () => {
-        const header = component.find('thead');
 
-        expect(header.find('th').length).to.equal(5);
-        expect(header.find('th').at(0).text()).to.equal('Format');
-        expect(header.find('th').at(1).text()).to.equal('Access');
-        expect(header.find('th').at(2).text()).to.equal('Status');
-        expect(header.find('th').at(3).text()).to.equal('Call Number');
-        expect(header.find('th').at(4).text()).to.equal('Location');
-      });
+  describe('Search Results page', () => {
 
-      it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
-        const tbody = component.find('tbody');
-        // Need to render the subcomponent first:
-        const tr = tbody.render().find('tr');
-
-        expect(tr.length).to.equal(3);
-      });
+    before(() => {
+      component = mount(<RouterProvider value={{ router: { location: { pathname: 'search' } } }}> <ItemTable items={data} page="SearchResults" /></RouterProvider >);
     });
 
-    describe('Search Results page', () => {
-      before(() => {
-        component = shallow(<ItemTable items={data} page="SearchResults" />);
-      });
+    it('should have a <tr> with four headings <th> in the <thead>', () => {
+      const header = component.find('thead').at(0);
+      expect(header.find('tr').length).to.equal(1);
+      expect(header.find('th').length).to.equal(3);
+      expect(header.find('th').at(0).text()).to.equal('Format');
+      expect(header.find('th').at(1).text()).to.equal('Call Number');
+      expect(header.find('th').at(2).text()).to.equal('Item Location');
+    });
+  });
+  describe('Bib page', () => {
+    before(() => {
+      component = mount(<RouterProvider value={{ router: { location: { pathname: 'nypl.org/research/research-catalog/bib/666' } } }}> <ItemTable items={data} page="SearchResults" /></RouterProvider >);
+    });
+    it('should have a <thead> with 6 <th> elements', () => {
+      const header = component.find('thead').at(0);
+      expect(header.find('tr').length).to.equal(1);
+      expect(header.find('th').length).to.equal(6);
+      expect(header.find('th').at(0).text()).to.equal('Status');
+      expect(header.find('th').at(1).text()).to.equal('Vol/Date');
+      expect(header.find('th').at(2).text()).to.equal('Format');
+      expect(header.find('th').at(3).text()).to.equal('Access');
+      expect(header.find('th').at(4).text()).to.equal('Call Number');
+      expect(header.find('th').at(5).text()).to.equal('Item Location');
+    })
+    it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
+      const rows = component.find('tr')
 
-      it('should have a <tr> with four headings <th> in the <thead>', () => {
-        const header = component.find('thead').at(0);
-
-        expect(header.find('tr').length).to.equal(1);
-        expect(header.find('th').length).to.equal(3);
-        expect(header.find('th').at(0).text()).to.equal('Format');
-        expect(header.find('th').at(1).text()).to.equal('Call Number');
-        expect(header.find('th').at(2).text()).to.equal('Item Location');
-      });
+      expect(rows.length).to.equal(3);
     });
   });
 });

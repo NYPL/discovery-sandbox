@@ -17,14 +17,16 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
-  render() {
+
+
+  render () {
     const {
       item,
       includeVolColumn,
-      isBibPage,
       bibId,
       searchKeywords,
-      page
+      page,
+      isBibPage
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -64,7 +66,7 @@ class ItemTableRow extends React.Component {
         ) : null}
         {isBibPage || includeVolColumn ? (
           <td className="vol-date-col" data-th="Vol/Date">
-          <span>{item.volume || ''}</span>
+            <span>{item.volume || ''}</span>
           </td>
         ) : null}
         <td data-th="Format">
