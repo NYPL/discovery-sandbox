@@ -111,6 +111,16 @@
   }
 }
 
+.items-definition-list {
+  dt {
+    font-weight: var(--nypl-fontWeights-bold)
+  }
+
+  dd {
+    margin-bottom: var(--nypl-space-s)
+  }
+}
+
 @media (max-width: 600px) {
   .tabbed {
     thead {
