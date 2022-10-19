@@ -5,13 +5,11 @@ import appConfig from '../../data/appConfig'
 
 const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page }) => {
 
-  console.log('rendering items definition lists')
   if (
     !_isArray(items) ||
     !items.length ||
     items.every(item => item.isElectronicResource)
   ) {
-    console.log('all items invalid')
     return null;
   }
 
@@ -21,12 +19,10 @@ const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page
         items.map(item => {
 
             if (_isEmpty(item)) {
-              console.log('item is empty')
               return null;
             }
 
             if (item.isElectronicResource) {
-              console.log('item is electronic')
               return null;
             }
 
@@ -40,8 +36,6 @@ const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page
             } else {
               itemLocation = ' ';
             }
-
-            console.log('redering item')
 
             return (
               <div key={`item-${item.id}-div`} id={`item-${item.id}-div`}>
