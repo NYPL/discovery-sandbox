@@ -187,10 +187,10 @@ select {
     &:last-of-type {
       padding-right: 0;
     }
-    &:first-of-type {
-      padding-top: var(--nypl-space-s);
-      width: 30%;
-    }
+    // &:first-of-type {
+    //   padding-top: var(--nypl-space-s);
+    //   width: 30%;
+    // }
   }
 
   td {

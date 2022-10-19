@@ -56,7 +56,7 @@ class ItemTableRow extends React.Component {
     return (
       <tr className={item.availability}>
         {isBibPage ? (
-          <td><StatusLinks
+          <td id='status-links'><StatusLinks
             item={item}
             bibId={bibId}
             searchKeywords={searchKeywords}
