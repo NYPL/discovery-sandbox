@@ -29,7 +29,6 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     ) :
     [items]
   );
-  console.log('item table include vol column', includeVolColumn)
 
   return (
     itemGroups.map(group => (
