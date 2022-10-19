@@ -74,7 +74,7 @@ class ItemTableRow extends React.Component {
         </td>
         {isBibPage ? <td data-th="Access">{this.message()}</td> : null}
         <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        <td data-th="Location"><span>{itemLocation}</span></td>
+        <td data-th="Location"><span>{item.location}</span></td>
       </tr>
     );
   }
