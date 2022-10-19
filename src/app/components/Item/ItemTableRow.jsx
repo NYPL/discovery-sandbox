@@ -64,7 +64,7 @@ class ItemTableRow extends React.Component {
             page={page}
           /></td>
         ) : null}
-        {isBibPage || includeVolColumn ? (
+        {includeVolColumn ? (
           <td className="vol-date-col" data-th="Vol/Date">
             <span>{item.volume || ''}</span>
           </td>

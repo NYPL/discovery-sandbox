@@ -8,7 +8,7 @@ import item from '../fixtures/libraryItems';
 // Import the component that is going to be tested
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
 
-describe('ItemTableRow - bib page view', () => {
+describe.only('ItemTableRow - bib page view', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemTableRow />);
@@ -41,8 +41,8 @@ describe('ItemTableRow - bib page view', () => {
         expect(component.prop('className')).to.equal('available');
       });
 
-      it('should return six <td>', () => {
-        expect(component.find('td').length).to.equal(6);
+      it('should return five <td>', () => {
+        expect(component.find('td').length).to.equal(5);
       });
 
       it('should not have a format as the third <td> column data', () => {
@@ -50,11 +50,11 @@ describe('ItemTableRow - bib page view', () => {
       });
 
       it('should not have an access message as the second <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal('');
+        expect(component.find('td').at(1).text()).to.equal(' ');
       });
 
-      it('should not have a status as the third <td> column data', () => {
-        expect(component.find('td').at(2).text()).to.equal(' ');
+      it('should have a status as the first <td> column data', () => {
+        expect(component.find('td').at(0).text()).to.equal('<StatusLinks />');
       });
     });
 
@@ -63,7 +63,7 @@ describe('ItemTableRow - bib page view', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow isBibPage={true} item={data} />);
+        component = shallow(<ItemTableRow includeVolColumn={true} isBibPage={true} item={data} />);
       });
 
       it('should return a <tr>', () => {
@@ -80,7 +80,7 @@ describe('ItemTableRow - bib page view', () => {
       });
 
       it('should have a Vol/Date as the second <td> column data', () => {
-        expect(component.find('td').at(1).text()).to.equal('');
+        expect(component.find('td').at(1).text()).to.equal('Vol. 1');
       });
 
       it('should have a format as the third <td> column data', () => {

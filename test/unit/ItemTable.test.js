@@ -101,5 +101,11 @@ describe('ItemTable', () => {
       expect(component.find('thead').length).to.equal(1);
       expect(component.find('tbody').length).to.equal(1);
     });
+
+    it('should not have Vol/Date column if no volume on items', () => {
+      component.unmount()
+      component = mount(<ItemTable page='not search results' items={data} />);
+      expect(component.find('th').length).to.equal(5)
+    })
   });
 });
