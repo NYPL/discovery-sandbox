@@ -229,10 +229,6 @@ describe('BibPage', () => {
       expect(itemTable.length).to.be.at.least(1)
     });
 
-    it('gets the format from holdings statement', () => {
-      expect(itemTable.find('td').at(0).text()).to.equal('PRINT');
-    });
-
     it('displays any notes in the "Library Holdings" tab', () => {
       expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
     });
