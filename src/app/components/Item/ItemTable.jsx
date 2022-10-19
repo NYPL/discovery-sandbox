@@ -5,7 +5,6 @@ import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import ItemTableRow from './ItemTableRow';
 import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
-import { RouterContext } from '../../context/RouterContext';
 
 const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
   if (
@@ -16,9 +15,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     return null;
   }
 
-  const { router: { location: { pathname } } } = React.useContext(RouterContext);
-
-  const isBibPage = pathname.includes('/bib/')
+  const isBibPage = page !== 'SearchResults'
 
   const includeVolColumn = (
     items.some(item => item.volume && item.volume.length) && isBibPage
