@@ -1,20 +1,18 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
-import { Link } from 'react-router';
 import { expect } from 'chai';
-import { spy } from 'sinon';
 import { shallow, mount } from 'enzyme';
 import { mockRouterContext } from '../helpers/routing';
 import item from '../fixtures/libraryItems';
 import appConfig from '../../src/app/data/appConfig';
 
 // Import the component that is going to be tested
-import ItemTableRow from './../../src/app/components/Item/ItemTableRow';
+import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
 
 const context = mockRouterContext();
 
-describe('ItemTableRow', () => {
+describe('ItemTableRow - search view', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemTableRow />);
@@ -47,7 +45,7 @@ describe('ItemTableRow', () => {
         expect(component.prop('className')).to.equal('available');
       });
 
-      it('should return five <td>', () => {
+      it('should return three <td>', () => {
         expect(component.find('td').length).to.equal(3);
       });
 
@@ -77,7 +75,7 @@ describe('ItemTableRow', () => {
         expect(component.prop('className')).to.equal('available');
       });
 
-      it('should return five <td>', () => {
+      it('should return three <td>', () => {
         expect(component.find('td').length).to.equal(3);
       });
 
