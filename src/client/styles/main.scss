@@ -188,7 +188,8 @@ select {
       padding-right: 0;
     }
     &:first-of-type {
-      width: 30%
+      padding-top: var(--nypl-space-s);
+      width: 30%;
     }
   }
 
