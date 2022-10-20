@@ -40,12 +40,12 @@ const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page
             return (
               <div key={`item-${item.id}-div`} id={`item-${item.id}-div`}>
                 <dl key={`item-${item.id}-dl`} id={`item-${item.id}-dl`}>
-                <dt key={`item-${item.id}-format-dt`} id={`item-${item.id}-format-dt`}>Format</dt>
-                <dd key={`item-${item.id}-format-dd`} id={`item-${item.id}-format-dd`}>{item.format || ' '}</dd>
-                <dt key={`item-${item.id}-callnumber-dt`} id={`item-${item.id}-callnumber-dt`}>Call Number</dt>
-                <dd key={`item-${item.id}-callnumber-dd`} id={`item-${item.id}-callnumber-dd`}>{item.callNumber || ' '}</dd>
-                <dt key={`item-${item.id}-location-dt`} id={`item-${item.id}-location-dt`}>Item Location</dt>
-                <dd key={`item-${item.id}-location-dd`} id={`item-${item.id}-location-dd`}>{itemLocation}</dd>
+                  <dt key={`item-${item.id}-format-dt`} id={`item-${item.id}-format-dt`}>Format</dt>
+                  <dd key={`item-${item.id}-format-dd`} id={`item-${item.id}-format-dd`}>{item.format || ' '}</dd>
+                  <dt key={`item-${item.id}-callnumber-dt`} id={`item-${item.id}-callnumber-dt`}>Call Number</dt>
+                  <dd key={`item-${item.id}-callnumber-dd`} id={`item-${item.id}-callnumber-dd`}>{item.callNumber || ' '}</dd>
+                  <dt key={`item-${item.id}-location-dt`} id={`item-${item.id}-location-dt`}>Item Location</dt>
+                  <dd key={`item-${item.id}-location-dd`} id={`item-${item.id}-location-dd`}>{itemLocation}</dd>
                 </dl>
                 {
                   page === 'SearchResults' &&

@@ -1,3 +1,9 @@
+.search-results-bib-card {
+  .card-body {
+    width: 100%;
+  }
+}
+
 .avail-request-button,
 .unavail-request-button {
   padding: var(--nypl-space-xs) var(--nypl-space-m);
