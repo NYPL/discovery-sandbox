@@ -2,9 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { isEmpty as _isEmpty } from 'underscore';
 
+import appConfig from '../../data/appConfig';
+import StatusLinks from './StatusLinks';
+
 class ItemTableRow extends React.Component {
   constructor (props) {
     super(props);
+    this.message = this.message.bind(this)
   }
 
   message () {
@@ -13,10 +17,16 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
-  render() {
+
+
+  render () {
     const {
       item,
       includeVolColumn,
+      bibId,
+      searchKeywords,
+      page,
+      isBibPage
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -45,16 +55,26 @@ class ItemTableRow extends React.Component {
 
     return (
       <tr className={item.availability}>
-        { includeVolColumn ? (
+        {isBibPage ? (
+          <td id='status-links'><StatusLinks
+            item={item}
+            bibId={bibId}
+            searchKeywords={searchKeywords}
+            appConfig={appConfig}
+            page={page}
+          /></td>
+        ) : null}
+        {includeVolColumn ? (
           <td className="vol-date-col" data-th="Vol/Date">
-          <span>{item.volume || ''}</span>
+            <span>{item.volume || ''}</span>
           </td>
         ) : null}
         <td data-th="Format">
           <span>{item.format || ' '}</span>
         </td>
+        {isBibPage ? <td data-th="Access">{this.message()}</td> : null}
         <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        <td data-th="Location"><span>{itemLocation}</span></td>
+        <td data-th="Location"><span>{item.location}</span></td>
       </tr>
     );
   }

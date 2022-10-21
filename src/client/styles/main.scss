@@ -124,6 +124,7 @@ select {
 
 .nypl-basic-table {
   margin-top: 20px;
+  width: 100%;
 
   thead {
     text-align: left;
@@ -132,11 +133,15 @@ select {
   th, td {
     overflow: inherit;
     padding-right: 15px;
-    width: 16%;
+    width: 15%;
 
     &:last-of-type {
       padding-right: 0;
     }
+    // &:first-of-type {
+    //   padding-top: var(--nypl-space-s);
+    //   width: 30%;
+    // }
   }
 
   td {

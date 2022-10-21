@@ -6,7 +6,7 @@ import ItemTableRow from './ItemTableRow';
 import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
 
-const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
+const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
   if (
     !_isArray(items) ||
     !items.length ||
@@ -15,8 +15,10 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
     return null;
   }
 
+  const isBibPage = page !== 'SearchResults'
+
   const includeVolColumn = (
-    items.some(item => item.volume && item.volume.length) && page !== 'SearchResults'
+    items.some(item => item.volume && item.volume.length) && isBibPage
   );
 
   const itemGroups = (page === 'SearchResults' ?
@@ -35,8 +37,10 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
           <caption className="hidden">Item details</caption>
           <thead>
             <tr>
+              {isBibPage ? <th scope="col">Status</th> : null}
               {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
               <th scope="col">Format</th>
+              {isBibPage ? <th scope="col">Access</th> : null}
               <th scope="col">Call Number</th>
               <th scope="col">Item Location</th>
             </tr>
@@ -45,29 +49,30 @@ const ItemTable = ({ items, holdings, bibId, id, searchKeywords, page }) => {
             {
               group.map(item =>
               (<ItemTableRow
+                isBibPage={isBibPage}
                 key={item.id}
                 item={item}
                 bibId={bibId}
                 searchKeywords={searchKeywords}
                 includeVolColumn={includeVolColumn}
                 page={page}
-                />),
+              />),
               )
             }
           </tbody>
-          </table>
-          {
-            page === 'SearchResults' &&
-            <StatusLinks
-              item={group[0]}
-              bibId={bibId}
-              searchKeywords={searchKeywords}
-              appConfig={appConfig}
-              page={page}
-            />
-          }
+        </table>
+        {
+          page === 'SearchResults' &&
+          <StatusLinks
+            item={group[0]}
+            bibId={bibId}
+            searchKeywords={searchKeywords}
+            appConfig={appConfig}
+            page={page}
+          />
+        }
       </div>
-      )
+    )
     )
   );
 };

@@ -1,3 +1,9 @@
+.nypl-item-details {
+  :where(a) {
+    text-decoration: underline;
+  }
+}
+
 .view-all-items-container {
   margin-top: 1.5rem;
 }

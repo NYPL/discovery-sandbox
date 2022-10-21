@@ -30,6 +30,7 @@ const item = {
     suppressed: false,
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
+    volume: 'Vol. 1'
   },
   missingData: {
     accessMessage: {

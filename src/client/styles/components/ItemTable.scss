@@ -1,3 +1,7 @@
+#status-links {
+  width: 30%;
+  padding-top: var(--nypl-space-s);
+}
 .search-results-bib-card {
   .card-body {
     width: 100%;
@@ -22,7 +26,6 @@
   min-height: 44px;
   padding-top: var(--nypl-space-inset-narrow);
   padding-bottom: var(--nypl-space-inset-narrow);
-  text-decoration: none;
   word-wrap: normal;
   min-width: var(--nypl-sizes-10);
   font-size: var(--nypl-fontSizes-button-default);
