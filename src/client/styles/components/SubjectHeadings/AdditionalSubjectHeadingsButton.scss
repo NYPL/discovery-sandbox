@@ -1,14 +1,12 @@
 .seeMoreButton {
-  color: #104d65;
+  color: var(--nypl-colors-ui-link-primary);
   font-size: 14px;
-  cursor: default;
-  @include removeDefaultButtonStyle;
 
   em {
     padding-left: 10px;
   }
 
   &:hover {
-    color: #1b7fa7;
+    color: var(--nypl-colors-ui-link-secondary);
   }
 }

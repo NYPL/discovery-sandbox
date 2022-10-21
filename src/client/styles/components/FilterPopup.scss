@@ -48,13 +48,13 @@
     margin: 0 0 25px;
 
     svg {
-      fill: #fff;
+      fill: var(--nypl-colors-ui-white);
       margin: 0 0 2px 0px;
     }
 
     &:hover {
       svg {
-        fill: #1b7fa7;
+        fill: $generalBlueColor;
       }
     }
 
@@ -67,8 +67,8 @@
     padding-top: 3px;
 
     &:hover {
-      color: #176e91;
-      border: 1px solid #176e91;
+      color: $generalHoverBlue;
+      border: 1px solid $generalHoverBlue;
     }
   }
 
@@ -130,26 +130,26 @@
 
   .cancel-button,
   .apply-button {
-    background: #fff;
+    background: var(--nypl-colors-ui-white);
     border: 1px solid;
-    border-color: #1b7fa7;
+    border-color: $generalBlueColor;
     border-radius: 0.25rem;
-    color: #1b7fa7;
+    color: $generalBlueColor;
 
     svg {
-      fill: #1b7fa7;
-      background: #fff;
+      fill: $generalBlueColor;
+      background: var(--nypl-colors-ui-white);
       margin: 0 0 3px 3px;
     }
 
     &:hover {
-      background-color: #1b7fa7;
-      border: 1px solid #1b7fa7;
-      color: #fff;
+      background-color: $generalBlueColor;
+      border: 1px solid $generalBlueColor;
+      color: var(--nypl-colors-ui-white);
 
       svg {
-        fill: #fff;
-        background-color: #1b7fa7;
+        fill: var(--nypl-colors-ui-white);
+        background-color: $generalBlueColor;
       }
     }
   }
@@ -237,7 +237,7 @@
       padding-left: 0.65rem;
 
       &::before {
-        background: #fff;
+        background: var(--nypl-colors-ui-white);
       }
     }
   }
@@ -246,12 +246,12 @@
 .filter-container {
   a.clear-filters-button {
     -webkit-appearance: initial;
-    color: #d0343a;
+    color: $generalRedColor;
 
     &:hover {
-      border: 1px solid #d0343a;
-      color: #fff;
-      background: #d0343a;
+      border: 1px solid $generalRedColor;
+      color: var(--nypl-colors-ui-white);
+      background: $generalRedColor;
     }
   }
 
@@ -272,8 +272,8 @@
     }
     &:hover {
       svg {
-        fill: #fff;
-        background: #d0343a;
+        fill: var(--nypl-colors-ui-white);
+        background: $generalRedColor;
       }
     }
   }
@@ -343,7 +343,7 @@
 
   .nypl-field-status {
     background: var(--nypl-colors-ui-gray-x-light-cool);
-    color: #776e64;
+    color: $darkGrayTextColor;
     display: block;
     font-size: 0.9rem;
     line-height: 1.5;
@@ -361,7 +361,7 @@
       width: 100%;
       border: 0;
       border-radius: 0.25rem;
-      box-shadow: inset 0 0 0 1px #080807;
+      box-shadow: inset 0 0 0 1px $darkColorBoxShadow;
       padding: 0.5rem;
       height: 1.5rem;
     }
@@ -432,5 +432,5 @@
 }
 
 .chakra-modal__close-btn {
-  background-color: #ffffff;
+  background-color: var(--nypl-colors-ui-white)fff;
 }

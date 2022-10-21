@@ -1,35 +1,17 @@
-/*
-Import style rules from NYPL Design System
-*/
+/* Import style rules from NYPL Design System */
+// This imports system-font styles and DatePicker styles.
 @import '~@nypl/design-system-react-components/dist/styles.css';
+// This imports DS breakpoints and mixins.
 @import '~@nypl/design-system-react-components/dist/resources.scss';
-
-$intermediate-breakpoint: 1120px;
-$mobile-breakpoint: 965px;
-$xtrasmall-breakpoint: 483px;
-$basefontraw: 16;
-$basefont: $basefontraw * 1px;
-$small-type: ($basefont * 0.9);
-$max-width-raw: 1315;
-$max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
-@mixin media(
-  $max-width,
-  $min-width: false,
-  $ignore-for-ie: false) {
-  @media (max-width: $max-width) {
-    @content;
-  }
-}
 
 /*
 App-specific utilities and defaults
 */
+@import "utils/colors.scss";
+@import "utils/variables.scss";
 @import "utils/mixins.scss";
 @import "utils/utils.scss";
-// @import "utils/fonts.scss";
-@import "utils/variables.scss";
 @import "utils/base.scss";
-@import "utils/colors.scss";
 
 /*
 Import style rules from NYPL React module components
@@ -41,11 +23,6 @@ Import style rules from NYPL React module components
 
 @import "style-v2.scss";
 
-html {
-  background: #fff;
-  color: #000;
-}
-
 // From older DS version
 .main {
   margin: 0 auto;
@@ -53,10 +30,6 @@ html {
   padding: 0 var(--nypl-space-s);
   width: 100%;
   display: block;
-}
-// Override DS global setting
-.footer {
-  box-sizing: initial !important;
 }
 // The Reservoir DS does not have a `Modal` component, so we need
 // to temporarily use its previous style rules for the UI component.
@@ -78,15 +51,11 @@ html {
 
 // Overrides for other components
 .footer {
+  // Override DS global setting
+  box-sizing: initial !important;
   a {
     color: white;
     background-color: transparent;
-  }
-}
-
-.MyNypl-Login-List {
-  li {
-    margin-bottom: 0;
   }
 }
 
@@ -100,18 +69,9 @@ html {
   margin-left: 0.5rem;
 }
 
-// odd override for Header alert
-header #skip {
-  position: absolute;
-}
-
 // Misc override
 .footer-content .footerLinks {
   line-height: 15px !important;
-}
-
-li, p {
-  max-width: 100%;
 }
 
 button,
@@ -125,22 +85,13 @@ input[type=submit]:focus {
   outline-width: 3px;
 }
 
-.no-scroll {
-  overflow: hidden;
-  position: inherit;
-}
-
-.emailSubscription-wrapper {
-  margin-top: 5px !important;
-}
-
 .nypl-results-pagination {
   margin-top: 1.5rem;
   margin-bottom: 3rem;
 
   a {
     padding: 0.5rem;
-    border: 0.08333rem solid #d7d4d0;
+    border: 0.08333rem solid $lightBorder;
     border-radius: 0.2rem;
     font-weight: 500;
     width: 15%;
@@ -168,7 +119,7 @@ input[type=submit]:focus {
 }
 
 select {
-  color: #000;
+  color: var(--nypl-colors-ui-black);
 }
 
 .nypl-basic-table {
@@ -197,7 +148,7 @@ select {
 .nypl-results-publication {
   display: inline-block;
   margin-right: 1rem;
-  color: #080807;
+  color: $darkColorBoxShadow;
   font-size: "";
   font-weight: 400;
 }
@@ -227,7 +178,7 @@ select {
   padding-top: 25vh;
 
   div {
-    background-color: #F9F8F7;
+    background-color: $lightBackgroundColor;
     margin: auto;
     opacity: 100%;
     width: 472px;
@@ -262,7 +213,7 @@ select {
 
 .research-modal__content {
   align-items: flex-start;
-  background: #F9F8F7;
+  background: $lightBackgroundColor;
   border: 1px solid var(--nypl-colors-ui-gray-light-cool);
   border-radius: 5px;
   flex-flow: column wrap;
