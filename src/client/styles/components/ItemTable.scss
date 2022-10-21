@@ -116,6 +116,10 @@
   }
 }
 
+.results-items-element + .results-items-element {
+  margin-bottom: var(--nypl-space-s);
+}
+
 .items-definition-list {
   .item-dl-wrapper + .item-dl-wrapper {
     margin-top: var(--nypl-space-s);

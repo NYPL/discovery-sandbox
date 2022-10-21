@@ -163,7 +163,7 @@ const ResultsList = ({
                         className="search-results-list-link"
                         id="physical-items-link"
                       >
-                        <Text isBold size="caption">
+                        <Text isBold size="caption" className="results-items-element">
                           {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
                         </Text>
                       </Link>
