@@ -58,7 +58,7 @@ describe('ItemTableRow - search view', () => {
       });
 
       it('should not have a status as the third <td> column data', () => {
-        expect(component.find('td').at(2).text()).to.equal(' ');
+        expect(component.find('td').at(2).text()).to.equal('');
       });
     });
 

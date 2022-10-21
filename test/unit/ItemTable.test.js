@@ -52,7 +52,7 @@ describe('ItemTable', () => {
     });
     it('should have one table for each item', () => {
       expect(component.find('table').length).to.equal(3);
-      expect(component.find('table').at(0).prop('className')).to.equal('nypl-basic-table');
+      expect(component.find('table').at(0).prop('className')).to.include('nypl-basic-table');
     });
 
     it('should have one <caption> element set to "Item details".', () => {

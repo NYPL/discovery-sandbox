@@ -8,7 +8,7 @@ import item from '../fixtures/libraryItems';
 // Import the component that is going to be tested
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
 
-describe.only('ItemTableRow - bib page view', () => {
+describe('ItemTableRow - bib page view', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
       const component = shallow(<ItemTableRow />);
