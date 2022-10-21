@@ -110,7 +110,7 @@ const ResultsList = ({
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <Card>
+        <Card className="search-results-bib-card">
           <CardHeading level="three">
             <Link onClick={
               () => {

@@ -2,7 +2,6 @@
   font-size: 14px;
 
   &.nypl-column-half {
-    padding-left: 0;
     float: left;
     margin-bottom: 1rem;
     padding-right: 10px;
@@ -16,11 +15,6 @@
 
   ul {
     list-style: none;
-  }
-
-  #titles {
-    font-size: 1.275rem;
-    font-weight: 500;
   }
 }
 

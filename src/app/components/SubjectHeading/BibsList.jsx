@@ -1,4 +1,5 @@
 /* global window */
+import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import Pagination from '../Pagination/Pagination';
@@ -215,7 +216,7 @@ class BibsList extends React.Component {
         className="nypl-column-half bibsList"
         aria-label="Titles related to this Subject Heading"
       >
-        <h3 id="titles">{h3Text}</h3>
+        <Heading level="three" id="titles">{h3Text}</Heading>
         <Sorter
           page="shepBibs"
           sortOptions={[

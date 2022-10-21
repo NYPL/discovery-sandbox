@@ -36,7 +36,7 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
           <span className='available-text'>Available </span>
           {'- Can be used on site. Please visit '}
           <Link href={'https://www.nypl.org/locations/' + locationUrlEndpoint(location)}>{'New York Public Library - '}{locationShort}
-          </Link> to submit a request in person
+          </Link> to submit a request in person.
         </Text>)
     }
   } else {

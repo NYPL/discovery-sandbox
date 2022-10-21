@@ -2,6 +2,10 @@
 // item info / the full item record
 .nypl-item-details {
 
+  a {
+    text-decoration: underline !important;
+  }
+
   &__heading {
     align-items: baseline;
     display: flex;
@@ -38,7 +42,7 @@
 
     dt {
       // color: $nypl-dark-gray;
-      color: darken(#776e64, 40%);
+      color: darken($darkGrayTextColor, 40%);
       font-size: 0.85rem;
       font-weight: 700;
       letter-spacing: 0.04rem;
@@ -96,7 +100,7 @@
 }
 .nypl-results-list {
   .nypl-results-item {
-    a {
+    .title {
       text-decoration: none;
     }
   }
@@ -104,7 +108,7 @@
 
 .nypl-results-item {
   margin-bottom: 3.25rem;
-  border-bottom: 0.0625rem solid #d7d4d0;
+  border-bottom: 0.0625rem solid $lightBorder;
   padding-bottom: 2em;
 
   .nypl-results-item-description {

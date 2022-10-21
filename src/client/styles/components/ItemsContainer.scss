@@ -9,6 +9,7 @@
   }
 
   .item-filter-button {
+    color: black;
     border: 1px solid var(--nypl-colors-ui-gray-medium);
     justify-content: space-between;
     text-transform: capitalize;
@@ -59,7 +60,7 @@
 }
 
 .item-filter-content {
-  background-color: #ffffff;
+  background-color: var(--nypl-colors-ui-white);
   border: 1px solid;
   border-color: var(--nypl-colors-ui-gray-medium);
   position: absolute;
@@ -112,13 +113,13 @@ button.item-table-filters {
 
   button {
     border: none;
-    color: #d0343a;
+    color: $generalRedColor;
     display: inline-block;
     padding-left: 0;
     padding-top: 0;
 
     &:hover {
-      color: #0071ce;
+      color: $colorBlueText;
     }
   }
 }

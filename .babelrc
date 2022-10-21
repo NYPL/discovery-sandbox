@@ -121,7 +121,6 @@
           "@style-v2": "./src/client/styles/style-v2.scss",
           "@base": "./src/client/styles/utils/base.scss",
           "@colors": "./src/client/styles/utils/colors.scss",
-          "@fonts": "./src/client/styles/utils/fonts.scss",
           "@mixins": "./src/client/styles/utils/mixins.scss",
           "@utilsutils": "./src/client/styles/utils/utils.scss",
           "@variables": "./src/client/styles/utils/variables.scss",

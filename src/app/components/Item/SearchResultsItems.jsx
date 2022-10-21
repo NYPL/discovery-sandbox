@@ -10,8 +10,6 @@ const SearchResultsItems = ({ items, bibId, id, searchKeywords, page }) => {
   return (
     <MediaContext.Consumer>
       { media => {
-
-        console.log('media: ', media)
         return (
           ['mobile'].includes(media) ?
           <ItemsDefinitionLists
