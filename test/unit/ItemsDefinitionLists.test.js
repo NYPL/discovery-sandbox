@@ -164,7 +164,7 @@ describe('ItemsDefinitionLists', () => {
         expect(root.type()).to.equal('div')
         expect(root.key()).to.equal('b12345-items')
         expect(root.prop('id')).to.equal('b12345-items')
-        expect(root.prop('className')).to.equal('items-definition-list')
+        expect(root.prop('className')).to.equal('items-definition-list results-items-element')
       })
 
       it('should filter out empty items and electronic resources', () => {
