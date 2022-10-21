@@ -73,6 +73,7 @@ export class ResultsCount extends React.Component {
           aria-atomic="true"
           role="alert"
           level="two"
+          size="tertiary"
         >
           {results}
         </Heading>

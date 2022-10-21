@@ -4,8 +4,8 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: #FFF;
-  color: #000;
+  background: var(--nypl-colors-ui-white);
+  color: var(--nypl-colors-ui-black);
 
   @include min-screen($tablet-portrait) {
     position: fixed;
@@ -17,7 +17,7 @@
     background: $dsresearchprimary;
     border: 1px solid $dsresearchprimary;
     box-sizing: border-box;
-    color: #FFF;
+    color: var(--nypl-colors-ui-white);
     display: inline-block;
     font-size: 1rem;
     padding: .5rem 1rem;
@@ -25,7 +25,7 @@
     text-align: center;
   
     &:hover {
-      background: #FFF;
+      background: var(--nypl-colors-ui-white);
       color: $dsresearchprimary;
     }
   }
@@ -33,7 +33,7 @@
 
 
 .cancel-button {
-  border: 1px solid #E0E0E0;
+  border: 1px solid $feedbackBorder;
   font-size: 1rem;
   margin-right: 15px;
   text-align: center;
@@ -42,40 +42,18 @@
 
 #feedback-menu {
   display: none;
-  background: #FFF;
+  background: var(--nypl-colors-ui-white);
   border: 1px solid $border-color;
   box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
   padding: 50px 42px;
   text-align: left;
   height: 472px;
 
-  h1 {
-    font-size: 1.5rem;
-    font-weight: 500;
-    line-height: 26px;
-    letter-spacing: 0px;
-    text-align: left;
-    margin: 0 0 14px 0;
-  }
-
   &.active {
     display: block;
   }
 
-  form {
-    margin: 0;
-    padding: 0;
-  }
-
   label {
-    display: block;
-    font-size: .875rem;
-    margin-bottom: 6px;
-
-    small {
-      line-height: 1;
-    }
-
     span {
       font-size: .75rem;
       font-weight: 300;
@@ -105,10 +83,6 @@
     height: 8em;
   }
 
-  input {
-    padding: 0.3rem 0.4rem;
-  }
-
   button {
     font-size: 1rem;
     display: inline;
@@ -127,14 +101,9 @@
 .privacy-policy {
   display: flow-root;
   a {
-    color: var(--nypl-colors-ui-link-primary);
     float: right;
     font-size: .75rem;
   }
-}
-
-.nypl-required-field {
-  float: right;
 }
 
 @media (max-width: 768px) {

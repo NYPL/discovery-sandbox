@@ -37,16 +37,16 @@
   }
 
   .nypl-unset-filter {
-    background: #fff;
-    border: 1px solid #000;
-    color: #000;
+    background: var(--nypl-colors-ui-white);
+    border: 1px solid var(--nypl-colors-ui-black);
+    color: var(--nypl-colors-ui-black);
     display: flex;
     align-items: center;
     padding: 5px 10px;
     border-radius: 0.25rem;
 
     svg {
-      fill: #000;
+      fill: var(--nypl-colors-ui-black);
       height: 25px;
       width: 25px;
       margin: 0 0 0 0px;
@@ -56,12 +56,12 @@
     }
 
     &:hover {
-      background: #000;
-      border: 1px solid #fff;
-      color: #fff;
+      background: var(--nypl-colors-ui-black);
+      border: 1px solid var(--nypl-colors);
+      color: var(--nypl-colors);
 
       svg {
-        fill: #fff;
+        fill: var(--nypl-colors);
       }
     }
   }
@@ -69,7 +69,7 @@
 
 .clear-filters-button {
   svg {
-    fill: #000;
+    fill: var(--nypl-colors-ui-black);
     height: 25px;
     width: 25px;
     margin: 0 0 0 0px;

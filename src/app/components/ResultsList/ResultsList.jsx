@@ -13,7 +13,7 @@ import {
   trackDiscovery,
   getElectronicResources,
 } from '../../utils/utils';
-import ItemTable from '../Item/ItemTable';
+import SearchResultsItems from '../Item/SearchResultsItems';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
 import ItemSorter from '../../utils/itemSorter';
@@ -110,7 +110,7 @@ const ResultsList = ({
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
-        <Card>
+        <Card className="search-results-bib-card">
           <CardHeading level="three">
             <Link onClick={
               () => {
@@ -147,7 +147,7 @@ const ResultsList = ({
             {
               hasRequestTable &&
               <>
-                <ItemTable
+                <SearchResultsItems
                   items={items.slice(0, itemTableLimit)}
                   bibId={bibId}
                   id={null}
@@ -180,7 +180,6 @@ const ResultsList = ({
   };
 
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
-
   return (
     <ul
       id="nypl-results-list"

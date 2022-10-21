@@ -1,36 +1,45 @@
 // Design System Research color
 $dsresearchprimary: #377f8b;
 
-// colors
-$nyplgray: #7B756F;
-$nypldarkgray: darken($nyplgray, 40%);
-$nypllightgray: lighten($nyplgray, 40%);
-$nyplyellow: #FEE24A;
-$nyplorange: #ffb81d;
-$nyplred: #e32b31;
-$nypldarkgreen: #4C842E;
-$nypllightgreen: lighten($nypldarkgreen, 20%);
-$nyplblue: #1DA1D4;
-$nyplbluedark: #1980a9;
-
 // semantic colors
-$nyplsearchcolor: $nyplgray;
-$nyplsearchcolordark: darken($nyplsearchcolor, 10%);
-$nyplsearchcolorlight: lighten($nyplsearchcolor, 30%);
-$focuscolor: #2869b7;
-$pagecolor: $nypldarkgray;
-$pagecolorlight: $nypllightgray;
-$pagetextcolor: $nypldarkgray;
-$footercolor: #54514A;
-$highlightcolor: $nyplbluedark;
-$alertcolor: $nyplyellow;
-$backgroundcolor: #fff;
-$subjectHeadingHeaderBackground: #dfdbd7;
 $subjectHeadingBackground: #edebe9;
 
-// link colors
-$linkcolor: $nyplred;
-$linkvisitedcolor: darken($linkcolor, 20%);
-$linkhovercolor: lighten($linkcolor, 10%);
-$invertedlinkcolor: white;
-$invertedlinkvisitedcolor: darken($invertedlinkcolor, 10%);
+// Recurring colors throughout the app.
+// Some are only used once, some are only used in one file,
+// but they are all here for consistency.
+
+// mostly for borders
+$lightBorder: #d7d4d0;
+// for color and box-shadow
+$darkColorBoxShadow: #080807;
+// for background color
+$lightBackgroundColor: #F9F8F7;
+// dark text color
+$darkGrayTextColor: #776e64;
+// account page colors
+$accountBlue: #0576D3;
+$accountBGLight: #F5F5F5;
+$accountLightBorder: #C4C4C4;
+// blue color text
+$colorBlueText: #0071CE;
+// advance search aside color
+$advanceSearchColor: #A4241E;
+// advance search background color
+$advanceSearchBGColor: #F9F9F9;
+// bib page colors
+$bibTextColor: #54514a;
+$bibLinkColor: #3ab0df;
+$generalBlueColor: #1b7fa7;
+$generalDarkerBlueColor: #104d65;
+// feedback border
+$feedbackBorder: #E0E0E0;
+$generalHoverBlue: #176e91;
+$generalRedColor: #d0343a;
+$requiredRedColor: #aa272c;
+$loadingLayerBG: #eee;
+$notificationBG: #e6ecf0;
+$timedlogoutModalHR: #89969F;
+$previewComponentsTextColor: #31806a;
+
+$border-color: darken($darkGrayTextColor, 40%);
+$results-list-item-button: $generalBlueColor;

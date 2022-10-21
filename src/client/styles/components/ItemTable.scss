@@ -2,6 +2,12 @@
   width: 30%;
   padding-top: var(--nypl-space-s);
 }
+.search-results-bib-card {
+  .card-body {
+    width: 100%;
+  }
+}
+
 .avail-request-button,
 .unavail-request-button {
   padding: var(--nypl-space-xs) var(--nypl-space-m);
@@ -111,6 +117,16 @@
         color: white;
       }
     }
+  }
+}
+
+.items-definition-list {
+  dt {
+    font-weight: var(--nypl-fontWeights-bold)
+  }
+
+  dd {
+    margin-bottom: var(--nypl-space-s)
   }
 }
 

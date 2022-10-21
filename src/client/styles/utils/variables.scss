@@ -1,24 +1,13 @@
-// buttons
-$button-background-color: #776e64; // nypl-gray
+$intermediate-breakpoint: 1120px;
+$mobile-breakpoint: 965px;
+$xtrasmall-breakpoint: 483px;
+$basefontraw: 16;
+$max-width-raw: 1315;
+$max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
 
-// status
-// $status-available-color: darken($nypl-green-dark, 5%);
-$status-available-color: darken(#497629, 5%);
-// $status-default-color: darken($nypl-orange, 30%);
-$status-default-color: darken(#ffb81d, 30%);
-// $status-unavailable-color: $nypl-gray;
-$status-unavailable-color: #776e64;
+$tablet-portrait: 768px !default;
 
-// misc
-// $border-color: $page-text-color
-$border-color: darken(#776e64, 40%);
-$focus-width: 3px;
-$logo-width: 5rem;
-$logo-height: 3rem;
-$results-list-item-button: #1b7fa7;
-
-// Layout
-$container-width: 1200px;
-$header-height: 60px;
-$header-component-height: 40px;
-$header-component-margin: ($header-height - $header-component-height)/2;
+// Subject Headings variables
+$subject-heading-table-header: rgb(224, 219, 214);
+$emphasis-font-weight: 500;
+$table-row-border: 1px solid rgb(215, 210, 205);
