@@ -32,7 +32,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
 
   return (
     itemGroups.map(group => (
-      <div key={`item-${group[0].id}-div`} className={ page === 'SearchResults' ? 'search-results-table-div' : null}>
+      <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
         <table className={`nypl-basic-table${page === 'SearchResults' ? ' fixed-table' : ''}`} id={id} >
           <caption className="hidden">Item details</caption>
           <thead>
