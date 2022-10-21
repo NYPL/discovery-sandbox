@@ -134,6 +134,10 @@ select {
     overflow: inherit;
     padding-right: 15px;
     width: 15%;
+    &.status-links {
+      width: 30%;
+      padding-top: var(--nypl-space-s);
+    }
 
     &:last-of-type {
       padding-right: 0;
