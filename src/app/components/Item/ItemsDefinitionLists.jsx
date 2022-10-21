@@ -14,7 +14,7 @@ const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page
   }
 
   return (
-    <div key={`${bibId}-items`} id={`${bibId}-items`} className="items-definition-list">
+    <div key={`${bibId}-items`} id={`${bibId}-items`} className="items-definition-list results-items-element">
       {
         items.map(item => {
 

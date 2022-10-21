@@ -156,14 +156,14 @@ const ResultsList = ({
                 />
                 {
                   totalPhysicalItems > 3 ?
-                    (<CardActions>
+                    (<CardActions className="results-items-element">
                       <Link
                         onClick={resourcesOnClick}
                         to={`${bibUrl}#items-table`}
                         className="search-results-list-link"
                         id="physical-items-link"
                       >
-                        <Text isBold size="caption" className="results-items-element">
+                        <Text isBold size="caption">
                           {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
                         </Text>
                       </Link>
