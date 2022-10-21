@@ -38,7 +38,7 @@ const ItemsDefinitionLists = ({ items, holdings, bibId, id, searchKeywords, page
             }
 
             return (
-              <div key={`item-${item.id}-div`} id={`item-${item.id}-div`}>
+              <div key={`item-${item.id}-div`} id={`item-${item.id}-div`} className="item-dl-wrapper">
                 <dl key={`item-${item.id}-dl`} id={`item-${item.id}-dl`}>
                   <dt key={`item-${item.id}-format-dt`} id={`item-${item.id}-format-dt`}>Format</dt>
                   <dd key={`item-${item.id}-format-dd`} id={`item-${item.id}-format-dd`}>{item.format || ' '}</dd>

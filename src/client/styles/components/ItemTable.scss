@@ -121,6 +121,10 @@
 }
 
 .items-definition-list {
+  .item-dl-wrapper + .item-dl-wrapper {
+    margin-top: var(--nypl-space-s);
+  }
+
   dt {
     font-weight: var(--nypl-fontWeights-bold)
   }
