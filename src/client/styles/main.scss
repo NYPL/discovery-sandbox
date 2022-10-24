@@ -129,19 +129,15 @@ select {
   thead {
     text-align: left;
   }
-
   th, td {
     overflow: inherit;
     padding-right: 15px;
     width: 15%;
-    &.vol.mobile{
-      width: 10%
-    }
     &.status-links {
       width: 30%;
       padding-top: var(--nypl-space-s);
       &.mobile{
-        width:50%
+        width:60%
       }
     }
 
@@ -151,6 +147,7 @@ select {
   }
 
   td {
+    vertical-align: top;
     padding-top: 0.25em;
     padding-bottom: .5em;
   }

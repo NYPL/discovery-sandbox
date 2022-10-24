@@ -41,7 +41,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
           <thead>
             <tr>
               {isBibPage ? <th className={`status-links ${isDesktop ? '' : 'mobile'}`} scope="col">Status</th> : null}
-              {includeVolColumn ? <th className={`vol ${isDesktop ? '' : 'mobile'}`} scope="col">{`Vol/${!isDesktop && ' '}Date`}</th> : null}
+              {includeVolColumn ? <th scope="col">{`Vol/Date`}</th> : null}
               <th scope="col">Format</th>
               {isBibPage && isDesktop ? <th scope="col">Access</th> : null}
               {isDesktop ? <><th scope="col">Call Number</th>
