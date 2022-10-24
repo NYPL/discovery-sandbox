@@ -32,7 +32,6 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     ) :
     [items]
   );
-  console.log('status-links' + isDesktop ? '' : 'mobile')
   return (
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
