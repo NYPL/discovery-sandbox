@@ -17,8 +17,6 @@ class ItemTableRow extends React.Component {
     return item.accessMessage.prefLabel || ' ';
   }
 
-
-
   render () {
     const {
       item,

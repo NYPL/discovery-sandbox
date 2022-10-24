@@ -15,17 +15,17 @@ const context = mockRouterContext();
 describe('ItemTableRow - search view', () => {
   describe('No rendered row', () => {
     it('should return null with no props passed', () => {
-      const component = shallow(<ItemTableRow />);
+      const component = shallow(<ItemTableRow isDesktop={true} />);
       expect(component.type()).to.equal(null);
     });
 
     it('should return null with no items passed', () => {
-      const component = shallow(<ItemTableRow item={{}} />);
+      const component = shallow(<ItemTableRow isDesktop={true} item={{}} />);
       expect(component.type()).to.equal(null);
     });
 
     it('should return null if the item is an electronic resource', () => {
-      const component = shallow(<ItemTableRow item={{ isElectronicResource: true }} />);
+      const component = shallow(<ItemTableRow isDesktop={true} item={{ isElectronicResource: true }} />);
 
       expect(component.type()).to.equal(null);
     });
@@ -37,12 +37,11 @@ describe('ItemTableRow - search view', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} />);
+        component = shallow(<ItemTableRow isDesktop={true} item={data} />);
       });
 
       it('should return a <tr>', () => {
-        expect(component.type()).to.equal('tr');
-        expect(component.prop('className')).to.equal('available');
+        expect(component.html().startsWith('<tr')).to.be.true;
       });
 
       it('should return three <td>', () => {
@@ -67,12 +66,11 @@ describe('ItemTableRow - search view', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} />);
+        component = shallow(<ItemTableRow isDesktop={true} item={data} />);
       });
 
       it('should return a <tr>', () => {
-        expect(component.type()).to.equal('tr');
-        expect(component.prop('className')).to.equal('available');
+        expect(component.html().startsWith('<tr')).to.be.true;
       });
 
       it('should return three <td>', () => {
@@ -97,7 +95,7 @@ describe('ItemTableRow - search view', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} />);
+        component = shallow(<ItemTableRow isDesktop={true} item={data} />);
       });
 
       it('should have a call number as the second <td> column data', () => {
@@ -114,7 +112,7 @@ describe('ItemTableRow - search view', () => {
       let component;
 
       before(() => {
-        component = shallow(<ItemTableRow item={data} />);
+        component = shallow(<ItemTableRow isDesktop={true} item={data} />);
       });
 
       it('should have a call number as the second <td> column data', () => {
@@ -132,7 +130,7 @@ describe('ItemTableRow - search view', () => {
         before(() => {
           const data = item.full;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+          component = shallow(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />);
         });
       });
 
@@ -140,7 +138,7 @@ describe('ItemTableRow - search view', () => {
         before(() => {
           const data = item.requestable_nonReCAP_NYPL;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow item={data} bibId="b12345" />);
+          component = shallow(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />);
         });
         it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
           expect(component.find('td').find('div').length).to.equal(0);
@@ -159,7 +157,7 @@ describe('ItemTableRow - search view', () => {
 
         before(() => {
           component =
-            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
         });
 
         it('should render the Request button in the third <td> column', () => {
@@ -175,7 +173,7 @@ describe('ItemTableRow - search view', () => {
 
         before(() => {
           component =
-            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
         });
 
         it('should render the Request button in the third <td> column', () => {
@@ -191,7 +189,7 @@ describe('ItemTableRow - search view', () => {
 
         before(() => {
           component =
-            mount(<ItemTableRow item={data} bibId="b12345" />, { context });
+            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
         });
 
 

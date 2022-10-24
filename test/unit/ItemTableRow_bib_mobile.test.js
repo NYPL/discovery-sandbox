@@ -4,12 +4,12 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import item from '../fixtures/libraryItems';
-import { MediaContext } from '../../src/app/components/Application/Application';
 
 // Import the component that is going to be tested
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
+import { MediaContext } from '../../src/app/components/Application/Application';
 
-describe('ItemTableRow - bib page view', () => {
+describe('ItemTableRow - mobile bib page view', () => {
 
   describe('Rendered row', () => {
     describe('Missing data item', () => {
@@ -17,7 +17,7 @@ describe('ItemTableRow - bib page view', () => {
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={true} isBibPage={true} item={data} />);
+        component = mount(<ItemTableRow isDesktop={false} isBibPage={true} item={data} />);
       });
 
       it('should return a <tr>', () => {
@@ -25,12 +25,12 @@ describe('ItemTableRow - bib page view', () => {
         expect(tr.prop('className')).to.equal('available');
       });
 
-      it('should return five <td>', () => {
-        expect(component.find('td').length).to.equal(5);
+      it('should return two <td>', () => {
+        expect(component.find('td').length).to.equal(2);
       });
 
       it('should not have a format as the third <td> column data', () => {
-        expect(component.find('td').at(2).text()).to.equal(' ');
+        expect(component.html()).to.not.include('format')
       });
 
       it('should not have an access message as the second <td> column data', () => {
@@ -38,7 +38,7 @@ describe('ItemTableRow - bib page view', () => {
       });
 
       it('should have a status as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.include('Available');
+        expect(component.find('td').at(0).text()).to.include('Available - Can be used on site');
       });
     });
 
@@ -47,19 +47,20 @@ describe('ItemTableRow - bib page view', () => {
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={true} includeVolColumn={true} isBibPage={true} item={data} />);
+        component = mount(<ItemTableRow isDesktop={false} isBibPage={true} item={data} includeVolColumn={true} />);
       });
 
       it('should return a <tr>', () => {
-        expect(component.html().startsWith('<tr')).to.be.true;
+        const tr = component.find('tr')
+        expect(tr.prop('className')).to.equal('available');
       });
 
-      it('should return six <td>', () => {
-        expect(component.find('td').length).to.equal(6);
+      it('should return three <td>', () => {
+        expect(component.find('td').length).to.equal(3);
       });
 
       it('should have status links as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.include('Available - Can be used');
+        expect(component.find('td').at(0).text()).to.include('Available - Can be used on site');
       });
 
       it('should have a Vol/Date as the second <td> column data', () => {
@@ -68,18 +69,6 @@ describe('ItemTableRow - bib page view', () => {
 
       it('should have a format as the third <td> column data', () => {
         expect(component.find('td').at(2).text()).to.equal('Text');
-      });
-
-      it('should have an access as the fourth <td> column data', () => {
-        expect(component.find('td').at(3).text()).to.equal('USE IN LIBRARY');
-      });
-
-      it('should have call number as the fifth <td> column data', () => {
-        expect(component.find('td').at(4).text()).to.equal('JFE 07-5007 ---');
-      });
-
-      it('should have a location as the sixth <td> column data', () => {
-        expect(component.find('td').at(5).text()).to.equal('SASB M1 - General Research - Room 315');
       });
     });
   });
