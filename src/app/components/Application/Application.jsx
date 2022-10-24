@@ -19,7 +19,7 @@ import { breakpoints } from '../../data/constants';
 export const MediaContext = React.createContext('desktop');
 
 export class Application extends React.Component {
-  constructor(props, context) {
+  constructor (props, context) {
     super(props, context);
     const {
       query,
@@ -41,7 +41,7 @@ export class Application extends React.Component {
     }
   }
 
-  componentDidMount() {
+  componentDidMount () {
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
     const { router } = this.context;
@@ -61,16 +61,16 @@ export class Application extends React.Component {
     }
   }
 
-  onWindowResize() {
+  onWindowResize () {
     const { media } = this.state;
-    const { innerWidth } = window;
-
-    const breakpoint = breakpoints.find(breakpoint => innerWidth <= breakpoint.maxValue);
+    const { screen: { width } } = window;
+    console.log(width)
+    const breakpoint = breakpoints.find(breakpoint => width <= breakpoint.maxValue);
     const newMedia = breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
     if (media !== newMedia) this.setState({ media: newMedia });
   }
 
-  render() {
+  render () {
     // dataLocation is passed as a key to DataLoader to ensure it reloads
     // whenever the location changes.
     const dataLocation = Object.assign(

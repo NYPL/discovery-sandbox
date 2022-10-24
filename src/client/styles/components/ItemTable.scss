@@ -126,11 +126,11 @@
   }
 
   dt {
-    font-weight: var(--nypl-fontWeights-bold)
+    font-weight: var(--nypl-fontWeights-bold);
   }
 
   dd {
-    margin-bottom: var(--nypl-space-s)
+    margin-bottom: var(--nypl-space-s);
   }
 }
 
@@ -183,4 +183,11 @@
       vertical-align: top;
     }
   }
+}
+
+.request-buttons-container {
+  display: flex;
+  &.bib-details.mobile {
+      flex-direction: column;
+    }
 }

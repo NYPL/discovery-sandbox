@@ -4,11 +4,12 @@ import {
   trackDiscovery,
   aeonUrl,
 } from '../../utils/utils';
-import InformationLinks from './InformationLinks';
+import { MediaContext } from '../Application/Application';
 
 const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
 
 const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
+  const media = React.useContext(MediaContext)
 
   const { closedLocations, recapClosedLocations, nonRecapClosedLocations, features } = appConfig;
   const isRecap = item.isRecap;
@@ -75,10 +76,10 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
       </a>
     );
   }
-
+  console.log(page === 'SearchResults')
 
   return (
-      <div style={{ display: 'flex' }}>
+    <div className={`request-buttons-container ${page === 'SearchResults' ? '' : 'bib-details'} ${media}`}>
         {physRequestButton()}
         {eddRequestButton()}
         {aeonRequestButton()}

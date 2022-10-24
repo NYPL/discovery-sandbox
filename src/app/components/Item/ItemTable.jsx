@@ -5,8 +5,10 @@ import { isArray as _isArray, isEmpty as _isEmpty } from 'underscore';
 import ItemTableRow from './ItemTableRow';
 import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
+import { MediaContext } from '../Application/Application';
 
 const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
+  const { media } = React.useContext(MediaContext)
   if (
     !_isArray(items) ||
     !items.length ||
