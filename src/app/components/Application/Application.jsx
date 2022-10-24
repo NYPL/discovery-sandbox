@@ -64,7 +64,6 @@ export class Application extends React.Component {
   onWindowResize () {
     const { media } = this.state;
     const { innerWidth } = window;
-    console.log(media)
     const breakpoint = breakpoints.find(breakpoint => innerWidth <= breakpoint.maxValue);
     const newMedia = breakpoint && breakpoint.media ? breakpoint.media : 'desktop';
     if (media !== newMedia) this.setState({ media: newMedia });
