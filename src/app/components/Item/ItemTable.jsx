@@ -8,7 +8,7 @@ import appConfig from '../../data/appConfig';
 import { MediaContext } from '../Application/Application';
 
 const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
-  const { media } = React.useContext(MediaContext)
+  const media = React.useContext(MediaContext)
   if (
     !_isArray(items) ||
     !items.length ||
@@ -18,6 +18,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
   }
 
   const isBibPage = page !== 'SearchResults'
+  const isDesktop = media === 'desktop'
 
   const includeVolColumn = (
     items.some(item => item.volume && item.volume.length) && isBibPage
@@ -31,7 +32,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     ) :
     [items]
   );
-
+  console.log('status-links' + isDesktop ? '' : 'mobile')
   return (
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
@@ -39,12 +40,12 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
           <caption className="hidden">Item details</caption>
           <thead>
             <tr>
-              {isBibPage ? <th scope="col">Status</th> : null}
-              {includeVolColumn ? <th scope="col">Vol/Date</th> : null}
+              {isBibPage ? <th className={`status-links ${isDesktop ? '' : 'mobile'}`} scope="col">Status</th> : null}
+              {includeVolColumn ? <th className={`vol ${isDesktop ? '' : 'mobile'}`} scope="col">{`Vol/${!isDesktop && ' '}Date`}</th> : null}
               <th scope="col">Format</th>
-              {isBibPage ? <th scope="col">Access</th> : null}
-              <th scope="col">Call Number</th>
-              <th scope="col">Item Location</th>
+              {isBibPage && isDesktop ? <th scope="col">Access</th> : null}
+              {isDesktop ? <><th scope="col">Call Number</th>
+                <th scope="col">Item Location</th></> : null}
             </tr>
           </thead>
           <tbody>
@@ -58,6 +59,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
                 searchKeywords={searchKeywords}
                 includeVolColumn={includeVolColumn}
                 page={page}
+                isDesktop={isDesktop}
               />),
               )
             }

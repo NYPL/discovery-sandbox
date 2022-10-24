@@ -134,9 +134,15 @@ select {
     overflow: inherit;
     padding-right: 15px;
     width: 15%;
+    &.vol.mobile{
+      width: 10%
+    }
     &.status-links {
       width: 30%;
       padding-top: var(--nypl-space-s);
+      &.mobile{
+        width:50%
+      }
     }
 
     &:last-of-type {

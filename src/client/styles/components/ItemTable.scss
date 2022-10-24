@@ -6,6 +6,7 @@
 
 .avail-request-button,
 .unavail-request-button {
+  text-align: center;
   padding: var(--nypl-space-xs) var(--nypl-space-m);
   text-decoration: none;
   color: #fff;
@@ -188,7 +189,7 @@
 .request-buttons-container {
   display: flex;
   &.bib-details.mobile {
-      flex-direction: column;
+    flex-direction: column;
       a{
         margin-bottom: var(--nypl-space-xs)
       }

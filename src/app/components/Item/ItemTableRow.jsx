@@ -26,7 +26,8 @@ class ItemTableRow extends React.Component {
       bibId,
       searchKeywords,
       page,
-      isBibPage
+      isBibPage,
+      isDesktop
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -56,7 +57,7 @@ class ItemTableRow extends React.Component {
     return (
       <tr className={item.availability}>
         {isBibPage ? (
-          <td className='status-links'><StatusLinks
+          <td className={`status-links ${isDesktop ? '' : 'mobile'}`}><StatusLinks
             item={item}
             bibId={bibId}
             searchKeywords={searchKeywords}
@@ -72,9 +73,9 @@ class ItemTableRow extends React.Component {
         <td data-th="Format">
           <span>{item.format || ' '}</span>
         </td>
-        {isBibPage ? <td data-th="Access">{this.message()}</td> : null}
-        <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-        <td data-th="Location"><span>{item.location}</span></td>
+        {isBibPage && isDesktop ? <td data-th="Access">{this.message()}</td> : null}
+        {isDesktop ? <> <td data-th="Call Number"><span>{itemCallNumber}</span></td>
+          <td data-th="Location"><span>{item.location}</span></td></> : null}
       </tr>
     );
   }

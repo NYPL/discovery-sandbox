@@ -76,7 +76,6 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
       </a>
     );
   }
-  console.log(page === 'SearchResults')
 
   return (
     <div className={`request-buttons-container ${page === 'SearchResults' ? '' : 'bib-details'} ${media}`}>
