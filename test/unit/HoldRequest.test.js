@@ -256,7 +256,7 @@ describe('HoldRequest', () => {
         expect(form.find('h2')).to.have.length(1);
         expect(form.contains(
           <h2 className="nypl-request-form-title">
-            Choose a delivery option or location
+            Choose a delivery location
           </h2>)).to.equal(true);
       });
     });
@@ -318,139 +318,6 @@ describe('HoldRequest', () => {
 
         expect(requestBtn.props().type).to.equal('submit');
         expect(requestBtn.text()).to.equal('Submit Request');
-      });
-    });
-  });
-
-  describe('If the delivery location has the EDD option, <HoldRequest>', () => {
-    let component;
-    const bib = {
-      title: ['Harry Potter'],
-      '@id': 'res:b17688688',
-      items: mockedItem,
-    };
-
-    const deliveryLocations = [
-      {
-        '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
-      },
-      {
-        '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
-      },
-      {
-        '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
-      },
-    ];
-
-    before(() => {
-      component = mountTestRender(
-        <WrappedHoldRequest
-          params={{ itemId: 'i10000003' }}
-        />, {
-          attachTo: document.body,
-          store: makeTestStore({
-            patron: {
-              id: 1,
-              loggedIn: true,
-            },
-            bib,
-            loading: false,
-            deliveryLocations,
-            isEddRequestable: true,
-          }),
-        });
-    });
-
-    after(() => {
-      component.unmount();
-    });
-
-    it('should display the EDD option.', () => {
-      setImmediate(() => {
-        const form = component.find('form');
-        const fieldset = component.find('fieldset');
-
-        expect(form.find('fieldset')).to.have.length(1);
-        expect(fieldset.find('label')).to.have.length(4);
-        expect(fieldset.find('legend')).to.have.length(1);
-        expect(fieldset.find('label').at(0).find('input').props().type).to.equal('radio');
-        expect(fieldset.find('label').at(0).find('input').props().checked).to.equal(true);
-        expect(fieldset.find('label').at(0).text())
-          .to.equal('Have a small portion (one chapter, one article, around 10% of work or 50 pages for public domain works) scanned and sent to you via electronic mail.');
-      });
-    });
-  });
-
-  describe('If the delivery location has the EDD option but edd is closed, <HoldRequest>', () => {
-    let component;
-    const bib = {
-      title: ['Harry Potter'],
-      '@id': 'res:b17688688',
-      items: mockedItem,
-    };
-
-    const deliveryLocations = [
-      {
-        '@id': 'loc:myr',
-        address: '40 Lincoln Center Plaza',
-        prefLabel: 'Performing Arts Research Collections',
-        shortName: 'Library for the Performing Arts',
-      },
-      {
-        '@id': 'loc:sc',
-        prefLabel: 'Schomburg Center',
-        address: '515 Malcolm X Boulevard',
-        shortName: 'Schomburg Center',
-      },
-      {
-        '@id': 'loc:mala',
-        prefLabel: 'Schwarzman Building - Allen Scholar Room',
-        address: '476 Fifth Avenue (42nd St and Fifth Ave)',
-        shortName: 'Schwarzman Building',
-      },
-    ];
-
-    before(() => {
-      component = mountTestRender(
-        <WrappedHoldRequest
-          params={{ itemId: 'i10000003' }}
-          isEddRequestable
-        />, {
-          attachTo: document.body,
-          store: makeTestStore({
-            patron: { id: 1 },
-            bib,
-            appConfig: {
-              closedLocations: ['edd'],
-              baseUrl: '/',
-            },
-            isEddRequestable: true,
-            deliveryLocations,
-          }),
-        });
-    });
-
-    after(() => {
-      component.unmount();
-    });
-
-    it('should not display the EDD option.', () => {
-      setImmediate(() => {
-        const form = component.find('form');
-        const fieldset = component.find('fieldset');
-
-        expect(form.find('fieldset')).to.have.length(1);
-        expect(fieldset.find('label')).to.have.length(3);
-        expect(fieldset.find('legend')).to.have.length(1);
       });
     });
   });
