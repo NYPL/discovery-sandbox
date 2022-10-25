@@ -7,7 +7,7 @@
 .avail-request-button,
 .unavail-request-button {
   text-align: center;
-  padding: var(--nypl-space-xs) var(--nypl-space-m);
+  padding: 8px 16px;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -21,8 +21,6 @@
   justify-content: center;
   max-height: 2.5rem;
   min-height: 44px;
-  padding-top: var(--nypl-space-inset-narrow);
-  padding-bottom: var(--nypl-space-inset-narrow);
   word-wrap: normal;
   min-width: var(--nypl-sizes-10);
   font-size: var(--nypl-fontSizes-button-default);

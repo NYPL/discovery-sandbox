@@ -33,7 +33,6 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     [items]
   );
   const volText = isDesktop ? 'Vol/Date' : 'Vol/\nDate'
-  console.log('itemgroups length itemtable', itemGroups)
   return (
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
@@ -42,7 +41,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
           <thead>
             <tr>
               {isBibPage ? <th className={`status-links ${isDesktop ? '' : 'mobile'}`} scope="col">Status</th> : null}
-              {includeVolColumn ? <th scope="col">{`Vol/Date`}</th> : null}
+              {includeVolColumn ? <th scope="col">{volText}</th> : null}
               <th scope="col">Format</th>
               {isBibPage && isDesktop ? <th scope="col">Access</th> : null}
               {isDesktop ? <><th scope="col">Call Number</th>
