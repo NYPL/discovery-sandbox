@@ -14,7 +14,7 @@ const locationUrlEndpoint = (location) => {
 
 const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
   if (available) {
-    if (isRecap) {
+    if (isRecap && !aeonUrl) {
       //available recap item
       return <Link
         className='info-link'
@@ -24,8 +24,8 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
     } else if (aeonUrl && aeonUrl.length > 0 && divisionUrl) {
       return <Text className='availability-alert'>
         <span className='available-text'>Available by appointment</span>
-        <span> at </span>
-        <Link className='division-link' href={divisionUrl}>{location}</Link>
+        {!isRecap ? <><span> at </span>
+          <Link className='division-link' href={divisionUrl}>{location}</Link></> : null}
       </Text>
     }
     else {
