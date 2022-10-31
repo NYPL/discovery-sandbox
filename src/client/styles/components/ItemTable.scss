@@ -10,7 +10,6 @@
   padding: 8px 16px;
   text-decoration: none;
   color: #fff;
-  cursor: pointer;
   border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
   line-height: 1.5;
   border-radius: var(--nypl-radii-sm);
@@ -41,6 +40,7 @@
   }
 }
 .unavail-request-button {
+  cursor: default;
   background-color: var(--nypl-colors-ui-gray-x-light-cool);
   color: var(--nypl-colors-ui-gray-dark);
   border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
