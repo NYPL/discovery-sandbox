@@ -22,26 +22,10 @@ class ElectronicDelivery extends React.Component {
   constructor(props) {
     super(props);
 
-    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
-    const title = (bib && _isArray(bib.title) && bib.title.length) ? bib.title[0] : '';
-    let bibId;
-    if (this.props.params.bibId) {
-      bibId = this.props.params.bibId;
-    } else if (bib && bib['@id']) {
-      bibId = bib['@id'].substring(4);
-    }
-    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
-    const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
     const raiseError = _isEmpty(this.props.error) ? {} : this.props.error;
     const serverRedirect = true;
 
     this.state = _extend({
-      eddRequestable: selectedItem.eddRequestable,
-      title,
-      bibId,
-      itemId,
-      itemSource,
       raiseError,
       serverRedirect,
     });
@@ -50,6 +34,7 @@ class ElectronicDelivery extends React.Component {
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
     this.fromUrl = this.fromUrl.bind(this);
+    this.bibAndItemInformation = this.bibAndItemInformation.bind(this);
   }
 
   componentDidMount() {
@@ -73,6 +58,27 @@ class ElectronicDelivery extends React.Component {
       if (this.refs['nypl-form-error']) {
         ReactDOM.findDOMNode(this.refs['nypl-form-error']).focus();
       }
+    }
+  }
+
+  bibAndItemInformation() {
+    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
+    const title = (bib && _isArray(bib.title) && bib.title.length) ? bib.title[0] : '';
+    let bibId;
+    if (this.props.params.bibId) {
+      bibId = this.props.params.bibId;
+    } else if (bib && bib['@id']) {
+      bibId = bib['@id'].substring(4);
+    }
+    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
+    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
+    const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
+    return {
+      eddRequestable: selectedItem && selectedItem.eddRequestable,
+      title,
+      bibId,
+      itemId,
+      itemSource,
     }
   }
 
@@ -132,7 +138,7 @@ class ElectronicDelivery extends React.Component {
       itemId,
       itemSource,
       title,
-    } = this.state;
+    } = this.bibAndItemInformation();
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const { searchKeywords } = this.props;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
@@ -192,8 +198,9 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { bibId, itemId, title, raiseError, serverRedirect, eddRequestable } =
+    const { raiseError, serverRedirect } =
       this.state;
+    const { bibId, itemId, title, eddRequestable, itemSource } = this.bibAndItemInformation();
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
@@ -256,7 +263,7 @@ class ElectronicDelivery extends React.Component {
               <ElectronicDeliveryForm
                 bibId={bibId}
                 itemId={itemId}
-                itemSource={this.state.itemSource}
+                itemSource={itemSource}
                 submitRequest={this.submitRequest}
                 raiseError={this.raiseError}
                 error={error}
@@ -300,6 +307,7 @@ const mapStateToProps = state => ({
   bib: state.bib,
   searchKeywords: state.searchKeywords,
   features: state.features,
+  loading: state.loading,
 });
 
 const mapDispatchToProps = dispatch => ({
