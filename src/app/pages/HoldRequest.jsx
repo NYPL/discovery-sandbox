@@ -328,7 +328,7 @@ export class HoldRequest extends React.Component {
           Delivery options for this item are currently unavailable. Please try again later or
           contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
           </h2>) :
-          <h2 className="nypl-request-form-title">Choose a delivery option or location</h2>;
+        <h2 className="nypl-request-form-title">Choose a delivery location</h2>;
     let form = null;
 
     if (bib && selectedItemAvailable && !allClosed) {
@@ -347,7 +347,6 @@ export class HoldRequest extends React.Component {
               <legend className="visuallyHidden" id="radiobutton-group1">
                 Select a pickup location
               </legend>
-              {(isEddRequestable) && this.renderEDD()}
               {this.renderDeliveryLocation(deliveryLocations)}
             </fieldset>
 
