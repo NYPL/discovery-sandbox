@@ -32,6 +32,8 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     ) :
     [items]
   );
+  const volText = isDesktop ? 'Vol/Date' : 'Vol/\nDate'
+  console.log('itemgroups length itemtable', itemGroups)
   return (
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
