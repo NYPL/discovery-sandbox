@@ -76,7 +76,7 @@ function loadDataForRoutes(location, dispatch) {
     return pathname.match(`${baseUrl}/${path}`);
   });
 
-  if (!matchingPath || pathname.match('edd')) return new Promise(() => dispatch(updateLoadingStatus(false)));
+  if (!matchingPath) return new Promise(() => dispatch(updateLoadingStatus(false)));
 
   const pathType = matchingPath[0];
 
@@ -92,7 +92,7 @@ function loadDataForRoutes(location, dispatch) {
   const path = `${pathname}${search}`;
 
   return ajaxCall(
-    location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
+    location.pathname.replace(baseUrl, `${baseUrl}/api`).replace('/edd', '') + location.search,
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
