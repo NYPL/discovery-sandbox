@@ -13,13 +13,13 @@ import { isOptionSelected, trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
+import LibraryItem from '../../utils/item'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      chunkedItems: [],
       showAll: false,
       js: false,
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
@@ -60,7 +60,6 @@ class ItemsContainer extends React.Component {
 
     this.setState({
       js: true,
-      chunkedItems,
       page: noItemPage ? 1 : this.state.page,
     });
   }
@@ -149,7 +148,7 @@ class ItemsContainer extends React.Component {
    * @param {array} arr The array of items.
    * @param {n} number The number we want to break the array into.
    */
-  chunk(arr, n) {
+  chunk (arr = this.props.items, n = itemsListPageLimit) {
     if (_isArray(arr) && !arr.length) {
       return [];
     }
@@ -196,9 +195,8 @@ class ItemsContainer extends React.Component {
         />
       );
 
-      itemsToDisplay = this.state.chunkedItems[this.state.page - 1];
+      itemsToDisplay = this.chunk()[this.state.page - 1];
     }
-
     const itemTable = this.getTable(
       itemsToDisplay,
       shortenItems,
@@ -279,16 +277,17 @@ ItemsContainer.propTypes = {
 ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
-  itemPage: '0',
+  itemPage: '0'
 };
 
 ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  bib: state.bib,
-});
+const mapStateToProps = (state) => {
+  const items = (state.bib.checkInItems || []).concat(LibraryItem.getItems(state.bib))
+  return { bib: state.bib, items }
+};
 
 export default {
   ItemsContainer: connect(mapStateToProps)(ItemsContainer),
