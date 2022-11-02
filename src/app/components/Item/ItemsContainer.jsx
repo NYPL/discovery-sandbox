@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { isArray as _isArray } from 'underscore';
+import { isArray as _isArray, chunk as _chunk } from 'underscore';
 import appConfig from '../../data/appConfig';
 import {
   bibPageItemsListLimit as itemsListPageLimit,
@@ -14,7 +14,7 @@ import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
-import { chunk, filterItems } from '../../utils/itemsContainer'
+import { filterItems } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
@@ -47,7 +47,7 @@ class ItemsContainer extends React.Component {
     let noItemPage = false;
 
     if (items && items.length > itemsListPageLimit) {
-      chunkedItems = chunk(items, itemsListPageLimit);
+      chunkedItems = _chunk(items, itemsListPageLimit);
     }
 
     // If the `itemPage` URL query is more than the number of pages, then
@@ -152,7 +152,7 @@ class ItemsContainer extends React.Component {
         />
       );
 
-      itemsToDisplay = chunk(items, itemsListPageLimit)[this.state.page - 1];
+      itemsToDisplay = _chunk(items, itemsListPageLimit)[this.state.page - 1];
     }
     const itemTable = this.getTable(
       itemsToDisplay,
