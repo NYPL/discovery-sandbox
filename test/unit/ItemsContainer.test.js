@@ -9,9 +9,10 @@ import PropTypes from 'prop-types';
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
-import { makeTestStore } from '../helpers/store';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
+const WrappedItemsContainer = itemsContainerModule.ItemsContainer
 const items = [
   {
     accessMessage: {
@@ -251,26 +252,28 @@ describe('ItemsContainer', () => {
 
   describe('Breaking up the items passed into a chunked array', () => {
     let component
-    const testStore = makeTestStore({
+    const store = makeTestStore({
       bib: {
         done: true,
         items: longListItems
       }
     })
     before(() => {
-      component = mount(
-        <Provider store={testStore}>
-          <ItemsContainer />
-        </Provider>
-        , { context, childContextTypes: { router: PropTypes.object } });
+      component = mountTestRender(
+        <WrappedItemsContainer />
+        , { store, childContextTypes: { router: PropTypes.object } });
     })
     after(() => {
       component.unmount()
     })
-    it('should have two arrays of in the chunkedItems state,' +
-      'the first array with 20 items and the second with 4', () => {
-      const rows = component.find('tr')
-      console.log(rows.debug())
+    it(`should have ${itemsListPageLimit} on the first page of the item table and ${longListItems.length - itemsListPageLimit} on the second`, () => {
+      const container = component.find('ItemsContainer').instance()
+      let items = component.find('ItemTableRow')
+      expect(items.length).to.equal(itemsListPageLimit)
+      container.updatePage(2, 'Next')
+      component.setProps()
+      items = component.find('ItemTableRow')
+      expect(items.length).to.equal(longListItems.length - itemsListPageLimit)
     });
   });
 
