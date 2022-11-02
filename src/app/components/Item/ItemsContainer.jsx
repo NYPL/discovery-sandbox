@@ -14,6 +14,7 @@ import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
+import { chunk } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
@@ -24,7 +25,6 @@ class ItemsContainer extends React.Component {
       js: false,
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
-
     this.query = context.router.location.query;
     this.hasFilter = Object.keys(this.query).some((param) =>
       itemFilters.map((filter) => filter.type).includes(param),
@@ -37,7 +37,6 @@ class ItemsContainer extends React.Component {
         : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
-    this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
     this.filterItems = this.filterItems.bind(this);
   }
@@ -49,7 +48,7 @@ class ItemsContainer extends React.Component {
     let noItemPage = false;
 
     if (items && items.length > itemsListPageLimit) {
-      chunkedItems = this.chunk(items, itemsListPageLimit);
+      chunkedItems = chunk(items, itemsListPageLimit);
     }
 
     // If the `itemPage` URL query is more than the number of pages, then
@@ -143,19 +142,6 @@ class ItemsContainer extends React.Component {
   }
 
   /*
-   * chunk(arr, n)
-   * @description Break up all the items in the array into array of size n arrays.
-   * @param {array} arr The array of items.
-   * @param {n} number The number we want to break the array into.
-   */
-  chunk (arr = this.props.items, n = itemsListPageLimit) {
-    if (_isArray(arr) && !arr.length) {
-      return [];
-    }
-    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
-  }
-
-  /*
    * showAll()
    * @description Display all items on the page.
    */
@@ -195,7 +181,7 @@ class ItemsContainer extends React.Component {
         />
       );
 
-      itemsToDisplay = this.chunk()[this.state.page - 1];
+      itemsToDisplay = chunk(items, itemsListPageLimit)[this.state.page - 1];
     }
     const itemTable = this.getTable(
       itemsToDisplay,
