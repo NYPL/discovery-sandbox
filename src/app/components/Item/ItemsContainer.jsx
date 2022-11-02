@@ -14,7 +14,7 @@ import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
-import { chunk } from '../../utils/itemsContainer'
+import { chunk, filterItems } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
@@ -33,12 +33,11 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 1
     this.filteredItems =
       this.props.bib && this.props.bib.done
-        ? this.filterItems(this.props.items) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
     this.showAll = this.showAll.bind(this);
-    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {
@@ -95,33 +94,7 @@ class ItemsContainer extends React.Component {
     ) : null;
   }
 
-  filterItems(items) {
-    if (!items || !items.length) return [];
-    const { query } = this;
-    if (!query) return items;
-    if (!this.hasFilter) return items;
 
-    return items.filter((item) => {
-      const showItem = itemFilters.every((filter) => {
-        const filterType = filter.type;
-        const filterValue = query[filterType];
-        if (!filterValue) return true;
-        const selections =
-          typeof filterValue === 'string' ? [filterValue] : filterValue;
-        return selections.some((selection) => {
-          const isRequestable =
-            filterType === 'status' && selection === 'requestable';
-          if (isRequestable) return item.requestable;
-          const isOffsite =
-            filterType === 'location' && selection === 'offsite';
-          if (isOffsite) return item.isOffsite;
-          const itemProperty = filter.retrieveOption(item).label;
-          return isOptionSelected(selection, itemProperty, true);
-        });
-      });
-      return showItem;
-    });
-  }
 
   /*
    * updatePage(page)
@@ -154,7 +127,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 2
     this.filteredItems =
       this.props.bib && this.props.bib.done
-        ? this.filterItems(this.props.items) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
