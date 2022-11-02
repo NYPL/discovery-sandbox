@@ -94,8 +94,6 @@ class ItemsContainer extends React.Component {
     ) : null;
   }
 
-
-
   /*
    * updatePage(page)
    * @description Update the client-side state of the component's page value.
