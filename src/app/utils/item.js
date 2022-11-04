@@ -53,7 +53,7 @@ function LibraryItem() {
    */
   this.nonNyplRecapLocation = () => ({
     '@id': '',
-    prefLabel: 'Offsite',
+    prefLabel: 'Off-site',
     customerCode: '',
   });
 
