@@ -38,7 +38,7 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
           aria-disabled={!item.available}
           className={ item.available ? 'avail-request-button' : 'unavail-request-button' }
         >
-          Request for Onsite Use
+          Request for On-site Use
         </Link>)
   }
 

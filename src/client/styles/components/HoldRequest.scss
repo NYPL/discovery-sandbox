@@ -123,6 +123,10 @@ form.electronic-delivery-form {
       padding: 0;
       width: 50%;
 
+      @include media($mobile-breakpoint) {
+        width: auto;
+      }
+
       .nypl-text-field {
         margin: 1rem 0;
         padding: 0;
