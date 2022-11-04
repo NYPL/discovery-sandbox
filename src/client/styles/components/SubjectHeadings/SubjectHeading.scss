@@ -44,7 +44,7 @@
 tbody .subjectHeadingRow {
   border-bottom: $table-row-border;
   line-height: 32px;
-  background-color: $subjectHeadingBackground;
+  background-color: $bgDefault;
 
   .selected .emph {
     font-weight: 700;
@@ -69,7 +69,7 @@ tbody .subjectHeadingRow {
 
 
 .emph {
-  color: var(--nypl-colors-ui-black);
+  color: $black;
   font-size: 14px;
   font-style: initial;
 

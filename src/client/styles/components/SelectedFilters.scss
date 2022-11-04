@@ -37,16 +37,16 @@
   }
 
   .nypl-unset-filter {
-    background: var(--nypl-colors-ui-white);
-    border: 1px solid var(--nypl-colors-ui-black);
-    color: var(--nypl-colors-ui-black);
+    background: $white;
+    border: 1px solid $black;
+    color: $black;
     display: flex;
     align-items: center;
     padding: 5px 10px;
     border-radius: 0.25rem;
 
     svg {
-      fill: var(--nypl-colors-ui-black);
+      fill: $black;
       height: 25px;
       width: 25px;
       margin: 0 0 0 0px;
@@ -56,12 +56,12 @@
     }
 
     &:hover {
-      background: var(--nypl-colors-ui-black);
-      border: 1px solid var(--nypl-colors);
-      color: var(--nypl-colors);
+      background: $black;
+      border: 1px solid $white;
+      color: $white;
 
       svg {
-        fill: var(--nypl-colors);
+        fill: $white;
       }
     }
   }
@@ -69,7 +69,7 @@
 
 .clear-filters-button {
   svg {
-    fill: var(--nypl-colors-ui-black);
+    fill: $black;
     height: 25px;
     width: 25px;
     margin: 0 0 0 0px;

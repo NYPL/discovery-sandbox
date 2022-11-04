@@ -3,18 +3,18 @@
   margin-right: calc(-50vw + 50%);
 
   a:hover {
-    color: var(--nypl-colors-ui-gray-light-cool);;
+    color: $grayLightCool;
   }
 }
 
 .catalog__heading {
-  background-color: var(--nypl-colors-section-research-primary);
+  background-color: $researchPrimary;
   padding-bottom: var(--nypl-space-xs);
   padding-top: var(--nypl-space-l);
 
   h1 {
     @include wrapper;
-    color: var(--nypl-colors-ui-white);
+    color: $white;
     max-width: 1280px;
   }
 }

@@ -17,7 +17,7 @@
 }
 
 .subjectHeadingInfoBox {
-  border-color: var(--nypl-colors-ui-black);
+  border-color: $black;
   border-style: solid;
   border-top-width: 3px;
   justify-self: end;
@@ -43,7 +43,7 @@
 
 .context {
   .contextMore {
-    color: gray;
+    color: $grayDark;
   }
 }
 

@@ -9,10 +9,10 @@
     width: 100%;
     margin-bottom: unset;
     padding: var(--nypl-space-xs);
-    border: 1px solid var(--nypl-colors-ui-gray-medium);
+    border: 1px solid $grayMedium;
 
     &::placeholder {
-      color: var(--nypl-colors-ui-gray-dark);
+      color: $grayDark;
     }
   }
 }

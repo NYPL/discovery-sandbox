@@ -1,5 +1,5 @@
 .research-search {
-  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+  background-color: $grayXLightCool;
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   padding: var(--nypl-space-l) 0;
@@ -89,6 +89,6 @@ h3.electronic-resources-search-header {
     height: 1.8rem;
     width: 1.8rem;
     margin-top: 0;
-    fill: var(--nypl-colors-ui-link-primary);
+    fill: $linkPrimary;
   }
 }

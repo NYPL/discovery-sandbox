@@ -9,8 +9,8 @@
   text-align: center;
   padding: 8px 16px;
   text-decoration: none;
-  color: #fff;
-  border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
+  color: $white;
+  border: 0.08333rem solid $linkPrimary;
   line-height: 1.5;
   border-radius: var(--nypl-radii-sm);
   font-weight: var(--nypl-fontWeights-button-default);
@@ -31,19 +31,19 @@
 }
 
 .avail-request-button {
-  background-color: white;
-  color: var(--nypl-colors-ui-link-primary);
+  background-color: $white;
+  color: $linkPrimary;
   &:hover {
-    background-color: var(--nypl-colors-ui-bg-hover);
-    border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
-    color: var(--nypl-colors-ui-link-secondary);
+    background-color: $bgHover;
+    border: 0.08333rem solid $linkSecondary;
+    color: $linkSecondary;
   }
 }
 .unavail-request-button {
   cursor: default;
-  background-color: var(--nypl-colors-ui-gray-x-light-cool);
-  color: var(--nypl-colors-ui-gray-dark);
-  border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
+  background-color: $grayXLightCool;
+  color: $grayDark;
+  border: 0.08333rem solid $grayLightCool;
 }
 
 .info-link {
@@ -60,10 +60,10 @@
   }
 }
 .available-text {
-  color: var(--nypl-colors-ui-success-primary);
+  color: $succesPrimary;
 }
 .unavailable-text {
-  color: var(--nypl-colors-ui-warning-primary);
+  color: $warningPrimary;
 }
 
 .nypl-results-item .nypl-basic-table .item-email-inquiry {
@@ -79,37 +79,28 @@
     letter-spacing: unset;
 
     &:link {
-      // color: $link-color;
-      color: #1b7fa7;
-    }
-
-    &:visited {
-      // color: $link-visited-color;
-      color: darken(#1b7fa7, 15%);
+      color: $linkPrimary;
     }
 
     &:hover,
+    &:visited,
     &:visited:hover {
-      // color: $link-hover-color;
-      color: darken(#1b7fa7, 5%);
+      color: $linkSecondary;
       text-decoration: none;
     }
 
     &.inverted {
       &:link {
-        // color: $inverted-link-color;
-        color: white;
+        color: $white;
       }
 
       &:visited {
-        // color: $inverted-link-visited-color;
         color: darken(white, 10%);
       }
 
       &:hover,
       &:visited:hover {
-        // color: $inverted-link-color;
-        color: white;
+        color: $white;
       }
     }
   }
@@ -141,7 +132,7 @@
 
     tr,
     .nypl-results-item .nypl-basic-table tbody tr:last-child {
-      border: 1px solid var(--nypl-colors-ui-gray-light-cool);
+      border: 1px solid $grayLightCool;
     }
 
     .nypl-basic-table,
@@ -158,7 +149,7 @@
       }
 
       td.vol-date-col {
-        background-color: var(--nypl-colors-ui-gray-light-cool);
+        background-color: $grayLightCool;
       }
 
       span {

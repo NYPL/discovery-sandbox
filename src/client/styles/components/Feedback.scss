@@ -4,8 +4,8 @@
   right: 0;
   z-index: 100;
   text-align: right;
-  background: var(--nypl-colors-ui-white);
-  color: var(--nypl-colors-ui-black);
+  background: $white;
+  color: $black;
 
   @include min-screen($tablet-portrait) {
     position: fixed;
@@ -14,10 +14,10 @@
     min-width: 571px;
   }
   button.feedback-button {
-    background: $dsresearchprimary;
-    border: 1px solid $dsresearchprimary;
+    background: $researchPrimary;
+    border: 1px solid $researchPrimary;
     box-sizing: border-box;
-    color: var(--nypl-colors-ui-white);
+    color: $white;
     display: inline-block;
     font-size: 1rem;
     padding: .5rem 1rem;
@@ -25,15 +25,15 @@
     text-align: center;
   
     &:hover {
-      background: var(--nypl-colors-ui-white);
-      color: $dsresearchprimary;
+      background: $white;
+      color: $researchPrimary;
     }
   }
 }
 
 
 .cancel-button {
-  border: 1px solid $feedbackBorder;
+  border: 1px solid $borderDefault;
   font-size: 1rem;
   margin-right: 15px;
   text-align: center;
@@ -42,8 +42,8 @@
 
 #feedback-menu {
   display: none;
-  background: var(--nypl-colors-ui-white);
-  border: 1px solid $border-color;
+  background: $white;
+  border: 1px solid $borderDefault;
   box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
   padding: 50px 42px;
   text-align: left;
@@ -71,12 +71,11 @@
   textarea {
     display: block;
     width: 100%;
-    // background-color: $page-background-color;
     background-color: white;
     font-size: 1rem;
     line-height: 1.2;
     box-sizing: border-box;
-    border: 1px solid var(--nypl-colors-ui-gray-medium);
+    border: 1px solid $grayMedium;
   }
 
   textarea {

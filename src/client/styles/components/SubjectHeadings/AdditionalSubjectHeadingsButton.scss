@@ -1,5 +1,5 @@
 .seeMoreButton {
-  color: var(--nypl-colors-ui-link-primary);
+  color: $linkPrimary;
   font-size: 14px;
 
   em {
@@ -7,6 +7,6 @@
   }
 
   &:hover {
-    color: var(--nypl-colors-ui-link-secondary);
+    color: $linkSecondary;
   }
 }

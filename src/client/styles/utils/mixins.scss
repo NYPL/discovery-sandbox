@@ -87,9 +87,9 @@
 }
 
 @mixin clear-filters-button {
-  border: 1px solid $generalRedColor;
-  color: $generalRedColor;
-  background: var(--nypl-colors-ui-white);
+  border: 1px solid $brandPrimary;
+  color: $brandPrimary;
+  background: $white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,16 +97,16 @@
   border-radius: 0.25rem;
 
   svg {
-    fill: $generalRedColor;
+    fill: $brandPrimary;
   }
 
   &:hover {
-    border: 1px solid var(--nypl-colors-ui-white);
-    color: var(--nypl-colors-ui-white);
-    background: $generalRedColor;
+    border: 1px solid $white;
+    color: $white;
+    background: $brandPrimary;
 
     svg {
-      fill: var(--nypl-colors-ui-white);
+      fill: $white;
     }
   }
 }
