@@ -3,12 +3,16 @@
 import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
+const WrappedItemsContainer = itemsContainerModule.ItemsContainer
 const items = [
   {
     accessMessage: {
@@ -98,7 +102,6 @@ const testBib = {
   done: true,
   numItems: 0,
 };
-
 describe('ItemsContainer', () => {
   describe('Default rendering', () => {
     it('should return null with no props passed', () => {
@@ -248,63 +251,29 @@ describe('ItemsContainer', () => {
   });
 
   describe('Breaking up the items passed into a chunked array', () => {
-    // NOTE: This is the initial rendering so we are only doing shallow. The chunking process
-    // gets done in componentDidMount which is called when the component actually mounts.
-    it('should have an empty chunkedItems state', () => {
-      const component = shallow(
-        <ItemsContainer items={longListItems} bib={testBib} />, {
-        disableLifecycleMethods: true,
-        context,
-      });
-      expect(component.state('chunkedItems')).to.eql([]);
-    });
-
-    // NOTE: This is the initial rendering so we are only doing shallow. The chunking process
-    // gets done in componentDidMount which is called when the component actually mounts.
-    it('should have two arrays of in the chunkedItems state,' +
-      'the first array with 20 items and the second with 4', () => {
-      const component = shallow(<ItemsContainer items={longListItems} bib={testBib} />, { context });
-      expect(component.state('chunkedItems')).to.eql(
-        [
-          [
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ].map(LibraryItem.mapItem).map((item, i) => {
-            item.id = `i${i}`
-            return item
-          }),
-          [
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-            { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-          ].map(LibraryItem.mapItem).map((item, i) => {
-            item.id = `i${i + 20}`
-            return item
-          }),
-        ],
-      );
-
-      expect(component.state('chunkedItems')[0].length).to.equal(20);
-      expect(component.state('chunkedItems')[1].length).to.equal(4);
+    let component
+    const store = makeTestStore({
+      bib: {
+        done: true,
+        items: longListItems
+      }
+    })
+    before(() => {
+      component = mountTestRender(
+        <WrappedItemsContainer />
+        , { store, childContextTypes: { router: PropTypes.object } });
+    })
+    after(() => {
+      component.unmount()
+    })
+    it(`should have ${itemsListPageLimit} on the first page of the item table and ${longListItems.length - itemsListPageLimit} on the second`, () => {
+      const container = component.find('ItemsContainer').instance()
+      let items = component.find('ItemTableRow')
+      expect(items.length).to.equal(itemsListPageLimit)
+      container.updatePage(2, 'Next')
+      component.setProps()
+      items = component.find('ItemTableRow')
+      expect(items.length).to.equal(longListItems.length - itemsListPageLimit)
     });
   });
 

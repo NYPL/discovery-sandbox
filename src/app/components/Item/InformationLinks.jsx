@@ -46,7 +46,7 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
         <span className='unavailable-text'>Not available</span>
         {dueDate && dueDateAlert}
         <span>{' - Please '}
-          <Link href='https://www.nypl.org/about/divisions'>contact a librarian</Link>{' for assistance'}
+          <Link href='https://www.nypl.org/about/divisions'>contact a librarian</Link>{' for assistance.'}
         </span>
       </div>)
   }
