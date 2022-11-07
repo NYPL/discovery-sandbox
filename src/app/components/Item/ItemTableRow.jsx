@@ -71,6 +71,11 @@ class ItemTableRow extends React.Component {
         <td data-th="Format">
           <span>{item.format || ' '}</span>
         </td>
+        {
+          (!includeVolColumn && !isDesktop) ?
+          <td data-th="Call Number"><span>{itemCallNumber}</span></td> :
+          null
+        }
         {isBibPage && isDesktop ? <td data-th="Access">{this.message()}</td> : null}
         {isDesktop ? <> <td data-th="Call Number"><span>{itemCallNumber}</span></td>
           <td data-th="Location"><span>{item.location}</span></td></> : null}
