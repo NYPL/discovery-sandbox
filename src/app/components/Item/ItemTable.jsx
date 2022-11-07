@@ -43,6 +43,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
               {isBibPage ? <th className={`status-links ${isDesktop ? '' : 'mobile'}`} scope="col">Status</th> : null}
               {includeVolColumn ? <th scope="col">{volText}</th> : null}
               <th scope="col">Format</th>
+              { (!includeVolColumn && !isDesktop) ? <th scope="col">Call Number</th> : null }
               {isBibPage && isDesktop ? <th scope="col">Access</th> : null}
               {isDesktop ? <><th scope="col">Call Number</th>
                 <th scope="col">Item Location</th></> : null}
