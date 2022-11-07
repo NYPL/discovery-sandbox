@@ -62,9 +62,9 @@ describe('Request Buttons', () => {
             expect(link.prop('to')).to.include('/hold/request/b12345-i17326129?searchKeywords=fakesearchkeyword')
           })
 
-          it('should say Request for Onsite Use', () => {
+          it('should say Request for On-site Use', () => {
             const link = component.find(Link).at(0)
-            expect(link.text()).to.equal('Request for Onsite Use')
+            expect(link.text()).to.equal('Request for On-site Use')
           })
         })
 
@@ -109,9 +109,9 @@ describe('Request Buttons', () => {
             expect(!!event.called).to.equal(true);
           })
 
-          it('should say Request for Onsite Use', () => {
+          it('should say Request for On-site Use', () => {
             const link = component.find(Link).at(0)
-            expect(link.text()).to.equal('Request for Onsite Use')
+            expect(link.text()).to.equal('Request for On-site Use')
           })
         })
 
