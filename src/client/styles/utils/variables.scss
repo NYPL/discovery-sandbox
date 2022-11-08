@@ -1,11 +1,13 @@
-$intermediate-breakpoint: 1120px;
-$mobile-breakpoint: 965px;
-$xtrasmall-breakpoint: 483px;
+// Note: Cannot use DS CSS variables because those return numbers
+// and not the entire value with the unit.
+$nypl-breakpoint-small: 320px;
+$nypl-breakpoint-medium: 600px;
+$nypl-breakpoint-large: 960px;
+$nypl-breakpoint-xl: 1280px;
+
 $basefontraw: 16;
 $max-width-raw: 1315;
 $max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
-
-$tablet-portrait: 768px !default;
 
 // Subject Headings variables
 $subject-heading-table-header: $bgHover;

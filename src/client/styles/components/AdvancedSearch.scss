@@ -31,35 +31,35 @@
 
   #fields {
     width: 100%;
-    display: flex;
-    @include media($mobile-breakpoint) {
-      display: block;
+    display: block;
+    @include media($nypl-breakpoint-medium) {
+      display: flex;
     }
   }
 
   #advancedSearchButtons {
-    display: flex;
-    justify-content: flex-end;
+    display: block;
     width: 91%;
-
-    @include media($mobile-breakpoint) {
-      display: block;
+    
+    @include media($nypl-breakpoint-medium) {
+      justify-content: flex-end;
+      display: flex;
     }
 
     button {
       margin: 5px;
-      width: 139px;
-      @include media($mobile-breakpoint) {
-        width: 100%;
+      width: 100%;
+      @include media($nypl-breakpoint-medium) {
+        width: 139px;
       }
     }
   }
 
   #formats {
-    display: flex;
     border: none;
-    @include media($mobile-breakpoint) {
-      display: block;
+    display: block;
+    @include media($nypl-breakpoint-medium) {
+      display: flex;
     }
   }
 
