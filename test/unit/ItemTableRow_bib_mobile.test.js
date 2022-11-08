@@ -25,7 +25,7 @@ describe('ItemTableRow - mobile bib page view', () => {
         expect(tr.prop('className')).to.equal('available');
       });
 
-      it('should return two <td>', () => {
+      it('should return three <td>', () => {
         expect(component.find('td').length).to.equal(3);
       });
 
