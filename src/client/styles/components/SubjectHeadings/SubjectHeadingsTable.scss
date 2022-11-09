@@ -28,18 +28,6 @@
   }
 }
 
-@include media($mobile-breakpoint) {
-  .titles {
-    width: 75px;
-  }
-
-  .subjectHeadingsTable {
-    width: 100%;
-  }
-}
-
-@include media($xtrasmall-breakpoint) {
-  .titles {
-    width: 45px;
-  }
+.titles {
+  width: 75px;
 }

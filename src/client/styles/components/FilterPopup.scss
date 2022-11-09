@@ -58,7 +58,7 @@
       }
     }
 
-    @include min-screen($xtrasmall-breakpoint) {
+    @include media($nypl-breakpoint-small) {
       margin-top: 35px;
     }
   }
@@ -84,7 +84,7 @@
     display: none;
     margin-bottom: 0;
 
-    @include min-screen($xtrasmall-breakpoint) {
+    @include media($nypl-breakpoint-small) {
       text-align: right;
       margin-bottom: 15px;
     }
@@ -102,7 +102,7 @@
         margin-bottom: 20px;
       }
 
-      @include min-screen($xtrasmall-breakpoint) {
+      @include media($nypl-breakpoint-small) {
         width: auto;
 
         button {
@@ -193,11 +193,11 @@
     width: auto;
     z-index: 10000;
 
-    @include min-screen($tablet-portrait) {
+    @include media($nypl-breakpoint-large) {
       width: 42rem;
     }
 
-    @include min-screen(966px) {
+    @include media(966px) {
       width: 52rem;
     }
 
@@ -260,7 +260,7 @@
     margin-bottom: 20px;
     @include border-radius(5px);
 
-    @include min-screen($xtrasmall-breakpoint) {
+    @include media($nypl-breakpoint-small) {
       margin-bottom: 0;
     }
 
@@ -317,13 +317,13 @@
 }
 
 .nypl-generic-columns {
-  column-count: 3;
+  column-count: 2;
   max-width: 100%;
 }
 
-@include media($mobile-breakpoint) {
+@include media($nypl-breakpoint-medium) {
   .nypl-generic-columns {
-    column-count: 2;
+    column-count: 3;
   }
 }
 

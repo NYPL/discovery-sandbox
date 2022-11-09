@@ -7,7 +7,7 @@
   background: $white;
   color: $black;
 
-  @include min-screen($tablet-portrait) {
+  @include media($nypl-breakpoint-large) {
     position: fixed;
     background: inherit;
     max-width: 571px;

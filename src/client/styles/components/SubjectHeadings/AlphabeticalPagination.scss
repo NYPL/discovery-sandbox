@@ -8,7 +8,7 @@
   max-width: 100%;
   text-align: center;
   background-color: $borderDefault;
-  line-height: 32px;
+  line-height: 35px;
   padding: 1px;
 
   a {
@@ -20,7 +20,7 @@
     font-weight: 400;
     text-align: center;
     text-decoration: none;
-    min-width: 32px;
+    min-width: 35px;
     border: 1px solid $borderDefault;
     border-radius: 1px;
     margin: -1px;
@@ -32,12 +32,12 @@
   }
 }
 
-@include media($xtrasmall-breakpoint) {
+@include media($nypl-breakpoint-small) {
   .alphabeticalPagination {
-    line-height: 35px;
+    line-height: 32px;
 
     a {
-      min-width: 35px;
+      min-width: 32px;
     }
   }
 }
