@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { isArray as _isArray } from 'underscore';
+import { isArray as _isArray, chunk as _chunk } from 'underscore';
 import appConfig from '../../data/appConfig';
 import {
   bibPageItemsListLimit as itemsListPageLimit,
@@ -13,18 +13,18 @@ import { isOptionSelected, trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
+import LibraryItem from '../../utils/item'
+import { filterItems } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
-      chunkedItems: [],
       showAll: false,
       js: false,
       page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
-
     this.query = context.router.location.query;
     this.hasFilter = Object.keys(this.query).some((param) =>
       itemFilters.map((filter) => filter.type).includes(param),
@@ -33,13 +33,11 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 1
     this.filteredItems =
       this.props.bib && this.props.bib.done
-        ? this.filterItems(this.props.items) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
-    this.chunk = this.chunk.bind(this);
     this.showAll = this.showAll.bind(this);
-    this.filterItems = this.filterItems.bind(this);
   }
 
   componentDidMount() {
@@ -49,7 +47,7 @@ class ItemsContainer extends React.Component {
     let noItemPage = false;
 
     if (items && items.length > itemsListPageLimit) {
-      chunkedItems = this.chunk(items, itemsListPageLimit);
+      chunkedItems = _chunk(items, itemsListPageLimit);
     }
 
     // If the `itemPage` URL query is more than the number of pages, then
@@ -60,7 +58,6 @@ class ItemsContainer extends React.Component {
 
     this.setState({
       js: true,
-      chunkedItems,
       page: noItemPage ? 1 : this.state.page,
     });
   }
@@ -97,34 +94,6 @@ class ItemsContainer extends React.Component {
     ) : null;
   }
 
-  filterItems(items) {
-    if (!items || !items.length) return [];
-    const { query } = this;
-    if (!query) return items;
-    if (!this.hasFilter) return items;
-
-    return items.filter((item) => {
-      const showItem = itemFilters.every((filter) => {
-        const filterType = filter.type;
-        const filterValue = query[filterType];
-        if (!filterValue) return true;
-        const selections =
-          typeof filterValue === 'string' ? [filterValue] : filterValue;
-        return selections.some((selection) => {
-          const isRequestable =
-            filterType === 'status' && selection === 'requestable';
-          if (isRequestable) return item.requestable;
-          const isOffsite =
-            filterType === 'location' && selection === 'offsite';
-          if (isOffsite) return item.isOffsite;
-          const itemProperty = filter.retrieveOption(item).label;
-          return isOptionSelected(selection, itemProperty, true);
-        });
-      });
-      return showItem;
-    });
-  }
-
   /*
    * updatePage(page)
    * @description Update the client-side state of the component's page value.
@@ -144,19 +113,6 @@ class ItemsContainer extends React.Component {
   }
 
   /*
-   * chunk(arr, n)
-   * @description Break up all the items in the array into array of size n arrays.
-   * @param {array} arr The array of items.
-   * @param {n} number The number we want to break the array into.
-   */
-  chunk(arr, n) {
-    if (_isArray(arr) && !arr.length) {
-      return [];
-    }
-    return [arr.slice(0, n)].concat(this.chunk(arr.slice(n), n));
-  }
-
-  /*
    * showAll()
    * @description Display all items on the page.
    */
@@ -169,7 +125,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 2
     this.filteredItems =
       this.props.bib && this.props.bib.done
-        ? this.filterItems(this.props.items) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
@@ -196,9 +152,8 @@ class ItemsContainer extends React.Component {
         />
       );
 
-      itemsToDisplay = this.state.chunkedItems[this.state.page - 1];
+      itemsToDisplay = _chunk(items, itemsListPageLimit)[this.state.page - 1];
     }
-
     const itemTable = this.getTable(
       itemsToDisplay,
       shortenItems,
@@ -224,7 +179,7 @@ class ItemsContainer extends React.Component {
 
     return (
       <>
-        <Heading level="three">Items in the Library & Offsite</Heading>
+        <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
           {bibDone ? (
             <ItemFilters
@@ -279,16 +234,17 @@ ItemsContainer.propTypes = {
 ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
-  itemPage: '0',
+  itemPage: '0'
 };
 
 ItemsContainer.contextTypes = {
   router: PropTypes.object,
 };
 
-const mapStateToProps = (state) => ({
-  bib: state.bib,
-});
+const mapStateToProps = (state) => {
+  const items = (state.bib.checkInItems || []).concat(LibraryItem.getItems(state.bib))
+  return { bib: state.bib, items }
+};
 
 export default {
   ItemsContainer: connect(mapStateToProps)(ItemsContainer),

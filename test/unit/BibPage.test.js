@@ -189,6 +189,7 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
         bib: {
+          items: [{ holdingLocationCode: 'lol', id: 1234 }],
           done: true,
           numItems: 0,
         },
