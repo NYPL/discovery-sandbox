@@ -1,6 +1,7 @@
-import { Button } from '@nypl/design-system-react-components';
+import { Button, Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
+
 import { itemFilters } from '../../data/constants';
 import { trackDiscovery } from '../../utils/utils';
 import { MediaContext } from '../Application/Application';
@@ -11,8 +12,8 @@ const ItemFilters = (
   { items, hasFilterApplied, numOfFilteredItems },
   { router },
 ) => {
-  if (!items || !items.length) return null;
   const [openFilter, setOpenFilter] = useState('none');
+  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const { createHref } = router;
   const query = router.location.query || {};
   const initialFilters = {
@@ -20,8 +21,8 @@ const ItemFilters = (
     format: query.format || [],
     status: query.status || [],
   };
-
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  
+  if (!items || !items.length) return null;
 
   const manageFilterDisplay = (filterType) => {
     // reset `selectFilters` to `initialFilters` any time `openFilter` changes
@@ -129,18 +130,19 @@ const ItemFilters = (
         )}
       </MediaContext.Consumer>
       <div className="item-filter-info">
-        <h3>
-          {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
-          {numOfFilteredItems !== 1 ? 's' : null} Found
-        </h3>
+        <Heading level="three" size="callout">
+          <>
+            {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
+            {numOfFilteredItems !== 1 ? 's' : null} Found
+          </>
+        </Heading>
         {hasFilterApplied ? (
-          <span>Filtered by {parsedFilterSelections()}</span>
-        ) : null}
-        &nbsp;
-        {hasFilterApplied ? (
-          <Button id="clear-filters-button" buttonType="link" onClick={() => resetFilters()}>
-            Clear all filters
-          </Button>
+          <>
+            <span>Filtered by {parsedFilterSelections()}</span>
+            <Button id="clear-filters-button" buttonType="text" onClick={() => resetFilters()}>
+              Clear all filters
+            </Button>
+          </>
         ) : null}
       </div>
     </Fragment>

@@ -4,12 +4,13 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { isArray as _isArray, chunk as _chunk } from 'underscore';
+
 import appConfig from '../../data/appConfig';
 import {
   bibPageItemsListLimit as itemsListPageLimit,
   itemFilters,
 } from '../../data/constants';
-import { isOptionSelected, trackDiscovery } from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
@@ -33,7 +34,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 1
     this.filteredItems =
       this.props.bib && this.props.bib.done
-      ? filterItems(this.props.items, this.query, this.hasFilter) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter, itemFilters) || []
         : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
@@ -125,7 +126,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 2
     this.filteredItems =
       this.props.bib && this.props.bib.done
-      ? filterItems(this.props.items, this.query, this.hasFilter) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter, itemFilters) || []
         : this.props.items || [];
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
