@@ -1,3 +1,6 @@
+import { isOptionSelected } from "./utils";
+import { itemFilters } from "../data/constants";
+
 function filterItems (items, query, hasFilter) {
   if (!items || !items.length) return [];
   if (!query) return items;
