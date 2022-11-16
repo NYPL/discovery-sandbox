@@ -28,8 +28,10 @@ const ItemFilter = ({
   isOpen,
   initialFilters,
 }) => {
-  if (!options || !filter) return null;
   const [selectionMade, setSelectionMade] = useState(false);
+  const [mobileIsOpen, manageMobileFilter] = useState(false);
+
+  if (!options || !filter) return null;
 
   const selectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
@@ -79,8 +81,6 @@ const ItemFilter = ({
   };
   const numOfSelections = determineNumOfSelections();
 
-  const [mobileIsOpen, manageMobileFilter] = useState(false);
-
   const clickHandler = () => (
     mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
   );
@@ -111,7 +111,8 @@ const ItemFilter = ({
         onClick={clickHandler}
         type="button"
       >
-        {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+        {filter}{numOfSelections ? ` (${numOfSelections})` : null}
+        <Icon name={open ? 'minus' : 'plus'} size='medium' />
       </Button>
       {open ? (
         <div className="item-filter-content">

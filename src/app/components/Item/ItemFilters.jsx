@@ -1,4 +1,4 @@
-import { Button, Heading } from '@nypl/design-system-react-components';
+import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useState } from 'react';
 
@@ -20,6 +20,7 @@ const ItemFilters = (
     location: query.location || [],
     format: query.format || [],
     status: query.status || [],
+    year: query.year || [],
   };
   
   if (!items || !items.length) return null;
@@ -115,15 +116,43 @@ const ItemFilters = (
               />
             ) : (
               <div id="item-filters" className="item-table-filters">
-                {itemFilters.map((filter) => (
-                  <ItemFilter
-                    filter={filter.type}
-                    key={filter.type}
-                    options={options[filter.type]}
-                    isOpen={openFilter === filter.type}
-                    {...itemFilterComponentProps}
+                <div>
+                  <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
+                  {itemFilters.map((filter) => (
+                    <ItemFilter
+                      filter={filter.type}
+                      key={filter.type}
+                      options={options[filter.type]}
+                      isOpen={openFilter === filter.type}
+                      {...itemFilterComponentProps}
+                    />
+                  ))}
+                </div>
+                <div className='search-year-wrapper'>
+                  <Text isBold fontSize="text.caption" mb="xs">Search by Year</Text>
+                  <SearchBar
+                    id="search-year"
+                    onSubmit={() => {}}
+                    textInputElement={
+                      <TextInput
+                        id='search-year-input'
+                        isClearable
+                        labelText='Search by Year'
+                        maxLength={4}
+                        name='search-year'
+                        pattern='[0-9]+'
+                        placeholder='YYYY'
+                        showLabel={false}
+                        textInputType='searchBarSelect'
+                      />
+                    }
                   />
-                ))}
+                  <Button id="clear-year-button" onClick={() => {}} buttonType="text">
+                    Clear search year
+                  </Button>
+                </div>
+                {/* Empty div for flexbox even columns. */}
+                <div></div>
               </div>
             )}
           </Fragment>

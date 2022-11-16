@@ -1,0 +1,31 @@
+.item-table-filters {
+  margin: 10px 0;
+  min-height: 128px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  gap: 16px;
+
+  @media (min-width: 600px) {
+    display: flex;
+
+    & > div {
+      flex: 1;
+    }
+  }
+}
+
+div.item-table-filters {
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+  padding: 16px;
+}
+
+button.item-table-filters {
+  padding: 5px 25px;
+}
+
+.search-year-wrapper {
+  #clear-year-button {
+    float: right;
+    padding-right: 0;
+  }
+}

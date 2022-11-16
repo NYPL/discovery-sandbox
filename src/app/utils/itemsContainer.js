@@ -1,12 +1,13 @@
 import { isOptionSelected } from './utils';
+import { itemFilters } from "../data/constants";
 
-function filterItems (items, query, hasFilter, itemFilters) {
+function filterItems (items, query, hasFilter) {
   if (!items || !items.length) return [];
   if (!query) return items;
   if (!hasFilter) return items;
 
   return items.filter((item) => {
-    const showItem = itemFilters && itemFilters.every((filter) => {
+    const showItem = itemFilters.every((filter) => {
       const filterType = filter.type;
       const filterValue = query[filterType];
       if (!filterValue) return true;

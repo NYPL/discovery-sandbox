@@ -34,7 +34,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 1
     this.filteredItems =
       this.props.bib && this.props.bib.done
-      ? filterItems(this.props.items, this.query, this.hasFilter, itemFilters) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
@@ -126,7 +126,7 @@ class ItemsContainer extends React.Component {
     // NOTE: filteredItems: Setting 2
     this.filteredItems =
       this.props.bib && this.props.bib.done
-      ? filterItems(this.props.items, this.query, this.hasFilter, itemFilters) || []
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
         : this.props.items || [];
     const bibId = this.props.bibId;
     const bibDone = this.props.bib && this.props.bib.done;
