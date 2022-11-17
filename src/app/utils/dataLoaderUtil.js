@@ -48,8 +48,10 @@ const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
   if (data && data.redirect) {
     if (window) {
-      const fullUrl = encodeURIComponent(window.location.href);
-      window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      console.log('redirecting: ',  data.redirect)
+      // const fullUrl = encodeURIComponent(window.location.href);
+      // window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      window.location.replace(data.redirect);
     }
     return { redirect: true };
   }
@@ -87,6 +89,7 @@ function loadDataForRoutes(location, dispatch) {
     );
   };
 
+  console.log('updating loading status to true')
   dispatch(updateLoadingStatus(true));
 
   const path = `${pathname}${search}`;
@@ -96,8 +99,11 @@ function loadDataForRoutes(location, dispatch) {
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
-    dispatch(updateLoadingStatus(false));
+    if (!resp || (resp && !resp.redirect)) {
+      dispatch(updateLastLoaded(path));
+      console.log('updating loading status to false')
+      dispatch(updateLoadingStatus(false));
+    }
     return resp;
   }).catch((error) => {
     console.error(error);

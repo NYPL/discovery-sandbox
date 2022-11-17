@@ -2,27 +2,44 @@ import appConfig from '../../app/data/appConfig';
 import nyplApiClient from '../../server/routes/nyplApiClient';
 
 function requireUser(req, res) {
+  let redirect = false;
+  console.log('token: ', req.patronTokenResponse)
   if (!req.patronTokenResponse || !req.patronTokenResponse.isTokenValid ||
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
-    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-    if (!fullUrl.includes('%2Fapi%2F')) {
-      res.redirect(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+    console.log('original: ', req.originalUrl)
+    const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api`), `${appConfig.baseUrl}/`)
+    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${originalUrl}`);
+    redirect = `${appConfig.loginUrl}?redirect_uri=${fullUrl}`;
+    if (!req.originalUrl.includes('%2Fapi%2F')) {
+      res.redirect(redirect);
     }
-    return { redirect: true };
   }
-  return { redirect: false };
+  return { redirect };
 }
 
 function eligibility(req, res) {
+  let redirect = false;
   if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
      || !req.patronTokenResponse.decodedPatron.sub) {
-    res.send(JSON.stringify({ eligibility: true }));
-    return;
+    return { redirect };
   }
   const id = req.patronTokenResponse.decodedPatron.sub;
-  nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
-    .then((response) => { res.send(JSON.stringify(response)); });
+  return nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
+    .then((response) => {
+      console.log('check patron eligibility response: ', JSON.stringify(response, null, 2))
+        if (response.eligibility && response.eligibility !== true) {
+          const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+          const bibId = req.params.bibId; // would these ever not exist?
+          const itemId = req.params.itemId;
+          const message = response.eligibility;
+          redirect = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?errorStatus=eligibility&errorMessage=${message}`
+          if (!fullUrl.includes('%2Fapi%2F')) {
+            res.redirect(redirect);
+          }
+        }
+        return { redirect }
+    });
 }
 
 export default { eligibility, requireUser };

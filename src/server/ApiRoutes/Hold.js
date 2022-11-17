@@ -324,33 +324,39 @@ function newHoldRequest(req, res, resolve) {
         return resolve({ redirect: true });
       }
 
-      const requireUser = User.requireUser(req, res);
-      const { redirect } = requireUser;
-      if (redirect) return resolve({ redirect });
-
-      getDeliveryLocations(
-        barcode,
-        patronId,
-        (deliveryLocations, isEddRequestable) => {
-          resolve({
-            bib,
-            deliveryLocations,
-            isEddRequestable,
-          });
-        },
-        (deliveryLocationsError) => {
-          logger.error(
-            `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
-            deliveryLocationsError,
-          );
-
-          resolve({
-            bib,
-            deliveryLocations: [],
-            isEddRequestable: false,
-          });
+      const userRedirect = User.requireUser(req, res).redirect;
+      console.log('userRedirect: ', userRedirect)
+      if (userRedirect) return resolve({ redirect: userRedirect });
+      User.eligibility(req, res).then((eligibilityResponse) => {
+        console.log('eligibilityRedirect: ', eligibilityResponse)
+        if (eligibilityResponse.redirect) {
+          return resolve({ redirect: eligibilityRedirect });
         }
-      );
+
+        return getDeliveryLocations(
+          barcode,
+          patronId,
+          (deliveryLocations, isEddRequestable) => {
+            resolve({
+              bib,
+              deliveryLocations,
+              isEddRequestable,
+            });
+          },
+          (deliveryLocationsError) => {
+            logger.error(
+              `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
+              deliveryLocationsError,
+            );
+
+            resolve({
+              bib,
+              deliveryLocations: [],
+              isEddRequestable: false,
+            });
+          }
+        );
+      })
     },
     bibResponseError => resolve(bibResponseError),
     {
