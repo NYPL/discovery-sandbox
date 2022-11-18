@@ -8,10 +8,10 @@ function requireUser(req, res) {
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
     console.log('original: ', req.originalUrl)
-    const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api`), `${appConfig.baseUrl}/`)
+    const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api/`), `${appConfig.baseUrl}/`)
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${originalUrl}`);
     redirect = `${appConfig.loginUrl}?redirect_uri=${fullUrl}`;
-    if (!req.originalUrl.includes('%2Fapi%2F')) {
+    if (!req.originalUrl.includes('/api/')) {
       res.redirect(redirect);
     }
   }
@@ -19,6 +19,7 @@ function requireUser(req, res) {
 }
 
 function eligibility(req, res) {
+  console.log('calling eligibility')
   let redirect = false;
   if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
      || !req.patronTokenResponse.decodedPatron.sub) {

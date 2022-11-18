@@ -326,8 +326,10 @@ function newHoldRequest(req, res, resolve) {
 
       const userRedirect = User.requireUser(req, res).redirect;
       console.log('userRedirect: ', userRedirect)
-      if (userRedirect) return resolve({ redirect: userRedirect });
-      User.eligibility(req, res).then((eligibilityResponse) => {
+      if (userRedirect) {
+        return resolve({ redirect: userRedirect });
+      }
+      return User.eligibility(req, res).then((eligibilityResponse) => {
         console.log('eligibilityRedirect: ', eligibilityResponse)
         if (eligibilityResponse.redirect) {
           return resolve({ redirect: eligibilityRedirect });
