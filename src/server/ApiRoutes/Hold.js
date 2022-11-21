@@ -332,7 +332,7 @@ function newHoldRequest(req, res, resolve) {
       return User.eligibility(req, res).then((eligibilityResponse) => {
         console.log('eligibilityRedirect: ', eligibilityResponse)
         if (eligibilityResponse.redirect) {
-          return resolve({ redirect: eligibilityRedirect });
+          return resolve({ redirect: eligibilityResponse.redirect });
         }
 
         return getDeliveryLocations(

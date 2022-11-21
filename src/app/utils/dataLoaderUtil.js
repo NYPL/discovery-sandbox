@@ -22,29 +22,30 @@ const baseUrl = appConfig.baseUrl;
 const routes = {
   bib: {
     action: updateBibPage,
-    path: 'bib',
-    params: '/:bibId',
+    path: 'bib/:bibId',
   },
   search: {
     action: updateSearchResultsPage,
     path: 'search',
-    params: '',
   },
   holdRequest: {
     action: updateHoldRequestPage,
-    path: 'hold/request',
-    params: '/:bibId-:itemId',
+    path: 'hold/request/:bibId-:itemId',
+  },
+  eddRequest: {
+    action: updateHoldRequestPage,
+    path: 'hold/request/:bibId-:itemId/edd'
   },
   account: {
     action: updateAccountPage,
-    path: 'account',
-    params: '/:content?',
+    path: 'account/:content?',
   },
 };
 
 // A simple function for loading data into the store. The only reason it is broken
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
+  console.log('successCb')
   const { data } = response;
   if (data && data.redirect) {
     if (window) {
@@ -69,13 +70,16 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname, search } = location;
+  console.log('location: ', location)
   if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
   }
 
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
     const { path } = pathValue;
-    return pathname.match(`${baseUrl}/${path}`);
+    const pathRegex = new RegExp(`${baseUrl}/${path.replace(/:[^-\/]*/g, '[^-\/]*')}`)
+    console.log('matching: ', pathname, pathRegex, pathname.match(pathRegex))
+    return pathname.match(pathRegex);
   });
 
   if (!matchingPath) return new Promise(() => dispatch(updateLoadingStatus(false)));
@@ -94,8 +98,10 @@ function loadDataForRoutes(location, dispatch) {
 
   const path = `${pathname}${search}`;
 
+  console.log('making request to ', location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search);
+
   return ajaxCall(
-    location.pathname.replace(baseUrl, `${baseUrl}/api`).replace('/edd', '') + location.search,
+    location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {

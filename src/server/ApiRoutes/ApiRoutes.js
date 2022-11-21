@@ -22,9 +22,9 @@ router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
   .post(Hold.createHoldRequestServer);
 
-router
-  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
-  .get(Hold.newHoldRequestServerEdd);
+// router
+//   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
+//   .get(Hold.newHoldRequestServerEdd);
 
 router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
@@ -41,15 +41,17 @@ router
 // Then client side the dataLoaderUtil will load the response into the store
 
 Object.keys(routes).forEach((routeName) => {
-  const { path, params } = routes[routeName];
+  const { path } = routes[routeName];
   ['/', '/api/'].forEach((pathType) => {
     const api = pathType === '/api/';
+    console.log('adding path: ', `${appConfig.baseUrl}${pathType}${path}`)
     router
-      .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
+      .route(`${appConfig.baseUrl}${pathType}${path}`)
       .get((req, res, next) => new Promise(
-        resolve => routeMethods[routeName](req, res, resolve),
+        resolve => { console.log('got req for ', path); return routeMethods[routeName](req, res, resolve) },
       )
         .then(data => {
+          console.log('responding from  ', `${appConfig.baseUrl}${pathType}${path}`)
           return api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })
         })
         .then(() => (api ? null : next()))

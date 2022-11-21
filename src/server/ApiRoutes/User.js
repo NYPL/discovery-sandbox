@@ -21,24 +21,22 @@ function requireUser(req, res) {
 function eligibility(req, res) {
   console.log('calling eligibility')
   let redirect = false;
-  if (!req.patronTokenResponse || !req.patronTokenResponse.decodedPatron
-     || !req.patronTokenResponse.decodedPatron.sub) {
-    return { redirect };
-  }
   const id = req.patronTokenResponse.decodedPatron.sub;
   return nyplApiClient().then(client => client.get(`/patrons/${id}/hold-request-eligibility`, { cache: false }))
     .then((response) => {
-      console.log('check patron eligibility response: ', JSON.stringify(response, null, 2))
-        if (response.eligibility && response.eligibility !== true) {
+      console.log('check patron eligibility response: ', JSON.stringify(response, null, 2), response.eligibility, response.eligibility !== true)
+        if (response.eligibility !== true) {
           const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
           const bibId = req.params.bibId; // would these ever not exist?
           const itemId = req.params.itemId;
           const message = response.eligibility;
           redirect = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?errorStatus=eligibility&errorMessage=${message}`
+          console.log('changed redirect: ', redirect)
           if (!fullUrl.includes('%2Fapi%2F')) {
             res.redirect(redirect);
           }
         }
+        console.log('returning redirect: ', { redirect })
         return { redirect }
     });
 }
