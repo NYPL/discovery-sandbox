@@ -1,12 +1,10 @@
-$break-breadcrumbs-mobile: max-width 599px;
-
 .sub-nav {
   background-color: var(--nypl-colors-ui-black);
   padding-bottom: var(--nypl-space-xs);
   padding-top: var(--nypl-space-xs);
 
   span {
-    text-decoration: none !important;
+    text-decoration: none;
   }
   
   &__link,
@@ -14,11 +12,11 @@ $break-breadcrumbs-mobile: max-width 599px;
   &__link:visited,
   &__link:focus {
     color: var(--nypl-colors-ui-white) !important;
-    text-decoration: none !important;
+    text-decoration: none;
   }
   &__link:hover {
-    color: var(--nypl-colors-ui-white);
-    text-decoration: underline !important;
+    color: var(--nypl-colors-ui-white) !important;
+    text-decoration: underline;
   }
 
   &__link.active-section {

@@ -1,33 +1,69 @@
-dl dd.multi-item-list .nypl-basic-table a,
-.nypl-results-item .nypl-basic-table a:not(.itemLocationLink) {
-  background-color: $results-list-item-button;
-  border: 0.08333rem solid $results-list-item-button;
-  border-radius: 0.13333rem;
-  color: #fff;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 12px;
-  font-weight: normal;
-  letter-spacing: 0.06rem;
+.search-results-bib-card {
+  .card-body {
+    width: 100%;
+  }
+}
+
+.avail-request-button,
+.unavail-request-button {
+  text-align: center;
+  padding: 8px 16px;
   text-decoration: none;
-  padding: 8px 28px;
-  white-space: nowrap;
-  -webkit-transition: all, 0.1s, ease-in;
-  -moz-transition: all, 0.1s, ease-in;
-  -ms-transition: all, 0.1s, ease-in;
-  -o-transition: all, 0.1s, ease-in;
-  transition: all, 0.1s, ease-in;
-  margin-top: 0;
+  color: #fff;
+  border: 0.08333rem solid var(--nypl-colors-ui-link-primary);
+  line-height: 1.5;
+  border-radius: var(--nypl-radii-sm);
+  font-weight: var(--nypl-fontWeights-button-default);
+  align-items: center;
+  display: flex;
+  height: var(--nypl-sizes-10);
+  justify-content: center;
+  max-height: 2.5rem;
+  min-height: 44px;
+  word-wrap: normal;
+  min-width: var(--nypl-sizes-10);
+  font-size: var(--nypl-fontSizes-button-default);
+  margin-right: var(--nypl-space-xs);
 
+  @media screen and (min-width: 38em) {
+    min-height: auto;
+  }
+}
+
+.avail-request-button {
+  background-color: white;
+  color: var(--nypl-colors-ui-link-primary);
   &:hover {
-    background-color: #fff;
-    color: $results-list-item-button;
+    background-color: var(--nypl-colors-ui-bg-hover);
+    border: 0.08333rem solid var(--nypl-colors-ui-link-secondary);
+    color: var(--nypl-colors-ui-link-secondary);
   }
+}
+.unavail-request-button {
+  cursor: default;
+  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+  color: var(--nypl-colors-ui-gray-dark);
+  border: 0.08333rem solid var(--nypl-colors-ui-gray-light-cool);
+}
 
-  &:focus {
-    background-color: #fff;
-    color: $results-list-item-button;
+.info-link {
+  font-size: var(--nypl-fontSizes-text-tag);
+  font-weight: var(--nypl-fontWeights-text-tag);
+  // this is inheriting text-decoration: none from style-v2.scss line 100
+  text-decoration: underline;
+}
+
+.availability-alert {
+  margin-top: var(--nypl-space-s);
+  & a {
+    text-decoration: underline;
   }
+}
+.available-text {
+  color: var(--nypl-colors-ui-success-primary);
+}
+.unavailable-text {
+  color: var(--nypl-colors-ui-warning-primary);
 }
 
 .nypl-results-item .nypl-basic-table .item-email-inquiry {
@@ -55,7 +91,7 @@ dl dd.multi-item-list .nypl-basic-table a,
     &:hover,
     &:visited:hover {
       // color: $link-hover-color;
-      color: darken(#1b7fa7, 5%);;
+      color: darken(#1b7fa7, 5%);
       text-decoration: none;
     }
 
@@ -67,7 +103,7 @@ dl dd.multi-item-list .nypl-basic-table a,
 
       &:visited {
         // color: $inverted-link-visited-color;
-        color: darken(white, 10%);;
+        color: darken(white, 10%);
       }
 
       &:hover,
@@ -79,17 +115,37 @@ dl dd.multi-item-list .nypl-basic-table a,
   }
 }
 
+.results-items-element + .results-items-element {
+  margin-top: var(--nypl-space-s);
+}
+
+.items-definition-list {
+  .item-dl-wrapper + .item-dl-wrapper {
+    margin-top: var(--nypl-space-s);
+  }
+
+  dt {
+    font-weight: var(--nypl-fontWeights-bold);
+  }
+
+  dd {
+    margin-bottom: var(--nypl-space-s);
+  }
+}
+
 @media (max-width: 600px) {
   .tabbed {
     thead {
       display: none;
     }
 
-    tr, .nypl-results-item .nypl-basic-table tbody tr:last-child {
+    tr,
+    .nypl-results-item .nypl-basic-table tbody tr:last-child {
       border: 1px solid var(--nypl-colors-ui-gray-light-cool);
     }
 
-    .nypl-basic-table, .nypl-results-item .nypl-basic-table {
+    .nypl-basic-table,
+    .nypl-results-item .nypl-basic-table {
       display: revert;
 
       td {
@@ -117,7 +173,7 @@ dl dd.multi-item-list .nypl-basic-table a,
       margin-bottom: 0;
     }
 
-    td[data-th]:before  {
+    td[data-th]:before {
       content: attr(data-th);
       display: inline-block;
       font-weight: 500;
@@ -126,4 +182,14 @@ dl dd.multi-item-list .nypl-basic-table a,
       vertical-align: top;
     }
   }
+}
+
+.request-buttons-container {
+  display: flex;
+  &.bib-details.mobile {
+    flex-direction: column;
+      a{
+        margin-bottom: var(--nypl-space-xs)
+      }
+    }
 }

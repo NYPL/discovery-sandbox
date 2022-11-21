@@ -1,21 +1,14 @@
-#advanced-search-link-container {
-  a {
-    color: #0271CC;
-  }
-}
-
-
 .advancedSearchContainer.content-primary {
   min-height: 650px;
 
   .page-title {
-    padding-top: var(--nypl-space-s);
+    margin-top: var(--nypl-space-s);
   }
 }
 
 #advancedSearchAside {
-  color: #A4241E;
-  background-color: #F9F9F9;
+  color: $advanceSearchColor;
+  background-color: $advanceSearchBGColor;
   width: 100%;
   font-weight: 500;
   font-size: 18px;
@@ -27,28 +20,13 @@
   }
 }
 
-#advancedSearchHeading {
-  font-weight: 500;
-}
-
 #advancedSearchForm {
   display: flex;
   flex-direction: column;
-  margin-top: 15px;
-
-  input {
-    display: block;
-    margin-bottom: 5px;
-  }
 
   li {
     list-style: none;
     margin-bottom: 15px;
-  }
-
-  hr {
-    width: 100%;
-    color: #C4C4C4;
   }
 
   #fields {

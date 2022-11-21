@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 
 import { mountTestRender, makeTestStore } from '../helpers/store';
 import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/components/ResultsList/ResultsList';
+import SearchResultsItems from '../../src/app/components/Item/SearchResultsItems'
 import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
 import { mockRouterContext } from '../helpers/routing';
@@ -153,8 +154,8 @@ describe('ResultsList', () => {
       expect(component.find('li').length).to.equal(15);
     });
 
-    it('should render one table for each bib', () => {
-      expect(component.find('table').length).to.equal(3);
+    it('should render one table for each item', () => {
+      expect(component.find('table').length).to.equal(5);
     });
   });
 
@@ -204,7 +205,7 @@ describe('ResultsList', () => {
     });
 
     it('should have a table', () => {
-      expect(component.find('table').length).to.equal(1);
+      expect(component.find('table').length).to.equal(3);
     });
 
     it('table should only render three rows', () => {
@@ -521,4 +522,71 @@ describe('ResultsList', () => {
       expect(info.at(0).text()).to.equal('1 resource')
     })
   });
+
+  describe('Rendering Search Results Items', () => {
+    describe('when there are items', () => {
+      let component;
+      let appConfigMock;
+
+      before(() => {
+        appConfigMock = sinonMock(appConfig);
+        const mockDrbFeatureStore = makeTestStore({
+          loading: false,
+          features: ['drb-integration', 'aeon-links'],
+        });
+
+        component = mountTestRender(
+          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords"/>, {
+            store: mockDrbFeatureStore,
+            context,
+            childContextTypes,
+          });
+      });
+
+      after(() => {
+        appConfigMock.restore();
+      });
+
+      it('should render SearchResultsItems with correct props', () => {
+        const searchResultsItems = component.find(SearchResultsItems)
+        expect(searchResultsItems.length).to.equal(1)
+        const searchResultsItemsElement = searchResultsItems.at(0)
+
+        expect(searchResultsItemsElement.prop("bibId")).to.equal("b22030125")
+        expect(searchResultsItemsElement.prop("searchKeywords")).to.equal("mock_keywords")
+        expect(searchResultsItemsElement.prop("page")).to.equal("SearchResults")
+        expect(Array.isArray(searchResultsItemsElement.prop("items"))).to.equal(true)
+        expect(searchResultsItemsElement.prop("items").length).to.equal(3)
+      })
+    })
+
+    describe('when there are no items', () => {
+      let component;
+      let appConfigMock;
+
+      before(() => {
+        appConfigMock = sinonMock(appConfig);
+        const mockDrbFeatureStore = makeTestStore({
+          loading: false,
+          features: ['drb-integration', 'aeon-links'],
+        });
+
+        component = mountTestRender(
+          <ResultsList results={[]} searchKeywords="mock_keywords"/>, {
+            store: mockDrbFeatureStore,
+            context,
+            childContextTypes,
+          });
+      });
+
+      after(() => {
+        appConfigMock.restore();
+      });
+
+      it('should not render SearchResultsItems', () => {
+        const searchResultsItems = component.find(SearchResultsItems)
+        expect(searchResultsItems.length).to.equal(0)
+      });
+    });
+  })
 });
