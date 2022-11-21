@@ -29,7 +29,7 @@ function eligibility(req, res) {
           const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
           const bibId = req.params.bibId; // would these ever not exist?
           const itemId = req.params.itemId;
-          const message = response.eligibility;
+          const message = JSON.stringify(response);
           redirect = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}?errorStatus=eligibility&errorMessage=${message}`
           console.log('changed redirect: ', redirect)
           if (!fullUrl.includes('%2Fapi%2F')) {
