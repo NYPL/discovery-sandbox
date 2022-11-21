@@ -19,7 +19,6 @@ describe('DrbbContainer', () => {
     });
 
     it('should have an h3', () => {
-      console.log(component.html())
       expect(component.find('h3').length).to.equal(1);
       expect(component.find('h3').text()).to.include('Digital Research Books Beta');
     });

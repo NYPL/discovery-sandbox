@@ -30,6 +30,7 @@ const item = {
     suppressed: false,
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
+    volume: 'Vol. 1'
   },
   missingData: {
     accessMessage: {
@@ -100,6 +101,137 @@ const item = {
     itemSource: 'sierra-nypl',
     location: 'Offsite',
     nonRecapNYPL: false,
+    requestable: true,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
+  requestable_nonReCAP_NYPL_schwarzman: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: true,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'SASB M1 - General Research Room 315',
+    nonRecapNYPL: true,
+    requestable: true,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
+  requestable_nonReCAP_NYPL_schwarzman: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: true,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'Schwarzman Building M2 - General Research Room 315',
+    nonRecapNYPL: true,
+    requestable: true,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
+  requestable_nonReCAP_NYPL_lpa: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: true,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'Performing Arts Research Collections - Theatre - Reference',
+    nonRecapNYPL: true,
+    requestable: true,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
+  requestable_nonReCAP_NYPL_schomburg: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: true,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    holdingLocationCode: 'loc:maj03',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'Schomburg Center - Research & Reference',
+    nonRecapNYPL: true,
+    requestable: true,
+    status: {
+      '@id': 'status:a',
+      prefLabel: 'Available',
+    },
+    suppressed: false,
+    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+      '&institution=13777&type=1&language=1',
+  },
+  requestable_nonReCAP_NYPL_not_available: {
+    accessMessage: {
+      '@id': 'accessMessage:1',
+      prefLabel: 'USE IN LIBRARY',
+    },
+    availability: 'available',
+    available: false,
+    barcode: '33433078478272',
+    callNumber: 'JFE 07-5007 ---',
+    dueDate: '1996-07-21',
+    holdingLocationCode: 'loc:maj03',
+    id: 'i17326129',
+    isElectronicResource: false,
+    isOffsite: false,
+    isRecap: false,
+    itemSource: 'sierra-nypl',
+    location: 'SASB M1 - General Research - Room 315',
+    nonRecapNYPL: true,
     requestable: true,
     status: {
       '@id': 'status:a',
@@ -231,6 +363,7 @@ const item = {
     },
     volume: '',
   },
+
 };
 
 export default item;

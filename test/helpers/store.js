@@ -10,13 +10,16 @@ import initialState from '../../src/app/stores/InitialState';
 const TestProvider = ({
   store,
   children,
-}) => <Provider store={store}>{children}</Provider>;
+}) => {
+
+  return < Provider store={store} > {children}</Provider >;
+}
 
 function testRender(ui, renderFunc, { store, ...otherOpts }) {
   return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
     context: {
       router: {
-        location: {},
+        location: { query: {}, pathname: '' },
         createHref: () => {},
         push: () => {},
       },

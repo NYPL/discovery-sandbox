@@ -53,7 +53,7 @@ function LibraryItem() {
    */
   this.nonNyplRecapLocation = () => ({
     '@id': '',
-    prefLabel: 'Offsite',
+    prefLabel: 'Off-site',
     customerCode: '',
   });
 
@@ -261,6 +261,7 @@ function LibraryItem() {
       physRequestable: item.physRequestable,
       eddRequestable: item.eddRequestable,
       id,
+      dueDate: item.dueDate ? item.dueDate[0] : undefined,
       status,
       availability,
       available,
