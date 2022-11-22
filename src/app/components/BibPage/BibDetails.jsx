@@ -1,3 +1,4 @@
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router';
@@ -137,18 +138,20 @@ const BibDetails = (props) => {
     if (fieldSelfLinkable) {
       const linkText = bibValue.prefLabel || bibValue.label || bibValue.url
       return (
-        <a
-          href={bibValue.url}
-          onClick={() =>
-            trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
-            )
-          }
-          dir={stringDirection(linkText, useParallels)}
-        >
-          {linkText}
-        </a>
+        <DSLink>
+          <Link
+            to={bibValue.url}
+            onClick={() =>
+              trackDiscovery(
+                'Bib fields',
+                `${fieldLabel} - ${bibValue.prefLabel}`,
+              )
+            }
+            dir={stringDirection(linkText, useParallels)}
+          >
+            {linkText}
+          </Link>
+        </DSLink>
       );
     }
 
@@ -306,14 +309,15 @@ const BibDetails = (props) => {
     };
 
     return (
-      <Link
-        key={label.trim().replace(/ /g, '')}
-        onClick={onClick}
-        to={`${appConfig.baseUrl}/search?${query}`}
-        dir={stringDirection(label, useParallels)}
-      >
-        {label}
-      </Link>
+      <DSLink dir={stringDirection(label, useParallels)}>
+        <Link
+          key={label.trim().replace(/ /g, '')}
+          onClick={onClick}
+          to={`${appConfig.baseUrl}/search?${query}`}
+        >
+          {label}
+        </Link>
+      </DSLink>
     );
   };
 
