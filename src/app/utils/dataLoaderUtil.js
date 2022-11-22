@@ -45,7 +45,6 @@ const routes = {
 // A simple function for loading data into the store. The only reason it is broken
 // out separately is because it is used front-end and back-end
 const successCb = (pathType, dispatch) => (response) => {
-  console.log('successCb')
   const { data } = response;
   if (data && data.redirect) {
     if (window) {
