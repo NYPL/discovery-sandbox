@@ -39,6 +39,7 @@ const routes = {
   account: {
     action: updateAccountPage,
     path: 'account/:content?',
+    pathRegex: 'account'
   },
 };
 
@@ -71,8 +72,8 @@ function loadDataForRoutes(location, dispatch) {
   }
 
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
-    const { path } = pathValue;
-    const pathRegex = new RegExp(`${baseUrl}/${path.replace(/:[^-\/]*/g, '[^-\/]*')}`)
+    let { path, pathRegex } = pathValue;
+    pathRegex = pathRegex || new RegExp(`${baseUrl}/${path.replace(/:[^-\/]*/g, '[^-\/]*')}`)
     return pathname.match(pathRegex);
   });
 
