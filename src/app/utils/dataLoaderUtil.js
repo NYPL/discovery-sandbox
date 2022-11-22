@@ -49,9 +49,6 @@ const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
   if (data && data.redirect) {
     if (window) {
-      console.log('redirecting: ',  data.redirect)
-      // const fullUrl = encodeURIComponent(window.location.href);
-      // window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
       window.location.replace(data.redirect);
     }
     return { redirect: true };
@@ -70,7 +67,6 @@ const successCb = (pathType, dispatch) => (response) => {
 
 function loadDataForRoutes(location, dispatch) {
   const { pathname, search } = location;
-  console.log('location: ', location)
   if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
   }
@@ -78,7 +74,6 @@ function loadDataForRoutes(location, dispatch) {
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
     const { path } = pathValue;
     const pathRegex = new RegExp(`${baseUrl}/${path.replace(/:[^-\/]*/g, '[^-\/]*')}`)
-    console.log('matching: ', pathname, pathRegex, pathname.match(pathRegex))
     return pathname.match(pathRegex);
   });
 
@@ -93,12 +88,9 @@ function loadDataForRoutes(location, dispatch) {
     );
   };
 
-  console.log('updating loading status to true')
   dispatch(updateLoadingStatus(true));
 
   const path = `${pathname}${search}`;
-
-  console.log('making request to ', location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search);
 
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
@@ -107,7 +99,6 @@ function loadDataForRoutes(location, dispatch) {
   ).then((resp) => {
     if (!resp || (resp && !resp.redirect)) {
       dispatch(updateLastLoaded(path));
-      console.log('updating loading status to false')
       dispatch(updateLoadingStatus(false));
     }
     return resp;

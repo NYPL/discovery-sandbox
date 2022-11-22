@@ -22,10 +22,6 @@ router
   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId-:itemSource`)
   .post(Hold.createHoldRequestServer);
 
-// router
-//   .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
-//   .get(Hold.newHoldRequestServerEdd);
-
 router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
@@ -44,14 +40,12 @@ Object.keys(routes).forEach((routeName) => {
   const { path } = routes[routeName];
   ['/', '/api/'].forEach((pathType) => {
     const api = pathType === '/api/';
-    console.log('adding path: ', `${appConfig.baseUrl}${pathType}${path}`)
     router
       .route(`${appConfig.baseUrl}${pathType}${path}`)
       .get((req, res, next) => new Promise(
-        resolve => { console.log('got req for ', path); return routeMethods[routeName](req, res, resolve) },
+        resolve => { return routeMethods[routeName](req, res, resolve) },
       )
         .then(data => {
-          console.log('responding from  ', `${appConfig.baseUrl}${pathType}${path}`)
           return api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })
         })
         .then(() => (api ? null : next()))

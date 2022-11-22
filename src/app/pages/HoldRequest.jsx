@@ -54,16 +54,11 @@ export class HoldRequest extends React.Component {
     };
 
     this.onRadioSelect = this.onRadioSelect.bind(this);
-    // this.submitRequest = this.submitRequest.bind(this);
-    // this.checkEligibility = this.checkEligibility.bind(this);
-    // this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
-    // this.requireUser = this.requireUser.bind(this);
+    this.submitRequest = this.submitRequest.bind(this);
   }
 
 
   componentDidMount() {
-    // this.requireUser();
-    // this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -127,23 +122,6 @@ export class HoldRequest extends React.Component {
   }
 
   /**
-   * requireUser()
-   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
-   *
-   * @return {Boolean}
-   */
-  // requireUser() {
-  //   if (this.props.patron && this.props.patron.id) {
-  //     return true;
-  //   }
-  //
-  //   const fullUrl = encodeURIComponent(window.location.href);
-  //   window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-  //
-  //   return false;
-  // }
-
-  /**
    * modelDeliveryLocationName(prefLabel, shortName)
    * Renders the names of the radio input fields of delivery locations except EDD.
    *
@@ -161,40 +139,6 @@ export class HoldRequest extends React.Component {
     return '';
   }
 
-  // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
-  // checking for manual blocks, expired cards, and excessive fines.
-  // conditionallyRedirect() {
-  //   const { params } = this.props;
-  //   return this.checkEligibility().then((eligibility) => {
-  //     if (!eligibility.eligibility) {
-  //       const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
-  //         this.props.bib : null;
-  //       let bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-  //         bib['@id'].substring(4) : '';
-  //       if (!bibId) bibId = (params && params.bibId) ? params.bibId : '';
-  //       const itemId = (params && params.itemId) ? params.itemId : '';
-  //       const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-  //       return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
-  //     }
-  //     return true;
-  //   });
-  // }
-  // // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
-  // checkEligibility() {
-  //   this.setState({ checkingPatronEligibility: true })
-  //
-  //   return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-  //     .then(response => response.data)
-  //     .catch(() => ({ eligibility: true }))
-  //     .finally(() => this.setState({ checkingPatronEligibility: false }));
-  // }
-  //
-  // redirectWithErrors(path, status, message) {
-  //   this.context.router.replace(
-  //     `${path}?errorStatus=${status}` +
-  //     `&errorMessage=${message}`,
-  //   );
-  // }
   /**
      * renderDeliveryLocation(deliveryLocations = [])
      * Renders the radio input fields of delivery locations except EDD.
@@ -274,7 +218,7 @@ export class HoldRequest extends React.Component {
       loading,
       params,
     } = this.props;
-    // const { serverRedirect, checkingPatronEligibility } = this.state;
+
     const { serverRedirect } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
@@ -378,7 +322,6 @@ export class HoldRequest extends React.Component {
     return (
       <>
         {
-          // !userLoggedIn || loading || checkingPatronEligibility ? <LoadingLayer loading /> : null
           !userLoggedIn || loading ? <LoadingLayer loading /> : null
         }
         <SccContainer
@@ -403,7 +346,6 @@ export class HoldRequest extends React.Component {
               </div>
 
               {
-                // {!checkingPatronEligibility ? form : null}
                 form
               }
             </div>
