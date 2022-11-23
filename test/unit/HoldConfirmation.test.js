@@ -113,7 +113,7 @@ describe('HoldConfirmation', () => {
         const expectedHTML = new RegExp(
           '<p>(.*)We could not process your request at this time.' +
           '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
-          '((.*)<a href="tel:19172756975">917-275-6975</a>(.*)).(.*)</p>');
+          '((.*)<a (.*) href="tel:19172756975">917-275-6975</a>(.*)).(.*)</p>');
         expect(
           expectedHTML
             .test(main.html()))
@@ -587,10 +587,9 @@ describe('HoldConfirmation', () => {
 
           expect(main.find('#go-back-catalog')).to.have.length(1);
           expect(main.find('#go-back-catalog a').length).to.equal(2);
-
-          expect(main.find('#go-back-catalog a').at(0).text())
+          expect(main.find('#go-back-catalog Link').at(0).text())
             .to.equal('Go back to your search results');
-          expect(main.find('#go-back-catalog a').at(0).prop('href'))
+          expect(main.find('#go-back-catalog Link').at(0).prop('to'))
             .to.equal('https://catalog.nypl.org/search~S1/?searchtype=X&searcharg=bryant&' +
               'searchscope=1&sortdropdown=-&SORT=DZ&extended=0&SUBMIT=Search&searchlimits' +
               '=&searchorigarg=Xbryant%26SORT%3DD');

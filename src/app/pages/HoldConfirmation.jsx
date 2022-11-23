@@ -1,4 +1,5 @@
 /* global window */
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link, withRouter } from 'react-router';
@@ -22,7 +23,7 @@ export class HoldConfirmation extends React.Component {
   }
 
   expiredMessage() {
-    return (<li className="errorItem">Your account has expired -- Please see <a href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</a> about renewing your card</li>);
+    return (<li className="errorItem">Your account has expired -- Please see <DSLink href="https://www.nypl.org/help/library-card/terms-conditions#renew">Library Terms and Conditions -- Renewing or Validating Your Library Card</DSLink> about renewing your card</li>);
   }
 
   moneyOwedMessage() {
@@ -68,7 +69,7 @@ export class HoldConfirmation extends React.Component {
             {reachedHoldLimit}
             {defaultText}
           </ul>
-          Please see a librarian or contact 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) if you require assistance.
+          Please see a librarian or contact 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>) if you require assistance.
         </p>);
     }
     return '';
@@ -76,7 +77,7 @@ export class HoldConfirmation extends React.Component {
 
   defaultErrorText() {
     return (
-      <span>Please try again or contact 917-ASK-NYPL(<a href="tel:19172756975">917-275-6975</a>)</span>
+      <span>Please try again or contact 917-ASK-NYPL(<DSLink href="tel:19172756975">917-275-6975</DSLink>)</span>
     );
   }
 
@@ -155,8 +156,8 @@ export class HoldConfirmation extends React.Component {
     if (!loc || _isEmpty(loc)) {
       content = (
         <Fragment>
-          please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
-          call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>) for your delivery location.
+          please <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink> or
+          call 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>) for your delivery location.
         </Fragment>
       );
     }
@@ -235,13 +236,21 @@ export class HoldConfirmation extends React.Component {
 
     return (
       <span id="go-back-catalog">
-        <a
-          href={this.props.location.query.fromUrl}
-          onClick={() => trackDiscovery('Catalog Link', 'Existing Search')}
-        >Go back to your search results</a> or <a
+        <DSLink>
+          <Link
+            to={this.props.location.query.fromUrl}
+            onClick={() => trackDiscovery('Catalog Link', 'Existing Search')}
+          >
+            Go back to your search results
+          </Link>
+        </DSLink>
+        {' '}or{' '}
+        <DSLink
           href="https://catalog.nypl.org/search"
           onClick={() => trackDiscovery('Catalog Link', 'New Search')}
-        >start a new search</a>.
+        >
+        start a new search
+        </DSLink>.
       </span>
     );
   }
@@ -259,16 +268,18 @@ export class HoldConfirmation extends React.Component {
 
     return (
       <span>
-        <Link
-          id='go-back-search-results'
-          // We use this.props.location.query.searchKeywords here for the query from
-          // the URL to deal with no js situation.
-          to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
-          onClick={(event) => this.goToSearchResults(event)}
-        >
-          Go back to your search results
-        </Link>{' '}
-        or{' '}
+        <DSLink>
+          <Link
+            id='go-back-search-results'
+            // We use this.props.location.query.searchKeywords here for the query from
+            // the URL to deal with no js situation.
+            to={`${appConfig.baseUrl}/search?q=${this.props.location.query.searchKeywords}`}
+            onClick={(event) => this.goToSearchResults(event)}
+          >
+            Go back to your search results
+          </Link>
+        </DSLink>
+        {' '}or{' '}
       </span>
     );
   }
@@ -358,8 +369,8 @@ export class HoldConfirmation extends React.Component {
           </p>
           <p>
             If you would like to cancel your request, or if you have questions,
-            please <a href="https://gethelp.nypl.org/customer/portal/emails/new">email us</a> or
-            call 917-ASK-NYPL (<a href="tel:19172756975">917-275-6975</a>).
+            please <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink> or
+            call 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>).
           </p>
 
           {this.renderBackToClassicLink()}

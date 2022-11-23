@@ -8,7 +8,7 @@ import { mount } from 'enzyme';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 
-describe('After Clicking on Button', () => {
+describe('AdditionalDetailsViewer after clicking on Button', () => {
   let component;
   let link;
 
@@ -27,6 +27,7 @@ describe('After Clicking on Button', () => {
   });
 
   it('should have correct href for url fields', () => {
+    console.log(component.debug());
     expect(link.someWhere(item => item.prop('href') === 'http://blogs.nypl.org/rcramer/')).to.equal(true);
   });
 

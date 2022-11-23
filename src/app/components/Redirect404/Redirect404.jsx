@@ -1,4 +1,4 @@
-import { Heading } from '@nypl/design-system-react-components';
+import { Heading, Link } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import DocumentTitle from 'react-document-title';
@@ -32,9 +32,12 @@ const Redirect404 = (props, context) => {
               <span>{ originalUrl ? `URL: ${originalUrl}` : ''}</span>
             </div>
             {"You may be able to find what you're looking for in the "}
-            <a href={baseUrl}>{displayTitle}</a>
-            {' or the '}
-            <a href={circulatingCatalog}>Circulating Catalog</a>{'. You can also try the '}<a href={legacyBaseUrl}>Legacy Catalog</a>.
+            <Link href={baseUrl}>{displayTitle || "Research Catalog"}</Link>
+            {circulatingCatalog ? 
+              <> or the <Link href={circulatingCatalog}>Circulating Catalog</Link></>
+            : null}
+            {'. You can also try the '}
+            <Link href={legacyBaseUrl}>Legacy Catalog</Link>.
           </p>
         </div>
       </div>

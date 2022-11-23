@@ -4,7 +4,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 import { mock } from 'sinon';
 
-import WrappedFilterPopup, { FilterPopup } from '../../src/app/components/FilterPopup/FilterPopup';
+import { FilterPopup } from '../../src/app/components/FilterPopup/FilterPopup';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('FilterPopup', () => {

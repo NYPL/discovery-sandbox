@@ -32,11 +32,11 @@ const Home = (props, context) => (
 
     <Notification notificationType="searchResultsNotification" />
     <Heading level="two">
-      Explore the Library's Vast Research Collections & More
+      Explore the Library&apos;s Vast Research Collections & More
     </Heading>
     <div className="nypl-column-full">
       <p>
-        Discover millions of items from The New York Public Library's Stephen A. Schwarzman Building, Schomburg Center for Research in Black Culture, and The New York Public Library for the Performing Arts. Plus, access materials from library collections at Columbia University, Harvard University, and Princeton University. <Link href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</Link>
+        Discover millions of items from The New York Public Library&apos;s Stephen A. Schwarzman Building, Schomburg Center for Research in Black Culture, and The New York Public Library for the Performing Arts. Plus, access materials from library collections at Columbia University, Harvard University, and Princeton University. <Link href="https://www.nypl.org/research/collections/about/shared-collection-catalog">Learn more.</Link>
       </p>
       <p>
         Please note that the Research Catalog does not include circulating materials. For books and more that you can check out to take home please visit our <Link href="https://browse.nypl.org">circulating branch catalog.</Link> The <Link href="https://legacycatalog.nypl.org/">legacy research catalog</Link> is still available, but does not include all of our Scan & Deliver options or the Columbia University, Harvard University, and Princeton University material from the Shared Collection.
@@ -53,7 +53,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/research/collections" onClick={() => trackDiscovery('Research Links', 'Collections')}>Collections</a>
+            <Link href="/research/collections" onClick={() => trackDiscovery('Research Links', 'Collections')}>Collections</Link>
           </Heading>
           <p>Discover our world-renowned research collections, featuring more than 46
             million items.
@@ -67,7 +67,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/locations/map?libraries=research" onClick={() => trackDiscovery('Research Links', 'Locations')}>Locations</a>
+            <Link href="/locations/map?libraries=research" onClick={() => trackDiscovery('Research Links', 'Locations')}>Locations</Link>
           </Heading>
           <p>Access items, one-on-one reference help, and dedicated research study rooms.</p>
         </div>
@@ -79,7 +79,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/about/divisions" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</a>
+            <Link href="/about/divisions" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</Link>
           </Heading>
           <p>Learn about the subject and media specializations of our research divisions.</p>
         </div>
@@ -91,7 +91,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/research/support" onClick={() => trackDiscovery('Research Links', 'Support')}>Support</a>
+            <Link href="/research/support" onClick={() => trackDiscovery('Research Links', 'Support')}>Support</Link>
           </Heading>
           <p>
             Plan your in-person research visit and discover resources for scholars and
@@ -106,7 +106,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <a href="/research/services" onClick={() => trackDiscovery('Research Links', 'Services')}>Services</a>
+            <Link href="/research/services" onClick={() => trackDiscovery('Research Links', 'Services')}>Services</Link>
           </Heading>
           <p>
             Explore services for online and remote researchers,

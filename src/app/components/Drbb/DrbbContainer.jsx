@@ -1,4 +1,4 @@
-import { Heading } from '@nypl/design-system-react-components';
+import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
 import { Link } from 'react-router';
 import PropTypes from 'prop-types';
@@ -63,13 +63,12 @@ const DrbbContainer = ({ drbbResults }) => {
         Digital books for research from multiple sources world wide-
         all free to read, download, and keep. No Library Card is Required.&nbsp;
         <span>
-          <a
-            className="link"
+          <DSLink
             target="_blank"
             href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
           >
-          Read more about the project
-          </a>.
+            Read more about the project
+          </DSLink>.
         </span>
       </p>
       { content() }

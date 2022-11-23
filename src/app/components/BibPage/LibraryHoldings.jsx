@@ -1,6 +1,8 @@
 import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router';
+
 import DefinitionList from './DefinitionList';
 
 const LibraryHoldings = ({ holdings }) => {
@@ -13,7 +15,7 @@ const LibraryHoldings = ({ holdings }) => {
     if (!el.url) return <li>{el.label}</li>;
     return (
       <li>
-        <a href={el.url}>{el.label}</a>
+        <Link to={el.url}>{el.label}</Link>
       </li>
     );
   };

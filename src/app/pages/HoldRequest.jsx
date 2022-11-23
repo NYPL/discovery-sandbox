@@ -1,16 +1,14 @@
 /* globals window document */
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  Link,
-  withRouter,
-} from 'react-router';
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { Link, withRouter } from 'react-router';
+import { connect } from 'react-redux';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
 } from 'underscore';
-import { connect } from 'react-redux';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import Notification from '../components/Notification/Notification';
@@ -326,7 +324,7 @@ export class HoldRequest extends React.Component {
         (
           <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
-          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+          contact 917-ASK-NYPL (<DSLink href="tel:917-275-6975">917-275-6975</DSLink>).
           </h2>) :
         <h2 className="nypl-request-form-title">Choose a delivery location</h2>;
     let form = null;
@@ -392,7 +390,7 @@ export class HoldRequest extends React.Component {
                     (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
                       <h2>
                         This item cannot be requested at this time. Please try again later or
-                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                        contact 917-ASK-NYPL (<DSLink href="tel:917-275-6975">917-275-6975</DSLink>).
                       </h2>
                   }
                   {bibLink}
