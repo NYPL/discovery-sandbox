@@ -1,7 +1,8 @@
-import React from 'react';
+import { SearchBar, Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
+import React from 'react';
 import { connect } from 'react-redux';
-import { SearchBar } from '@nypl/design-system-react-components';
+import { Link } from 'react-router';
 
 import {
   trackDiscovery,
@@ -149,7 +150,9 @@ class Search extends React.Component {
           }}
         />
         <div id="advanced-search-link-container">
-          <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
+          <DSLink>
+            <Link to={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</Link>
+          </DSLink>
         </div>
       </>
     );

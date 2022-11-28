@@ -1,6 +1,5 @@
-import { Heading, Link as DSLink } from '@nypl/design-system-react-components';
+import { Heading, Link } from '@nypl/design-system-react-components';
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -21,9 +20,9 @@ const DrbbContainer = ({ drbbResults }) => {
         <ul key="drbb-scc-results-list" className="drbb-list">
           { works.map(work => <DrbbResult key={work.id} work={work} />) }
         </ul>,
-        <DSLink
+        <Link
           className="drbb-description drbb-frontend-link"
-          to={{
+          href={{
             pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
             search: researchNowQueryString,
           }}
@@ -33,26 +32,24 @@ const DrbbContainer = ({ drbbResults }) => {
           <>
             See {totalWorks.toLocaleString()} result{totalWorks === 1 ? '' : 's'} from Digital Research Books Beta
           </>
-        </DSLink>]);
+        </Link>]);
     }
 
     return (
-      <DSLink>
-        <Link
-          className="drbb-description"
-          to={appConfig.drbbFrontEnd[appConfig.environment]}
-          target="_blank"
-          key="drbb-link"
-        >
-          <div className="drbb-promo">
-            <img
-              alt="digital-research-book"
-              src="./src/client/assets/drbb_promo.png"
-            />
-          </div>
-          Explore Digital Research Books Beta
-        </Link>
-      </DSLink>
+      <Link
+        className="drbb-description"
+        href={appConfig.drbbFrontEnd[appConfig.environment]}
+        target="_blank"
+        key="drbb-link"
+      >
+        <div className="drbb-promo">
+          <img
+            alt="digital-research-book"
+            src="./src/client/assets/drbb_promo.png"
+          />
+        </div>
+        Explore Digital Research Books Beta
+      </Link>
     );
   };
 
@@ -66,15 +63,12 @@ const DrbbContainer = ({ drbbResults }) => {
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
         all free to read, download, and keep. No Library Card is Required.&nbsp;
-        <span>
-          <DSLink
-            className="link"
-            target="_blank"
-            href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
-          >
-            Read more about the project
-          </DSLink>.
-        </span>
+        <Link
+          target="_blank"
+          href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
+        >
+          Read more about the project
+        </Link>.
       </p>
       { content() }
     </div>

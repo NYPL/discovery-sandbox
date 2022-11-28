@@ -41,17 +41,6 @@ class ItemTableRow extends React.Component {
       itemCallNumber = item.callNumber;
     }
 
-    let itemLocation;
-    if (item.location && item.locationUrl) {
-      itemLocation = (
-        <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
-      );
-    } else if (item.location) {
-      itemLocation = item.location;
-    } else {
-      itemLocation = ' ';
-    }
-
     return (
       <tr className={item.availability}>
         {isBibPage ? (
