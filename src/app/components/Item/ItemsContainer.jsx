@@ -9,7 +9,7 @@ import {
   bibPageItemsListLimit as itemsListPageLimit,
   itemFilters,
 } from '../../data/constants';
-import { isOptionSelected, trackDiscovery } from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
