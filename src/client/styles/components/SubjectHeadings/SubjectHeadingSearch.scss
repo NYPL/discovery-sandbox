@@ -17,7 +17,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $nypl-breakpoint-medium) {
   .react-autosuggest__container {
     display: block;
     width: 100%;

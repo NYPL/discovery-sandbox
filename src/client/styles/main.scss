@@ -225,7 +225,8 @@ select {
   border-radius: 5px;
   flex-flow: column wrap;
   min-height: 200px;
-  padding: var(--nypl-space-s) var(--nypl-space-l);
+  padding-left: var(--nypl-space-s);
+  padding-right: var(--nypl-space-s);
 
   .button-container {
     display: flex;
@@ -239,9 +240,8 @@ a:focus {
   box-shadow: none;
 }
 
-@media (max-width: 400px) {
+@include media($nypl-breakpoint-small) {
   .research-modal__content {
-    padding-left: var(--nypl-space-s);
-    padding-right: var(--nypl-space-s);
+    padding: var(--nypl-space-s) var(--nypl-space-l);
   }
 }

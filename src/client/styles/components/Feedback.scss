@@ -1,18 +1,15 @@
 .feedback {
-  position: static;
   bottom: 0;
   right: 0;
   z-index: 100;
   text-align: right;
   background: $white;
   color: $black;
+  position: fixed;
+  background: inherit;
+  max-width: 571px;
+  min-width: 571px;
 
-  @include media($nypl-breakpoint-large) {
-    position: fixed;
-    background: inherit;
-    max-width: 571px;
-    min-width: 571px;
-  }
   button.feedback-button {
     background: $researchPrimary;
     border: 1px solid $researchPrimary;
@@ -105,7 +102,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $nypl-breakpoint-large) {
   #feedback-menu {
     height: 400px;
     padding: 34px;
