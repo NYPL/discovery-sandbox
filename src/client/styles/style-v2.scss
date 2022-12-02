@@ -41,20 +41,21 @@
       font-weight: 700;
       letter-spacing: 0.04rem;
       margin: 0 0 1rem 0;
-      width: 20%;
-      float: left;
+      margin-bottom: 0.75rem;
+      float: none;
+      width: 100%;
       clear: both;
-
-      @media (max-width: 600px) {
-        float: none;
-        margin-bottom: 0.75rem;
-        width: 100%;
+      
+      @include media($nypl-breakpoint-medium) {
+        float: left;
+        width: 20%;
+        margin-bottom: 1rem;
       }
     }
 
     dd {
-      margin-bottom: 1rem;
-      width: 80%;
+      margin-bottom: 1.25rem;
+      width: 100%;
       max-width: 80%;
       font-size: 0.85rem;
 
@@ -62,9 +63,9 @@
         list-style-type: none;
       }
 
-      @media (max-width: 600px) {
-        margin-bottom: 1.25rem;
-        width: 100%;
+      @include media($nypl-breakpoint-medium) {
+        margin-bottom: 1rem;
+        width: 80%;
       }
 
       &.subject-listing a {
@@ -74,10 +75,13 @@
   }
 
 }
+.nypl-item-details__heading {
+  display: block;
+}
 
-@media (max-width: 600px) {
+@include media($nypl-breakpoint-medium) {
   .nypl-item-details__heading {
-    display: block;
+    display: flex;
   }
 }
 
@@ -121,11 +125,5 @@
     border-bottom: 0;
     padding-bottom: 0;
     margin-bottom: 0;
-  }
-}
-
-@media (max-width: 965px) {
-  .nypl-results-item .nypl-basic-table#bib-item-table {
-    display: table;
   }
 }

@@ -169,7 +169,7 @@ div .tabbed {
   }
 }
 
-@media (max-width: 1120px) {
+@media (max-width: $nypl-breakpoint-xl) {
   .additionalDetails {
     dt {
       float: none;
@@ -177,7 +177,7 @@ div .tabbed {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $nypl-breakpoint-medium) {
   div .tabbed {
     ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
       border: 1px solid $black;

@@ -376,7 +376,7 @@
 
 .filter-error-box {
   margin: 0 3.125rem;
-  @media (max-width: 483px) {
+  @media (max-width: $nypl-breakpoint-medium) {
     margin: 0 1rem;
   }
 }

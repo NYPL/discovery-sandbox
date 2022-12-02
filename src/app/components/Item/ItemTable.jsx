@@ -18,8 +18,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
   }
 
   const isBibPage = page !== 'SearchResults'
-  const isDesktop = media === 'desktop'
-
+  const isDesktop = media === 'desktop' || media === 'tablet'
   const includeVolColumn = (
     items.some(item => item.volume && item.volume.length) && isBibPage
   );

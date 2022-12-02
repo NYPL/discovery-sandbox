@@ -28,7 +28,7 @@
     }
   }
 
-  @media (min-width: 600px) {
+  @include media($nypl-breakpoint-medium) {
     .item-filter-button {
       width: 90%;
 
@@ -169,7 +169,7 @@ button.item-table-filters {
 }
 
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@media (max-width: 600px) {
+@media (max-width: $nypl-breakpoint-medium) {
   .item-filter {
     display: block;
     margin: 10px 0;

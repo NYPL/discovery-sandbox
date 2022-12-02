@@ -32,7 +32,7 @@
     }
   }
 
-  @media (min-width: 870px) {
+  @include media($nypl-breakpoint-large) {
     &__inner-content > div {
       width: 85%;
     }
@@ -53,7 +53,7 @@
   }
 }
 
-@media (max-width: 490px) {
+@media (max-width: $nypl-breakpoint-medium) {
   .nypl-sorter-row {
     display: block;
   }

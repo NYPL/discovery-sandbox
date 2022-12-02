@@ -18,7 +18,7 @@
   }
 }
 
-@media (min-width: 966px) {
+@include media($nypl-breakpoint-large) {
   .bibsList {
     min-height: 22rem;
   }
