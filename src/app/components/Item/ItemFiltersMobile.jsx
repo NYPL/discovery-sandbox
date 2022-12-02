@@ -22,7 +22,7 @@ const ItemFiltersMobile = ({
 }) => {
   if (!options) return null;
   const showResultsAction = () => {
-    submitFilterSelections(selectedFilters);
+    submitFilterSelections();
   };
 
   const modalProps = {

@@ -186,8 +186,8 @@ class ItemsContainer extends React.Component {
             <ItemFilters
               items={items}
               hasFilterApplied={this.hasFilter}
-              query={this.query}
               numOfFilteredItems={this.filteredItems.length}
+              itemsAggregations={this.props.itemsAggregations}
             />
           ) : (
             itemLoadingMessage
@@ -230,6 +230,7 @@ ItemsContainer.propTypes = {
   shortenItems: PropTypes.bool,
   searchKeywords: PropTypes.string,
   holdings: PropTypes.array,
+  itemsAggregations: PropTypes.array,
 };
 
 ItemsContainer.defaultProps = {
