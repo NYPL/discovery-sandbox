@@ -218,7 +218,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+      expect(component.find('h3').at(3).prop('children')).to.equal('Details');
     });
 
     it('has holdings section', () => {

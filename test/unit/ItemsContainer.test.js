@@ -2,14 +2,14 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-import { Provider } from 'react-redux';
+import { shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 import { makeTestStore, mountTestRender } from '../helpers/store';
+import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
 const WrappedItemsContainer = itemsContainerModule.ItemsContainer
@@ -117,10 +117,17 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={items} bib={testBib} />, {
-        disableLifecycleMethods: true,
-        context,
-      });
+      component = shallow(
+        <ItemsContainer
+          items={items}
+          bib={testBib}
+          itemsAggregations={itemsAggregations}
+        />,
+        {
+          disableLifecycleMethods: true,
+          context,
+        }
+      );
     });
 
     it('should have its "js" state set to false by default', () => {
@@ -260,7 +267,7 @@ describe('ItemsContainer', () => {
     })
     before(() => {
       component = mountTestRender(
-        <WrappedItemsContainer />
+        <WrappedItemsContainer itemsAggregations={itemsAggregations} />
         , { store, childContextTypes: { router: PropTypes.object } });
     })
     after(() => {

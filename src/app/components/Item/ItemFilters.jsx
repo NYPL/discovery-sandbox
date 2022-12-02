@@ -83,8 +83,6 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
-    console.log({selectedFilters});
-    console.log({href});
     router.push(href);
   };
 
@@ -95,7 +93,6 @@ const ItemFilters = (
     manageFilterDisplay,
     submitFilterSelections,
   };
-  
 
   return (
     <Fragment>

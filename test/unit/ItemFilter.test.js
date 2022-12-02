@@ -5,9 +5,10 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import ItemFilter from './../../src/app/components/Item/ItemFilter';
-import { locationFilters } from '../fixtures/itemFilterOptions';
+import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 describe('ItemFilter', () => {
+  const locationItemFilter = itemsAggregations[0];
   describe('missing props', () => {
     let component;
     it('should not render without props', () => {
@@ -25,7 +26,7 @@ describe('ItemFilter', () => {
     it('should not render without `filter`', () => {
       component = shallow(
         <ItemFilter
-          options={locationFilters}
+          options={locationItemFilter.values}
         />,
       );
       expect(component.type()).to.equal(null);
@@ -37,8 +38,8 @@ describe('ItemFilter', () => {
     it('should render a `div` and a `button`', () => {
       component = mount(
         <ItemFilter
-          options={locationFilters}
-          filter="location"
+          options={locationItemFilter.values}
+          filter={locationItemFilter.field}
         />);
       expect(component.find('div').length).to.equal(1);
       expect(component.find('button').length).to.equal(1);
@@ -50,8 +51,8 @@ describe('ItemFilter', () => {
     it('should render a fieldset, 3 buttons, 2nd two buttons disabled', () => {
       component = mount(
         <ItemFilter
-          options={locationFilters}
-          filter="location"
+          options={locationItemFilter.values}
+          filter={locationItemFilter.field}
           isOpen
         />);
       expect(component.find('fieldset').length).to.equal(1);
@@ -75,10 +76,10 @@ describe('ItemFilter', () => {
       };
       const component = mount(
         <ItemFilter
-          options={locationFilters}
           isOpen
           selectedFilters={selectedFilters}
-          filter="location"
+          options={locationItemFilter.values}
+          filter={locationItemFilter.field}
           setSelectedFilters={(reactGeneratedFunc) => {
             updatedFilters = reactGeneratedFunc(selectedFilters);
           }}

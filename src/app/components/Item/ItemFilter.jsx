@@ -10,6 +10,12 @@ const updateOptions = options =>
     id: option.label,
     label: option.label,
   }));
+const initialFiltersObj = {
+  location: [],
+  format: [],
+  status: [],
+  year: [],
+};
 
 const ItemFilter = ({
   filter,
@@ -20,7 +26,7 @@ const ItemFilter = ({
   submitFilterSelections,
   setSelectedFilters,
   isOpen,
-  initialFilters,
+  initialFilters = initialFiltersObj,
 }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
