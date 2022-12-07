@@ -142,6 +142,7 @@ describe('AccountPage', () => {
     });
 
     describe('when cookie is above threshold', () => {
+      let component;
       let replaceSpy;
       let clock;
       before(() => {

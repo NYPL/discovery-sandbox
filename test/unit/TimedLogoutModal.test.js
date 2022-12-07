@@ -136,7 +136,7 @@ describe('TimedLogoutModal', () => {
   describe('when no time left', () => {
     const callRecord = [];
     let sandbox;
-
+    let component
     before(() => {
       sandbox = sinon.createSandbox();
       const iframes = global.document.getElementsByTagName('iframe');

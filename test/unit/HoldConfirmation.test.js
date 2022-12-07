@@ -479,7 +479,7 @@ describe('HoldConfirmation', () => {
       title: ['Harry Potter'],
     };
     let component;
-
+    let pushSpy
     before(() => {
       pushSpy = sinon.spy();
       component = mountTestRender(
