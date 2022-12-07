@@ -56,8 +56,7 @@ class Tabbed extends React.Component {
   }
 
   // enables navigation with arrow keys
-  keyDownHandler(e) {
-    const panel = window.location.href.split('#')[1] ? this.sections[this.state.tabNumber] : this.default;
+  keyDownHandler (e) {
     const index = parseInt(e.currentTarget.getAttribute('data'), 10);
     const getDir = () => {
       switch (e.which) {

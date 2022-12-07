@@ -9,7 +9,6 @@ import {
 import Search from '../components/Search/Search';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
-import appConfig from '../data/appConfig';
 
 import {
   basicQuery,

@@ -16,7 +16,7 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
   const allClosed = closedLocations.concat((isRecap ? recapClosedLocations : nonRecapClosedLocations)).includes('');
   const isAeon = item.aeonUrl && features.includes('aeon-links')
 
-  const getItemRecord = (e) => {
+  const getItemRecord = () => {
     let gaLabel = 'Item Holding';
     if (page === 'SearchResults') gaLabel = 'Search Results';
     if (page === 'BibPage') gaLabel = 'Item Details';

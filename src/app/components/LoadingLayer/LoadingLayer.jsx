@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import FocusTrap from 'focus-trap-react';
 
-const LoadingLayer = ({ loading, title, focus }) => {
+const LoadingLayer = ({ loading, focus }) => {
   useEffect(() => {
     if (typeof window !== undefined) {
       const element = document.getElementById(window.location.hash.slice(1));

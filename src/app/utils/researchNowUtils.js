@@ -52,9 +52,6 @@ const createResearchNowQuery = (params) => {
 
   const {
     q,
-    contributor,
-    title,
-    subject,
     sort,
     sort_direction,
     filters,

@@ -278,9 +278,6 @@ export class HoldConfirmation extends React.Component {
     const {
       bib,
       deliveryLocations,
-      params: {
-        itemId,
-      },
       location: {
         query: {
           pickupLocation,

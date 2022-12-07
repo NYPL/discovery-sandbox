@@ -9,7 +9,6 @@ const NestedTableHeader = (props) => {
     indentation,
     sortBy,
     direction,
-    parentUuid,
     updateSort,
     numberOpen,
     interactive,

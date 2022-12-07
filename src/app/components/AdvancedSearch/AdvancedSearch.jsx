@@ -62,7 +62,7 @@ const clearFields = (e) => {
 const createAPIQuery = basicQuery({});
 
 class AdvancedSearch extends React.Component {
-  constructor(props, context) {
+  constructor (props) {
     super(props);
     this.state = {
       alarm: false,

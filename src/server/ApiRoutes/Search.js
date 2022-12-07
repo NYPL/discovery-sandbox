@@ -1,6 +1,5 @@
 import {
   isArray as _isArray,
-  pick as _pick,
 } from 'underscore';
 import appConfig from '../../app/data/appConfig';
 import {

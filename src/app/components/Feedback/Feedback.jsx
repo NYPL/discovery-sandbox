@@ -97,7 +97,6 @@ class Feedback extends React.Component {
       success,
       commentInputError,
     } = this.state;
-    const { submit } = this.props;
 
     return (
       <div className="feedback">
