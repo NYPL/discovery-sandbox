@@ -1,5 +1,4 @@
 import InformationLinks from "../../src/app/components/Item/InformationLinks"
-import { aeonUrl } from '../../src/app/components/Item/ItemTableRow'
 
 import React from 'react';
 import { expect } from 'chai';

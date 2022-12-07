@@ -2,10 +2,6 @@
 import { expect } from 'chai';
 
 import {
-  createResearchNowQuery,
-  authorQuery,
-  generateStreamedReaderUrl,
-  formatUrl,
   getResearchNowQueryString,
   getQueryString,
 } from '../../src/app/utils/researchNowUtils';

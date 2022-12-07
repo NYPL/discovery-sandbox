@@ -135,7 +135,6 @@ describe('TimedLogoutModal', () => {
 
   describe('when no time left', () => {
     const callRecord = [];
-    let component;
     let sandbox;
 
     before(() => {

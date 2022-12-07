@@ -6,7 +6,6 @@ import { mount } from 'enzyme';
 import { mock as sinonMock } from 'sinon';
 import MockAdapter from 'axios-mock-adapter';
 import axios from 'axios';
-import { Provider } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { mountTestRender, makeTestStore } from '../helpers/store';
@@ -240,7 +239,6 @@ describe('ResultsList', () => {
 
   describe('Mocking ajax call for the bib', () => {
     describe('Good response', () => {
-      let component;
       let mock;
 
       before(() => {

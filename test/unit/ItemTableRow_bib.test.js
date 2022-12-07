@@ -4,7 +4,6 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import item from '../fixtures/libraryItems';
-import { MediaContext } from '../../src/app/components/Application/Application';
 
 // Import the component that is going to be tested
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';

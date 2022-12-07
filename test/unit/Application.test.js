@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
-import WrappedApplication, { Application } from '@Application';
+import { Application } from '@Application';
 import { Header, navConfig } from '@nypl/dgx-header-component';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
@@ -84,7 +84,6 @@ describe('Application', () => {
   });
 
   describe('url-enabled feature flag', () => {
-    let content;
     before(() => {
       window.matchMedia = () => ({ addListener: () => {} });
       window.matchMedia().addListener = stub();

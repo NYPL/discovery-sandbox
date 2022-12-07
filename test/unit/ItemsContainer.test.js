@@ -2,8 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-import { Provider } from 'react-redux';
+import { shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';

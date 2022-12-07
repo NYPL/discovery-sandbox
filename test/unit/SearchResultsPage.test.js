@@ -9,7 +9,6 @@ import SearchResultsContainer from '../../src/app/components/SearchResults/Searc
 import { mockRouterContext } from '../helpers/routing';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 import appConfig from '../../src/app/data/appConfig';
-import { DSProvider } from '@nypl/design-system-react-components';
 
 
 // Eventually, it would be nice to have mocked data in a different file and imported.

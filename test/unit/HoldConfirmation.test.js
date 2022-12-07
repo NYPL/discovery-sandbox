@@ -3,7 +3,6 @@
 import React from 'react';
 import sinon from 'sinon';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
 import { mountTestRender, makeTestStore } from '../helpers/store';
 
 // Import the component that is going to be tested
@@ -480,7 +479,6 @@ describe('HoldConfirmation', () => {
       title: ['Harry Potter'],
     };
     let component;
-    let pushSpy;
 
     before(() => {
       pushSpy = sinon.spy();

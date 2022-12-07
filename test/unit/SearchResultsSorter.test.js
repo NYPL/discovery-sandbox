@@ -118,7 +118,6 @@ describe('SearchResultsSorter', () => {
 
   describe('Mocking ajax call for the bib', () => {
     describe('Good response', () => {
-      let component;
       let createAPIQuery;
       let axiosSpy;
       let mock;

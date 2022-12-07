@@ -7,7 +7,6 @@ import item from '../fixtures/libraryItems';
 
 // Import the component that is going to be tested
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
-import { MediaContext } from '../../src/app/components/Application/Application';
 
 describe('ItemTableRow - mobile bib page view', () => {
 

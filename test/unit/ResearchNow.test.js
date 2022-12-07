@@ -1,8 +1,6 @@
 /* eslint-env mocha */
 import sinon from 'sinon';
 import { expect } from 'chai';
-import axios from 'axios';
-import MockAdapter from 'axios-mock-adapter';
 
 import NyplApiClient from '@nypl/nypl-data-api-client';
 
@@ -13,7 +11,7 @@ describe('ResearchNow', () => {
     const sinonSandbox = sinon.createSandbox();
 
     beforeEach(() => {
-      sinonSandbox.stub(NyplApiClient.prototype, 'get').callsFake((path) => {
+      sinonSandbox.stub(NyplApiClient.prototype, 'get').callsFake(() => {
         return Promise.resolve(JSON.parse(require('fs').readFileSync('./test/fixtures/drb-query-blank.json', 'utf8')))
       });
     });
@@ -63,7 +61,7 @@ describe('ResearchNow', () => {
       });
 
       beforeEach(() => {
-        sinonSandbox.stub(NyplApiClient.prototype, 'post').callsFake((path) => {
+        sinonSandbox.stub(NyplApiClient.prototype, 'post').callsFake(() => {
           return Promise.resolve(JSON.parse(require('fs').readFileSync('./test/fixtures/drb-query-blank.json', 'utf8')))
         });
       });

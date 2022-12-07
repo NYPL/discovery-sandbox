@@ -3,8 +3,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { expect } from 'chai';
-import { spy } from 'sinon';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import RequestButtons from './../../src/app/components/Item/RequestButtons'
 import appConfig from '../../src/app/data/appConfig';
 import item from '../fixtures/libraryItems';

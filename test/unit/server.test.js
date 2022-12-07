@@ -34,7 +34,7 @@ describe('server', () => {
       .expect('Content-Type', /text/)
       .expect('Location', `${appConfig.baseUrl}/`)
       .expect(302)
-      .then((response) => {
+        .then(() => {
         done();
       })
       .catch(err => done(err));

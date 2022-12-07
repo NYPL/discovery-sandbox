@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import { Provider } from 'react-redux';
 
 import SubNav from './../../src/app/components/SubNav/SubNav';

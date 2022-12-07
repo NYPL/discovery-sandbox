@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import SearchResultsItems from '../../src/app/components/Item/SearchResultsItems'
 import ItemTable from '../../src/app/components/Item/ItemTable'
 import ItemsDefinitionLists from '../../src/app/components/Item/ItemsDefinitionLists'

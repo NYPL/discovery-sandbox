@@ -7,7 +7,6 @@ import { Provider } from 'react-redux';
 import { makeTestStore } from '../helpers/store';
 
 import Home from '../../src/app/pages/Home';
-import appConfig from '../../src/app/data/appConfig';
 
 describe('Home', () => {
   let component;

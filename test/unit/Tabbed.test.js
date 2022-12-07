@@ -165,7 +165,6 @@ describe('Tabbed', () => {
   const details = component.find('a').at(0);
   const fullDescription = component.find('a').at(1);
   let focused;
-  let section;
 
   describe('Initial Rendering', () => {
     it('should focus on Availability', () => {

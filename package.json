@@ -9,7 +9,7 @@
     "dev-api-start": "cross-env PLATFORM_API_BASE_URL=https://dev-platform.nypl.org/api/v0.1 KMS_ENV=unencrypted node index",
     "prod-api-start": "cross-env PLATFORM_API_BASE_URL=https://platform.nypl.org/api/v0.1 KMS_ENV=encrypted node index",
     "eb-start": "npm run dist && node index",
-    "lint": "eslint --fix --ext .js,.jsx .",
+    "lint": "eslint --ext .js,.jsx .",
     "dist": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "preinstall": "npm i webpack-cli",
     "postinstall": "npm run dist",

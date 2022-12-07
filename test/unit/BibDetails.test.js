@@ -7,7 +7,6 @@ import { mount } from 'enzyme';
 import BibDetails from './../../src/app/components/BibPage/BibDetails';
 import { getGroupedNotes } from '../../src/app/utils/bibDetailsUtils';
 import { RouterProvider } from './../../src/app/context/RouterContext';
-import { Provider } from 'react-redux';
 import bibs from '../fixtures/bibs';
 
 describe('BibDetails', () => {

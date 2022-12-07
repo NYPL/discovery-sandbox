@@ -3,10 +3,9 @@
 import React from 'react';
 import nock from 'nock';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import BibsList from '../../src/app/components/SubjectHeading/BibsList';
-import Sorter from '@Sorter';
 import appConfig from '../../src/app/data/appConfig';
 
 describe('BibsList', () => {

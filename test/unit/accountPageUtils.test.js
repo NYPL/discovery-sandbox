@@ -53,13 +53,14 @@ describe('manipulateAccountPage', () => {
     if (window.NodeList && !NodeList.prototype.forEach) {
       NodeList.prototype.forEach = Array.prototype.forEach;
     }
+    /*eslint-disable @typescript-eslint/no-unused-vars*/
     manipulateAccountPage(
       dom, // accountPageContent
-      (newContent) => null, // updateAccountHtml
+      () => null, // updateAccountHtml
       { id: 'patronid', patronType: 'patrontype' }, // patron
       'holds', // contentType
-      (bool) => null, // setIsLoading
-      (obj) => null, // setItemToCancel
+      () => null, // setIsLoading
+      () => null, // setItemToCancel
     );
   };
 
