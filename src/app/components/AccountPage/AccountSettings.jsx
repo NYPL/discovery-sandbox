@@ -4,13 +4,13 @@ import PropTypes from 'prop-types';
 import { Heading, Link } from '@nypl/design-system-react-components';
 
 const AccountSettings = ({ patron, legacyBaseUrl }) => (
-  <div className="account-settings">
-    <div className="account-settings__heading-3">
-      <Heading level="three" text="Personal Information" />
+  <div className='account-settings'>
+    <div className='account-settings__heading-3'>
+      <Heading level='three' text='Personal Information' />
       <Link
         href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
-        className="edit-link settings"
-        target="_blank"
+        className='edit-link settings'
+        target='_blank'
       >
         Edit
       </Link>
@@ -27,13 +27,15 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
       <dd>{patron.noticePreference}</dd>
     </dl>
     <hr />
-    <div className="pin">
+    <div className='pin'>
       <dl>
         <dt>Pin/Password</dt>
-        <dd><span>&middot;&middot;&middot;&middot;</span></dd>
+        <dd>
+          <span>&middot;&middot;&middot;&middot;</span>
+        </dd>
         <Link
           href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
-          className="edit-link"
+          className='edit-link'
           target='_blank'
         >
           Edit

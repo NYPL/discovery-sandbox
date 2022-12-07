@@ -5,7 +5,7 @@ import {
   Heading,
   Label,
   Select,
-  TextInput
+  TextInput,
 } from '@nypl/design-system-react-components';
 import appConfig from '@appConfig';
 import React from 'react';
@@ -15,7 +15,9 @@ import SccContainer from '../SccContainer/SccContainer';
 
 const aggregations = require('../../../../advancedSearchAggregations.json');
 
-const materialTypes = aggregations.materialType.sort((a, b) => (a.label > b.label ? 1 : -1));
+const materialTypes = aggregations.materialType.sort((a, b) =>
+  a.label > b.label ? 1 : -1,
+);
 const languages = [
   {
     value: '',
@@ -23,17 +25,9 @@ const languages = [
   },
 ].concat(aggregations.language.sort((a, b) => (a.label > b.label ? 1 : -1)));
 
-const leftInputs = [
-  'searchKeywords',
-  'title',
-  'contributor',
-  'subject',
-];
+const leftInputs = ['searchKeywords', 'title', 'contributor', 'subject'];
 
-const rightInputs = [
-  'dateAfter',
-  'dateBefore',
-];
+const rightInputs = ['dateAfter', 'dateBefore'];
 
 const labelsForFields = {
   searchKeywords: 'Keyword',
@@ -62,7 +56,7 @@ const clearFields = (e) => {
 const createAPIQuery = basicQuery({});
 
 class AdvancedSearch extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       alarm: false,
@@ -88,156 +82,147 @@ class AdvancedSearch extends React.Component {
     return this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
-
   render() {
     return (
       <SccContainer
-        activeSection="search"
-        pageTitle="Advanced Search"
-        className="advancedSearchContainer"
+        activeSection='search'
+        pageTitle='Advanced Search'
+        className='advancedSearchContainer'
       >
-        { this.state.alarm &&
-          (
-            <aside
-              id="advancedSearchAside"
-              aria-label="alert-enter-at-least-one-field"
-            >
-              <img src="./src/client/assets/Alert_Icon.svg" alt="Exclamation mark in a triangle" />
-              Please enter at least one field to submit an advanced search.
-            </aside>
-          )
-        }
-        <Heading id="advancedSearchHeading" className="page-title">
+        {this.state.alarm && (
+          <aside
+            id='advancedSearchAside'
+            aria-label='alert-enter-at-least-one-field'
+          >
+            <img
+              src='./src/client/assets/Alert_Icon.svg'
+              alt='Exclamation mark in a triangle'
+            />
+            Please enter at least one field to submit an advanced search.
+          </aside>
+        )}
+        <Heading id='advancedSearchHeading' className='page-title'>
           Advanced Search
         </Heading>
-        <form id="advancedSearchForm" onSubmit={this.submitForm} method="POST" action={`${appConfig.baseUrl}/search`}>
-          <div id="fields">
-            <div className="advancedSearchColumnLeft">
+        <form
+          id='advancedSearchForm'
+          onSubmit={this.submitForm}
+          method='POST'
+          action={`${appConfig.baseUrl}/search`}
+        >
+          <div id='fields'>
+            <div className='advancedSearchColumnLeft'>
               <ul>
-                {
-                  leftInputs.map(key =>
-                    (
-                      <li key={key}>
-                        <TextInput
-                          id={key}
-                          labelText={labelsForFields[key]}
-                          type="text"
-                          name={key}
-                        />
-                      </li>
-                    ),
-                  )
-                }
+                {leftInputs.map((key) => (
+                  <li key={key}>
+                    <TextInput
+                      id={key}
+                      labelText={labelsForFields[key]}
+                      type='text'
+                      name={key}
+                    />
+                  </li>
+                ))}
                 <li>
                   <Select
-                    id="languageSelect"
-                    name="language"
-                    labelText="Language"
-                    aria-labelledby="languageSelect-label"
+                    id='languageSelect'
+                    name='language'
+                    labelText='Language'
+                    aria-labelledby='languageSelect-label'
                   >
-                    {
-                      languages.map((language) => {
-                        return (
-                          <option value={language.value} key={language.value}>
-                            {language.label}
-                          </option>
-                        );
-                      })
-                    }
+                    {languages.map((language) => {
+                      return (
+                        <option value={language.value} key={language.value}>
+                          {language.label}
+                        </option>
+                      );
+                    })}
                   </Select>
                 </li>
               </ul>
             </div>
-            <div className="advancedSearchColumnRight">
+            <div className='advancedSearchColumnRight'>
               <ul>
-                <Label htmlFor="dates" id="dates-label">
+                <Label htmlFor='dates' id='dates-label'>
                   Date
                 </Label>
-                <li id="dates" aria-labelledby="dates-label">
-                  <ul id="dateList">
-                    {
-                      rightInputs.map(key =>
-                        (
-                          <li key={key} id={`${key}-li`}>
-                            <TextInput
-                              ariaLabelledBy={`${key}-li-label`}
-                              id={key}
-                              labelText={labelsForFields[key]}
-                              name={key}
-                              type="text"
-                            />
-                          </li>
-                        ),
-                      )
-                    }
+                <li id='dates' aria-labelledby='dates-label'>
+                  <ul id='dateList'>
+                    {rightInputs.map((key) => (
+                      <li key={key} id={`${key}-li`}>
+                        <TextInput
+                          ariaLabelledBy={`${key}-li-label`}
+                          id={key}
+                          labelText={labelsForFields[key]}
+                          name={key}
+                          type='text'
+                        />
+                      </li>
+                    ))}
                   </ul>
                 </li>
                 <li>
-                  <Label htmlFor="formats" id="formats-label">
+                  <Label htmlFor='formats' id='formats-label'>
                     Format
                   </Label>
-                  <fieldset id="formats" aria-labelledby="formats-label">
-                    <ul id="formatListLeft">
-                      {
-                        materialTypes.slice(0, 4).map((materialType) => {
-                          return (
-                            <Checkbox
-                              id={materialType.value}
-                              key={materialType.value}
-                              labelText={materialType.label}
-                              name={materialType.value}
-                              value={materialType.value}
-                              marginBottom="7px"
-                              __css={{
-                                span: {
-                                  fontSize: '16px',
-                                  fontWeight: 'bold',
-                                }
-                              }}
-                            />
-                          );
-                        })
-                      }
+                  <fieldset id='formats' aria-labelledby='formats-label'>
+                    <ul id='formatListLeft'>
+                      {materialTypes.slice(0, 4).map((materialType) => {
+                        return (
+                          <Checkbox
+                            id={materialType.value}
+                            key={materialType.value}
+                            labelText={materialType.label}
+                            name={materialType.value}
+                            value={materialType.value}
+                            marginBottom='7px'
+                            __css={{
+                              span: {
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                              },
+                            }}
+                          />
+                        );
+                      })}
                     </ul>
-                    <ul id="formatListRight">
-                      {
-                        materialTypes.slice(4).map((materialType) => {
-                          return (
-                            <Checkbox
-                              id={materialType.value}
-                              key={materialType.value}
-                              labelText={materialType.label}
-                              name={materialType.value}
-                              value={materialType.value}
-                              marginBottom="7px"
-                              __css={{
-                                span: {
-                                  fontSize: '16px',
-                                  fontWeight: 'bold',
-                                }
-                              }}
-                            />
-                          );
-                        })
-                      }
+                    <ul id='formatListRight'>
+                      {materialTypes.slice(4).map((materialType) => {
+                        return (
+                          <Checkbox
+                            id={materialType.value}
+                            key={materialType.value}
+                            labelText={materialType.label}
+                            name={materialType.value}
+                            value={materialType.value}
+                            marginBottom='7px'
+                            __css={{
+                              span: {
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                              },
+                            }}
+                          />
+                        );
+                      })}
                     </ul>
                   </fieldset>
                 </li>
               </ul>
-              <input type="hidden" name="advancedSearch" value="true" />
+              <input type='hidden' name='advancedSearch' value='true' />
             </div>
           </div>
           <hr />
-          <div id="advancedSearchButtons">
-            <Button id="advancedSearchSubmit" type="submit">
+          <div id='advancedSearchButtons'>
+            <Button id='advancedSearchSubmit' type='submit'>
               Submit
             </Button>
             <Button
-              buttonType="secondary"
-              className="clearButton"
-              id="advancedSearchClear"
+              buttonType='secondary'
+              className='clearButton'
+              id='advancedSearchClear'
               onClick={clearFields}
-              type="button"
+              type='button'
             >
               Clear
             </Button>

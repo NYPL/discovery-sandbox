@@ -35,16 +35,19 @@ describe('ItemFilters', () => {
     let component;
     let itemFilters;
     before(() => {
-      component = mount(<ItemFilters
-        items={[
-          item.full,
-          item.missingData,
-          item.requestable_ReCAP_available,
-          item.requestable_ReCAP_not_available,
-          item.requestable_nonReCAP_NYPL,
-        ]}
-        numOfFilteredItems={5}
-      />, { context });
+      component = mount(
+        <ItemFilters
+          items={[
+            item.full,
+            item.missingData,
+            item.requestable_ReCAP_available,
+            item.requestable_ReCAP_not_available,
+            item.requestable_nonReCAP_NYPL,
+          ]}
+          numOfFilteredItems={5}
+        />,
+        { context },
+      );
       itemFilters = component.find('ItemFilter');
     });
 
@@ -55,35 +58,49 @@ describe('ItemFilters', () => {
       expect(itemFilters.length).to.equal(3);
     });
     it('should have "location", "format", and "status" filters', () => {
-      const filterTypes = itemFilters.map(filterComp => filterComp.props().filter);
+      const filterTypes = itemFilters.map(
+        (filterComp) => filterComp.props().filter,
+      );
       expect(filterTypes).to.deep.equal(['location', 'format', 'status']);
     });
     it('should pass locations parsed properly. All offsite location options have ID "offsite"', () => {
-      const locationFilter = itemFilters.findWhere(filterComp => filterComp.props().filter === 'location');
+      const locationFilter = itemFilters.findWhere(
+        (filterComp) => filterComp.props().filter === 'location',
+      );
       const options = locationFilter.props().options;
       expect(options).to.deep.equal(locationFilters);
-      expect(options.every((option) => {
-        if (option.label === 'Offsite') return option.id === 'offsite';
-        return true;
-      })).to.equal(true);
+      expect(
+        options.every((option) => {
+          if (option.label === 'Offsite') return option.id === 'offsite';
+          return true;
+        }),
+      ).to.equal(true);
     });
     it('should pass statuses parsed properly. Requestable option has id "requestable"', () => {
-      const statusFilter = itemFilters.findWhere(filterComp => filterComp.props().filter === 'status');
+      const statusFilter = itemFilters.findWhere(
+        (filterComp) => filterComp.props().filter === 'status',
+      );
       const options = statusFilter.props().options;
       expect(options).to.deep.equal(statusFilters);
       // There are three requestable items
-      expect(options.filter(option => option.id === 'requestable').length).to.equal(3);
+      expect(
+        options.filter((option) => option.id === 'requestable').length,
+      ).to.equal(3);
     });
     it('should have working checkboxes', () => {
       const itemFilter = component.find('ItemFilter').first();
       itemFilter.find('button').simulate('click');
       const checkbox = component.find('input[type="checkbox"]').first();
 
-      expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
+      expect(checkbox.html()).to.include(
+        'id="SASB M1 - General Research - Room 315"',
+      );
       expect(checkbox.html()).to.include('type="checkbox"');
       checkbox.simulate('click');
 
-      expect(checkbox.html()).to.include('id="SASB M1 - General Research - Room 315"');
+      expect(checkbox.html()).to.include(
+        'id="SASB M1 - General Research - Room 315"',
+      );
     });
   });
   // one filter will be a string in the router context
@@ -92,22 +109,27 @@ describe('ItemFilters', () => {
     before(() => {
       const contextWithOneFilter = context;
       contextWithOneFilter.router.location.query = { format: 'Text' };
-      component = mount(<ItemFilters
-        items={[
-          item.full,
-          item.missingData,
-          item.requestable_ReCAP_available,
-          item.requestable_ReCAP_not_available,
-          item.requestable_nonReCAP_NYPL,
-        ]}
-        numOfFilteredItems={5}
-        hasFilterApplied
-      />, { context: contextWithOneFilter });
+      component = mount(
+        <ItemFilters
+          items={[
+            item.full,
+            item.missingData,
+            item.requestable_ReCAP_available,
+            item.requestable_ReCAP_not_available,
+            item.requestable_nonReCAP_NYPL,
+          ]}
+          numOfFilteredItems={5}
+          hasFilterApplied
+        />,
+        { context: contextWithOneFilter },
+      );
     });
     it('should have description of filters', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(component.find('.item-filter-info').find('span').text()).to.equal("Filtered by format: 'Text'");
+      expect(component.find('.item-filter-info').find('span').text()).to.equal(
+        "Filtered by format: 'Text'",
+      );
     });
     it('should display "5 Results Found"', () => {
       expect(component.find('h3').text()).to.equal('5 Results Found');
@@ -118,23 +140,30 @@ describe('ItemFilters', () => {
     let component;
     before(() => {
       const contextWithMultipleFilters = context;
-      contextWithMultipleFilters.router.location.query = { format: ['Text', 'PRINT'] };
-      component = mount(<ItemFilters
-        items={[
-          item.full,
-          item.missingData,
-          item.requestable_ReCAP_available,
-          item.requestable_ReCAP_not_available,
-          item.requestable_nonReCAP_NYPL,
-        ]}
-        numOfFilteredItems={1}
-        hasFilterApplied
-      />, { context: contextWithMultipleFilters });
+      contextWithMultipleFilters.router.location.query = {
+        format: ['Text', 'PRINT'],
+      };
+      component = mount(
+        <ItemFilters
+          items={[
+            item.full,
+            item.missingData,
+            item.requestable_ReCAP_available,
+            item.requestable_ReCAP_not_available,
+            item.requestable_nonReCAP_NYPL,
+          ]}
+          numOfFilteredItems={1}
+          hasFilterApplied
+        />,
+        { context: contextWithMultipleFilters },
+      );
     });
     it('should have description of filters', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text', 'PRINT'");
+      expect(itemFilterInfo.find('span').text()).to.equal(
+        "Filtered by format: 'Text', 'PRINT'",
+      );
     });
     it('should display "1 Result Found"', () => {
       expect(component.find('h3').text()).to.equal('1 Result Found');
@@ -149,22 +178,27 @@ describe('ItemFilters', () => {
         format: 'PRINT',
         status: 'Requestable',
       };
-      component = mount(<ItemFilters
-        items={[
-          item.full,
-          item.missingData,
-          item.requestable_ReCAP_available,
-          item.requestable_ReCAP_not_available,
-          item.requestable_nonReCAP_NYPL,
-        ]}
-        numOfFilteredItems={0}
-        hasFilterApplied
-      />, { context: contextWithMultipleFilters });
+      component = mount(
+        <ItemFilters
+          items={[
+            item.full,
+            item.missingData,
+            item.requestable_ReCAP_available,
+            item.requestable_ReCAP_not_available,
+            item.requestable_nonReCAP_NYPL,
+          ]}
+          numOfFilteredItems={0}
+          hasFilterApplied
+        />,
+        { context: contextWithMultipleFilters },
+      );
     });
     it('should display correct description', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Requestable'");
+      expect(itemFilterInfo.find('span').text()).to.equal(
+        "Filtered by format: 'PRINT', status: 'Requestable'",
+      );
     });
     it('should display "0 Results Found"', () => {
       expect(component.find('h3').text()).to.equal('No Results Found');

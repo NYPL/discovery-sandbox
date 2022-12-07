@@ -41,56 +41,67 @@ class FieldsetDate extends React.Component {
   }
 
   render() {
-    let errorMessage = 'The end year should be the same year as or later than the start year.';
+    let errorMessage =
+      'The end year should be the same year as or later than the start year.';
     let errorClass = '';
 
     if (this.props.submitError) {
-      errorMessage = 'Enter a valid range in the Start Year and End Year fields or remove what ' +
-      'you\'ve entered from those fields.';
+      errorMessage =
+        'Enter a valid range in the Start Year and End Year fields or remove what ' +
+        "you've entered from those fields.";
       errorClass = 'nypl-field-error';
     }
 
-    const defaultValueDateAfter = (this.state.dateAfter) ? this.state.dateAfter : null;
-    const defaultValueDateBefore = (this.state.dateBefore) ? this.state.dateBefore : null;
+    const defaultValueDateAfter = this.state.dateAfter
+      ? this.state.dateAfter
+      : null;
+    const defaultValueDateBefore = this.state.dateBefore
+      ? this.state.dateBefore
+      : null;
 
     return (
-      <fieldset className="nypl-fieldset inner date-fieldset">
-        <legend><Heading level="three">Date</Heading></legend>
-        <div id="input-container" className={`nypl-name-field nypl-filter-date-field ${errorClass}`}>
-          <label htmlFor="dateAfter" id="dateAfter-label">Start Year
+      <fieldset className='nypl-fieldset inner date-fieldset'>
+        <legend>
+          <Heading level='three'>Date</Heading>
+        </legend>
+        <div
+          id='input-container'
+          className={`nypl-name-field nypl-filter-date-field ${errorClass}`}
+        >
+          <label htmlFor='dateAfter' id='dateAfter-label'>
+            Start Year
             <NumberFormat
-              id="dateAfter"
-              name="dateAfter"
-              className="form-text"
+              id='dateAfter'
+              name='dateAfter'
+              className='form-text'
               onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateAfter-label dateInput-status"
+              format='####'
+              aria-labelledby='dateAfter-label dateInput-status'
               value={defaultValueDateAfter}
-              placeholder="Ex: 1901"
+              placeholder='Ex: 1901'
             />
           </label>
-          <span className="date-divider">to</span>
-          <label htmlFor="dateBefore" id="dateBefore-label">End Year
+          <span className='date-divider'>to</span>
+          <label htmlFor='dateBefore' id='dateBefore-label'>
+            End Year
             <NumberFormat
-              id="dateBefore"
-              name="dateBefore"
-              className="form-text"
+              id='dateBefore'
+              name='dateBefore'
+              className='form-text'
               onChange={this.inputChange}
-              format="####"
-              aria-labelledby="dateBefore-label dateInput-status"
+              format='####'
+              aria-labelledby='dateBefore-label dateInput-status'
               value={defaultValueDateBefore}
-              placeholder="Ex: 2001"
+              placeholder='Ex: 2001'
             />
           </label>
           <span
-            id="dateInput-status"
-            className="nypl-field-status"
-            aria-live="assertive"
-            aria-atomic="true"
+            id='dateInput-status'
+            className='nypl-field-status'
+            aria-live='assertive'
+            aria-atomic='true'
           >
-            <span>
-              {errorMessage}
-            </span>
+            <span>{errorMessage}</span>
           </span>
         </div>
       </fieldset>

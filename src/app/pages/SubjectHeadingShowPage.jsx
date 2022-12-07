@@ -7,12 +7,8 @@ import SubjectHeadingShow from '../components/SubjectHeading/SubjectHeadingShow'
 
 const SubjectHeadingShowPage = (props) => {
   const {
-    params: {
-      subjectHeadingUuid,
-    },
-    location: {
-      query,
-    },
+    params: { subjectHeadingUuid },
+    location: { query },
   } = props;
 
   const [label, setLabel] = useState(decodeURIComponent(query.label) || '');
@@ -20,15 +16,13 @@ const SubjectHeadingShowPage = (props) => {
   return (
     <SccContainer
       useLoadingLayer={false}
-      activeSection="shep"
-      pageTitle="Subject Heading"
-      className="subject-heading-page"
+      activeSection='shep'
+      pageTitle='Subject Heading'
+      className='subject-heading-page'
     >
-      <div
-        className="subject-heading-page-header"
-      >
-        <Heading className="page-title" level="two">
-          { `Subject Heading "${label}"` }
+      <div className='subject-heading-page-header'>
+        <Heading className='page-title' level='two'>
+          {`Subject Heading "${label}"`}
         </Heading>
         <SubjectHeadingSearch />
       </div>

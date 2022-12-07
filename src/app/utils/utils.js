@@ -762,40 +762,43 @@ function isNyplBnumber(bnum) {
 /**
  * Given a bib, return the electronic resources and the number of physical items
  */
- function getElectronicResources(bib) {
-   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-   const eResources = pluckAeonLinksFromResource(aggregatedElectronicResources, items);
-   const totalPhysicalItems = items.filter(item => !item.isElectronicResource).length;
-   return { eResources, totalPhysicalItems }
- }
+function getElectronicResources(bib) {
+  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
+  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const eResources = pluckAeonLinksFromResource(
+    aggregatedElectronicResources,
+    items,
+  );
+  const totalPhysicalItems = items.filter(
+    (item) => !item.isElectronicResource,
+  ).length;
+  return { eResources, totalPhysicalItems };
+}
 
- /**
-  * Given an item, return Aeon url with params added to pre-populate the form
-  */
+/**
+ * Given an item, return Aeon url with params added to pre-populate the form
+ */
 
- function aeonUrl(item) {
-   const itemUrl = Array.isArray(item.aeonUrl)
-     ? item.aeonUrl[0]
-     : item.aeonUrl;
+function aeonUrl(item) {
+  const itemUrl = Array.isArray(item.aeonUrl) ? item.aeonUrl[0] : item.aeonUrl;
 
-   const AeonUrl = new URL(itemUrl);
+  const AeonUrl = new URL(itemUrl);
 
-   const paramDict = {
-     ItemISxN: 'id',
-     itemNumber: 'barcode',
-     CallNumber: 'callNumber',
-   };
+  const paramDict = {
+    ItemISxN: 'id',
+    itemNumber: 'barcode',
+    CallNumber: 'callNumber',
+  };
 
-   // Add/Replace query parameters on AeonURL with item key values
-   Object.entries(paramDict).forEach(([param, key]) => {
-     // If item doesn't have a value use searchParams value
-     const value = item[key] ?? AeonUrl.searchParams.get(param);
-     if (value) AeonUrl.searchParams.set(param, value);
-   });
+  // Add/Replace query parameters on AeonURL with item key values
+  Object.entries(paramDict).forEach(([param, key]) => {
+    // If item doesn't have a value use searchParams value
+    const value = item[key] ?? AeonUrl.searchParams.get(param);
+    if (value) AeonUrl.searchParams.set(param, value);
+  });
 
-   return AeonUrl.toString();
- }
+  return AeonUrl.toString();
+}
 
 export {
   trackDiscovery,

@@ -8,9 +8,18 @@ import ItemTable from './../../src/app/components/Item/ItemTable';
 
 describe('ItemTable', () => {
   const data = [
-    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-    { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
+    {
+      status: { prefLabel: 'available' },
+      accessMessage: { prefLabel: 'available' },
+    },
+    {
+      status: { prefLabel: 'available' },
+      accessMessage: { prefLabel: 'available' },
+    },
+    {
+      status: { prefLabel: 'available' },
+      accessMessage: { prefLabel: 'available' },
+    },
   ];
 
   describe('No rendered table', () => {
@@ -25,8 +34,10 @@ describe('ItemTable', () => {
     });
 
     it('should return null if items is not an array', () => {
-      const stringItem = shallow(<ItemTable items="not an array" />);
-      const objectItem = shallow(<ItemTable items={{ object: 'not an array' }} />);
+      const stringItem = shallow(<ItemTable items='not an array' />);
+      const objectItem = shallow(
+        <ItemTable items={{ object: 'not an array' }} />,
+      );
 
       expect(stringItem.type()).to.equal(null);
       expect(objectItem.type()).to.equal(null);
@@ -34,13 +45,13 @@ describe('ItemTable', () => {
   });
 
   describe('Search Results page', () => {
-    let component
+    let component;
     before(() => {
-      component = mount(<ItemTable items={data} page="SearchResults" />);
+      component = mount(<ItemTable items={data} page='SearchResults' />);
     });
     after(() => {
-      component.unmount()
-    })
+      component.unmount();
+    });
 
     it('should have one <thead> for each item and three <th>', () => {
       const header = component.find('thead').at(0);
@@ -52,7 +63,9 @@ describe('ItemTable', () => {
     });
     it('should have one table for each item', () => {
       expect(component.find('table').length).to.equal(3);
-      expect(component.find('table').at(0).prop('className')).to.include('nypl-basic-table');
+      expect(component.find('table').at(0).prop('className')).to.include(
+        'nypl-basic-table',
+      );
     });
 
     it('should have one <caption> element set to "Item details".', () => {
@@ -67,9 +80,14 @@ describe('ItemTable', () => {
   });
 
   describe('Bib page', () => {
-    let component
+    let component;
     before(() => {
-      component = mount(<ItemTable page='not search results' items={data.map((item, i) => ({ volume: `${i}`, ...item }))} />);
+      component = mount(
+        <ItemTable
+          page='not search results'
+          items={data.map((item, i) => ({ volume: `${i}`, ...item }))}
+        />,
+      );
     });
     it('should have a <thead> with 6 <th> elements', () => {
       const header = component.find('thead').at(0);
@@ -81,15 +99,17 @@ describe('ItemTable', () => {
       expect(header.find('th').at(3).text()).to.equal('Access');
       expect(header.find('th').at(4).text()).to.equal('Call Number');
       expect(header.find('th').at(5).text()).to.equal('Item Location');
-    })
+    });
     it('should have the same number <tr> elements in its <tbody> as the item length.', () => {
-      const body = component.find('tbody')
-      const rows = body.find('tr')
+      const body = component.find('tbody');
+      const rows = body.find('tr');
       expect(rows.length).to.equal(3);
     });
     it('should have one table', () => {
       expect(component.find('table').length).to.equal(1);
-      expect(component.find('table').prop('className')).to.equal('nypl-basic-table');
+      expect(component.find('table').prop('className')).to.equal(
+        'nypl-basic-table',
+      );
     });
 
     it('should have one <caption> element set to "Item details".', () => {
@@ -103,9 +123,9 @@ describe('ItemTable', () => {
     });
 
     it('should not have Vol/Date column if no volume on items', () => {
-      component.unmount()
+      component.unmount();
       component = mount(<ItemTable page='not search results' items={data} />);
-      expect(component.find('th').length).to.equal(5)
-    })
+      expect(component.find('th').length).to.equal(5);
+    });
   });
 });

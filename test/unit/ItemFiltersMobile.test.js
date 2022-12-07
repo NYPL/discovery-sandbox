@@ -49,56 +49,56 @@ describe('ItemFiltersMobile', () => {
       component = mount(
         <ItemFiltersMobile
           options={formatOptions}
-          setSelectedFilters={() => { }}
-          submitFilterSelections={() => { }}
+          setSelectedFilters={() => {}}
+          submitFilterSelections={() => {}}
           initialFilters={initialFilters}
           selectedFilters={initialFilters}
         />,
       );
-      modalTrigger = component.findWhere(node => {
-        return node.type() === 'button' && node.text() === "Filters";
+      modalTrigger = component.findWhere((node) => {
+        return node.type() === 'button' && node.text() === 'Filters';
       });
-    })
+    });
 
     it('should not render showResultsButton before clicking Filters', () => {
-      const showResultsButton = component.findWhere(node => {
-        return node.type() === 'button' && node.text() === "Show Results";
+      const showResultsButton = component.findWhere((node) => {
+        return node.type() === 'button' && node.text() === 'Show Results';
       });
-      expect(showResultsButton).to.have.lengthOf(0)
-    })
+      expect(showResultsButton).to.have.lengthOf(0);
+    });
 
     it('should render "Filters" button', () => {
       expect(modalTrigger).to.have.lengthOf(1);
     });
 
     it('should render `ItemFilter` for option types passed', () => {
-      modalTrigger.simulate('click')
-      const itemFilters = component.find('.item-filter')
+      modalTrigger.simulate('click');
+      const itemFilters = component.find('.item-filter');
       expect(itemFilters.hostNodes().length).to.equal(1);
     });
 
     describe('"Show Results" button', () => {
-      let showResultsButton
+      let showResultsButton;
       beforeEach(() => {
-        modalTrigger.simulate('click')
-        showResultsButton = component.findWhere(node => {
-          return node.type() === 'button' && node.text() === "Show Results";
+        modalTrigger.simulate('click');
+        showResultsButton = component.findWhere((node) => {
+          return node.type() === 'button' && node.text() === 'Show Results';
         });
-      })
+      });
       it('should render a "Show Results" button', () => {
-        expect(showResultsButton.exists())
+        expect(showResultsButton.exists());
       });
       it('should close when "Show Results" is clicked with no filters', (done) => {
         showResultsButton.simulate('click');
         setTimeout(() => {
-          showResultsButton = component.findWhere(node => {
-            return node.type() === 'button' && node.text() === "Show Results";
+          showResultsButton = component.findWhere((node) => {
+            return node.type() === 'button' && node.text() === 'Show Results';
           });
-          const filters = component.find('ItemFilter')
-          expect(showResultsButton).to.have.lengthOf(0)
-          expect(filters).to.have.lengthOf(0)
-        }, 0)
-        done()
+          const filters = component.find('ItemFilter');
+          expect(showResultsButton).to.have.lengthOf(0);
+          expect(filters).to.have.lengthOf(0);
+        }, 0);
+        done();
       });
     });
   });

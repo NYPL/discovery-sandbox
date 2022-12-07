@@ -39,7 +39,6 @@
   }
 }
 
-
 // Used in SearchResultsPage.jsx
 .nypl-sorter-row {
   align-items: center;
@@ -63,12 +62,12 @@
 
 h3.electronic-resources-search-header {
   font-size: var(--nypl-fontSizes-text-default);
-  margin-bottom: var(--nypl-space-xs)
+  margin-bottom: var(--nypl-space-xs);
 }
 
 .nypl-results-list {
-  .nypl-results-item  {
-    .search-results-single-resource-link{
+  .nypl-results-item {
+    .search-results-single-resource-link {
       text-decoration: underline;
     }
   }

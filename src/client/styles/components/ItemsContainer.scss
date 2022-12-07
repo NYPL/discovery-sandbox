@@ -18,7 +18,7 @@
     svg {
       width: initial;
     }
-    
+
     &.open {
       border-bottom: 0;
       svg {
@@ -151,7 +151,7 @@ button.item-table-filters {
   margin-right: 10px;
 }
 .nypl-results-item .nypl-basic-table#bib-item-table {
- thead > tr {
+  thead > tr {
     border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
 
     th {
@@ -160,7 +160,8 @@ button.item-table-filters {
     }
   }
 
-  tbody tr, tbody tr:last-child {
+  tbody tr,
+  tbody tr:last-child {
     border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
   }
 }
@@ -195,72 +196,71 @@ button.item-table-filters {
   display: inline-flex;
 
   .dot1 {
-   animation: visibility 3s linear infinite;
+    animation: visibility 3s linear infinite;
   }
 
   @keyframes visibility {
-   0% {
-   opacity: 1;
-   }
-   65% {
-   opacity: 1;
-   }
-   66% {
-   opacity: 0;
-   }
-   100% {
-   opacity: 0;
-   }
+    0% {
+      opacity: 1;
+    }
+    65% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .dot2 {
-   animation: visibility2 3s linear infinite;
+    animation: visibility2 3s linear infinite;
   }
 
   @keyframes visibility2 {
-   0% {
-    opacity: 0;
-   }
-   21% {
-    opacity: 0;
-   }
-   22% {
-    opacity: 1;
-   }
-   65% {
-    opacity: 1;
-   }
-   66% {
-    opacity: 0;
-   }
-   100% {
-    opacity: 0;
-   }
+    0% {
+      opacity: 0;
+    }
+    21% {
+      opacity: 0;
+    }
+    22% {
+      opacity: 1;
+    }
+    65% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .dot3 {
-   animation: visibility3 3s linear infinite;
+    animation: visibility3 3s linear infinite;
   }
 
   @keyframes visibility3 {
-   0% {
-    opacity: 0;
-   }
-   43% {
-    opacity: 0;
-   }
-   44% {
-    opacity: 1;
-   }
-   65% {
-    opacity: 1;
-   }
-   66% {
-    opacity: 0;
-   }
-   100% {
-    opacity: 0;
-   }
+    0% {
+      opacity: 0;
+    }
+    43% {
+      opacity: 0;
+    }
+    44% {
+      opacity: 1;
+    }
+    65% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 }
-

@@ -10,7 +10,9 @@ import { ResultsCount } from '../../src/app/components/ResultsCount/ResultsCount
 const filters = {
   subjectLiteral: {
     owner: [{}],
-    subjectLiteral: [{ id: 'Children\'s art El Salvador', value: 'Children\'s art El Salvador' }],
+    subjectLiteral: [
+      { id: "Children's art El Salvador", value: "Children's art El Salvador" },
+    ],
     materialType: [],
   },
   creatorLiteral: {
@@ -37,13 +39,16 @@ describe('ResultsCount', () => {
       });
 
       it('should be wrapped in an .nypl-results-summary class', () => {
-        expect(component.find('div').first().hasClass('nypl-results-summary')).to.equal(true);
+        expect(
+          component.find('div').first().hasClass('nypl-results-summary'),
+        ).to.equal(true);
       });
 
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
-        expect(component.find('h2').text())
-          .to.equal('No results for the keyword "". Try a different search.');
+        expect(component.find('h2').text()).to.equal(
+          'No results for the keyword "". Try a different search.',
+        );
       });
     });
 
@@ -51,13 +56,16 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = mount(<ResultsCount searchKeywords="locofocos" count={0} />);
+        component = mount(
+          <ResultsCount searchKeywords='locofocos' count={0} />,
+        );
       });
 
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
-        expect(component.find('h2').text())
-          .to.equal('No results for the keyword "locofocos". Try a different search.');
+        expect(component.find('h2').text()).to.equal(
+          'No results for the keyword "locofocos". Try a different search.',
+        );
       });
     });
 
@@ -65,13 +73,16 @@ describe('ResultsCount', () => {
       let component;
 
       before(() => {
-        component = mount(<ResultsCount searchKeywords="harry potter" count={0} />);
+        component = mount(
+          <ResultsCount searchKeywords='harry potter' count={0} />,
+        );
       });
 
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
-        expect(component.find('h2').text())
-          .to.equal('No results for the keywords "harry potter". Try a different search.');
+        expect(component.find('h2').text()).to.equal(
+          'No results for the keywords "harry potter". Try a different search.',
+        );
       });
     });
 
@@ -81,7 +92,7 @@ describe('ResultsCount', () => {
       before(() => {
         component = mount(
           <ResultsCount
-            searchKeywords="harry potter"
+            searchKeywords='harry potter'
             count={0}
             selectedFilters={filters.materialTypeAndLanguage}
           />,
@@ -93,9 +104,10 @@ describe('ResultsCount', () => {
       // only mention keywords:
       it('should output that no results were found', () => {
         expect(component.find('h2').length).to.equal(1);
-        expect(component.find('h2').text())
-          .to.equal('No results for the keywords "harry potter" with the chosen filters. ' +
-            'Try a different search or different filters.');
+        expect(component.find('h2').text()).to.equal(
+          'No results for the keywords "harry potter" with the chosen filters. ' +
+            'Try a different search or different filters.',
+        );
       });
     });
   });
@@ -104,7 +116,7 @@ describe('ResultsCount', () => {
     let component;
 
     before(() => {
-      component = mount(<ResultsCount searchKeywords="locofocos" />);
+      component = mount(<ResultsCount searchKeywords='locofocos' />);
     });
 
     // the Store is handling loading now. TODO: How to test Store/Component interaction here?
@@ -121,17 +133,15 @@ describe('ResultsCount', () => {
 
         before(() => {
           component = mount(
-            <ResultsCount
-              searchKeywords="hamlet"
-              count={2345}
-            />,
+            <ResultsCount searchKeywords='hamlet' count={2345} />,
           );
         });
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 2,345 results for keyword "hamlet"');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 2,345 results for keyword "hamlet"',
+          );
         });
       });
 
@@ -140,17 +150,15 @@ describe('ResultsCount', () => {
 
         before(() => {
           component = mount(
-            <ResultsCount
-              searchKeywords="harry potter"
-              count={2345}
-            />,
+            <ResultsCount searchKeywords='harry potter' count={2345} />,
           );
         });
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 2,345 results for keywords "harry potter"');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 2,345 results for keywords "harry potter"',
+          );
         });
       });
 
@@ -159,18 +167,15 @@ describe('ResultsCount', () => {
 
         before(() => {
           component = mount(
-            <ResultsCount
-              searchKeywords="hamlet"
-              field="title"
-              count={678}
-            />,
+            <ResultsCount searchKeywords='hamlet' field='title' count={678} />,
           );
         });
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 678 results for title "hamlet"');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 678 results for title "hamlet"',
+          );
         });
       });
 
@@ -180,8 +185,8 @@ describe('ResultsCount', () => {
         before(() => {
           component = mount(
             <ResultsCount
-              searchKeywords="shakespeare"
-              field="contributor"
+              searchKeywords='shakespeare'
+              field='contributor'
               count={135}
             />,
           );
@@ -189,8 +194,9 @@ describe('ResultsCount', () => {
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 135 results for author/contributor "shakespeare"');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 135 results for author/contributor "shakespeare"',
+          );
         });
       });
     });
@@ -213,8 +219,9 @@ describe('ResultsCount', () => {
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 2,345 results for author "Shakespeare"');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 2,345 results for author "Shakespeare"',
+          );
         });
       });
 
@@ -232,8 +239,9 @@ describe('ResultsCount', () => {
 
         it('should output that no results were found', () => {
           expect(component.find('h2').length).to.equal(1);
-          expect(component.find('h2').text())
-            .to.equal('Displaying 1-50 of 6,789 results ');
+          expect(component.find('h2').text()).to.equal(
+            'Displaying 1-50 of 6,789 results ',
+          );
         });
       });
     });
@@ -246,9 +254,9 @@ describe('ResultsCount', () => {
       component = mount(
         <ResultsCount
           count={100}
-          subject="ravens"
-          contributor="Poe"
-          title="The Raven"
+          subject='ravens'
+          contributor='Poe'
+          title='The Raven'
         />,
       );
 
@@ -263,20 +271,23 @@ describe('ResultsCount', () => {
 
     it('should output that 40 results were found', () => {
       component = mount(<ResultsCount count={40} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 1-40 of 40 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-40 of 40 results ',
+      );
     });
 
     it('should output that 4,000 results were found from input 4000', () => {
       component = mount(<ResultsCount count={4000} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 4,000 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-50 of 4,000 results ',
+      );
     });
 
     it('should output that 4,000,000 results were found from input 4000000', () => {
       component = mount(<ResultsCount count={4000000} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 4,000,000 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-50 of 4,000,000 results ',
+      );
     });
   });
 
@@ -285,20 +296,23 @@ describe('ResultsCount', () => {
 
     it('should output the first 50 results', () => {
       component = mount(<ResultsCount count={500} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 1-50 of 500 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 1-50 of 500 results ',
+      );
     });
 
     it('should output 101-150 on the third page', () => {
       component = mount(<ResultsCount count={500} page={3} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 101-150 of 500 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 101-150 of 500 results ',
+      );
     });
 
     it('should output 451-489 on the last page', () => {
       component = mount(<ResultsCount count={489} page={10} />);
-      expect(component.find('h2').text())
-        .to.equal('Displaying 451-489 of 489 results ');
+      expect(component.find('h2').text()).to.equal(
+        'Displaying 451-489 of 489 results ',
+      );
     });
   });
 
@@ -306,7 +320,9 @@ describe('ResultsCount', () => {
     // ResultsCount is rerendering 1 extra time when running locally.
     // The spy is counting more. Disabling this test for now.
     xit('Should only rerender when loading is done', (done) => {
-      const component = mount(<ResultsCount count={0} searchKeywords="locofocos" />);
+      const component = mount(
+        <ResultsCount count={0} searchKeywords='locofocos' />,
+      );
       const spy = sinon.spy(ResultsCount.prototype, 'render');
       component.setProps({ field: null });
       component.setProps({ searchKeywords: 'locofoci' });

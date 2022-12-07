@@ -14,18 +14,22 @@ describe('FilterPopup', () => {
     // javascript is enabled.
     it('should render an <a> instead of an open button', () => {
       const component = shallow(
-        <FilterPopup totalResults={1} features={[]}/>, { disableLifecycleMethods: true }
+        <FilterPopup totalResults={1} features={[]} />,
+        { disableLifecycleMethods: true },
       );
 
       expect(component.state('js')).to.equal(false);
       // These tests will need to be updated when the DOM structure gets updated.
-      expect(component.find('a').at(0).prop('className'))
-        .to.equal('popup-btn-open nypl-primary-button');
+      expect(component.find('a').at(0).prop('className')).to.equal(
+        'popup-btn-open nypl-primary-button',
+      );
       expect(component.find('a').at(0).prop('href')).to.equal('#popup-no-js');
     });
 
     it('should not have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup features={[]} />, { disableLifecycleMethods: true });
+      const component = shallow(<FilterPopup features={[]} />, {
+        disableLifecycleMethods: true,
+      });
 
       expect(component.state('js')).to.equal(false);
       expect(component.find('#popup-no-js').length).to.equal(0);
@@ -33,7 +37,9 @@ describe('FilterPopup', () => {
     });
 
     it('should have specific "no-js" id and class', () => {
-      const component = shallow(<FilterPopup features={[]} />, { disableLifecycleMethods: true });
+      const component = shallow(<FilterPopup features={[]} />, {
+        disableLifecycleMethods: true,
+      });
       component.setState({ showForm: true });
 
       expect(component.state('js')).to.equal(false);
@@ -56,8 +62,7 @@ describe('FilterPopup', () => {
     it('should not render open/close buttons', () => {
       expect(component.state('js')).to.equal(true);
       expect(component.find('button').length).to.equal(1);
-      expect(component.find('button').at(0).text())
-        .to.equal('Refine Search');
+      expect(component.find('button').at(0).text()).to.equal('Refine Search');
     });
 
     it('should not render the "no-js" <a> element', () => {
@@ -77,7 +82,9 @@ describe('FilterPopup', () => {
 
       expect(cancelBtn.length).to.equal(2);
       expect(cancelBtn.at(0).prop('aria-expanded')).to.equal(false);
-      expect(cancelBtn.at(0).prop('aria-controls')).to.equal('filter-popup-menu');
+      expect(cancelBtn.at(0).prop('aria-controls')).to.equal(
+        'filter-popup-menu',
+      );
     });
 
     it('should not have specific "no-js" id and class', () => {
@@ -164,7 +171,9 @@ describe('FilterPopup', () => {
 
     before(() => {
       component = mount(
-        <FilterPopup selectedFilters={selectedFilters} features={[]} />, { context });
+        <FilterPopup selectedFilters={selectedFilters} features={[]} />,
+        { context },
+      );
     });
 
     after(() => {
@@ -176,7 +185,9 @@ describe('FilterPopup', () => {
       const clearFiltersButton = component.find('.clear-filters-button').at(0);
 
       clearFiltersButton.simulate('click');
-      expect(component.state('selectedFilters')).to.deep.equal(emptySelectedFilters);
+      expect(component.state('selectedFilters')).to.deep.equal(
+        emptySelectedFilters,
+      );
     });
   });
 
@@ -208,7 +219,9 @@ describe('FilterPopup', () => {
     let component;
 
     beforeEach(() => {
-      component = mount(<FilterPopup selectedFilters={selectedFilters} features={[]} />);
+      component = mount(
+        <FilterPopup selectedFilters={selectedFilters} features={[]} />,
+      );
       component.setState({ showForm: true });
     });
 
@@ -222,7 +235,9 @@ describe('FilterPopup', () => {
       expect(component.find('.nypl-form-error').length).to.equal(0);
 
       submitFormButton.simulate('click');
-      expect(component.state('raisedErrors')).to.deep.equal([{ name: 'date', value: 'Date' }]);
+      expect(component.state('raisedErrors')).to.deep.equal([
+        { name: 'date', value: 'Date' },
+      ]);
       expect(component.find('.nypl-form-error').length).to.equal(1);
     });
 
@@ -274,7 +289,9 @@ describe('FilterPopup', () => {
     describe('without integration', () => {
       before(() => {
         appConfig.features = [];
-        component = mount(<FilterPopup selectedFilters={selectedFilters} features={[]} />);
+        component = mount(
+          <FilterPopup selectedFilters={selectedFilters} features={[]} />,
+        );
       });
 
       it('should not have any components with .drbb-integration class', () => {

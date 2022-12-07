@@ -11,23 +11,20 @@ const CancelConfirmationModal = ({
   cancelItem,
   setItemToCancel,
 }) => (
-    // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-  <div tabIndex="0" className="research-modal cancel-confirmation old-ds-modal">
-    <div className="research-modal__content">
+  // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
+  <div tabIndex='0' className='research-modal cancel-confirmation old-ds-modal'>
+    <div className='research-modal__content'>
       <p>Cancel your hold on this item?</p>
       <p>{itemToCancel.title}</p>
-      <div className="button-container">
+      <div className='button-container'>
         <Button
-          buttonType="secondary"
-          id="back-button"
+          buttonType='secondary'
+          id='back-button'
           onClick={() => setItemToCancel(null)}
         >
           Back
         </Button>
-        <Button
-          id="confirm-button"
-          onClick={cancelItem}
-        >
+        <Button id='confirm-button' onClick={cancelItem}>
           Confirm
         </Button>
       </div>

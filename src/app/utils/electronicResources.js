@@ -1,22 +1,18 @@
-import React from 'react'
-import { Link } from '@nypl/design-system-react-components'
-
+import React from 'react';
+import { Link } from '@nypl/design-system-react-components';
 
 /**
- * Builds unordered list of electronic resources links 
+ * Builds unordered list of electronic resources links
  * @param {array} electronicResources - an array of electronic resources, passed in as a prop from the ElectronicResources component
  */
 const generateElectronicResourceLinksList = (electronicResources) => {
-  if (!electronicResources) return null
+  if (!electronicResources) return null;
   const electronicResourcesLink = ({ href, label }) => (
     <Link
       href={href}
       target='_blank'
       onClick={() =>
-        trackDiscovery(
-          'Bib fields',
-          `Electronic Resource - ${label} - ${href}`,
-        )
+        trackDiscovery('Bib fields', `Electronic Resource - ${label} - ${href}`)
       }
       rel='noreferrer'
     >
@@ -36,10 +32,9 @@ const generateElectronicResourceLinksList = (electronicResources) => {
   } else {
     // Otherwise, create a list of anchors.
     electronicElem = (
-      <ul style={{ listStyle: 'none' }}
-      >
+      <ul style={{ listStyle: 'none' }}>
         {electronicResources.map((resource) => (
-          <li key={resource.label} style = {{ marginTop: 10, marginBottom:10 }}>
+          <li key={resource.label} style={{ marginTop: 10, marginBottom: 10 }}>
             {electronicResourcesLink({
               href: resource.url,
               label: resource.label,
@@ -47,10 +42,10 @@ const generateElectronicResourceLinksList = (electronicResources) => {
           </li>
         ))}
       </ul>
-    )
+    );
   }
 
-  return electronicElem
-}
+  return electronicElem;
+};
 
-export default generateElectronicResourceLinksList
+export default generateElectronicResourceLinksList;

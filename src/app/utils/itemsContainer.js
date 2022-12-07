@@ -1,7 +1,7 @@
-import { isOptionSelected } from "./utils";
-import { itemFilters } from "../data/constants";
+import { isOptionSelected } from './utils';
+import { itemFilters } from '../data/constants';
 
-function filterItems (items, query, hasFilter) {
+function filterItems(items, query, hasFilter) {
   if (!items || !items.length) return [];
   if (!query) return items;
   if (!hasFilter) return items;
@@ -17,8 +17,7 @@ function filterItems (items, query, hasFilter) {
         const isRequestable =
           filterType === 'status' && selection === 'requestable';
         if (isRequestable) return item.requestable;
-        const isOffsite =
-          filterType === 'location' && selection === 'offsite';
+        const isOffsite = filterType === 'location' && selection === 'offsite';
         if (isOffsite) return item.isOffsite;
         const itemProperty = filter.retrieveOption(item).label;
         return isOptionSelected(selection, itemProperty, true);
@@ -28,4 +27,4 @@ function filterItems (items, query, hasFilter) {
   });
 }
 
-export { filterItems }
+export { filterItems };

@@ -3,14 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { SearchBar } from '@nypl/design-system-react-components';
 
-import {
-  trackDiscovery,
-} from '../../utils/utils';
+import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
-import {
-  updateSearchKeywords,
-  updateField,
-} from '../../actions/Actions';
+import { updateSearchKeywords, updateField } from '../../actions/Actions';
 
 /**
  * The main container for the top Search section.
@@ -80,9 +75,7 @@ class Search extends React.Component {
   submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-    const {
-      field,
-    } = this.state;
+    const { field } = this.state;
 
     const userSearchKeywords = this.state.searchKeywords.trim();
 
@@ -95,7 +88,11 @@ class Search extends React.Component {
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
     if (field === 'subject') {
-      this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
+      this.props.router.push(
+        `${appConfig.baseUrl}/subject_headings?filter=${
+          searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)
+        }`,
+      );
       return;
     }
 
@@ -120,35 +117,36 @@ class Search extends React.Component {
       <>
         <SearchBar
           buttonOnClick={this.submitSearchRequest}
-          id="mainContent"
+          id='mainContent'
           onSubmit={this.triggerSubmit}
-          className="content-primary"
+          className='content-primary'
           method='POST'
           action={`${appConfig.baseUrl}/search`}
-          labelText="SearchBar Label"
+          labelText='SearchBar Label'
           selectProps={{
             labelText: 'Select a category',
             name: 'search_scope',
             optionsData: [
-              { text:"All fields", value: "all" },
-              { text:"Title", value: "title" },
-              { text:"Journal Title", value: "journal_title" },
-              { text:"Author/Contributor", value: "contributor" },
-              { text:"Standard Numbers", value: "standard_number" },
-              { text:"Subject", value: "subject" },
+              { text: 'All fields', value: 'all' },
+              { text: 'Title', value: 'title' },
+              { text: 'Journal Title', value: 'journal_title' },
+              { text: 'Author/Contributor', value: 'contributor' },
+              { text: 'Standard Numbers', value: 'standard_number' },
+              { text: 'Subject', value: 'subject' },
             ],
             onChange: this.onFieldChange,
-            value: this.state.field
+            value: this.state.field,
           }}
           textInputProps={{
-            labelText: 'Search by keyword, title, journal title, or author/contributor',
+            labelText:
+              'Search by keyword, title, journal title, or author/contributor',
             name: 'q',
             placeholder: 'Keyword, title, journal title, or author/contributor',
             onChange: this.inputChange,
-            value: this.state.searchKeywords
+            value: this.state.searchKeywords,
           }}
         />
-        <div id="advanced-search-link-container">
+        <div id='advanced-search-link-container'>
           <a href={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</a>
         </div>
       </>
@@ -172,15 +170,16 @@ Search.defaultProps = {
   selectedFilters: {},
 };
 
-const mapStateToProps = ({
+const mapStateToProps = ({ searchKeywords, field, selectedFilters }) => ({
   searchKeywords,
   field,
   selectedFilters,
-}) => ({ searchKeywords, field, selectedFilters });
+});
 
-const mapDispatchToProps = dispatch => ({
-  updateSearchKeywords: searchKeywords => dispatch(updateSearchKeywords(searchKeywords)),
-  updateField: field => dispatch(updateField(field)),
+const mapDispatchToProps = (dispatch) => ({
+  updateSearchKeywords: (searchKeywords) =>
+    dispatch(updateSearchKeywords(searchKeywords)),
+  updateField: (field) => dispatch(updateField(field)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

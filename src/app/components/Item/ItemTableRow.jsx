@@ -6,18 +6,18 @@ import appConfig from '../../data/appConfig';
 import StatusLinks from './StatusLinks';
 
 class ItemTableRow extends React.Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
-    this.message = this.message.bind(this)
+    this.message = this.message.bind(this);
   }
 
-  message () {
+  message() {
     const { item } = this.props;
 
     return item.accessMessage.prefLabel || ' ';
   }
 
-  render () {
+  render() {
     const {
       item,
       includeVolColumn,
@@ -25,7 +25,7 @@ class ItemTableRow extends React.Component {
       searchKeywords,
       page,
       isBibPage,
-      isDesktop
+      isDesktop,
     } = this.props;
 
     if (_isEmpty(item)) {
@@ -44,7 +44,9 @@ class ItemTableRow extends React.Component {
     let itemLocation;
     if (item.location && item.locationUrl) {
       itemLocation = (
-        <a href={item.locationUrl} className="itemLocationLink">{item.location}</a>
+        <a href={item.locationUrl} className='itemLocationLink'>
+          {item.location}
+        </a>
       );
     } else if (item.location) {
       itemLocation = item.location;
@@ -55,30 +57,43 @@ class ItemTableRow extends React.Component {
     return (
       <tr className={item.availability}>
         {isBibPage ? (
-          <td className={`status-links ${isDesktop ? '' : 'mobile'}`}><StatusLinks
-            item={item}
-            bibId={bibId}
-            searchKeywords={searchKeywords}
-            appConfig={appConfig}
-            page={page}
-          /></td>
+          <td className={`status-links ${isDesktop ? '' : 'mobile'}`}>
+            <StatusLinks
+              item={item}
+              bibId={bibId}
+              searchKeywords={searchKeywords}
+              appConfig={appConfig}
+              page={page}
+            />
+          </td>
         ) : null}
         {includeVolColumn ? (
-          <td className="vol-date-col" data-th="Vol/Date">
+          <td className='vol-date-col' data-th='Vol/Date'>
             <span>{item.volume || ''}</span>
           </td>
         ) : null}
-        <td data-th="Format">
+        <td data-th='Format'>
           <span>{item.format || ' '}</span>
         </td>
-        {
-          (!includeVolColumn && !isDesktop) ?
-          <td data-th="Call Number"><span>{itemCallNumber}</span></td> :
-          null
-        }
-        {isBibPage && isDesktop ? <td data-th="Access">{this.message()}</td> : null}
-        {isDesktop ? <> <td data-th="Call Number"><span>{itemCallNumber}</span></td>
-          <td data-th="Location"><span>{item.location}</span></td></> : null}
+        {!includeVolColumn && !isDesktop ? (
+          <td data-th='Call Number'>
+            <span>{itemCallNumber}</span>
+          </td>
+        ) : null}
+        {isBibPage && isDesktop ? (
+          <td data-th='Access'>{this.message()}</td>
+        ) : null}
+        {isDesktop ? (
+          <>
+            {' '}
+            <td data-th='Call Number'>
+              <span>{itemCallNumber}</span>
+            </td>
+            <td data-th='Location'>
+              <span>{item.location}</span>
+            </td>
+          </>
+        ) : null}
       </tr>
     );
   }

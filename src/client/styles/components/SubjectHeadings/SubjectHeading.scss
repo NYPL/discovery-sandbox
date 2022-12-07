@@ -32,7 +32,6 @@
       height: 100%;
       position: relative;
     }
-
   }
   .subjectHeadingAttribute {
     @include media($mobile-breakpoint) {
@@ -67,7 +66,6 @@ tbody .subjectHeadingRow {
   }
 }
 
-
 .emph {
   color: var(--nypl-colors-ui-black);
   font-size: 14px;
@@ -96,9 +94,9 @@ tbody .subjectHeadingRow {
 }
 
 @include media($xtrasmall-breakpoint) {
-  .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel,
-  .seeMore .subjectHeadingsTableCell
-  {
+  .subjectHeadingsTable:not(.related)
+    .subjectHeadingsTableCell.subjectHeadingLabel,
+  .seeMore .subjectHeadingsTableCell {
     padding-left: 22px;
   }
 }

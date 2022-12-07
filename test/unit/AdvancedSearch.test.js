@@ -8,7 +8,6 @@ import { mountTestRender, makeTestStore } from '../helpers/store';
 import { mockRouterContext } from '../helpers/routing';
 import AdvancedSearch from '../../src/app/components/AdvancedSearch/AdvancedSearch';
 
-
 const aggregations = require('../../advancedSearchAggregations.json');
 
 describe('AdvancedSearch', () => {
@@ -128,20 +127,37 @@ describe('AdvancedSearch', () => {
       const firstCheckboxLabel = 9;
       for (let i = 0; i < materialTypes.length; i += 1) {
         const materialType = materialTypes[i];
-        expect(component.find('input[type="checkbox"]').at(i).prop("id")).to.equal(materialType.value);
-        expect(component.find('label').at(firstCheckboxLabel + i).text()).to.equal(materialType.label);
-        expect(component.find('input[type="checkbox"]').at(i).prop("value")).to.equal(materialType.value);
-        expect(component.find('input[type="checkbox"]').at(i).prop("name")).to.equal(materialType.value);
+        expect(
+          component.find('input[type="checkbox"]').at(i).prop('id'),
+        ).to.equal(materialType.value);
+        expect(
+          component
+            .find('label')
+            .at(firstCheckboxLabel + i)
+            .text(),
+        ).to.equal(materialType.label);
+        expect(
+          component.find('input[type="checkbox"]').at(i).prop('value'),
+        ).to.equal(materialType.value);
+        expect(
+          component.find('input[type="checkbox"]').at(i).prop('name'),
+        ).to.equal(materialType.value);
       }
     });
 
     it('should have a select for languages', () => {
       expect(component.find('select').length).to.eql(1);
       expect(component.find('select').prop('id')).to.eql('languageSelect');
-      expect(component.find('select').find('option').length).to.eql(aggregations.language.length + 1);
+      expect(component.find('select').find('option').length).to.eql(
+        aggregations.language.length + 1,
+      );
       expect(component.find('label').at(4).text()).to.eql('Language');
-      expect(component.find('label').at(4).prop('htmlFor')).to.eql('languageSelect');
-      expect(component.find('label').at(4).prop('id')).to.eql('languageSelect-label');
+      expect(component.find('label').at(4).prop('htmlFor')).to.eql(
+        'languageSelect',
+      );
+      expect(component.find('label').at(4).prop('id')).to.eql(
+        'languageSelect-label',
+      );
     });
   });
 

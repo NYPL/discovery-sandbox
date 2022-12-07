@@ -3,7 +3,7 @@
   padding-top: var(--nypl-space-l);
 
   h2 {
-    font-size: var(--nypl-fontSizes-3)
+    font-size: var(--nypl-fontSizes-3);
   }
   ul {
     list-style: none;
@@ -37,7 +37,8 @@
   }
 
   .items {
-    th, td {
+    th,
+    td {
       width: 20%;
     }
   }
@@ -81,23 +82,23 @@
       text-align: center;
       text-decoration: none;
       display: inline-block !important;
-      
+
       &:hover {
         color: var(--nypl-colors-ui-link-secondary);
       }
     }
   }
 
-  .tabbed ul[role="tablist"] {
-    &> li {
+  .tabbed ul[role='tablist'] {
+    & > li {
       border-color: $accountBlue;
     }
 
-    &> li > span > a[aria-selected='true'] {
+    & > li > span > a[aria-selected='true'] {
       color: $accountBlue;
     }
 
-    &> li.activeTab {
+    & > li.activeTab {
       border-color: $accountBlue;
     }
   }
@@ -125,7 +126,7 @@
 
   .nypl-patron-details {
     font-size: var(--nypl-fontSizes-2);
-    &> .name {
+    & > .name {
       font-size: 1.625rem;
     }
   }
@@ -145,7 +146,8 @@
     font-weight: 600;
   }
 
-  .patFuncFinesEntryDetail, .patFuncFinesDetailDate {
+  .patFuncFinesEntryDetail,
+  .patFuncFinesDetailDate {
     td:first-of-type {
       display: none;
     }
@@ -178,7 +180,8 @@
   }
 
   tr:nth-of-type(5n + 7) {
-    .patFuncFinesDetailDateLabel, .patFuncFinesDetailDate {
+    .patFuncFinesDetailDateLabel,
+    .patFuncFinesDetailDate {
       padding-bottom: var(--nypl-space-m);
     }
   }
@@ -200,12 +203,14 @@
       display: none;
     }
 
-    tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
+    tr:nth-last-of-type(2),
+    tr:nth-last-of-type(3) {
       border-bottom: solid 1px $accountLightBorder;
     }
   }
 
-  .items, .holds {
+  .items,
+  .holds {
     tr {
       border-bottom: solid 1px $accountLightBorder;
     }
@@ -213,7 +218,8 @@
 }
 
 .account-settings {
-  &__heading-3, .pin {
+  &__heading-3,
+  .pin {
     display: flex;
     justify-content: space-between;
     margin-top: 24px;
@@ -278,10 +284,9 @@
   display: none;
 }
 
-
 @media (max-width: 600px) {
-  .nypl-patron-page .tabbed ul[role="tablist"] {
-    &> li:last-of-type {
+  .nypl-patron-page .tabbed ul[role='tablist'] {
+    & > li:last-of-type {
       border-bottom: 1px solid $accountBlue;
     }
 
@@ -298,7 +303,8 @@
       width: 100%;
     }
 
-    .items, .holds {
+    .items,
+    .holds {
       td {
         border-left: 1px solid $accountLightBorder;
         border-right: 1px solid $accountLightBorder;
@@ -320,7 +326,8 @@
       }
     }
 
-    .patFuncFinesDetailDate, .patFuncFinesDetailAmt {
+    .patFuncFinesDetailDate,
+    .patFuncFinesDetailAmt {
       padding-right: 0%;
     }
   }
@@ -400,7 +407,6 @@
           margin-bottom: var(--nypl-space-s);
         }
       }
-
     }
 
     .patFuncEntry {

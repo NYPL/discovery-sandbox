@@ -1,7 +1,4 @@
-@mixin media(
-  $max-width,
-  $min-width: false,
-  $ignore-for-ie: false) {
+@mixin media($max-width, $min-width: false, $ignore-for-ie: false) {
   @media (max-width: $max-width) {
     @content;
   }
@@ -44,7 +41,7 @@
 
   @each $key, $value in $args {
     @if $value {
-      $expr: "#{$expr} and (#{$key}: #{$value})";
+      $expr: '#{$expr} and (#{$key}: #{$value})';
     }
   }
 
@@ -72,18 +69,18 @@
 //   -ms-transition:     $params;
 //   transition:         $params;
 // }
-@mixin transition-list($values...){
-  -moz-transition:    $values;
-  -o-transition:      $values;
+@mixin transition-list($values...) {
+  -moz-transition: $values;
+  -o-transition: $values;
   -webkit-transition: $values;
-  -ms-transition:     $values;
-  transition:         $values;
+  -ms-transition: $values;
+  transition: $values;
 }
 @mixin transition-transform($values...) {
   -webkit-transition: -webkit-transform $values;
-     -moz-transition: -moz-transform $values;
-       -o-transition: -o-transform $values;
-          transition: transform $values;
+  -moz-transition: -moz-transform $values;
+  -o-transition: -o-transform $values;
+  transition: transform $values;
 }
 
 @mixin clear-filters-button {

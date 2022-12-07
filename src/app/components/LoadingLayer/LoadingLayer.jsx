@@ -6,14 +6,13 @@ const LoadingLayer = ({ loading, focus }) => {
   useEffect(() => {
     if (typeof window !== undefined) {
       const element = document.getElementById(window.location.hash.slice(1));
-      if (element) element.scrollIntoView()
+      if (element) element.scrollIntoView();
     }
-  })
+  });
 
   if (loading === false) {
     return null;
   }
-
 
   return (
     <FocusTrap
@@ -26,18 +25,21 @@ const LoadingLayer = ({ loading, focus }) => {
       }}
     >
       <div
-        className="loadingLayer focus-trap"
-        aria-labelledby="loading-animation"
-        aria-describedby="loading-description"
-        role="alert"
-        tabIndex="0"
+        className='loadingLayer focus-trap'
+        aria-labelledby='loading-animation'
+        aria-describedby='loading-description'
+        role='alert'
+        tabIndex='0'
       >
-        <div className="loadingLayer-layer" />
-        <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+        <div className='loadingLayer-layer' />
+        <div className='loadingLayer-texts'>
+          <span
+            id='loading-animation'
+            className='loadingLayer-texts-loadingWord'
+          >
             Loading...
           </span>
-          <div className="loadingDots">
+          <div className='loadingDots'>
             <span />
             <span />
             <span />

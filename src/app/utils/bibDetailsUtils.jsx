@@ -219,10 +219,12 @@ const constructSubjectHeadingsArray = (url = '') => {
  * @param {string} string
  * @return  {boolean}
  */
-const isRtl  = (string) => {
-  if (typeof string !== 'string') { return false }
-  return string.substring(0, 1) === '\u200F'
-}
+const isRtl = (string) => {
+  if (typeof string !== 'string') {
+    return false;
+  }
+  return string.substring(0, 1) === '\u200F';
+};
 
 /**
  * stringDirection(string)
@@ -232,8 +234,8 @@ const isRtl  = (string) => {
  */
 const stringDirection = (string, useParallels) => {
   if (!useParallels) return null;
-  return isRtl(string) ? 'rtl' : null
-}
+  return isRtl(string) ? 'rtl' : null;
+};
 
 /**
  * combineMatching(el1, el2)
@@ -244,12 +246,10 @@ const stringDirection = (string, useParallels) => {
  * @return {object}
  */
 
- const combineMatching = (el1, el2) => (
-   (el2 && el2.noteType) ?
-    { noteType: el2.noteType, '@type' : el2['@type'], prefLabel: el1 } :
-    el1
-  );
-
+const combineMatching = (el1, el2) =>
+  el2 && el2.noteType
+    ? { noteType: el2.noteType, '@type': el2['@type'], prefLabel: el1 }
+    : el1;
 
 /**
  * interleaveParallel(arr1, arr2)
@@ -263,14 +263,16 @@ const stringDirection = (string, useParallels) => {
  * @param {array} arr2
  * @return {array}
  */
-const interleaveParallel = (arr1, arr2) => arr2.reduce(
-  (acc, el, id) => {
-    if (arr1[id]) { acc.push(combineMatching(arr1[id], el)) }
-    if(el) { acc.push(el) }
-    return acc
-  }, []
-)
-
+const interleaveParallel = (arr1, arr2) =>
+  arr2.reduce((acc, el, id) => {
+    if (arr1[id]) {
+      acc.push(combineMatching(arr1[id], el));
+    }
+    if (el) {
+      acc.push(el);
+    }
+    return acc;
+  }, []);
 
 /**
  * matchParallels(bib)
@@ -283,15 +285,21 @@ const interleaveParallel = (arr1, arr2) => arr2.reduce(
 const matchParallels = (bib, useParallels) => {
   if (!useParallels) return bib;
   const parallelFieldMatches = Object.keys(bib).map((key) => {
-    if (key.match(/subject/i)) { return null }
-    const match = key.match(/parallel(.)(.*)/)
-    const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
-    const paralleledValues = paralleledField && bib[paralleledField]
-    return paralleledValues && { [paralleledField] : interleaveParallel(bib[key], paralleledValues)}
-  })
+    if (key.match(/subject/i)) {
+      return null;
+    }
+    const match = key.match(/parallel(.)(.*)/);
+    const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`;
+    const paralleledValues = paralleledField && bib[paralleledField];
+    return (
+      paralleledValues && {
+        [paralleledField]: interleaveParallel(bib[key], paralleledValues),
+      }
+    );
+  });
 
-  return Object.assign({}, bib, ...parallelFieldMatches)
-}
+  return Object.assign({}, bib, ...parallelFieldMatches);
+};
 
 export {
   allFields,

@@ -158,7 +158,7 @@
     padding-left: 10px;
   }
 
-  .nypl-name-field input[type=text] {
+  .nypl-name-field input[type='text'] {
     transition: none;
   }
 }
@@ -327,7 +327,7 @@
   }
 }
 
-.nypl-name-field input[type=text] {
+.nypl-name-field input[type='text'] {
   -webkit-appearance: none;
 }
 
@@ -382,7 +382,6 @@
   }
 }
 
-
 .nypl-modal-filter-form {
   padding: 0 1px;
 
@@ -394,7 +393,7 @@
     }
   }
 
-  @include transition-list(max-height .3s ease-in-out);
+  @include transition-list(max-height 0.3s ease-in-out);
   height: auto;
 
   // Accordion rules
@@ -432,5 +431,5 @@
 }
 
 .chakra-modal__close-btn {
-  background-color: var(--nypl-colors-ui-white)fff;
+  background-color: var(--nypl-colors-ui-white) fff;
 }

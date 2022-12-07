@@ -5,17 +5,19 @@ import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
 
-export const parseDistinctOptions = options =>
+export const parseDistinctOptions = (options) =>
   Array.from(
-    new Set(options.reduce((optionLabels, option) => {
-      if (Array.isArray(option.label)) return optionLabels.concat(option.label);
-      return optionLabels.concat([option.label]);
-    }, [])),
-  )
-    .map(label => ({
-      id: label,
-      label,
-    }));
+    new Set(
+      options.reduce((optionLabels, option) => {
+        if (Array.isArray(option.label))
+          return optionLabels.concat(option.label);
+        return optionLabels.concat([option.label]);
+      }, []),
+    ),
+  ).map((label) => ({
+    id: label,
+    label,
+  }));
 
 const ItemFilter = ({
   filter,
@@ -35,10 +37,12 @@ const ItemFilter = ({
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
       const prevSelection = prevSelectedFilters[filter];
-      if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
+      if (!prevSelection || !prevSelection.length)
+        updatedSelectedFilters[filter] = [value.id];
       else {
-        updatedSelectedFilters[filter] = Array.isArray(prevSelection) ?
-          [...prevSelection, value.id] : [prevSelection, value.id];
+        updatedSelectedFilters[filter] = Array.isArray(prevSelection)
+          ? [...prevSelection, value.id]
+          : [prevSelection, value.id];
       }
 
       return updatedSelectedFilters;
@@ -49,8 +53,10 @@ const ItemFilter = ({
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
       const previousSelection = updatedSelectedFilters[filter];
-      updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
-        previousSelection.filter(prevSelection => prevSelection !== value.id)
+      updatedSelectedFilters[filter] = Array.isArray(previousSelection)
+        ? previousSelection.filter(
+            (prevSelection) => prevSelection !== value.id,
+          )
         : [];
       return updatedSelectedFilters;
     });
@@ -75,19 +81,22 @@ const ItemFilter = ({
   const thisFilterSelections = initialFilters ? initialFilters[filter] : null;
   const determineNumOfSelections = () => {
     if (!thisFilterSelections) return null;
-    return typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
+    return typeof thisFilterSelections === 'string'
+      ? 1
+      : thisFilterSelections.length;
   };
   const numOfSelections = determineNumOfSelections();
 
   const [mobileIsOpen, manageMobileFilter] = useState(false);
 
-  const clickHandler = () => (
-    mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
-  );
+  const clickHandler = () =>
+    mobile
+      ? manageMobileFilter((prevState) => !prevState)
+      : manageFilterDisplay(filter);
   const open = mobile ? mobileIsOpen : isOpen;
   const clear = () => {
     setSelectionMade(true);
-    setSelectedFilters(prevSelectedFilters => ({
+    setSelectedFilters((prevSelectedFilters) => ({
       ...prevSelectedFilters,
       [filter]: [],
     }));
@@ -97,24 +106,27 @@ const ItemFilter = ({
     <FocusTrap
       focusTrapOptions={{
         clickOutsideDeactivates: true,
-        onDeactivate: () => { if (!mobile) manageFilterDisplay('none'); },
+        onDeactivate: () => {
+          if (!mobile) manageFilterDisplay('none');
+        },
         returnFocusOnDeactivate: false,
       }}
       active={isOpen}
-      className="item-filter"
+      className='item-filter'
     >
       <Button
-        className={`item-filter-button ${
-          open ? ' open' : ''}`}
-        buttonType="secondary"
-        id="item-filter-button"
+        className={`item-filter-button ${open ? ' open' : ''}`}
+        buttonType='secondary'
+        id='item-filter-button'
         onClick={clickHandler}
-        type="button"
+        type='button'
       >
-        {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+        {filter}
+        {numOfSelections ? ` (${numOfSelections})` : null}{' '}
+        <Icon name={open ? 'minus' : 'plus'} />
       </Button>
       {open ? (
-        <div className="item-filter-content">
+        <div className='item-filter-content'>
           <fieldset>
             {distinctOptions.map((option, i) => (
               <Checkbox
@@ -127,33 +139,30 @@ const ItemFilter = ({
                   span: {
                     fontSize: '15px',
                     fontWeight: 'medium',
-                  }
+                  },
                 }}
               />
             ))}
           </fieldset>
-          {
-            !mobile ?
-            (
-              <div className="item-filter-buttons">
-                <Button
-                  buttonType="link"
-                  onClick={() => clear()}
-                  isDisabled={!selectedFilters[filter].length}
-                  id="clear-filter-button"
-                >
-                  Clear
-                </Button>
-                <Button
-                  onClick={() => submitFilterSelections(selectedFilters)}
-                  isDisabled={!selectionMade}
-                  id="apply-filter-button"
-                >
-                  Apply
-                </Button>
-              </div>
-            ) : null
-          }
+          {!mobile ? (
+            <div className='item-filter-buttons'>
+              <Button
+                buttonType='link'
+                onClick={() => clear()}
+                isDisabled={!selectedFilters[filter].length}
+                id='clear-filter-button'
+              >
+                Clear
+              </Button>
+              <Button
+                onClick={() => submitFilterSelections(selectedFilters)}
+                isDisabled={!selectionMade}
+                id='apply-filter-button'
+              >
+                Apply
+              </Button>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </FocusTrap>

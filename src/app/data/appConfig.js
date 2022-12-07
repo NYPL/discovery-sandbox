@@ -5,8 +5,7 @@ const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
   displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
-  baseUrl:
-    process.env.BASE_URL || '/research/research-catalog',
+  baseUrl: process.env.BASE_URL || '/research/research-catalog',
   redirectFromBaseUrl: process.env.REDIRECT_FROM_BASE_URL,
   legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: 'https://ux-static.nypl.org/images/favicon.ico',

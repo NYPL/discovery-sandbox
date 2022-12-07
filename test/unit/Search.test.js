@@ -20,7 +20,9 @@ describe('Search', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(<Search />, { store: mockStore }).find('Search');
+      component = mountTestRender(<Search />, { store: mockStore }).find(
+        'Search',
+      );
     });
 
     it('should have default state', () => {
@@ -34,12 +36,16 @@ describe('Search', () => {
     });
 
     it('should have the form action point to the endpoint with no queries', () => {
-      expect(component.find('form').prop('action')).to.equal(`${appConfig.baseUrl}/search`);
+      expect(component.find('form').prop('action')).to.equal(
+        `${appConfig.baseUrl}/search`,
+      );
     });
 
     it('should render a select element', () => {
       expect(component.find('select').length).to.equal(1);
-      expect(component.find('select').prop('id')).to.equal('searchbar-select-mainContent');
+      expect(component.find('select').prop('id')).to.equal(
+        'searchbar-select-mainContent',
+      );
     });
 
     it('should render four option elements', () => {
@@ -67,7 +73,8 @@ describe('Search', () => {
     before(() => {
       component = mountTestRender(<Search />, {
         store: makeTestStore({
-          field: 'title', searchKeywords: 'Dune',
+          field: 'title',
+          searchKeywords: 'Dune',
         }),
       }).find('Search');
     });
@@ -85,7 +92,10 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      onFieldChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'onFieldChange');
+      onFieldChangeSpy = sinon.spy(
+        Search.WrappedComponent.prototype,
+        'onFieldChange',
+      );
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
         context: { router: { createHref: () => {}, push: () => {} } },
@@ -119,7 +129,10 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      inputChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'inputChange');
+      inputChangeSpy = sinon.spy(
+        Search.WrappedComponent.prototype,
+        'inputChange',
+      );
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
         context: { router: { createHref: () => {}, push: () => {} } },
@@ -133,7 +146,10 @@ describe('Search', () => {
     it('should update the input value entered and update the state', () => {
       expect(component.state('searchKeywords')).to.equal('');
 
-      component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
+      component
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 'Dune' } });
 
       expect(inputChangeSpy.callCount).to.equal(1);
       expect(component.state('searchKeywords')).to.equal('Dune');
@@ -150,14 +166,21 @@ describe('Search', () => {
 
     before(() => {
       createAPIQuery = basicQuery({});
-      triggerSubmitSpy = sinon.spy(Search.WrappedComponent.prototype, 'triggerSubmit');
-      submitSearchRequestSpy = sinon.spy(Search.WrappedComponent.prototype, 'submitSearchRequest');
+      triggerSubmitSpy = sinon.spy(
+        Search.WrappedComponent.prototype,
+        'triggerSubmit',
+      );
+      submitSearchRequestSpy = sinon.spy(
+        Search.WrappedComponent.prototype,
+        'submitSearchRequest',
+      );
       component = mountTestRender(
         <Search
           createAPIQuery={createAPIQuery}
-          router={{ push: route => contextRoutesPushed.push(route) }}
+          router={{ push: (route) => contextRoutesPushed.push(route) }}
         />,
-        { store: mockStore }).find('Search');
+        { store: mockStore },
+      ).find('Search');
 
       mock = new MockAdapter(axios);
       mock
@@ -181,7 +204,10 @@ describe('Search', () => {
     it('should submit the input entered when clicking the submit button', (done) => {
       expect(component.state('searchKeywords')).to.equal('');
 
-      component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
+      component
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
         expect(submitSearchRequestSpy.callCount).to.equal(1);
@@ -191,16 +217,25 @@ describe('Search', () => {
     });
 
     it('should submit the input entered when pressing enter', () => {
-      component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
+      component
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 'Dune' } });
       expect(component.state('searchKeywords')).to.equal('Dune');
-      component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
+      component
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('submit');
       expect(component.state('searchKeywords')).to.equal('Harry Potter');
       expect(triggerSubmitSpy.callCount).to.equal(1);
     });
 
     it('should not update the searchKeywords before it submits the request', () => {
-      component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
+      component
+        .find('input')
+        .at(0)
+        .simulate('change', { target: { value: 'Watts' } });
       component.find('button').at(0).simulate('click');
       expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
     });

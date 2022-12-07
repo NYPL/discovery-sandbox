@@ -188,8 +188,8 @@
   display: flex;
   &.bib-details.mobile {
     flex-direction: column;
-      a{
-        margin-bottom: var(--nypl-space-xs)
-      }
+    a {
+      margin-bottom: var(--nypl-space-xs);
     }
+  }
 }

@@ -1,7 +1,6 @@
 // discovery-item.v2.html
 // item info / the full item record
 .nypl-item-details {
-
   &__heading {
     align-items: baseline;
     display: flex;
@@ -29,7 +28,7 @@
 
     &::after,
     &::before {
-      content: "";
+      content: '';
       display: table;
     }
     &::after {
@@ -74,7 +73,6 @@
       }
     }
   }
-
 }
 
 @media (max-width: 600px) {

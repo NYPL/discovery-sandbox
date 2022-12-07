@@ -11,11 +11,7 @@ import { deleteCookie } from '../../utils/cookieUtils';
  * Reservoir Design System through the `old-ds-modal` CSS class.
  */
 const TimedLogoutModal = (props) => {
-  const {
-    stayLoggedIn,
-    baseUrl,
-  } = props;
-
+  const { stayLoggedIn, baseUrl } = props;
 
   const [update, setUpdate] = React.useState(false);
 
@@ -29,12 +25,15 @@ const TimedLogoutModal = (props) => {
   let minutes = 0;
   let seconds = 0;
 
-  if (typeof document !== 'undefined' && !document.cookie.includes('accountPageExp')) {
+  if (
+    typeof document !== 'undefined' &&
+    !document.cookie.includes('accountPageExp')
+  ) {
     logOutAndRedirect();
   } else if (typeof document !== 'undefined') {
     const expTime = document.cookie
       .split(';')
-      .find(el => el.includes('accountPageExp'))
+      .find((el) => el.includes('accountPageExp'))
       .split('=')[1];
 
     const timeLeft = new Date(expTime).getTime() - new Date().getTime();
@@ -58,28 +57,25 @@ const TimedLogoutModal = (props) => {
 
   return (
     // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
-    <div tabIndex="0" className="research-modal timed-logout old-ds-modal">
-      <div className="research-modal__content">
+    <div tabIndex='0' className='research-modal timed-logout old-ds-modal'>
+      <div className='research-modal__content'>
         <p>
           Your session is about to expire
-          <span className="time-display">
+          <span className='time-display'>
             {`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`}
           </span>
         </p>
         <hr />
         Do you want to stay logged in?
-        <div className="button-container">
+        <div className='button-container'>
           <Button
-            buttonType="secondary"
+            buttonType='secondary'
             onClick={logOutAndRedirect}
-            id="logoff-button"
+            id='logoff-button'
           >
             Log off
           </Button>
-          <Button
-            onClick={stayLoggedIn}
-            id="logged-in-button"
-          >
+          <Button onClick={stayLoggedIn} id='logged-in-button'>
             Stay logged in
           </Button>
         </div>

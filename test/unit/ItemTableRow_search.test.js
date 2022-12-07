@@ -25,7 +25,9 @@ describe('ItemTableRow - search view', () => {
     });
 
     it('should return null if the item is an electronic resource', () => {
-      const component = shallow(<ItemTableRow isDesktop={true} item={{ isElectronicResource: true }} />);
+      const component = shallow(
+        <ItemTableRow isDesktop={true} item={{ isElectronicResource: true }} />,
+      );
 
       expect(component.type()).to.equal(null);
     });
@@ -86,7 +88,9 @@ describe('ItemTableRow - search view', () => {
       });
 
       it('should have a location as the third <td> column data', () => {
-        expect(component.find('td').at(2).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(2).text()).to.equal(
+          'SASB M1 - General Research - Room 315',
+        );
       });
     });
 
@@ -103,7 +107,9 @@ describe('ItemTableRow - search view', () => {
       });
 
       it('should have a location as the third <td> column data and not a button', () => {
-        expect(component.find('td').at(2).render().text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(2).render().text()).to.equal(
+          'SASB M1 - General Research - Room 315',
+        );
       });
     });
 
@@ -119,7 +125,9 @@ describe('ItemTableRow - search view', () => {
         expect(component.find('td').at(1).text()).to.equal('JFE 07-5007 ---');
       });
       it('should have a location as the third <td> column data', () => {
-        expect(component.find('td').at(2).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(2).text()).to.equal(
+          'SASB M1 - General Research - Room 315',
+        );
       });
     });
 
@@ -130,7 +138,9 @@ describe('ItemTableRow - search view', () => {
         before(() => {
           const data = item.full;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />);
+          component = shallow(
+            <ItemTableRow isDesktop={true} item={data} bibId='b12345' />,
+          );
         });
       });
 
@@ -138,7 +148,9 @@ describe('ItemTableRow - search view', () => {
         before(() => {
           const data = item.requestable_nonReCAP_NYPL;
           data.holdingLocationCode = 'loc:mal82';
-          component = shallow(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />);
+          component = shallow(
+            <ItemTableRow isDesktop={true} item={data} bibId='b12345' />,
+          );
         });
         it('should render `Email for access options` and mailto link in the fourth <td> column data', () => {
           expect(component.find('td').find('div').length).to.equal(0);
@@ -153,15 +165,19 @@ describe('ItemTableRow - search view', () => {
         let component;
         appConfig.recapClosedLocations = [''];
 
-        after(() => appConfig.recapClosedLocations = []);
+        after(() => (appConfig.recapClosedLocations = []));
 
         before(() => {
-          component =
-            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
+          component = mount(
+            <ItemTableRow isDesktop={true} item={data} bibId='b12345' />,
+            { context },
+          );
         });
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').at(2).render().text()).to.equal(
+            'Request',
+          );
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });
@@ -172,12 +188,16 @@ describe('ItemTableRow - search view', () => {
         appConfig.recapClosedLocations = [];
 
         before(() => {
-          component =
-            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
+          component = mount(
+            <ItemTableRow isDesktop={true} item={data} bibId='b12345' />,
+            { context },
+          );
         });
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').at(2).render().text()).to.equal(
+            'Request',
+          );
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });
@@ -188,15 +208,18 @@ describe('ItemTableRow - search view', () => {
         appConfig.closedLocations = [];
 
         before(() => {
-          component =
-            mount(<ItemTableRow isDesktop={true} item={data} bibId="b12345" />, { context });
+          component = mount(
+            <ItemTableRow isDesktop={true} item={data} bibId='b12345' />,
+            { context },
+          );
         });
 
-
-        after(() => appConfig.closedLocations = []);
+        after(() => (appConfig.closedLocations = []));
 
         it('should render the Request button in the third <td> column', () => {
-          expect(component.find('td').at(2).render().text()).to.equal('Request');
+          expect(component.find('td').at(2).render().text()).to.equal(
+            'Request',
+          );
           expect(component.find('td').find('Link').length).to.equal(1);
         });
       });

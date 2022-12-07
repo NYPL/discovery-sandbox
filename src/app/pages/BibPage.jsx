@@ -6,12 +6,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 
-
 // Components
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BibDetails from '../components/BibPage/BibDetails';
 import BibNotFound404 from '../components/BibPage/BibNotFound404';
-import ElectronicResources from '../components/BibPage/ElectronicResources'
+import ElectronicResources from '../components/BibPage/ElectronicResources';
 import itemsContainerModule from '../components/Item/ItemsContainer';
 import LegacyCatalogLink from '../components/LegacyCatalog/LegacyCatalogLink';
 import LibraryHoldings from '../components/BibPage/LibraryHoldings';
@@ -81,7 +80,7 @@ export const BibPage = (
   { bib, location, searchKeywords, dispatch, resultSelection, features },
   context,
 ) => {
-  const useParallels = features && features.includes('parallels')
+  const useParallels = features && features.includes('parallels');
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
@@ -117,11 +116,14 @@ export const BibPage = (
   newBibModel['updatedIdentifiers'] = getIdentifiers(newBibModel, bottomFields);
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
-  const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
+  const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce(
+    (acc, el) => acc || (el && el.length && el[0]),
+    null,
+  );
   const electronicResources = pluckAeonLinksFromResource(
     aggregatedElectronicResources,
-    items
-  )
+    items,
+  );
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -129,10 +131,11 @@ export const BibPage = (
         className='nypl-item-details'
         pageTitle='Item Details'
       >
-        <section className='nypl-item-details__heading' dir={stringDirection(mainHeading, useParallels)}>
-          <Heading level="two">
-            {mainHeading}
-          </Heading>
+        <section
+          className='nypl-item-details__heading'
+          dir={stringDirection(mainHeading, useParallels)}
+        >
+          <Heading level='two'>{mainHeading}</Heading>
           <BackToSearchResults result={resultSelection} bibId={bibId} />
         </section>
 
@@ -142,26 +145,27 @@ export const BibPage = (
             fields={topFields}
             features={features}
           />
-          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
+          {electronicResources.length ? (
+            <ElectronicResources
+              electronicResources={electronicResources}
+              id='electronic-resources'
+            />
+          ) : null}
         </section>
 
-        {
-          items.length && !isElectronicResources ?
-            (
-              <section style={{ marginTop: '20px' }} id="items-table">
-                <ItemsContainer
-                  key={bibId}
-                  shortenItems={location.pathname.indexOf('all') !== -1}
-                  items={items}
-                  bibId={bibId}
-                  itemPage={location.search}
-                  searchKeywords={searchKeywords}
-                  holdings={newBibModel.holdings}
-                />
-              </section>
-            ) :
-            null
-        }
+        {items.length && !isElectronicResources ? (
+          <section style={{ marginTop: '20px' }} id='items-table'>
+            <ItemsContainer
+              key={bibId}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              items={items}
+              bibId={bibId}
+              itemPage={location.search}
+              searchKeywords={searchKeywords}
+              holdings={newBibModel.holdings}
+            />
+          </section>
+        ) : null}
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>
@@ -170,7 +174,7 @@ export const BibPage = (
         )}
 
         <section style={{ marginTop: '20px' }}>
-          <Heading level="three">Details</Heading>
+          <Heading level='three'>Details</Heading>
           <BibDetails
             additionalData={
               isNyplBnumber(newBibModel.uri) && newBibModel.annotatedMarc

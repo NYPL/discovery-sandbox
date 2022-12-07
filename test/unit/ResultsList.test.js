@@ -9,8 +9,11 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 import { mountTestRender, makeTestStore } from '../helpers/store';
-import ResultsList, { getBibTitle, getYearDisplay } from '../../src/app/components/ResultsList/ResultsList';
-import SearchResultsItems from '../../src/app/components/Item/SearchResultsItems'
+import ResultsList, {
+  getBibTitle,
+  getYearDisplay,
+} from '../../src/app/components/ResultsList/ResultsList';
+import SearchResultsItems from '../../src/app/components/Item/SearchResultsItems';
 import resultsBibs from '../fixtures/resultsBibs';
 import appConfig from '../../src/app/data/appConfig';
 import { mockRouterContext } from '../helpers/routing';
@@ -68,7 +71,6 @@ const endYear9999Bib = {
   },
 };
 
-
 describe('ResultsList', () => {
   let mockStore;
   const childContextTypes = {
@@ -97,12 +99,11 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(
-        <ResultsList results={results} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+      component = mountTestRender(<ResultsList results={results} />, {
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a ul wrapper', () => {
@@ -123,12 +124,11 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(
-        <ResultsList results={resultsBibs} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+      component = mountTestRender(<ResultsList results={resultsBibs} />, {
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render two bib li items', () => {
@@ -142,9 +142,7 @@ describe('ResultsList', () => {
       // We expect each H3 text to equal corresponding bib's titleDisplay:
       resultsBibs.forEach((bib, ind) => {
         expect(
-          component.find('h3').at(ind)
-            .find('Link').render()
-            .text(),
+          component.find('h3').at(ind).find('Link').render().text(),
         ).to.equal(bib.result.titleDisplay[0]);
       });
     });
@@ -163,20 +161,23 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(
-        <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+      component = mountTestRender(<ResultsList results={[bib]} />, {
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render one main li', () => {
-      expect(component.find('li').find('.nypl-results-item').length).to.equal(1);
+      expect(component.find('li').find('.nypl-results-item').length).to.equal(
+        1,
+      );
     });
 
-    it('should have five lis for the bib\'s description', () => {
-      expect(component.find('.nypl-results-item-description').find('li').length).to.equal(4);
+    it("should have five lis for the bib's description", () => {
+      expect(
+        component.find('.nypl-results-item-description').find('li').length,
+      ).to.equal(4);
     });
 
     it('should have a media description', () => {
@@ -188,7 +189,9 @@ describe('ResultsList', () => {
     it('should have a publication statement description', () => {
       const place = component.find('.nypl-results-publication');
       expect(place.length).to.equal(1);
-      expect(place.text()).to.equal('Cambridge, UK ; New York : Cambridge University Press,');
+      expect(place.text()).to.equal(
+        'Cambridge, UK ; New York : Cambridge University Press,',
+      );
     });
 
     it('should have a year published description', () => {
@@ -218,12 +221,11 @@ describe('ResultsList', () => {
     let component;
 
     before(() => {
-      component = mountTestRender(
-        <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+      component = mountTestRender(<ResultsList results={[bib]} />, {
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a total items description', () => {
@@ -242,13 +244,16 @@ describe('ResultsList', () => {
       let mock;
 
       before(() => {
-        component = mount(
-          <ResultsList results={resultsBibs} />,
-          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
-        );
+        component = mount(<ResultsList results={resultsBibs} />, {
+          context: {
+            router: { createHref: () => {}, push: () => {}, replace: () => {} },
+          },
+        });
         mock = new MockAdapter(axios);
         mock
-          .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
+          .onGet(
+            '/research/collections/shared-collection-catalog/api/bib?bibId=b17692265',
+          )
           .reply(200, { searchResults: [] });
       });
 
@@ -263,13 +268,14 @@ describe('ResultsList', () => {
     let mock;
 
     before(() => {
-      component = mount(
-        <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
-      );
+      component = mount(<ResultsList results={resultsBibs} />, {
+        context: { router: { createHref: () => {}, push: () => {} } },
+      });
       mock = new MockAdapter(axios);
       mock
-        .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
+        .onGet(
+          '/research/collections/shared-collection-catalog/api/bib?bibId=b17692265',
+        )
         .reply(404, { error: 'Some error' });
     });
 
@@ -283,17 +289,21 @@ describe('ResultsList', () => {
       it('should display titleDisplay', () => {
         const bibTitle = getBibTitle(resultsBibs[0].result);
 
-        expect(bibTitle).to.equal('Hamlet without Hamlet / Margreta De Grazia.');
+        expect(bibTitle).to.equal(
+          'Hamlet without Hamlet / Margreta De Grazia.',
+        );
       });
 
-      it('should display `title` with `creatorLiteral` if there\'s no `titleDisplay`', () => {
+      it("should display `title` with `creatorLiteral` if there's no `titleDisplay`", () => {
         const bibTitle = getBibTitle(singleBibNoTitleDisplay.result);
 
         // The result combines `title` with `creatorLiteral`:
-        expect(bibTitle).to.equal('Hamlet without Hamlet / De Grazia, Margreta.');
+        expect(bibTitle).to.equal(
+          'Hamlet without Hamlet / De Grazia, Margreta.',
+        );
       });
 
-      it('should display just `title` if there\'s no `titleDisplay` or `creatorLiteral`', () => {
+      it("should display just `title` if there's no `titleDisplay` or `creatorLiteral`", () => {
         const bibTitle = getBibTitle(singleBibNoTitleDisplayOrCreator.result);
 
         expect(bibTitle).to.equal('Hamlet without Hamlet');
@@ -355,13 +365,14 @@ describe('ResultsList', () => {
     let mock;
 
     before(() => {
-      component = mount(
-        <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
-      );
+      component = mount(<ResultsList results={resultsBibs} />, {
+        context: { router: { createHref: () => {}, push: () => {} } },
+      });
       mock = new MockAdapter(axios);
       mock
-        .onGet('/research/collections/shared-collection-catalog/api/bib?bibId=b17692265')
+        .onGet(
+          '/research/collections/shared-collection-catalog/api/bib?bibId=b17692265',
+        )
         .reply(404, { error: 'Some error' });
     });
 
@@ -382,12 +393,11 @@ describe('ResultsList', () => {
 
     describe('without integration', () => {
       before(() => {
-        component = mountTestRender(
-          <ResultsList results={resultsBibs} />, {
-            store: mockStore,
-            context,
-            childContextTypes,
-          }).find('ResultsList');
+        component = mountTestRender(<ResultsList results={resultsBibs} />, {
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -401,12 +411,11 @@ describe('ResultsList', () => {
           loading: false,
           features: ['drb-integration'],
         });
-        component = mountTestRender(
-          <ResultsList results={resultsBibs} />, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+        component = mountTestRender(<ResultsList results={resultsBibs} />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       it('should have components with .drbb-integration class', () => {
@@ -430,11 +439,13 @@ describe('ResultsList', () => {
         features: ['drb-integration', 'aeon-links'],
       });
       component = mountTestRender(
-        <ResultsList results={[electronicAndPhysicalItemsBib]} />, {
+        <ResultsList results={[electronicAndPhysicalItemsBib]} />,
+        {
           store: mockDrbFeatureStore,
           context,
           childContextTypes,
-        });
+        },
+      );
     });
 
     after(() => {
@@ -442,24 +453,29 @@ describe('ResultsList', () => {
     });
 
     it('should display electronic resources', () => {
-      const electronicResources = component.find(ElectronicResourcesResultsItem)
+      const electronicResources = component.find(
+        ElectronicResourcesResultsItem,
+      );
       expect(electronicResources.length).to.equal(1);
       expect(electronicResources.at(0).prop('resources').length).to.equal(1);
-      expect(electronicResources.at(0).prop('resources')[0].label).to.equal('Full text available via HathiTrust')
-      expect(electronicResources.at(0).prop('bibUrl')).to.equal('/research/research-catalog/bib/b15523285')
-    })
-
+      expect(electronicResources.at(0).prop('resources')[0].label).to.equal(
+        'Full text available via HathiTrust',
+      );
+      expect(electronicResources.at(0).prop('bibUrl')).to.equal(
+        '/research/research-catalog/bib/b15523285',
+      );
+    });
 
     it('should only count physical items in description', () => {
-      const info = component.find('.nypl-results-info')
+      const info = component.find('.nypl-results-info');
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('2 items')
-    })
+      expect(info.at(0).text()).to.equal('2 items');
+    });
 
     it('should not display item table link for < 4 items', () => {
-      const physicalItemsLink = component.find("#physical-items-link")
-      expect(physicalItemsLink.length).to.equal(0)
-    })
+      const physicalItemsLink = component.find('#physical-items-link');
+      expect(physicalItemsLink.length).to.equal(0);
+    });
   });
 
   describe('results with multiple items', () => {
@@ -472,20 +488,21 @@ describe('ResultsList', () => {
         loading: false,
         features: ['drb-integration', 'aeon-links'],
       });
-      component = mountTestRender(
-        <ResultsList results={[bibs[2]]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+      component = mountTestRender(<ResultsList results={[bibs[2]]} />, {
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     it('should display link to item table in case > 3 items', () => {
-      const link = component.find("#physical-items-link")
-      expect(link.at(0).prop('to')).to.equal('/research/research-catalog/bib/b22030125#items-table')
-      expect(link.at(0).text()).to.include('View All 5 Items')
-      expect(link.at(0).prop('className')).to.equal('search-results-list-link')
-    })
+      const link = component.find('#physical-items-link');
+      expect(link.at(0).prop('to')).to.equal(
+        '/research/research-catalog/bib/b22030125#items-table',
+      );
+      expect(link.at(0).text()).to.include('View All 5 Items');
+      expect(link.at(0).prop('className')).to.equal('search-results-list-link');
+    });
 
     after(() => {
       appConfigMock.restore();
@@ -503,11 +520,13 @@ describe('ResultsList', () => {
         features: ['drb-integration', 'aeon-links'],
       });
       component = mountTestRender(
-        <ResultsList results={[electronicItemsBib]} />, {
+        <ResultsList results={[electronicItemsBib]} />,
+        {
           store: mockDrbFeatureStore,
           context,
           childContextTypes,
-        });
+        },
+      );
     });
 
     after(() => {
@@ -515,10 +534,10 @@ describe('ResultsList', () => {
     });
 
     it('should announce resources in case no physical items', () => {
-      const info = component.find('.nypl-results-info')
+      const info = component.find('.nypl-results-info');
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('1 resource')
-    })
+      expect(info.at(0).text()).to.equal('1 resource');
+    });
   });
 
   describe('Rendering Search Results Items', () => {
@@ -534,11 +553,13 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords"/>, {
+          <ResultsList results={[bibs[2]]} searchKeywords='mock_keywords' />,
+          {
             store: mockDrbFeatureStore,
             context,
             childContextTypes,
-          });
+          },
+        );
       });
 
       after(() => {
@@ -546,17 +567,23 @@ describe('ResultsList', () => {
       });
 
       it('should render SearchResultsItems with correct props', () => {
-        const searchResultsItems = component.find(SearchResultsItems)
-        expect(searchResultsItems.length).to.equal(1)
-        const searchResultsItemsElement = searchResultsItems.at(0)
+        const searchResultsItems = component.find(SearchResultsItems);
+        expect(searchResultsItems.length).to.equal(1);
+        const searchResultsItemsElement = searchResultsItems.at(0);
 
-        expect(searchResultsItemsElement.prop("bibId")).to.equal("b22030125")
-        expect(searchResultsItemsElement.prop("searchKeywords")).to.equal("mock_keywords")
-        expect(searchResultsItemsElement.prop("page")).to.equal("SearchResults")
-        expect(Array.isArray(searchResultsItemsElement.prop("items"))).to.equal(true)
-        expect(searchResultsItemsElement.prop("items").length).to.equal(3)
-      })
-    })
+        expect(searchResultsItemsElement.prop('bibId')).to.equal('b22030125');
+        expect(searchResultsItemsElement.prop('searchKeywords')).to.equal(
+          'mock_keywords',
+        );
+        expect(searchResultsItemsElement.prop('page')).to.equal(
+          'SearchResults',
+        );
+        expect(Array.isArray(searchResultsItemsElement.prop('items'))).to.equal(
+          true,
+        );
+        expect(searchResultsItemsElement.prop('items').length).to.equal(3);
+      });
+    });
 
     describe('when there are no items', () => {
       let component;
@@ -570,11 +597,13 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[]} searchKeywords="mock_keywords"/>, {
+          <ResultsList results={[]} searchKeywords='mock_keywords' />,
+          {
             store: mockDrbFeatureStore,
             context,
             childContextTypes,
-          });
+          },
+        );
       });
 
       after(() => {
@@ -582,9 +611,9 @@ describe('ResultsList', () => {
       });
 
       it('should not render SearchResultsItems', () => {
-        const searchResultsItems = component.find(SearchResultsItems)
-        expect(searchResultsItems.length).to.equal(0)
+        const searchResultsItems = component.find(SearchResultsItems);
+        expect(searchResultsItems.length).to.equal(0);
       });
     });
-  })
+  });
 });

@@ -19,7 +19,11 @@ describe('After Clicking on Button', () => {
 
   // These tests should be changed to be more informative
   it('should display Abbreviated Title', () => {
-    expect(component.find('div').someWhere(item => item.text() === 'Abrev. title -- 210 ')).to.equal(true);
+    expect(
+      component
+        .find('div')
+        .someWhere((item) => item.text() === 'Abrev. title -- 210 '),
+    ).to.equal(true);
   });
 
   it('should display url fields', () => {
@@ -27,10 +31,16 @@ describe('After Clicking on Button', () => {
   });
 
   it('should have correct href for url fields', () => {
-    expect(link.someWhere(item => item.prop('href') === 'http://blogs.nypl.org/rcramer/')).to.equal(true);
+    expect(
+      link.someWhere(
+        (item) => item.prop('href') === 'http://blogs.nypl.org/rcramer/',
+      ),
+    ).to.equal(true);
   });
 
   it('should display correct text for url fields', () => {
-    expect(link.someWhere(item => item.text().trim() === '856 40')).to.equal(true);
+    expect(link.someWhere((item) => item.text().trim() === '856 40')).to.equal(
+      true,
+    );
   });
 });

@@ -20,17 +20,16 @@
     color: var(--nypl-colors-ui-white);
     display: inline-block;
     font-size: 1rem;
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     position: relative;
     text-align: center;
-  
+
     &:hover {
       background: var(--nypl-colors-ui-white);
       color: $dsresearchprimary;
     }
   }
 }
-
 
 .cancel-button {
   border: 1px solid $feedbackBorder;
@@ -39,12 +38,11 @@
   text-align: center;
 }
 
-
 #feedback-menu {
   display: none;
   background: var(--nypl-colors-ui-white);
   border: 1px solid $border-color;
-  box-shadow: -1px 0 1px 0 rgba(0,0,0,0.3);
+  box-shadow: -1px 0 1px 0 rgba(0, 0, 0, 0.3);
   padding: 50px 42px;
   text-align: left;
   height: 472px;
@@ -55,7 +53,7 @@
 
   label {
     span {
-      font-size: .75rem;
+      font-size: 0.75rem;
       font-weight: 300;
     }
   }
@@ -102,7 +100,7 @@
   display: flow-root;
   a {
     float: right;
-    font-size: .75rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -128,7 +126,7 @@
       margin-top: 13px;
       width: 98px;
       height: 25px;
-      font-size: .875rem;
+      font-size: 0.875rem;
       padding: 0;
     }
   }

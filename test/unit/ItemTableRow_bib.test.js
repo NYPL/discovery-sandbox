@@ -9,18 +9,19 @@ import item from '../fixtures/libraryItems';
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
 
 describe('ItemTableRow - bib page view', () => {
-
   describe('Rendered row', () => {
     describe('Missing data item', () => {
       const data = item.missingData;
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={true} isBibPage={true} item={data} />);
+        component = mount(
+          <ItemTableRow isDesktop={true} isBibPage={true} item={data} />,
+        );
       });
 
       it('should return a <tr>', () => {
-        const tr = component.find('tr')
+        const tr = component.find('tr');
         expect(tr.prop('className')).to.equal('available');
       });
 
@@ -46,7 +47,14 @@ describe('ItemTableRow - bib page view', () => {
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={true} includeVolColumn={true} isBibPage={true} item={data} />);
+        component = mount(
+          <ItemTableRow
+            isDesktop={true}
+            includeVolColumn={true}
+            isBibPage={true}
+            item={data}
+          />,
+        );
       });
 
       it('should return a <tr>', () => {
@@ -58,7 +66,9 @@ describe('ItemTableRow - bib page view', () => {
       });
 
       it('should have status links as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.include('Available - Can be used');
+        expect(component.find('td').at(0).text()).to.include(
+          'Available - Can be used',
+        );
       });
 
       it('should have a Vol/Date as the second <td> column data', () => {
@@ -78,8 +88,10 @@ describe('ItemTableRow - bib page view', () => {
       });
 
       it('should have a location as the sixth <td> column data', () => {
-        expect(component.find('td').at(5).text()).to.equal('SASB M1 - General Research - Room 315');
+        expect(component.find('td').at(5).text()).to.equal(
+          'SASB M1 - General Research - Room 315',
+        );
       });
     });
   });
-})
+});

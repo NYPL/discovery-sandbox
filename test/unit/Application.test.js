@@ -29,7 +29,9 @@ describe('Application', () => {
           history: { listen: stub() },
         }}
         addFeatures={() => {}}
-      />, { context });
+      />,
+      { context },
+    );
 
     component.setState({ patron: {} });
   });
@@ -44,12 +46,15 @@ describe('Application', () => {
   });
 
   it('should have the skip navigation link enabled,', () => {
-    expect(component.contains(
-      <Header
-        navData={navConfig.current}
-        skipNav={{ target: 'mainContent' }}
-        patron={component.state.patron}
-      />)).to.equal(true);
+    expect(
+      component.contains(
+        <Header
+          navData={navConfig.current}
+          skipNav={{ target: 'mainContent' }}
+          patron={component.state.patron}
+        />,
+      ),
+    ).to.equal(true);
   });
 
   it('should render a <Footer /> components', () => {
@@ -58,20 +63,26 @@ describe('Application', () => {
 
   describe('should set media type in context', () => {
     const breakpointObj = {};
-    breakpoints.forEach(breakpoint => breakpointObj[breakpoint.media] = breakpoint.maxValue);
-    const { tablet, tabletPortrait, mobile} = breakpointObj;
+    breakpoints.forEach(
+      (breakpoint) => (breakpointObj[breakpoint.media] = breakpoint.maxValue),
+    );
+    const { tablet, tabletPortrait, mobile } = breakpointObj;
 
     it(`should set media as "desktop" for screenwidths above ${tablet}px`, () => {
       resizeWindow(tablet + 1);
       expect(component.state().media).to.eql('desktop');
     });
-    it(`should set media as "tablet" for screenwidths ${tabletPortrait + 1}-${tablet}px`, () => {
+    it(`should set media as "tablet" for screenwidths ${
+      tabletPortrait + 1
+    }-${tablet}px`, () => {
       resizeWindow(tabletPortrait + 1);
       expect(component.state().media).to.eql('tablet');
       resizeWindow(tablet);
       expect(component.state().media).to.eql('tablet');
     });
-    it(`should set media as "tabletPortrait" for screenwidths ${mobile + 1}-${tabletPortrait}px`, () => {
+    it(`should set media as "tabletPortrait" for screenwidths ${
+      mobile + 1
+    }-${tabletPortrait}px`, () => {
       resizeWindow(mobile + 1);
       expect(component.state().media).to.eql('tabletPortrait');
       resizeWindow(tabletPortrait);
@@ -88,9 +99,11 @@ describe('Application', () => {
       window.matchMedia = () => ({ addListener: () => {} });
       window.matchMedia().addListener = stub();
       context.router = {
-        location: { query: {
-          features: 'on-site-edd',
-        } },
+        location: {
+          query: {
+            features: 'on-site-edd',
+          },
+        },
         listen: stub(),
       };
       component = shallow(
@@ -101,7 +114,9 @@ describe('Application', () => {
           features={[]}
         >
           <a href='/subject_headings'>link</a>
-        </Application>, { context });
+        </Application>,
+        { context },
+      );
     });
 
     it('sets `urlEnabledFeatures` state from `router.location.query.features`', () => {

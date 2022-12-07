@@ -2,15 +2,13 @@ import React from 'react';
 import InformationLinks from './InformationLinks';
 import RequestButtons from './RequestButtons';
 
-import {
-  aeonUrl,
-} from '../../utils/utils';
+import { aeonUrl } from '../../utils/utils';
 
 const StatusLinks = ({ item, bibId, searchKeywords, appConfig, page }) => {
   const { features } = appConfig;
-  const isAeon = item.aeonUrl && features.includes('aeon-links')
+  const isAeon = item.aeonUrl && features.includes('aeon-links');
 
-  return(
+  return (
     <div>
       <RequestButtons
         item={item}
@@ -19,9 +17,12 @@ const StatusLinks = ({ item, bibId, searchKeywords, appConfig, page }) => {
         appConfig={appConfig}
         page={page}
       />
-      <InformationLinks {...item} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
+      <InformationLinks
+        {...item}
+        computedAeonUrl={isAeon ? aeonUrl(item) : undefined}
+      />
     </div>
-  )
-}
+  );
+};
 
 export default StatusLinks;

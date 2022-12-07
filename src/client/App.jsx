@@ -23,7 +23,10 @@ if (loadA11y) {
 
 window.onload = () => {
   if (!window.ga) {
-    const isProd = process.env.GA_ENV === 'development' ? false : process.env.NODE_ENV === 'production';
+    const isProd =
+      process.env.GA_ENV === 'development'
+        ? false
+        : process.env.NODE_ENV === 'production';
     const gaOpts = { debug: !isProd, titleCase: false };
 
     gaUtils.initialize(config.google.code(isProd), gaOpts);

@@ -10,8 +10,9 @@
 
 .nypl-row,
 .nypl-column-full {
-  &::after, &::before {
-    content: "";
+  &::after,
+  &::before {
+    content: '';
     display: table;
   }
   &::after {

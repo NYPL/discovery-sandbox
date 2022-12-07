@@ -62,24 +62,30 @@ class ElectronicDelivery extends React.Component {
   }
 
   bibAndItemInformation() {
-    const bib = (this.props.bib && !_isEmpty(this.props.bib)) ? this.props.bib : null;
-    const title = (bib && _isArray(bib.title) && bib.title.length) ? bib.title[0] : '';
+    const bib =
+      this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
+    const title =
+      bib && _isArray(bib.title) && bib.title.length ? bib.title[0] : '';
     let bibId;
     if (this.props.params.bibId) {
       bibId = this.props.params.bibId;
     } else if (bib && bib['@id']) {
       bibId = bib['@id'].substring(4);
     }
-    const itemId = (this.props.params && this.props.params.itemId) ? this.props.params.itemId : '';
-    const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
-    const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
+    const itemId =
+      this.props.params && this.props.params.itemId
+        ? this.props.params.itemId
+        : '';
+    const selectedItem = bib && itemId ? LibraryItem.getItem(bib, itemId) : {};
+    const itemSource =
+      selectedItem && selectedItem.itemSource ? selectedItem.itemSource : null;
     return {
       eddRequestable: selectedItem && selectedItem.eddRequestable,
       title,
       bibId,
       itemId,
       itemSource,
-    }
+    };
   }
 
   /*
@@ -106,7 +112,11 @@ class ElectronicDelivery extends React.Component {
     }
 
     _mapObject(raiseError, (val, key) => {
-      raisedErrors.push(<li key={key}><a href={`#${key}`}>{headlineError[key]}</a></li>);
+      raisedErrors.push(
+        <li key={key}>
+          <a href={`#${key}`}>{headlineError[key]}</a>
+        </li>,
+      );
     });
 
     return raisedErrors;
@@ -119,12 +129,12 @@ class ElectronicDelivery extends React.Component {
 
   fromUrl() {
     const {
-      location: {
-        query,
-      },
+      location: { query },
     } = this.props;
 
-    return query && query.fromUrl ? `&fromUrl=${encodeURIComponent(query.fromUrl)}` : '';
+    return query && query.fromUrl
+      ? `&fromUrl=${encodeURIComponent(query.fromUrl)}`
+      : '';
   }
 
   /**
@@ -133,27 +143,24 @@ class ElectronicDelivery extends React.Component {
    */
   submitRequest() {
     this.props.updateLoadingStatus(true);
-    const {
-      bibId,
-      itemId,
-      itemSource,
-      title,
-    } = this.bibAndItemInformation();
+    const { bibId, itemId, itemSource, title } = this.bibAndItemInformation();
     const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
     const { searchKeywords } = this.props;
     const searchKeywordsQuery = searchKeywords ? `&q=${searchKeywords}` : '';
-    const partnerEvent = itemSource !== 'sierra-nypl' ?
-      ` - Partner item - ${institutionNameByNyplSource(itemSource)}` : '';
+    const partnerEvent =
+      itemSource !== 'sierra-nypl'
+        ? ` - Partner item - ${institutionNameByNyplSource(itemSource)}`
+        : '';
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
     trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
-    const formData = new FormData(document.getElementById('place-edd-hold-form'));
-    axios.post(
-      `${appConfig.baseUrl}/edd`,
-      Object.fromEntries(formData.entries()),
-    )
+    const formData = new FormData(
+      document.getElementById('place-edd-hold-form'),
+    );
+    axios
+      .post(`${appConfig.baseUrl}/edd`, Object.fromEntries(formData.entries()))
       .then((response) => {
         this.context.router.push(response.data);
       })
@@ -198,31 +205,31 @@ class ElectronicDelivery extends React.Component {
   }
 
   render() {
-    const { raiseError, serverRedirect } =
-      this.state;
-    const { bibId, itemId, title, eddRequestable, itemSource } = this.bibAndItemInformation();
+    const { raiseError, serverRedirect } = this.state;
+    const { bibId, itemId, title, eddRequestable, itemSource } =
+      this.bibAndItemInformation();
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const callNo =
       bib && bib.shelfMark && bib.shelfMark.length ? bib.shelfMark[0] : null;
     const { error, form } = this.props;
-    const patronEmail = (
-      this.props.patron.emails && _isArray(this.props.patron.emails)
-      && this.props.patron.emails.length
-    ) ? this.props.patron.emails[0] : '';
+    const patronEmail =
+      this.props.patron.emails &&
+      _isArray(this.props.patron.emails) &&
+      this.props.patron.emails.length
+        ? this.props.patron.emails[0]
+        : '';
     const searchKeywords = this.props.searchKeywords;
     const { closedLocations } = appConfig;
 
     return (
       <SccContainer
-        className="edd-request"
-        activeSection="search"
-        pageTitle="Electronic Delivery Request"
+        className='edd-request'
+        activeSection='search'
+        pageTitle='Electronic Delivery Request'
       >
-        <Notification
-          notificationType="holdRequestNotification"
-        />
-        <div className="nypl-request-item-summary">
+        <Notification notificationType='holdRequestNotification' />
+        <div className='nypl-request-item-summary'>
           <h2>
             <Link
               to={`${appConfig.baseUrl}/bib/${bibId}`}
@@ -231,14 +238,13 @@ class ElectronicDelivery extends React.Component {
               {title}
             </Link>
           </h2>
-          {
-            callNo && (
-              <div className="call-number">
-                <span>Call Number:</span><br />
-                {callNo}
-              </div>
-            )
-          }
+          {callNo && (
+            <div className='call-number'>
+              <span>Call Number:</span>
+              <br />
+              {callNo}
+            </div>
+          )}
         </div>
         {!eddRequestable ? (
           <h2 className='nypl-request-form-title'>
@@ -259,7 +265,6 @@ class ElectronicDelivery extends React.Component {
               </div>
             )}
             {!closedLocations.includes('') ? (
-
               <ElectronicDeliveryForm
                 bibId={bibId}
                 itemId={itemId}
@@ -302,7 +307,7 @@ ElectronicDelivery.defaultProps = {
   searchKeywords: '',
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   patron: state.patron,
   bib: state.bib,
   searchKeywords: state.searchKeywords,
@@ -310,8 +315,10 @@ const mapStateToProps = state => ({
   loading: state.loading,
 });
 
-const mapDispatchToProps = dispatch => ({
-  updateLoadingStatus: status => dispatch(updateLoadingStatus(status)),
+const mapDispatchToProps = (dispatch) => ({
+  updateLoadingStatus: (status) => dispatch(updateLoadingStatus(status)),
 });
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery));
+export default withRouter(
+  connect(mapStateToProps, mapDispatchToProps)(ElectronicDelivery),
+);

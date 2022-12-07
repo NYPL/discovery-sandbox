@@ -44,7 +44,9 @@ describe('FilterPopup', () => {
     let component;
 
     before(() => {
-      component = mount(<FieldsetList filter={languageFilter} legend={legend} />);
+      component = mount(
+        <FieldsetList filter={languageFilter} legend={legend} />,
+      );
     });
 
     it('should render a fieldset', () => {

@@ -7,10 +7,9 @@ import { itemFilters } from '../../data/constants';
 
 /**
  * This renders the button that acts as a Modal Trigger. Clicking the button
- * opens a Modal from the new Reservoir Design System, which contains the 
+ * opens a Modal from the new Reservoir Design System, which contains the
  * items filters.
  */
-
 
 const ItemFiltersMobile = ({
   options,
@@ -27,42 +26,38 @@ const ItemFiltersMobile = ({
 
   const modalProps = {
     bodyContent: (
-      <div
-        className="scc-item-filters"
-        id="item-filters-mobile"
-      >
-        <div id="item-filters" className="item-table-filters">
-          {
-            itemFilters.map(filter => (
-              <ItemFilter
-                filter={filter.type}
-                options={options[filter.type]}
-                manageFilterDisplay={manageFilterDisplay}
-                key={filter.type}
-                mobile
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
-                submitFilterSelections={submitFilterSelections}
-                initialFilters={initialFilters}
-              />
-            ))
-          }
+      <div className='scc-item-filters' id='item-filters-mobile'>
+        <div id='item-filters' className='item-table-filters'>
+          {itemFilters.map((filter) => (
+            <ItemFilter
+              filter={filter.type}
+              options={options[filter.type]}
+              manageFilterDisplay={manageFilterDisplay}
+              key={filter.type}
+              mobile
+              selectedFilters={selectedFilters}
+              setSelectedFilters={setSelectedFilters}
+              submitFilterSelections={submitFilterSelections}
+              initialFilters={initialFilters}
+            />
+          ))}
         </div>
       </div>
     ),
-    headingText: "Filters",
-    closeButtonLabel: "Show Results",
+    headingText: 'Filters',
+    closeButtonLabel: 'Show Results',
     onClose: () => {
-      showResultsAction()
-    }
-  }
+      showResultsAction();
+    },
+  };
   return (
     <ModalTrigger
-      buttonType="secondary"
-      className="item-table-filters"
-      id="filters-button"
-      buttonText="Filters"
-      modalProps={modalProps} />
+      buttonType='secondary'
+      className='item-table-filters'
+      id='filters-button'
+      buttonText='Filters'
+      modalProps={modalProps}
+    />
   );
 };
 
@@ -80,4 +75,3 @@ ItemFiltersMobile.contextTypes = {
 };
 
 export default ItemFiltersMobile;
-

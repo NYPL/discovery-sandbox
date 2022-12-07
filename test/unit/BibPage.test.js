@@ -7,7 +7,10 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 
 // Import Bib helper functions for pre-processing
-import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
+import {
+  addCheckInItems,
+  addHoldingDefinition,
+} from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/pages/BibPage';
@@ -19,7 +22,7 @@ import { mockRouterContext } from '../helpers/routing';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import { Link } from 'react-router';
 import BibDetails from '../../src/app/components/BibPage/BibDetails';
-import ElectronicResources from '../../src/app/components/BibPage/ElectronicResources'
+import ElectronicResources from '../../src/app/components/BibPage/ElectronicResources';
 import { isAeonLink } from '../../src/app/utils/utils';
 import { Heading } from '@nypl/design-system-react-components';
 
@@ -39,7 +42,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => { }}
+          dispatch={() => {}}
           resultSelection={{
             fromUrl: '',
             bibId: '',
@@ -70,8 +73,7 @@ describe('BibPage', () => {
 
     it('should not include an Aeon link in top section of bib page', () => {
       const topBibComp = page.findWhere(
-        (node) =>
-          node.type() === ElectronicResources
+        (node) => node.type() === ElectronicResources,
       );
       expect(topBibComp.type()).to.equal(ElectronicResources);
       expect(topBibComp.prop('electronicResources')).to.have.lengthOf(1);
@@ -79,25 +81,26 @@ describe('BibPage', () => {
     });
 
     it('should not render Electronic Resources component when there are no electronic resources', () => {
-      const noElectronicResourcesBib = bibs[0]
+      const noElectronicResourcesBib = bibs[0];
       const noElectronicResourcesBibPage = mount(
         <Provider store={testStore}>
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={noElectronicResourcesBib}
-            dispatch={() => { }}
+            dispatch={() => {}}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
         </Provider>,
-        { context, childContextTypes: { router: PropTypes.object } })
+        { context, childContextTypes: { router: PropTypes.object } },
+      );
 
-      expect(noElectronicResourcesBibPage.find(ElectronicResources)).to.have.lengthOf(0)
-    })
-
-
+      expect(
+        noElectronicResourcesBibPage.find(ElectronicResources),
+      ).to.have.lengthOf(0);
+    });
   });
 
   describe('Non-serial bib', () => {
@@ -115,37 +118,46 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => { }}
+            dispatch={() => {}}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+        </Provider>,
+        { context, childContextTypes: { router: PropTypes.object } },
+      );
     });
-
 
     it('has ItemsContainer', () => {
       expect(component.find('ItemsContainer').length).to.equal(1);
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(3).prop('children')).to.equal(
+        'Details',
+      );
     });
 
     it('has section with id items-table', () => {
-      expect(component.find('#items-table').length).to.equal(1)
-    })
+      expect(component.find('#items-table').length).to.equal(1);
+    });
 
     it('combines details sections', () => {
-      expect(component.findWhere(el => el.type() === 'dt' && el.text() === 'Abbreviated Title').length).to.equal(1);
+      expect(
+        component.findWhere(
+          (el) => el.type() === 'dt' && el.text() === 'Abbreviated Title',
+        ).length,
+      ).to.equal(1);
     });
 
     it('has "View in Legacy Catalog" link', () => {
       const linkToLegacy = component.find('#legacy-catalog-link');
       expect(linkToLegacy.length).to.equal(1);
       expect(linkToLegacy.is('a')).to.equal(true);
-      expect(linkToLegacy.prop('href')).to.equal('https://legacyBaseUrl.nypl.org/record=b11417539~S1');
+      expect(linkToLegacy.prop('href')).to.equal(
+        'https://legacyBaseUrl.nypl.org/record=b11417539~S1',
+      );
     });
   });
 
@@ -166,13 +178,15 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => { }}
+            dispatch={() => {}}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+        </Provider>,
+        { context, childContextTypes: { router: PropTypes.object } },
+      );
     });
 
     it('should not display ItemsContainer', () => {
@@ -184,7 +198,9 @@ describe('BibPage', () => {
     let itemTable;
     let component;
     before(() => {
-      mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
+      mockBibWithHolding.holdings.forEach((holding) =>
+        addHoldingDefinition(holding),
+      );
       addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
@@ -200,17 +216,18 @@ describe('BibPage', () => {
           <BibPage
             location={{ search: 'search', pathname: '' }}
             bib={bib}
-            dispatch={() => { }}
+            dispatch={() => {}}
             resultSelection={{
               fromUrl: '',
               bibId: '',
             }}
           />
-        </Provider>, {
-        context,
-        childContextTypes: { router: PropTypes.object },
-      });
-
+        </Provider>,
+        {
+          context,
+          childContextTypes: { router: PropTypes.object },
+        },
+      );
     });
 
     it('has ItemsContainer', () => {
@@ -218,7 +235,9 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(4).prop('children')).to.equal(
+        'Details',
+      );
     });
 
     it('has holdings section', () => {
@@ -227,11 +246,15 @@ describe('BibPage', () => {
 
     it('has an item table', () => {
       itemTable = component.find('ItemTable');
-      expect(itemTable.length).to.be.at.least(1)
+      expect(itemTable.length).to.be.at.least(1);
     });
 
     it('displays any notes in the "Library Holdings" tab', () => {
-      expect(component.find('dt').findWhere(n => n.type() === 'dt' && n.text() === 'Notes').length).to.equal(1);
+      expect(
+        component
+          .find('dt')
+          .findWhere((n) => n.type() === 'dt' && n.text() === 'Notes').length,
+      ).to.equal(1);
     });
   });
 
@@ -243,7 +266,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => { }}
+          dispatch={() => {}}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: bib['@id'].substring(4),
@@ -263,7 +286,7 @@ describe('BibPage', () => {
         <BibPage
           location={{ search: 'search', pathname: '' }}
           bib={bib}
-          dispatch={() => { }}
+          dispatch={() => {}}
           resultSelection={{
             fromUrl: 'resultsurl.com',
             bibId: 'wrongbib',
@@ -281,7 +304,10 @@ describe('BibPage', () => {
 
   describe('Bib with parallel title', () => {
     it('should display parallel title as main title', () => {
-      const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
+      const bib = {
+        ...mockBibWithHolding,
+        ...{ parallelTitle: ['Parallel Title'] },
+      };
       const testStore = makeTestStore({
         bib: {
           done: true,
@@ -307,11 +333,14 @@ describe('BibPage', () => {
         },
       );
 
-      expect(component.find(Heading).at(1).text()).to.eql('Parallel Title')
-    })
+      expect(component.find(Heading).at(1).text()).to.eql('Parallel Title');
+    });
 
     it('should display parallel title rtl if rtl', () => {
-      const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['\u200FParallel Title'] } };
+      const bib = {
+        ...mockBibWithHolding,
+        ...{ parallelTitle: ['\u200FParallel Title'] },
+      };
       const testStore = makeTestStore({
         bib: {
           done: true,
@@ -337,11 +366,14 @@ describe('BibPage', () => {
         },
       );
 
-      expect(component.find('section').at(0).prop('dir')).to.eql('rtl')
-    })
+      expect(component.find('section').at(0).prop('dir')).to.eql('rtl');
+    });
 
     it('should display parallel title ltr if ltr', () => {
-      const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
+      const bib = {
+        ...mockBibWithHolding,
+        ...{ parallelTitle: ['Parallel Title'] },
+      };
       const testStore = makeTestStore({
         bib: {
           done: true,
@@ -367,7 +399,7 @@ describe('BibPage', () => {
         },
       );
 
-      expect(component.find('section').at(0).prop('dir')).to.eql(null)
-    })
+      expect(component.find('section').at(0).prop('dir')).to.eql(null);
+    });
   });
 });

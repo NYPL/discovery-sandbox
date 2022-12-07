@@ -11,7 +11,7 @@ import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/dat
 import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
-const WrappedItemsContainer = itemsContainerModule.ItemsContainer
+const WrappedItemsContainer = itemsContainerModule.ItemsContainer;
 const items = [
   {
     accessMessage: {
@@ -19,7 +19,8 @@ const items = [
       prefLabel: 'USE IN LIBRARY',
     },
     availability: 'available',
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
+    url:
+      'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
   {
@@ -34,66 +35,202 @@ const items = [
 ].map(LibraryItem.mapItem);
 
 const longListItems = [
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-].map(LibraryItem.mapItem).map((item, i) => {
-  item.id = `i${i}`
-  return item
-});
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+]
+  .map(LibraryItem.mapItem)
+  .map((item, i) => {
+    item.id = `i${i}`;
+    return item;
+  });
 
 const twentyItems = [
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-  { status: { prefLabel: 'available' }, accessMessage: { prefLabel: 'available' } },
-].map(LibraryItem.mapItem).map((item, i) => {
-  item.id = `i${i}`
-  return item
-});
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+  {
+    status: { prefLabel: 'available' },
+    accessMessage: { prefLabel: 'available' },
+  },
+]
+  .map(LibraryItem.mapItem)
+  .map((item, i) => {
+    item.id = `i${i}`;
+    return item;
+  });
 
 const context = {
   router: {
     location: { query: {} },
-    createHref: () => { },
-    push: () => { },
+    createHref: () => {},
+    push: () => {},
   },
 };
 
@@ -127,7 +264,7 @@ describe('ItemsContainer', () => {
     });
 
     it('should have an ItemTable component, which renders a table', () => {
-      expect(component.find('ItemTable').length).to.equal(1)
+      expect(component.find('ItemTable').length).to.equal(1);
     });
 
     it('should not render a "View All Items" link', () => {
@@ -143,7 +280,10 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} bib={testBib} />, { context });
+      component = shallow(
+        <ItemsContainer items={longListItems} bib={testBib} />,
+        { context },
+      );
     });
 
     it('should render an ItemTable component', () => {
@@ -163,7 +303,14 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
+      component = shallow(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+        />,
+        { context },
+      );
     });
 
     it('should render a "View All Items" link', () => {
@@ -192,7 +339,11 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = shallow(
-        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+        />,
         { context },
       );
     });
@@ -202,7 +353,9 @@ describe('ItemsContainer', () => {
     });
 
     it('should have showAll state equal to true when the show all link is clicked', () => {
-      const allItemsLink = component.find('.view-all-items-container').find('a');
+      const allItemsLink = component
+        .find('.view-all-items-container')
+        .find('a');
 
       expect(component.state('showAll')).to.equal(false);
       allItemsLink.simulate('click');
@@ -238,41 +391,52 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = shallow(
-        <ItemsContainer items={longListItems} shortenItems={false} page="4" bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          page='4'
+          bib={testBib}
+        />,
         { context },
       );
     });
 
-    it('should have "page" state updated to 1 since page 4 should not exist with the ' +
-      'small amount of items passed', () => {
-      expect(component.state('page')).to.equal(1);
-    });
+    it(
+      'should have "page" state updated to 1 since page 4 should not exist with the ' +
+        'small amount of items passed',
+      () => {
+        expect(component.state('page')).to.equal(1);
+      },
+    );
   });
 
   describe('Breaking up the items passed into a chunked array', () => {
-    let component
+    let component;
     const store = makeTestStore({
       bib: {
         done: true,
-        items: longListItems
-      }
-    })
+        items: longListItems,
+      },
+    });
     before(() => {
-      component = mountTestRender(
-        <WrappedItemsContainer />
-        , { store, childContextTypes: { router: PropTypes.object } });
-    })
+      component = mountTestRender(<WrappedItemsContainer />, {
+        store,
+        childContextTypes: { router: PropTypes.object },
+      });
+    });
     after(() => {
-      component.unmount()
-    })
-    it(`should have ${itemsListPageLimit} on the first page of the item table and ${longListItems.length - itemsListPageLimit} on the second`, () => {
-      const container = component.find('ItemsContainer').instance()
-      let items = component.find('ItemTableRow')
-      expect(items.length).to.equal(itemsListPageLimit)
-      container.updatePage(2, 'Next')
-      component.setProps()
-      items = component.find('ItemTableRow')
-      expect(items.length).to.equal(longListItems.length - itemsListPageLimit)
+      component.unmount();
+    });
+    it(`should have ${itemsListPageLimit} on the first page of the item table and ${
+      longListItems.length - itemsListPageLimit
+    } on the second`, () => {
+      const container = component.find('ItemsContainer').instance();
+      let items = component.find('ItemTableRow');
+      expect(items.length).to.equal(itemsListPageLimit);
+      container.updatePage(2, 'Next');
+      component.setProps();
+      items = component.find('ItemTableRow');
+      expect(items.length).to.equal(longListItems.length - itemsListPageLimit);
     });
   });
 
@@ -280,7 +444,12 @@ describe('ItemsContainer', () => {
     let component;
     before(() => {
       component = shallow(
-        <ItemsContainer items={twentyItems} shortenItems={false} page="4" bib={testBib} />,
+        <ItemsContainer
+          items={twentyItems}
+          shortenItems={false}
+          page='4'
+          bib={testBib}
+        />,
         { context },
       );
     });

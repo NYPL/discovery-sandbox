@@ -20,7 +20,9 @@ describe('server', () => {
     // `DocumentTitle.rewind()` throws an error.
     // The important thing is that our template uses the value that
     // `DocumentTitle.rewind()` returns, so let's stub it:
-    sandbox.stub(DocumentTitle, 'rewind').callsFake(() => appConfig.displayTitle);
+    sandbox
+      .stub(DocumentTitle, 'rewind')
+      .callsFake(() => appConfig.displayTitle);
   });
 
   after(() => {
@@ -30,31 +32,39 @@ describe('server', () => {
   describe('Base Url Paths', () => {
     it('redirects to baseurl', (done) => {
       request(app)
-      .get('/')
-      .expect('Content-Type', /text/)
-      .expect('Location', `${appConfig.baseUrl}/`)
-      .expect(302)
+        .get('/')
+        .expect('Content-Type', /text/)
+        .expect('Location', `${appConfig.baseUrl}/`)
+        .expect(302)
         .then(() => {
-        done();
-      })
-      .catch(err => done(err));
-      ;
+          done();
+        })
+        .catch((err) => done(err));
     });
-    
+
     it('serves meta tags with DISPLAY_TITLE', (done) => {
       request(app)
-      .get(`${appConfig.baseUrl}/`)
-      .expect(200)
-      .then((response) => {
-        expect(response.text).to.include(`<title>${appConfig.displayTitle}</title>`)
-        expect(response.text).to.include(`<meta property="og:title" content="${appConfig.displayTitle}">`)
-        expect(response.text).to.include(`<meta property="og:site_name" content="${appConfig.displayTitle}">`)
-        expect(response.text).to.include(`<meta name="twitter:title" content="${appConfig.displayTitle}">`)
-        expect(response.text).to.include(`<meta property="og:url" content="https://www.nypl.org${appConfig.baseUrl}">`)
-        done();
-      })
-      .catch(err => done(err));
-      ;
+        .get(`${appConfig.baseUrl}/`)
+        .expect(200)
+        .then((response) => {
+          expect(response.text).to.include(
+            `<title>${appConfig.displayTitle}</title>`,
+          );
+          expect(response.text).to.include(
+            `<meta property="og:title" content="${appConfig.displayTitle}">`,
+          );
+          expect(response.text).to.include(
+            `<meta property="og:site_name" content="${appConfig.displayTitle}">`,
+          );
+          expect(response.text).to.include(
+            `<meta name="twitter:title" content="${appConfig.displayTitle}">`,
+          );
+          expect(response.text).to.include(
+            `<meta property="og:url" content="https://www.nypl.org${appConfig.baseUrl}">`,
+          );
+          done();
+        })
+        .catch((err) => done(err));
     });
-  })
+  });
 });

@@ -26,13 +26,14 @@ class ElectronicDeliveryForm extends React.Component {
             startPage: '',
             endPage: '',
           },
-      error: !_isEmpty(this.props.error) ? this.props.error :
-        {
-          emailAddress: '',
-          chapterTitle: '',
-          startPage: '',
-          endPage: '',
-        },
+      error: !_isEmpty(this.props.error)
+        ? this.props.error
+        : {
+            emailAddress: '',
+            chapterTitle: '',
+            startPage: '',
+            endPage: '',
+          },
     };
 
     this.submit = this.submit.bind(this);
@@ -118,239 +119,271 @@ class ElectronicDeliveryForm extends React.Component {
     // errors passed down.
     return (
       <form
-        id="place-edd-hold-form"
-        className="place-hold-form form electronic-delivery-form"
+        id='place-edd-hold-form'
+        className='place-hold-form form electronic-delivery-form'
         action={`${appConfig.baseUrl}/edd`}
-        method="POST"
-        onSubmit={e => this.submit(e)}
+        method='POST'
+        onSubmit={(e) => this.submit(e)}
       >
-        <fieldset className="nypl-fieldset">
+        <fieldset className='nypl-fieldset'>
           <legend>
             <h3>Required Information</h3>
           </legend>
-          <div className="nypl-row">
-            <div className="nypl-column-half">
+          <div className='nypl-row'>
+            <div className='nypl-column-half'>
               <div className={`nypl-text-field ${errorClass.emailAddress}`}>
-                <label htmlFor="emailAddress" id="emailAddress-label">Email Address
-                  <span className="nypl-required-field">&nbsp;Required</span>
+                <label htmlFor='emailAddress' id='emailAddress-label'>
+                  Email Address
+                  <span className='nypl-required-field'>&nbsp;Required</span>
                 </label>
                 <input
-                  id="emailAddress"
-                  type="text"
-                  aria-labelledby="emailAddress-label emailAddress-status"
-                  aria-required="true"
-                  name="emailAddress"
+                  id='emailAddress'
+                  type='text'
+                  aria-labelledby='emailAddress-label emailAddress-status'
+                  aria-required='true'
+                  name='emailAddress'
                   value={this.state.form.emailAddress}
-                  onChange={e => this.handleUpdate(e, 'emailAddress')}
+                  onChange={(e) => this.handleUpdate(e, 'emailAddress')}
                 />
                 <span
-                  className="nypl-field-status"
-                  id="emailAddress-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
+                  className='nypl-field-status'
+                  id='emailAddress-status'
+                  aria-live='assertive'
+                  aria-atomic='true'
                 >
-                  {
-                    errorClass.emailAddress ? this.state.error.emailAddress :
-                    'Your request will be delivered to the email address you enter above.'
-                  }
+                  {errorClass.emailAddress
+                    ? this.state.error.emailAddress
+                    : 'Your request will be delivered to the email address you enter above.'}
                 </span>
               </div>
               <span>
-                You may request one chapter, one article, around 10% of work, or 50 pages for public domain works.
-              </span><br />
+                You may request one chapter, one article, around 10% of work, or
+                50 pages for public domain works.
+              </span>
+              <br />
               <span>
-                <a href={aboutUrl}>
-                  Read more about this service
-                </a>.
+                <a href={aboutUrl}>Read more about this service</a>.
               </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
-                <label htmlFor="startPage" id="startPage-label">Starting Page Number
-                  <span className="nypl-required-field">&nbsp;Required</span>
+                <label htmlFor='startPage' id='startPage-label'>
+                  Starting Page Number
+                  <span className='nypl-required-field'>&nbsp;Required</span>
                 </label>
                 <input
-                  id="startPage"
-                  type="text"
-                  aria-required="true"
-                  className="form-text"
-                  aria-labelledby="startPage-label startPage-status"
-                  name="startPage"
+                  id='startPage'
+                  type='text'
+                  aria-required='true'
+                  className='form-text'
+                  aria-labelledby='startPage-label startPage-status'
+                  name='startPage'
                   value={this.state.form.startPage}
-                  onChange={e => this.handleUpdate(e, 'startPage')}
+                  onChange={(e) => this.handleUpdate(e, 'startPage')}
                 />
                 <span
-                  className="nypl-field-status"
-                  id="startPage-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
+                  className='nypl-field-status'
+                  id='startPage-status'
+                  aria-live='assertive'
+                  aria-atomic='true'
                 >
                   <span>
-                    {
-                      errorClass.startPage ?
-                      this.state.error.startPage : 'Enter the first page of your selection.'
-                    }
+                    {errorClass.startPage
+                      ? this.state.error.startPage
+                      : 'Enter the first page of your selection.'}
                   </span>
                 </span>
               </div>
 
               <div className={`nypl-text-field ${errorClass.endPage}`}>
-                <label htmlFor="endPage" id="endPage-label">Ending Page Number
-                  <span className="nypl-required-field">&nbsp;Required</span>
+                <label htmlFor='endPage' id='endPage-label'>
+                  Ending Page Number
+                  <span className='nypl-required-field'>&nbsp;Required</span>
                 </label>
                 <input
-                  id="endPage"
-                  type="text"
-                  aria-required="true"
-                  className="form-text"
-                  aria-labelledby="endPage-label endPage-status"
-                  name="endPage"
+                  id='endPage'
+                  type='text'
+                  aria-required='true'
+                  className='form-text'
+                  aria-labelledby='endPage-label endPage-status'
+                  name='endPage'
                   value={this.state.form.endPage}
-                  onChange={e => this.handleUpdate(e, 'endPage')}
+                  onChange={(e) => this.handleUpdate(e, 'endPage')}
                 />
                 <span
-                  className="nypl-field-status"
-                  id="endPage-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
+                  className='nypl-field-status'
+                  id='endPage-status'
+                  aria-live='assertive'
+                  aria-atomic='true'
                 >
                   <span>
-                    {
-                      errorClass.endPage ?
-                      this.state.error.endPage : 'Enter the last page of your selection.'
-                    }
+                    {errorClass.endPage
+                      ? this.state.error.endPage
+                      : 'Enter the last page of your selection.'}
                   </span>
                 </span>
               </div>
 
               <div className={`nypl-text-field ${errorClass.chapterTitle}`}>
-                <label htmlFor="chapterTitle" id="chapterTitle-label">Chapter/Article Title
-                  <span className="nypl-required-field">&nbsp;Required</span>
+                <label htmlFor='chapterTitle' id='chapterTitle-label'>
+                  Chapter/Article Title
+                  <span className='nypl-required-field'>&nbsp;Required</span>
                 </label>
                 <input
-                  id="chapterTitle"
-                  type="text"
-                  aria-required="true"
-                  aria-labelledby="chapterTitle-label chapterTitle-status"
-                  name="chapterTitle"
+                  id='chapterTitle'
+                  type='text'
+                  aria-required='true'
+                  aria-labelledby='chapterTitle-label chapterTitle-status'
+                  name='chapterTitle'
                   value={this.state.form.chapterTitle}
-                  onChange={e => this.handleUpdate(e, 'chapterTitle')}
+                  onChange={(e) => this.handleUpdate(e, 'chapterTitle')}
                 />
                 <span
-                  className="nypl-field-status"
-                  id="chapterTitle-status"
-                  aria-live="assertive"
-                  aria-atomic="true"
+                  className='nypl-field-status'
+                  id='chapterTitle-status'
+                  aria-live='assertive'
+                  aria-atomic='true'
                 >
-                  {
-                    errorClass.chapterTitle ? this.state.error.chapterTitle : ''
-                  }
+                  {errorClass.chapterTitle ? this.state.error.chapterTitle : ''}
                 </span>
               </div>
             </div>
           </div>
         </fieldset>
-        <fieldset className="nypl-fieldset">
+        <fieldset className='nypl-fieldset'>
           <legend>
             <h3>Additional Details</h3>
           </legend>
-          <div className="nypl-row">
-            <div className="nypl-column-half">
+          <div className='nypl-row'>
+            <div className='nypl-column-half'>
               <span>
-                Feel free to provide more information that could be helpful in processing your
-                request. (Additional details are optional and not required.)
+                Feel free to provide more information that could be helpful in
+                processing your request. (Additional details are optional and
+                not required.)
               </span>
-              <div className="nypl-text-field">
-                <label htmlFor="author" id="author-label">&nbsp;Author</label>
+              <div className='nypl-text-field'>
+                <label htmlFor='author' id='author-label'>
+                  &nbsp;Author
+                </label>
                 <input
-                  id="author"
-                  type="text"
-                  aria-labelledby="author-label"
-                  name="author"
+                  id='author'
+                  type='text'
+                  aria-labelledby='author-label'
+                  name='author'
                   value={this.state.form.author}
-                  onChange={e => this.handleUpdate(e, 'author')}
+                  onChange={(e) => this.handleUpdate(e, 'author')}
                 />
               </div>
 
-              <div className="nypl-text-field">
-                <label htmlFor="date" id="date-label">Date Published</label>
+              <div className='nypl-text-field'>
+                <label htmlFor='date' id='date-label'>
+                  Date Published
+                </label>
                 <input
-                  id="date"
-                  type="text"
-                  aria-labelledby="date-label"
-                  name="date"
+                  id='date'
+                  type='text'
+                  aria-labelledby='date-label'
+                  name='date'
                   value={this.state.form.date}
-                  onChange={e => this.handleUpdate(e, 'date')}
+                  onChange={(e) => this.handleUpdate(e, 'date')}
                 />
               </div>
 
-              <div className="nypl-text-field">
-                <label htmlFor="volume" id="volume-label">Volume</label>
+              <div className='nypl-text-field'>
+                <label htmlFor='volume' id='volume-label'>
+                  Volume
+                </label>
                 <input
-                  id="volume"
-                  type="text"
-                  aria-labelledby="volume-label"
-                  name="volume"
+                  id='volume'
+                  type='text'
+                  aria-labelledby='volume-label'
+                  name='volume'
                   value={this.state.form.volume}
-                  onChange={e => this.handleUpdate(e, 'volume')}
+                  onChange={(e) => this.handleUpdate(e, 'volume')}
                 />
               </div>
 
-              <div className="nypl-text-field">
-                <label htmlFor="issue" id="issue-label">Issue</label>
+              <div className='nypl-text-field'>
+                <label htmlFor='issue' id='issue-label'>
+                  Issue
+                </label>
                 <input
-                  id="issue"
-                  type="text"
-                  aria-labelledby="issue-label"
-                  name="issue"
+                  id='issue'
+                  type='text'
+                  aria-labelledby='issue-label'
+                  name='issue'
                   value={this.state.form.issue}
-                  onChange={e => this.handleUpdate(e, 'issue')}
+                  onChange={(e) => this.handleUpdate(e, 'issue')}
                 />
               </div>
-              <div className="nypl-text-area-with-label">
-                <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
+              <div className='nypl-text-area-with-label'>
+                <label htmlFor='requestNotes' id='requestNotes-label'>
+                  Notes
+                </label>
                 <p>
-                  Provide additional instructions here. For more information on placing an electronic delivery request, please see <span><a href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</a>.</span>
+                  Provide additional instructions here. For more information on
+                  placing an electronic delivery request, please see{' '}
+                  <span>
+                    <a href='https://www.nypl.org/help/request-research-materials'>
+                      Requesting Research Materials
+                    </a>
+                    .
+                  </span>
                 </p>
                 <textarea
-                  className="nypl-text-area"
-                  id="requestNotes"
-                  type="text"
-                  aria-labelledby="requestNotes-label"
-                  name="requestNotes"
+                  className='nypl-text-area'
+                  id='requestNotes'
+                  type='text'
+                  aria-labelledby='requestNotes-label'
+                  name='requestNotes'
                   value={this.state.form.requestNotes}
-                  onChange={e => this.handleUpdate(e, 'requestNotes')}
+                  onChange={(e) => this.handleUpdate(e, 'requestNotes')}
                 />
               </div>
-              <div className="edd-copyright-notice">
+              <div className='edd-copyright-notice'>
                 <h3>Notice Concerning Copyright Restrictions</h3>
                 <p>
-                  The copyright law of the United States (Title 17, United States Code) governs the making of photocopies or other reproductions of copyrighted material.
+                  The copyright law of the United States (Title 17, United
+                  States Code) governs the making of photocopies or other
+                  reproductions of copyrighted material.
                 </p>
                 <p>
-                  Under certain conditions specified in the law, libraries and archives are authorized to furnish a photocopy or other reproduction. One of these specific conditions is that the photocopy or reproduction is not to be “used for any purpose other than private study, scholarship, or research.” If a user makes a request for, or later uses, a photocopy or reproduction for purposes in excess of “fair use,” that user may be liable for copyright infringement.
+                  Under certain conditions specified in the law, libraries and
+                  archives are authorized to furnish a photocopy or other
+                  reproduction. One of these specific conditions is that the
+                  photocopy or reproduction is not to be “used for any purpose
+                  other than private study, scholarship, or research.” If a user
+                  makes a request for, or later uses, a photocopy or
+                  reproduction for purposes in excess of “fair use,” that user
+                  may be liable for copyright infringement.
                 </p>
                 <p>
-                  This institution reserves the right to refuse to accept a copying order if, in its judgment, fulfillment of the order would involve violation of copyright law.
+                  This institution reserves the right to refuse to accept a
+                  copying order if, in its judgment, fulfillment of the order
+                  would involve violation of copyright law.
                 </p>
               </div>
             </div>
           </div>
         </fieldset>
 
-        <input type="hidden" name="bibId" value={this.props.bibId} />
-        <input type="hidden" name="itemId" value={this.props.itemId} />
-        <input type="hidden" name="itemSource" value={this.props.itemSource} />
+        <input type='hidden' name='bibId' value={this.props.bibId} />
+        <input type='hidden' name='itemId' value={this.props.itemId} />
+        <input type='hidden' name='itemSource' value={this.props.itemSource} />
         <input
-          type="hidden"
-          name="searchKeywords"
+          type='hidden'
+          name='searchKeywords'
           value={this.props.searchKeywords}
         />
-        <input type="hidden" name="serverRedirect" value={this.props.serverRedirect} />
-        <input type="hidden" name="fromUrl" value={this.props.fromUrl} />
-        <input type="hidden" name="pickupLocation" value="edd" />
+        <input
+          type='hidden'
+          name='serverRedirect'
+          value={this.props.serverRedirect}
+        />
+        <input type='hidden' name='fromUrl' value={this.props.fromUrl} />
+        <input type='hidden' name='pickupLocation' value='edd' />
 
         <button
-          type="submit"
-          className="nypl-request-button"
+          type='submit'
+          className='nypl-request-button'
           onClick={this.submit}
           onSubmit={this.submit}
         >

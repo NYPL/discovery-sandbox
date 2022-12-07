@@ -82,9 +82,14 @@ const BibDetails = (props) => {
             fieldLabel,
           );
 
-          const direction = (liInner.props && liInner.props.dir) ? liInner.props.dir : null;
+          const direction =
+            liInner.props && liInner.props.dir ? liInner.props.dir : null;
           const listElement = (
-            <li key={`filter${fieldValue}-${index}`} dir={direction} className={direction}>
+            <li
+              key={`filter${fieldValue}-${index}`}
+              dir={direction}
+              className={direction}
+            >
               {liInner}
             </li>
           );
@@ -135,7 +140,7 @@ const BibDetails = (props) => {
     }
 
     if (fieldSelfLinkable) {
-      const linkText = bibValue.prefLabel || bibValue.label || bibValue.url
+      const linkText = bibValue.prefLabel || bibValue.label || bibValue.url;
       return (
         <a
           href={bibValue.url}
@@ -152,7 +157,9 @@ const BibDetails = (props) => {
       );
     }
 
-    return <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>;
+    return (
+      <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>
+    );
   };
 
   /**
@@ -217,16 +224,14 @@ const BibDetails = (props) => {
       }
 
       // For each group of notes, add them to the definition list individually.
-      if (
-        fieldLabel === 'Notes' &&
-        !_isEmpty(bib.notesGroupedByNoteType)
-      ) {
+      if (fieldLabel === 'Notes' && !_isEmpty(bib.notesGroupedByNoteType)) {
         const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
             <ul>
               {notesGroupedByNoteType[noteType].map((note, index) => (
-                <li key={index}
+                <li
+                  key={index}
                   dir={stringDirection(note.prefLabel, useParallels)}
                   className={stringDirection(note.prefLabel, useParallels)}
                 >

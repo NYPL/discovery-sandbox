@@ -7,21 +7,21 @@
 /*
 App-specific utilities and defaults
 */
-@import "utils/colors.scss";
-@import "utils/variables.scss";
-@import "utils/mixins.scss";
-@import "utils/utils.scss";
-@import "utils/base.scss";
+@import 'utils/colors.scss';
+@import 'utils/variables.scss';
+@import 'utils/mixins.scss';
+@import 'utils/utils.scss';
+@import 'utils/base.scss';
 
 /*
 Import style rules from NYPL React module components
 */
-@import "~@nypl/dgx-header-component/dist/styles/main";
-@import "~@nypl/dgx-react-footer/dist/styles/styles";
+@import '~@nypl/dgx-header-component/dist/styles/main';
+@import '~@nypl/dgx-react-footer/dist/styles/styles';
 
-@import "components/**/*.scss";
+@import 'components/**/*.scss';
 
-@import "style-v2.scss";
+@import 'style-v2.scss';
 
 // From older DS version
 .main {
@@ -75,12 +75,12 @@ Import style rules from NYPL React module components
 }
 
 button,
-html input[type=button],
-input[type=reset],
-input[type=submit] {
+html input[type='button'],
+input[type='reset'],
+input[type='submit'] {
   -moz-appearance: button;
 }
-input[type=submit]:focus {
+input[type='submit']:focus {
   outline-style: solid;
   outline-width: 3px;
 }
@@ -113,7 +113,7 @@ input[type=submit]:focus {
 
   &::after,
   &::before {
-    content: "";
+    content: '';
     display: table;
   }
 }
@@ -129,15 +129,16 @@ select {
   thead {
     text-align: left;
   }
-  th, td {
+  th,
+  td {
     overflow: inherit;
     padding-right: 15px;
     width: 15%;
     &.status-links {
       width: 30%;
       padding-top: var(--nypl-space-s);
-      &.mobile{
-        width:60%
+      &.mobile {
+        width: 60%;
       }
     }
 
@@ -149,7 +150,7 @@ select {
   td {
     vertical-align: top;
     padding-top: 0.25em;
-    padding-bottom: .5em;
+    padding-bottom: 0.5em;
   }
 }
 
@@ -157,7 +158,7 @@ select {
   display: inline-block;
   margin-right: 1rem;
   color: $darkColorBoxShadow;
-  font-size: "";
+  font-size: '';
   font-weight: 400;
 }
 
@@ -217,7 +218,6 @@ select {
     }
   }
 }
-
 
 .research-modal__content {
   align-items: flex-start;

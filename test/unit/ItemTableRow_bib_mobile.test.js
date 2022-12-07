@@ -9,18 +9,19 @@ import item from '../fixtures/libraryItems';
 import ItemTableRow from '../../src/app/components/Item/ItemTableRow';
 
 describe('ItemTableRow - mobile bib page view', () => {
-
   describe('Rendered row', () => {
     describe('Missing data item', () => {
       const data = item.missingData;
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={false} isBibPage={true} item={data} />);
+        component = mount(
+          <ItemTableRow isDesktop={false} isBibPage={true} item={data} />,
+        );
       });
 
       it('should return a <tr>', () => {
-        const tr = component.find('tr')
+        const tr = component.find('tr');
         expect(tr.prop('className')).to.equal('available');
       });
 
@@ -29,7 +30,7 @@ describe('ItemTableRow - mobile bib page view', () => {
       });
 
       it('should not have a format as the third <td> column data', () => {
-        expect(component.html()).to.not.include('format')
+        expect(component.html()).to.not.include('format');
       });
 
       it('should not have an access message as the second <td> column data', () => {
@@ -37,7 +38,9 @@ describe('ItemTableRow - mobile bib page view', () => {
       });
 
       it('should have a status as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.include('Available - Can be used on site');
+        expect(component.find('td').at(0).text()).to.include(
+          'Available - Can be used on site',
+        );
       });
     });
 
@@ -46,11 +49,18 @@ describe('ItemTableRow - mobile bib page view', () => {
       let component;
 
       before(() => {
-        component = mount(<ItemTableRow isDesktop={false} isBibPage={true} item={data} includeVolColumn={true} />);
+        component = mount(
+          <ItemTableRow
+            isDesktop={false}
+            isBibPage={true}
+            item={data}
+            includeVolColumn={true}
+          />,
+        );
       });
 
       it('should return a <tr>', () => {
-        const tr = component.find('tr')
+        const tr = component.find('tr');
         expect(tr.prop('className')).to.equal('available');
       });
 
@@ -59,7 +69,9 @@ describe('ItemTableRow - mobile bib page view', () => {
       });
 
       it('should have status links as the first <td> column data', () => {
-        expect(component.find('td').at(0).text()).to.include('Available - Can be used on site');
+        expect(component.find('td').at(0).text()).to.include(
+          'Available - Can be used on site',
+        );
       });
 
       it('should have a Vol/Date as the second <td> column data', () => {
@@ -71,4 +83,4 @@ describe('ItemTableRow - mobile bib page view', () => {
       });
     });
   });
-})
+});
