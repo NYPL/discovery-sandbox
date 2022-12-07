@@ -1,2 +1,5 @@
-sampleApiResponseStructure.json
 test/fixtures/*
+*.json
+*.md
+*.yml
+webpack*
