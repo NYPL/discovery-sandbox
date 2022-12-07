@@ -146,24 +146,18 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        {
-          items.length && !isElectronicResources ?
-            (
-              <section style={{ marginTop: '20px' }} id="items-table">
-                <ItemsContainer
-                  key={bibId}
-                  shortenItems={location.pathname.indexOf('all') !== -1}
-                  items={items}
-                  bibId={bibId}
-                  itemPage={location.search}
-                  searchKeywords={searchKeywords}
-                  holdings={newBibModel.holdings}
-                  itemsAggregations={itemsAggregations}
-                />
-              </section>
-            ) :
-            null
-        }
+        <section style={{ marginTop: '20px' }} id="items-table">
+          <ItemsContainer
+            key={bibId}
+            shortenItems={location.pathname.indexOf('all') !== -1}
+            items={items}
+            bibId={bibId}
+            itemPage={location.search}
+            searchKeywords={searchKeywords}
+            holdings={newBibModel.holdings}
+            itemsAggregations={itemsAggregations}
+          />
+        </section>
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>

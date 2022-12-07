@@ -8,11 +8,20 @@ import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
-const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
+const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr = "") => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
+  const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
+  console.log("filterItemsStr", filterItemsStr)
+  console.log(`query call: ${`/discovery/resources/${query}${queryForItemPage}${itemQuery}`}`);
+  return nyplApiClient()
+    .then(client =>
+      client.get(
+        `/discovery/resources/${query}${queryForItemPage}${itemQuery}`,
+        requestOptions
+      )
+    );
 };
 
 const shepApiCall = (bibId) => {
@@ -150,8 +159,9 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
+  console.log("reqOptions.filterItemsStr", reqOptions.filterItemsStr)
   return Promise.all([
-    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
+    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:
     isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`, options.features) : null,
   ])
@@ -222,8 +232,14 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
+  const query = req.query;
+  let filterItemsStr = '';
+  Object.keys(query).forEach((key) => {
+    filterItemsStr += `item_${key}=${query[key]}&`;
+  });
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
+  console.log('filterItemsStr: ', filterItemsStr)
 
   return fetchBib(
     bibId,
@@ -233,6 +249,7 @@ function bibSearch (req, res, resolve) {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
       itemFrom,
+      filterItemsStr,
     },
     res,
   );

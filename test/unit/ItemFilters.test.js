@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 
 import ItemFilters from './../../src/app/components/Item/ItemFilters';
 import item from '../fixtures/libraryItems';
@@ -20,20 +20,6 @@ describe('ItemFilters', () => {
   const locationFilters = itemsAggregations[0];
   const statusFilters = itemsAggregations[2];
 
-  describe('default rendering', () => {
-    let component;
-    it('should not render without an `items` prop', () => {
-      component = shallow(<ItemFilters />, { context });
-      expect(component.type()).to.equal(null);
-    });
-  });
-  describe('no `items`', () => {
-    let component;
-    it('should not render with empty `items` prop', () => {
-      component = shallow(<ItemFilters items={[]} />, { context });
-      expect(component.type()).to.equal(null);
-    });
-  });
   describe('with valid `items`, no filters', () => {
     let component;
     let itemFilters;

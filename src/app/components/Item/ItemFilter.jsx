@@ -86,11 +86,13 @@ const ItemFilter = ({
   );
   const open = mobile ? mobileIsOpen : isOpen;
   const clear = () => {
+    const clear = true;
     setSelectionMade(true);
     setSelectedFilters(prevSelectedFilters => ({
       ...prevSelectedFilters,
       [filter]: [],
     }));
+    submitFilterSelections && submitFilterSelections(clear);
   };
 
   return (

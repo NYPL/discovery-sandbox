@@ -2,7 +2,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
@@ -103,20 +103,11 @@ const testBib = {
   numItems: 0,
 };
 describe('ItemsContainer', () => {
-  describe('Default rendering', () => {
-    it('should return null with no props passed', () => {
-      const component = shallow(<ItemsContainer bib={testBib} />, {
-        disableLifecycleMethods: true,
-        context,
-      });
-      expect(component.type()).to.equal(null);
-    });
-  });
-
   describe('Basic rendering', () => {
     let component;
 
     before(() => {
+      console.log("okaosdfkadofs", items.length);
       component = shallow(
         <ItemsContainer
           items={items}
@@ -151,7 +142,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} bib={testBib} />, { context });
+      component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
     });
 
     it('should render an ItemTable component', () => {
@@ -199,7 +190,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(
+      component = mount(
         <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
         { context },
       );
