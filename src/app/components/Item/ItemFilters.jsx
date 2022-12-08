@@ -24,6 +24,8 @@ const ItemFilters = (
     status: query.status || [],
   };
   const [openFilter, setOpenFilter] = useState('none');
+  // The "year" filter is not used for the `ItemFilter` dropdown component
+  // and must be handled separately in the `SearchBar` component.
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   // For every item aggregation, go through every filter in its `values` array
@@ -41,6 +43,9 @@ const ItemFilters = (
     };
   }, {});
 
+  /**
+   * When new filters are selected or unselected, fetch new items.
+   */
   const getNewBib = (clear = false) => {
     const baseUrl = appConfig.baseUrl;
     let queryParams = [];
@@ -64,6 +69,7 @@ const ItemFilters = (
           }
         }
       });
+      // The "year" filter is stored separately from the other filters.
       if (selectedYear) {
         queryParams.push(`date=${selectedYear}`);
       }
@@ -73,6 +79,7 @@ const ItemFilters = (
       baseUrl,
       `${baseUrl}/api`,
     )}${queryParams.length ? `?${queryParams.join('&')}` : ''}`;
+    // Make the API call and let redux know.
     ajaxCall(
       bibApi,
       (resp) => {

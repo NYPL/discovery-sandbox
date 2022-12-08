@@ -5,6 +5,9 @@ import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
 
+/**
+ * This is to better structure the data for the checkboxes.
+ */
 const updateOptions = options =>
   options.map(option => ({
     id: option.label,
@@ -17,6 +20,9 @@ const initialFiltersObj = {
   year: [],
 };
 
+/**
+ * The individual filter dropdown component.
+ */
 const ItemFilter = ({
   filter,
   options,
@@ -33,6 +39,10 @@ const ItemFilter = ({
 
   if (!options || !filter) return null;
 
+  /**
+   * When a filter is selected, let the parent know through
+   * the `setSelectedFilters` function.
+   */
   const selectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
@@ -47,6 +57,10 @@ const ItemFilter = ({
     });
   };
 
+  /**
+   * When a filter is deselected, let the parent know through
+   * the `setSelectedFilters` function.
+   */   
   const deselectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
@@ -58,6 +72,9 @@ const ItemFilter = ({
     });
   };
 
+  /**
+   * When a checkbox is clicked, check if it is selected or not.
+   */
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
     const currentSelection = selectedFilters[filter];
@@ -68,23 +85,10 @@ const ItemFilter = ({
     }
   };
 
-  const isSelected = (option) =>
-    isOptionSelected(selectedFilters[filter], option.id);
-
-  const updatedOptions = updateOptions(options);
-  const determineNumOfSelections = () => {
-    const thisFilterSelections = initialFilters[filter];
-    const numSelection = thisFilterSelections.length === 0 ? '' :
-      typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
-
-    return numSelection ? ` (${numSelection})` : null;
-  };
-  const numOfSelections = determineNumOfSelections();
-
-  const clickHandler = () => (
-    mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(filter)
-  );
-  const open = mobile ? mobileIsOpen : isOpen;
+  /**
+   * Clear all the selections for the filter and submit to
+   * get the new results.
+   */
   const clear = () => {
     const clear = true;
     setSelectionMade(true);
@@ -94,6 +98,22 @@ const ItemFilter = ({
     }));
     submitFilterSelections && submitFilterSelections(clear);
   };
+
+  const isSelected = (option) =>
+    isOptionSelected(selectedFilters[filter], option.id);
+  const updatedOptions = updateOptions(options);
+  const determineNumOfSelections = () => {
+    const thisFilterSelections = initialFilters[filter];
+    const numSelection = thisFilterSelections.length === 0 ? '' :
+      typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
+
+    return numSelection ? ` (${numSelection})` : null;
+  };
+  const numOfSelections = determineNumOfSelections();
+  const clickHandler = () => (
+    mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(filter)
+  );
+  const open = mobile ? mobileIsOpen : isOpen;
 
   return (
     <FocusTrap

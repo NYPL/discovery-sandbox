@@ -75,7 +75,7 @@
 
 
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@include media($nypl-breakpoint-medium) {
+@media (max-width: $nypl-breakpoint-medium) {
   .item-filter {
     display: block;
     margin: 10px 0;

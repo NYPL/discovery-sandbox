@@ -53,6 +53,8 @@ class ItemsContainer extends React.Component {
     });
   }
 
+  // Well, since we get updated items from the API, we need to
+  // update the internal state.
   componentDidUpdate(prevProps) {
     if (prevProps.items !== this.props.items) {
       this.setState(prevState => ({
