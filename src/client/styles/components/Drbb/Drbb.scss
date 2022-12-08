@@ -21,10 +21,6 @@
   font-size: 12px;
   display: block;
   font-weight: 450;
-
-  a {
-    display: contents;
-  }
 }
 
 .drbb-result {
@@ -33,6 +29,10 @@
   font-size: 14px;
   margin: 20px 0;
   padding: 5% 7%;
+}
+
+drbb-result-title{
+  display: block
 }
 
 .drbb-list {

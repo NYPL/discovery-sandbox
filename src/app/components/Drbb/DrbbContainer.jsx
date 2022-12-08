@@ -1,6 +1,5 @@
-import { Heading } from '@nypl/design-system-react-components';
+import { Heading, Link } from '@nypl/design-system-react-components';
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -23,21 +22,23 @@ const DrbbContainer = ({ drbbResults }) => {
         </ul>,
         <Link
           className="drbb-description drbb-frontend-link"
-          to={{
+          href={{
             pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
             search: researchNowQueryString,
           }}
           target="_blank"
           key="drbb-results-list-link"
         >
-          See {totalWorks.toLocaleString()} result{totalWorks === 1 ? '' : 's'} from Digital Research Books Beta
+          <>
+            See {totalWorks.toLocaleString()} result{totalWorks === 1 ? '' : 's'} from Digital Research Books Beta
+          </>
         </Link>]);
     }
 
     return (
       <Link
         className="drbb-description"
-        to={appConfig.drbbFrontEnd[appConfig.environment]}
+        href={appConfig.drbbFrontEnd[appConfig.environment]}
         target="_blank"
         key="drbb-link"
       >
@@ -62,15 +63,12 @@ const DrbbContainer = ({ drbbResults }) => {
       <p className="drbb-description">
         Digital books for research from multiple sources world wide-
         all free to read, download, and keep. No Library Card is Required.&nbsp;
-        <span>
-          <a
-            className="link"
-            target="_blank"
-            href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
-          >
+        <Link
+          target="_blank"
+          href={`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`}
+        >
           Read more about the project
-          </a>.
-        </span>
+        </Link>.
       </p>
       { content() }
     </div>
