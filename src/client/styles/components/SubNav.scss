@@ -1,5 +1,5 @@
 .sub-nav {
-  background-color: var(--nypl-colors-ui-black);
+  background-color: $black;
   padding-bottom: var(--nypl-space-xs);
   padding-top: var(--nypl-space-xs);
 
@@ -11,11 +11,11 @@
   &__link:link,
   &__link:visited,
   &__link:focus {
-    color: var(--nypl-colors-ui-white) !important;
+    color: $white !important;
     text-decoration: none;
   }
   &__link:hover {
-    color: var(--nypl-colors-ui-white) !important;
+    color: $white !important;
     text-decoration: underline;
   }
 
@@ -29,10 +29,10 @@
     padding: 0 var(--nypl-space-s);
     width: 100%;
 
-    color: var(--nypl-colors-ui-white);
+    color: $white;
   }
 
   .nypl--research & {
-    background-color: var(--nypl-colors-section-research-primary);
+    background-color: $researchPrimary;
   }
 }

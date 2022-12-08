@@ -1,45 +1,26 @@
-// Design System Research color
-$dsresearchprimary: #377f8b;
+// Recurring DS colors used throughout the app
+// assigned as SCSS variables.
 
-// semantic colors
-$subjectHeadingBackground: #edebe9;
+$black: var(--nypl-colors-ui-black);
+$white: var(--nypl-colors-ui-white);
 
-// Recurring colors throughout the app.
-// Some are only used once, some are only used in one file,
-// but they are all here for consistency.
+$borderDefault: var(--nypl-colors-ui-border-default);
+$bgDefault: var(--nypl-colors-ui-bg-default);
+$bgHover: var(--nypl-colors-ui-bg-hover);
 
-// mostly for borders
-$lightBorder: #d7d4d0;
-// for color and box-shadow
-$darkColorBoxShadow: #080807;
-// for background color
-$lightBackgroundColor: #F9F8F7;
-// dark text color
-$darkGrayTextColor: #776e64;
-// account page colors
-$accountBlue: #0576D3;
-$accountBGLight: #F5F5F5;
-$accountLightBorder: #C4C4C4;
-// blue color text
-$colorBlueText: #0071CE;
-// advance search aside color
-$advanceSearchColor: #A4241E;
-// advance search background color
-$advanceSearchBGColor: #F9F9F9;
-// bib page colors
-$bibTextColor: #54514a;
-$bibLinkColor: #3ab0df;
-$generalBlueColor: #1b7fa7;
-$generalDarkerBlueColor: #104d65;
-// feedback border
-$feedbackBorder: #E0E0E0;
-$generalHoverBlue: #176e91;
-$generalRedColor: #d0343a;
-$requiredRedColor: #aa272c;
-$loadingLayerBG: #eee;
-$notificationBG: #e6ecf0;
-$timedlogoutModalHR: #89969F;
-$previewComponentsTextColor: #31806a;
+$grayDark: var(--nypl-colors-ui-gray-dark);
+$grayMedium: var(--nypl-colors-ui-gray-medium);
+$grayLightCool: var(--nypl-colors-ui-gray-light-cool);
+$grayXLightCool: var(--nypl-colors-ui-gray-x-light-cool);
+$grayXXLightCool: var(--nypl-colors-ui-gray-xx-light-cool);
+$grayXLightWarm: var(--nypl-colors-ui-gray-x-light-warm);
 
-$border-color: darken($darkGrayTextColor, 40%);
-$results-list-item-button: $generalBlueColor;
+$linkPrimary: var(--nypl-colors-ui-link-primary);
+$linkSecondary: var(--nypl-colors-ui-link-secondary);
+
+$brandPrimary: var(--nypl-colors-brand-primary);
+$researchPrimary: var(--nypl-colors-section-research-primary);
+
+$succesPrimary: var(--nypl-colors-ui-success-primary);
+$errorPrimary: var(--nypl-colors-ui-error-primary);
+$warningPrimary: var(--nypl-colors-ui-warning-primary);

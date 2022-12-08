@@ -1,8 +1,6 @@
-@mixin media(
-  $max-width,
-  $min-width: false,
-  $ignore-for-ie: false) {
-  @media (max-width: $max-width) {
+// For all responsive designs, this is a mobile-first approach.
+@mixin media($min-width) {
+  @media (min-width: $min-width) {
     @content;
   }
 }
@@ -27,44 +25,6 @@
   width: 100%;
 }
 
-/* --- Media Query Generator ---
- * Reusable mixin used to generate
- * variations of media query properties.
- */
-@mixin generate-mq($args...) {
-  $media-type: 'only screen';
-  $media-type-key: 'media-type';
-  $args: keywords($args);
-  $expr: '';
-
-  @if map-has-key($args, $media-type-key) {
-    $media-type: map-get($args, $media-type-key);
-    $args: map-remove($args, $media-type-key);
-  }
-
-  @each $key, $value in $args {
-    @if $value {
-      $expr: "#{$expr} and (#{$key}: #{$value})";
-    }
-  }
-
-  @media #{$media-type} #{$expr} {
-    @content;
-  }
-}
-
-/* min-screen($min, $orientation)
- * $min - required
- * $orientation - optional
- * Ex #1: @include min-screen(768px, landscape) { ... }
- * Ex #2: @include min-screen(768px) { ... }
- */
-@mixin min-screen($min, $orientation: false) {
-  @include generate-mq($min-width: $min, $orientation: $orientation) {
-    @content;
-  }
-}
-
 // @mixin transition($params) {
 //   -moz-transition:    $params;
 //   -o-transition:      $params;
@@ -87,9 +47,9 @@
 }
 
 @mixin clear-filters-button {
-  border: 1px solid $generalRedColor;
-  color: $generalRedColor;
-  background: var(--nypl-colors-ui-white);
+  border: 1px solid $brandPrimary;
+  color: $brandPrimary;
+  background: $white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,16 +57,16 @@
   border-radius: 0.25rem;
 
   svg {
-    fill: $generalRedColor;
+    fill: $brandPrimary;
   }
 
   &:hover {
-    border: 1px solid var(--nypl-colors-ui-white);
-    color: var(--nypl-colors-ui-white);
-    background: $generalRedColor;
+    border: 1px solid $white;
+    color: $white;
+    background: $brandPrimary;
 
     svg {
-      fill: var(--nypl-colors-ui-white);
+      fill: $white;
     }
   }
 }

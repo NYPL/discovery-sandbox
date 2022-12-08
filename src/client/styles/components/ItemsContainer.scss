@@ -10,7 +10,7 @@
 
   .item-filter-button {
     color: black;
-    border: 1px solid var(--nypl-colors-ui-gray-medium);
+    border: 1px solid $grayMedium;
     justify-content: space-between;
     text-transform: capitalize;
     width: 100%;
@@ -28,7 +28,7 @@
     }
   }
 
-  @media (min-width: 600px) {
+  @include media($nypl-breakpoint-medium) {
     .item-filter-button {
       width: 90%;
 
@@ -60,9 +60,9 @@
 }
 
 .item-filter-content {
-  background-color: var(--nypl-colors-ui-white);
+  background-color: $white;
   border: 1px solid;
-  border-color: var(--nypl-colors-ui-gray-medium);
+  border-color: $grayMedium;
   position: absolute;
   width: 230px;
   z-index: 1;
@@ -74,7 +74,7 @@
 }
 
 div.item-table-filters {
-  background-color: var(--nypl-colors-ui-gray-x-light-cool);
+  background-color: $grayXLightCool;
   padding: 10px;
 }
 
@@ -113,13 +113,13 @@ button.item-table-filters {
 
   button {
     border: none;
-    color: $generalRedColor;
+    color: $brandPrimary;
     display: inline-block;
     padding-left: 0;
     padding-top: 0;
 
     &:hover {
-      color: $colorBlueText;
+      color: $linkPrimary;
     }
   }
 }
@@ -152,16 +152,15 @@ button.item-table-filters {
 }
 .nypl-results-item .nypl-basic-table#bib-item-table {
  thead > tr {
-    border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
+    border-bottom: 1px solid $grayLightCool;
 
     th {
       padding-top: 0;
-      // width: auto;
     }
   }
 
   tbody tr, tbody tr:last-child {
-    border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
+    border-bottom: 1px solid $grayLightCool;
   }
 }
 
@@ -170,7 +169,7 @@ button.item-table-filters {
 }
 
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@media (max-width: 600px) {
+@media (max-width: $nypl-breakpoint-medium) {
   .item-filter {
     display: block;
     margin: 10px 0;
