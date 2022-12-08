@@ -1,13 +1,15 @@
-$intermediate-breakpoint: 1120px;
-$mobile-breakpoint: 965px;
-$xtrasmall-breakpoint: 483px;
+// Reservoir DS breakpoint note. There are four SCSS variables for
+// breakpoint values imported from the DS `resources.scss` file:
+//  $nypl-breakpoint-small: 320px;
+//  $nypl-breakpoint-medium: 600px;
+//  $nypl-breakpoint-large: 960px;
+//  $nypl-breakpoint-xl: 1280px;
+
 $basefontraw: 16;
 $max-width-raw: 1315;
 $max-width: ($max-width-raw / $basefontraw) * 1rem; // in rems
 
-$tablet-portrait: 768px !default;
-
 // Subject Headings variables
-$subject-heading-table-header: rgb(224, 219, 214);
+$subject-heading-table-header: $bgHover;
 $emphasis-font-weight: 500;
-$table-row-border: 1px solid rgb(215, 210, 205);
+$table-row-border: 1px solid $borderDefault;

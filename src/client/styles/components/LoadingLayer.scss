@@ -9,7 +9,7 @@
     position: fixed;
     width: 100%;
     height: 100%;
-    background: $loadingLayerBG;
+    background: $bgDefault;
     opacity: .95;
   }
 
@@ -23,7 +23,7 @@
 
     &-loadingWord {
       text-transform: uppercase;
-      color: red;
+      color: $brandPrimary;
       display: block;
       margin: 15px;
       margin-bottom: 35px;
@@ -48,7 +48,7 @@
     width: 10px;
     height: 10px;
     margin: 0px 5px;
-    background: red;
+    background: $brandPrimary;
     border-radius: 50px;
     -webkit-animation: loadingDots 0.8s infinite alternate;
     -moz-animation: loadingDots 0.8s infinite alternate;

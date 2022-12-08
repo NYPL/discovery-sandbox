@@ -3,7 +3,7 @@
 
   .nypl-basic-table#bib-item-table {
     thead > tr {
-      border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
+      border-bottom: 1px solid $grayLightCool;
 
       th {
         padding-top: 0;
@@ -11,7 +11,7 @@
     }
 
     tbody tr, tbody tr:last-child {
-      border-bottom: 1px solid var(--nypl-colors-ui-gray-light-cool);
+      border-bottom: 1px solid $grayLightCool;
     }
   }
 }
@@ -24,11 +24,12 @@
 
   // For the "Clear all filters" button on /bib/x pages
   button {
-    color: $generalRedColor;
+    border: none;
+    color: $brandPrimary;
     display: inline-block;
 
     &:hover {
-      color: $colorBlueText;
+      color: $linkPrimary;
     }
   }
 }
@@ -37,72 +38,72 @@
   display: inline-flex;
 
   .dot1 {
-   animation: visibility 3s linear infinite;
+    animation: visibility 3s linear infinite;
   }
 
   @keyframes visibility {
-   0% {
-   opacity: 1;
-   }
-   65% {
-   opacity: 1;
-   }
-   66% {
-   opacity: 0;
-   }
-   100% {
-   opacity: 0;
-   }
+  0% {
+    opacity: 1;
   }
+  65% {
+    opacity: 1;
+  }
+  66% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
 
   .dot2 {
-   animation: visibility2 3s linear infinite;
+    animation: visibility2 3s linear infinite;
   }
 
   @keyframes visibility2 {
-   0% {
-    opacity: 0;
-   }
-   21% {
-    opacity: 0;
-   }
-   22% {
-    opacity: 1;
-   }
-   65% {
-    opacity: 1;
-   }
-   66% {
-    opacity: 0;
-   }
-   100% {
-    opacity: 0;
-   }
+    0% {
+      opacity: 0;
+    }
+    21% {
+      opacity: 0;
+    }
+    22% {
+      opacity: 1;
+    }
+    65% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 
   .dot3 {
-   animation: visibility3 3s linear infinite;
+    animation: visibility3 3s linear infinite;
   }
 
   @keyframes visibility3 {
-   0% {
-    opacity: 0;
-   }
-   43% {
-    opacity: 0;
-   }
-   44% {
-    opacity: 1;
-   }
-   65% {
-    opacity: 1;
-   }
-   66% {
-    opacity: 0;
-   }
-   100% {
-    opacity: 0;
-   }
+    0% {
+      opacity: 0;
+    }
+    43% {
+      opacity: 0;
+    }
+    44% {
+      opacity: 1;
+    }
+    65% {
+      opacity: 1;
+    }
+    66% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 0;
+    }
   }
 }
 

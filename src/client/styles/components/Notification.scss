@@ -1,15 +1,15 @@
 .research-alert {
-  background-color: $notificationBG;
+  background-color: $grayXLightCool;
   font-size: var(--nypl-fontSizes-1);
   margin: var(--nypl-space-m) 0;
   padding: var(--nypl-space-m) 4vw;
 
   a {
-    color: var(--nypl-colors-ui-link-primary);
+    color: $linkPrimary;
     display: inline;
 
     &:hover {
-      color: var(--nypl-colors-ui-link-secondary);
+      color: $linkSecondary;
     }
   }
 }

@@ -3,7 +3,7 @@ import appConfig from "@appConfig";
 // breakpoints ordered by `maxValue` ascending
 const breakpoints = [
   {
-    maxValue: 490,
+    maxValue: 320,
     media: 'mobile',
   },
   {
@@ -11,7 +11,7 @@ const breakpoints = [
     media: 'tabletPortrait',
   },
   {
-    maxValue: 870,
+    maxValue: 960,
     media: 'tablet',
   },
 ];

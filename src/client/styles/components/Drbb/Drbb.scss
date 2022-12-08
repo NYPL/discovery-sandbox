@@ -1,11 +1,12 @@
 .drbb-container {
-  border: 1px solid $lightBorder;
+  border: 1px solid $borderDefault;
   border-radius: 8px;
   float: right;
   margin: auto;
-  margin-left: 15px;
+  margin-left: 0;
+  margin-bottom: 20px;
   padding: 2.5%;
-  width: 30%;
+  width: 100%;
 
   .loadingLayer-texts-loadingWord {
     margin-bottom: unset;
@@ -28,11 +29,15 @@
 }
 
 .drbb-result {
-  background-color: $lightBackgroundColor;
+  background-color: $bgDefault;
   border-radius: 6px;
   font-size: 14px;
   margin: 20px 0;
   padding: 5% 7%;
+}
+
+.drbb-result-title{
+  display: block
 }
 
 .drbb-list {
@@ -46,10 +51,10 @@
 }
 
 a.drbb-read-online {
-  background-color: $results-list-item-button;
-  border: 0.08333rem solid $results-list-item-button;
+  background-color: $linkPrimary;
+  border: 0.08333rem solid $linkPrimary;
   border-radius: 0.13333rem;
-  color: var(--nypl-colors-ui-white);
+  color: $white;
   display: inline-block;
   font-size: 12px;
   font-weight: normal;
@@ -60,13 +65,13 @@ a.drbb-read-online {
 
   &:hover,
   &:focus {
-    color: $results-list-item-button;
-    background-color: var(--nypl-colors-ui-white);
+    color: $linkPrimary;
+    background-color: $white;
   }
 }
 
 a.drbb-download-pdf {
-  color: var(--nypl-colors-ui-black);
+  color: $black;
   fill: currentColor;
   padding: 2% 0;
   font-size: 0.8rem;
@@ -96,7 +101,7 @@ a.drbb-download-pdf {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: $lightBackgroundColor;
+  background-color: $bgDefault;
   border-radius: 4px;
 
   img {
@@ -116,10 +121,9 @@ a.drbb-download-pdf {
 .nypl-results-list.drbb-integration {
   box-sizing: border-box;
   display: inline-block;
-  padding-right: 10%;
-  width: 65%;
+  padding-right: 0;
+  width: 100%;
   list-style-type: none;
-
 }
 
 .nypl-select-field-results {
@@ -145,7 +149,7 @@ a.drbb-download-pdf {
 
     select {
       appearance: none;
-      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzAuNSIgaGVpZ2h0PSIxOC40Mjc3NCIgdmlld0JveD0iMCAwIDMwLjUgMTguNDI3NzQiIGFyaWEtaGlkZGVuPSJ0cnVlIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQogIHBhdGggeyBmaWxsOiAjMTExMTExOyB9DQo8L3N0eWxlPg0KICA8dGl0bGU+ZG93biB3ZWRnZTwvdGl0bGU+DQogIDxwYXRoIGQ9Ik0yNi44MTguNjc5LDE1LjI4OCwxMi4yMjMxNSwzLjU5MTUzLjU5NTkyQTIuMDc0OCwyLjA3NDgsMCwwLDAsLjY5MDg0LjU4NjM2aDBhMi4yNzc1MywyLjI3NzUzLDAsMCwwLS4wMjYsMy4yNDIxMUwxNS4yMjQwNywxOC40Mjc3NCwyOS44NywzLjczNDMxQTIuMTU5MywyLjE1OTMsMCwwLDAsMjkuODU0MzYuNjdoMEEyLjE1OTMsMi4xNTkzLDAsMCwwLDI2LjgxOC42NzlaIi8+DQo8L3N2Zz4=) no-repeat 99% var(--nypl-colors-ui-white);
+      background: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4NCjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMzAuNSIgaGVpZ2h0PSIxOC40Mjc3NCIgdmlld0JveD0iMCAwIDMwLjUgMTguNDI3NzQiIGFyaWEtaGlkZGVuPSJ0cnVlIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0Ij4NCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+DQogIHBhdGggeyBmaWxsOiAjMTExMTExOyB9DQo8L3N0eWxlPg0KICA8dGl0bGU+ZG93biB3ZWRnZTwvdGl0bGU+DQogIDxwYXRoIGQ9Ik0yNi44MTguNjc5LDE1LjI4OCwxMi4yMjMxNSwzLjU5MTUzLjU5NTkyQTIuMDc0OCwyLjA3NDgsMCwwLDAsLjY5MDg0LjU4NjM2aDBhMi4yNzc1MywyLjI3NzUzLDAsMCwwLS4wMjYsMy4yNDIxMUwxNS4yMjQwNywxOC40Mjc3NCwyOS44NywzLjczNDMxQTIuMTU5MywyLjE1OTMsMCwwLDAsMjkuODU0MzYuNjdoMEEyLjE1OTMsMi4xNTkzLDAsMCwwLDI2LjgxOC42NzlaIi8+DQo8L3N2Zz4=) no-repeat 99% $white;
       background-size: 1rem;
       border: 0;
       border-radius: 0.2rem;
@@ -155,28 +159,28 @@ a.drbb-download-pdf {
       padding-left: 0.5rem;
       width: inherit;
       background-position-x: 92%;
-      border: 0.0625rem solid $darkColorBoxShadow;
+      border: 0.0625rem solid $borderDefault;
       padding: 0 1.25rem 0 0.75rem;
     }
   }
 }
 
 .nypl-results-summary.no-scc-results.drbb-integration {
-  width: 65%;
+  width: 100%;
 }
 
-@media(max-width: 870px) {
+@include media($nypl-breakpoint-large) {
   .nypl-results-list.drbb-integration {
-    width: 100%;
-    padding-right: 0;
+    width: 65%;
+    padding-right: 10%;
   }
 
   .drbb-container {
-    width: unset;
-    margin-left: 0;
+    width: 30%;
+    margin-left: 15px;
   }
 
   .nypl-results-summary.no-scc-results.drbb-integration {
-    width: 100%
+    width: 65%
   }
 }

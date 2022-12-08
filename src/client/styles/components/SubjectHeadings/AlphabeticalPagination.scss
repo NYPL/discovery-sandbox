@@ -1,5 +1,5 @@
 .alphabeticalPagination {
-  border: 1px solid $lightBorder;
+  border: 1px solid $borderDefault;
   border-radius: .2rem;
   box-sizing: border-box;
   display: flex;
@@ -7,37 +7,37 @@
   margin-bottom: 1.5rem;
   max-width: 100%;
   text-align: center;
-  background-color: $lightBorder;
-  line-height: 32px;
+  background-color: $borderDefault;
+  line-height: 35px;
   padding: 1px;
 
   a {
     box-sizing: border-box;
-    background-color: var(--nypl-colors-ui-white);
+    background-color: $white;
     display: inline-block;
     flex: auto;
     font-size: 14px;
     font-weight: 400;
     text-align: center;
     text-decoration: none;
-    min-width: 32px;
-    border: 1px solid $lightBorder;
+    min-width: 35px;
+    border: 1px solid $borderDefault;
     border-radius: 1px;
     margin: -1px;
 
     &:focus {
       z-index: 1;
-      background-color: var(--nypl-colors-ui-white);
+      background-color: $white;
     }
   }
 }
 
-@include media($xtrasmall-breakpoint) {
+@include media($nypl-breakpoint-small) {
   .alphabeticalPagination {
-    line-height: 35px;
+    line-height: 32px;
 
     a {
-      min-width: 35px;
+      min-width: 32px;
     }
   }
 }

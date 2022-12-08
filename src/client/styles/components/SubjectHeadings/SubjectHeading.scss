@@ -35,16 +35,14 @@
 
   }
   .subjectHeadingAttribute {
-    @include media($mobile-breakpoint) {
-      vertical-align: top;
-    }
+    vertical-align: top;
   }
 }
 
 tbody .subjectHeadingRow {
   border-bottom: $table-row-border;
   line-height: 32px;
-  background-color: $subjectHeadingBackground;
+  background-color: $bgDefault;
 
   .selected .emph {
     font-weight: 700;
@@ -69,7 +67,7 @@ tbody .subjectHeadingRow {
 
 
 .emph {
-  color: var(--nypl-colors-ui-black);
+  color: $black;
   font-size: 14px;
   font-style: initial;
 
@@ -78,7 +76,7 @@ tbody .subjectHeadingRow {
   }
 }
 
-@include media($mobile-breakpoint) {
+@include media($nypl-breakpoint-medium) {
   .subjectHeadingsTable {
     th {
       min-width: 32px;
@@ -95,10 +93,10 @@ tbody .subjectHeadingRow {
   }
 }
 
-@include media($xtrasmall-breakpoint) {
+@include media($nypl-breakpoint-small) {
   .subjectHeadingsTable:not(.related) .subjectHeadingsTableCell.subjectHeadingLabel,
   .seeMore .subjectHeadingsTableCell
   {
-    padding-left: 22px;
+    padding-left: 0px;
   }
 }

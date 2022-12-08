@@ -9,7 +9,7 @@
 
   .item-filter-button {
     color: black;
-    border: 1px solid var(--nypl-colors-ui-gray-medium);
+    border: 1px solid $grayMedium;
     justify-content: space-between;
     text-transform: capitalize;
     width: 100%;
@@ -19,7 +19,7 @@
     }
   }
 
-  @media (min-width: 600px) {
+  @include media($nypl-breakpoint-medium) {
     .item-filter-button {
       width: 100%;
     }
@@ -45,9 +45,9 @@
 }
 
 .item-filter-content {
-  background-color: var(--nypl-colors-ui-white);
+  background-color: $white;
   border: 1px solid;
-  border-color: var(--nypl-colors-ui-gray-medium);
+  border-color: $grayMedium;
   position: absolute;
   width: 230px;
   z-index: 1;
@@ -75,7 +75,7 @@
 
 
 // this is the minimum width at which the `Status` options will not go beyond the screenwidth
-@media (max-width: 600px) {
+@include media($nypl-breakpoint-medium) {
   .item-filter {
     display: block;
     margin: 10px 0;

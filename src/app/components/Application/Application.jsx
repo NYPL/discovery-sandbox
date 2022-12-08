@@ -8,12 +8,9 @@ import { withRouter } from 'react-router';
 import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
-import LoadingLayer from '../LoadingLayer/LoadingLayer';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
-
 import { updateFeatures } from '../../actions/Actions';
-
 import { breakpoints } from '../../data/constants';
 
 export const MediaContext = React.createContext('desktop');
