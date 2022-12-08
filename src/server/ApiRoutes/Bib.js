@@ -13,12 +13,12 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr =
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
   const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
-  console.log("filterItemsStr", filterItemsStr)
-  console.log(`query call: ${`/discovery/resources/${query}${queryForItemPage}${itemQuery}`}`);
+  // Always pass merge_checkin_card_items=true to the API.
+  const checkinCards = '&merge_checkin_card_items=true';
   return nyplApiClient()
     .then(client =>
       client.get(
-        `/discovery/resources/${query}${queryForItemPage}${itemQuery}`,
+        `/discovery/resources/${query}${queryForItemPage}${itemQuery}${checkinCards}`,
         requestOptions
       )
     );
@@ -159,7 +159,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
-  console.log("reqOptions.filterItemsStr", reqOptions.filterItemsStr)
+
   return Promise.all([
     nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:
@@ -233,13 +233,11 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const query = req.query;
-  let filterItemsStr = '';
-  Object.keys(query).forEach((key) => {
-    filterItemsStr += `item_${key}=${query[key]}&`;
-  });
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
-  console.log('filterItemsStr: ', filterItemsStr)
+  let filterItemsStr = Object.keys(query)
+    .map((key) => `item_${key}=${query[key]}`)
+    .join('&');
 
   return fetchBib(
     bibId,

@@ -14,7 +14,6 @@ import Pagination from '../Pagination/Pagination';
 import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
-// import { filterItems } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
@@ -124,7 +123,7 @@ class ItemsContainer extends React.Component {
 
   render() {
     const { bib, bibId, dispatch, itemsAggregations }= this.props;
-    // const bibDone = bib?.done;
+    const bibDone = bib?.done;
     const shortenItems = !this.props.shortenItems;
     const totalItemsLength = this.state.items.length;
     let itemsToDisplay = [...this.state.items];
@@ -175,16 +174,17 @@ class ItemsContainer extends React.Component {
       <>
         <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
-          {/* {bibDone ? ( */}
-          <ItemFilters
-            items={itemsToDisplay}
-            numOfFilteredItems={itemsToDisplay.length}
-            itemsAggregations={itemsAggregations}
-            dispatch={dispatch}
-          />
-          {/* ) : (
-            itemLoadingMessage
-          )} */}
+          {bibDone ? (
+            <ItemFilters
+              items={itemsToDisplay}
+              numOfFilteredItems={itemsToDisplay.length}
+              itemsAggregations={itemsAggregations}
+              dispatch={dispatch}
+            />
+            ) : (
+              itemLoadingMessage
+            )
+          }
           {itemTable}
           {!!(
             shortenItems &&

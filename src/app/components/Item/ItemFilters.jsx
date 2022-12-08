@@ -1,6 +1,6 @@
 import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React, { Fragment, useEffect, useState } from 'react';
+import React, { Fragment, useState } from 'react';
 
 import { updateBibPage } from '@Actions';
 import { ajaxCall } from '@utils';
@@ -24,39 +24,59 @@ const ItemFilters = (
     status: query.status || [],
   };
   const [openFilter, setOpenFilter] = useState('none');
-  const [selectedYear, setSelectedYear] = useState(query.year || '');
+  const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  // For every item aggregation, go through every filter in its `values` array
+  // and map all the labels to their ids. This is done because the API expects
+  // the ids of the filters to be sent over, not the labels.
+  const mappedItemsLabelToIds = itemsAggregations.reduce((accc, aggregation) => {
+    const filter = aggregation.field;
+    const mappedValues = aggregation.values.reduce((acc, value) => ({
+      ...acc,
+      [value.label]: value.value
+    }), {})
+    return {
+      ...accc,
+      [filter]: mappedValues,
+    };
+  }, {});
 
-  // TODO: map label to id before sending it over to the API
   const getNewBib = (clear = false) => {
     const baseUrl = appConfig.baseUrl;
-    let queryParam = '';
+    let queryParams = [];
     if (!clear) {
+      // If we are making a request, get all the selected filters and map
+      // the labels to their ids. That will be sent over to the API.
       Object.keys(selectedFilters).forEach(filter => {
         const selectedFilterArray = selectedFilters[filter];
+        const mappedFilter = mappedItemsLabelToIds[filter];
         if (selectedFilterArray.length > 0) {
           if (Array.isArray(selectedFilterArray)) {
-            selectedFilterArray.forEach(selectedFilter => {
-              queryParam += `${filter}=${selectedFilter}&`;
-            });
+            queryParams.push(
+              ...selectedFilterArray.map(selectedFilter => {
+                const mappedFilterId = mappedFilter[selectedFilter];
+                return `${filter}=${mappedFilterId}`;
+              })
+            );
           } else {
-            queryParam += `${filter}=${selectedFilterArray}&`;
+            const mappedFilterId = mappedFilter[selectedFilterArray];
+            queryParams.push(`${filter}=${mappedFilterId}`);
           }
         }
       });
       if (selectedYear) {
-        queryParam += `year=${selectedYear}&`;
+        queryParams.push(`date=${selectedYear}`);
       }
     }
+
     const bibApi = `${window.location.pathname.replace(
       baseUrl,
       `${baseUrl}/api`,
-    )}${queryParam ? `?${queryParam}` : ''}`;
+    )}${queryParams.length ? `?${queryParams.join('&')}` : ''}`;
     ajaxCall(
       bibApi,
       (resp) => {
         const { bib } = resp.data;
-        console.log("bib", bib)
         const done = !bib || !bib.items || bib.items.length < itemBatchSize;
         dispatch(
           updateBibPage({
@@ -130,7 +150,7 @@ const ItemFilters = (
     getNewBib(clear);
     const updatedSelectedFilters = { ...selectedFilters };
     if (selectedYear) {
-      updatedSelectedFilters.year = selectedYear;
+      updatedSelectedFilters.date = selectedYear;
     }
 
     const href = createHref({
@@ -160,7 +180,7 @@ const ItemFilters = (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
-          options={options}
+          itemsAggregations={itemsAggregations}
           {...itemFilterComponentProps}
         />
       ) : (
