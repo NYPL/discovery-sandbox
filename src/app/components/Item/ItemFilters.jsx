@@ -1,6 +1,6 @@
 import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
 import { updateBibPage } from '@Actions';
 import { ajaxCall } from '@utils';
@@ -23,11 +23,13 @@ const ItemFilters = (
     format: query.format || [],
     status: query.status || [],
   };
+  const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
   // and must be handled separately in the `SearchBar` component.
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
   // For every item aggregation, go through every filter in its `values` array
   // and map all the labels to their ids. This is done because the API expects
   // the ids of the filters to be sent over, not the labels.
@@ -43,10 +45,15 @@ const ItemFilters = (
     };
   }, {});
 
+  // When new items are fetched, update the selected string dispaly.
+  useEffect(() => {
+    setSelectedFilterDisplayStr(parsedFilterSelections());
+  }, [numOfFilteredItems, parsedFilterSelections])
+
   /**
    * When new filters are selected or unselected, fetch new items.
    */
-  const getNewBib = (clear = false) => {
+  const getNewBib = (clear = false, clearYear = false) => {
     const baseUrl = appConfig.baseUrl;
     let queryParams = [];
     if (!clear) {
@@ -70,7 +77,7 @@ const ItemFilters = (
         }
       });
       // The "year" filter is stored separately from the other filters.
-      if (selectedYear) {
+      if (selectedYear && !clearYear) {
         queryParams.push(`date=${selectedYear}`);
       }
     }
@@ -93,6 +100,11 @@ const ItemFilters = (
             }),
           }),
         );
+        // Once the new items are fetched, focus on the
+        // filter UI and the results.
+        if (resultsRef.current) {
+          resultsRef.current.focus();
+        }
       },
       (error) => {
         console.error(error);
@@ -117,7 +129,7 @@ const ItemFilters = (
   };
 
   // join filter selections and add single quotes
-  const parsedFilterSelections = () => {
+  const parsedFilterSelections = useCallback(() => {
     let filterSelectionString = itemsAggregations
       .map((filter) => {
         const filters = selectedFilters[filter.field];
@@ -132,15 +144,14 @@ const ItemFilters = (
         }
         return null;
       })
-      .filter((selected) => selected)
-      .join(', ');
+      .filter((selected) => selected);
 
     if (selectedYear) {
-      filterSelectionString = `${filterSelectionString}, year: '${selectedYear}'`; 
+      filterSelectionString.push(`year: '${selectedYear}'`); 
     }
 
-    return filterSelectionString;
-  }
+    return filterSelectionString.join(', ');
+  }, [itemsAggregations, selectedFilters, selectedYear]);
 
   const resetFilters = () => {
     const clear = true;
@@ -153,11 +164,14 @@ const ItemFilters = (
     router.push(href);
   };
 
-  const submitFilterSelections = (clear = false) => {
-    getNewBib(clear);
+  const submitFilterSelections = (clear = false, clearYear = false) => {
+    getNewBib(clear, clearYear);
     const updatedSelectedFilters = { ...selectedFilters };
     if (selectedYear) {
       updatedSelectedFilters.date = selectedYear;
+    }
+    if (clearYear) {
+      delete updatedSelectedFilters.date;
     }
 
     const href = createHref({
@@ -191,7 +205,12 @@ const ItemFilters = (
           {...itemFilterComponentProps}
         />
       ) : (
-        <div id="item-filters" className="item-table-filters">
+        <div
+          id="item-filters"
+          className="item-table-filters"
+          ref={resultsRef}
+          tabIndex="-1"
+        >
           <div>
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
             {itemsAggregations.map((filter) => (
@@ -231,7 +250,11 @@ const ItemFilters = (
             <Button
               buttonType="text"
               id="clear-year-button"
-              onClick={() => setSelectedYear('')}
+              onClick={() => {
+                const clearYear = true;
+                setSelectedYear('');
+                submitFilterSelections(false, clearYear)
+              }}
             >
               Clear search year
             </Button>
@@ -247,9 +270,9 @@ const ItemFilters = (
             {numOfFilteredItems !== 1 ? 's' : null} Found
           </>
         </Heading>
-        {parsedFilterSelections() ? (
+        {selectedFilterDisplayStr ? (
           <>
-            <span>Filtered by {parsedFilterSelections()}</span>
+            <span>Filtered by {selectedFilterDisplayStr}</span>
             <Button
               buttonType="text"
               id="clear-filters-button"
