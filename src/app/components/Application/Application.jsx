@@ -7,11 +7,12 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { union as _union } from 'underscore';
 
-import Feedback from '../Feedback/Feedback';
+import Feedback from '../Feedback/Feedback-new';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
+import { FeedbackBoxContext, FeedbackBoxProvider } from '../../context/FeedbackContext';
 
 export const MediaContext = React.createContext('desktop');
 
@@ -80,6 +81,7 @@ export class Application extends React.Component {
     );
 
     return (
+      <FeedbackBoxProvider>
       <MediaContext.Provider value={this.state.media}>
         <div className="app-wrapper">
           <Header
@@ -97,6 +99,7 @@ export class Application extends React.Component {
           <Feedback />
         </div>
       </MediaContext.Provider>
+      </FeedbackBoxProvider>
     );
   }
 }
