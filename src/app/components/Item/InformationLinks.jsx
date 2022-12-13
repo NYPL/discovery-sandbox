@@ -53,7 +53,7 @@ const InformationLinks = ({ callNumber, isRecap, computedAeonUrl: aeonUrl, avail
         <span className='unavailable-text'>Not available</span>
         {dueDate && dueDateAlert}
         <span>{' - Please '}
-          <Button onClick={() => onContact(callNumber)} buttonType='text'>contact a librarian</Button>{' for assistance.'}
+          <Button onClick={() => onContact(callNumber)} buttonType='text' className='contact-librarian'>contact a librarian</Button>{' for assistance.'}
         </span>
       </div>)
   }

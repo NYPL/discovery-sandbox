@@ -1,8 +1,6 @@
 import React, { useContext } from 'react'
 import { FeedbackBoxContext } from '../../context/FeedbackContext'
 
-const itemId = 12345678
-
 const Feedback = () => {
   const { FeedbackBox, isOpen, onClose, onOpen, callNumber, setCallNumber } = useContext(FeedbackBoxContext)
   const closeAndResetCallNumber = () => {
