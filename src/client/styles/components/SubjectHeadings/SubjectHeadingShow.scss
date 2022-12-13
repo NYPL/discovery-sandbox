@@ -1,7 +1,9 @@
 .subjectHeadingsSideBar {
   display: flex;
   flex-direction: column;
-  float: right;
+  // float: right;
+  float: left;
+  width: 100%;
 
   .subjectHeadingsTable {
     min-width: 100%;
@@ -17,7 +19,7 @@
 }
 
 .subjectHeadingInfoBox {
-  border-color: var(--nypl-colors-ui-black);
+  border-color: $black;
   border-style: solid;
   border-top-width: 3px;
   justify-self: end;
@@ -43,7 +45,7 @@
 
 .context {
   .contextMore {
-    color: gray;
+    color: $grayDark;
   }
 }
 
@@ -88,27 +90,5 @@
   th {
     font-size: 12px;
     min-width: 45px;
-  }
-}
-
-@include media($mobile-breakpoint) {
-  .subjectHeadingsSideBar {
-    float: left;
-    width: 100%;
-
-    .subjectHeadingsTable {
-      width: 100%;
-    }
-  }
-
-  .subjectHeadingInfoBox {
-    min-width: auto;
-  }
-}
-
-@include media($xtrasmall-breakpoint) {
-  .subjectHeadingsSideBar {
-    float: left;
-    width: unset;
   }
 }

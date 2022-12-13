@@ -18,20 +18,20 @@ div .tabbed {
   }
 
   ul[role="tablist"] >  li {
-    border-bottom: 1px solid var(--nypl-colors-ui-black);
+    border-bottom: 1px solid $black;
     display: table-cell;
     margin-bottom: 0;
     white-space: nowrap;
   }
 
   ul[role="tablist"] > li.activeTab {
-    border: 1px solid var(--nypl-colors-ui-black);
+    border: 1px solid $black;
     border-bottom: none;
   }
 
   ul[role="tablist"] > li > a,
   ul[role="tablist"] > li > span > a {
-    color: $bibTextColor;
+    color: $grayDark;
     padding: 5px 8px;
     display: table-cell;
     font-weight: 300;
@@ -39,16 +39,16 @@ div .tabbed {
   }
 
   ul[role="tablist"] > li:target > a {
-    color: var(--nypl-colors-ui-black);
+    color: $black;
   }
 
   ul[role="tablist"] > li > a[aria-selected='true'] {
-    color: var(--nypl-colors-ui-black);
+    color: $black;
     font-weight: 500;
   }
 
   .blank {
-    border-bottom: 1px solid var(--nypl-colors-ui-black);
+    border-bottom: 1px solid $black;
     color: white;
     content: '';
     width: 100%;
@@ -60,7 +60,7 @@ div .tabbed {
     }
 
     li:target {
-      border: 1px solid var(--nypl-colors-ui-black);
+      border: 1px solid $black;
       border-bottom: 0;
     }
   }
@@ -99,19 +99,19 @@ div .tabbed {
 // they will appear as a's under a dd. If the dd is hovered, we make the
 // a's light blue
 .tabbed dd:hover a {
-  color: $bibLinkColor;
+  color: $linkSecondary;
   text-decoration: none;
 }
 
 // then we make the a's following the hovered a regular blue. We have to do it
 // this way because there is no 'younger sibling' selector
 .tabbed dd a:hover ~ a {
-  color: $generalBlueColor;
+  color: $linkPrimary;
   text-decoration: underline;
 }
 
 .tabbed dd span:hover ~ a {
-  color: $generalBlueColor;
+  color: $linkPrimary;
   text-decoration: underline;
 }
 
@@ -120,56 +120,56 @@ div .tabbed {
 // So we need to cancel the above stylings in this case. Below we apply the same
 // trick as above, but to each li separately.
 .tabbed dd:hover ul li a {
-  color: $generalBlueColor;
+  color: $linkPrimary;
   text-decoration: underline;
 }
 
 // Visited a's have a darker shade of blue as their default
 
 .tabbed dd a:hover ~ a:visited {
-  color: $generalDarkerBlueColor;
+  color: $linkSecondary;
 }
 
 .tabbed dd span:hover ~ a:visited {
-  color: $generalDarkerBlueColor;
+  color: $linkSecondary;
 }
 
 // If we have multiple subject strings, each li gets the styling above.
 // If an li is hovered, we make the links light blue
 
 .tabbed dd:hover ul li:hover a {
-  color: $bibLinkColor;
+  color: $linkSecondary;
   text-decoration: none;
 }
 
 // Then we restore links to their default if they come after the link
 .tabbed dd ul li:hover a:hover ~ a {
-  color: $generalBlueColor;
+  color: $linkPrimary;
   text-decoration: underline;
 }
 
 .tabbed dd ul li:hover span:hover ~ a {
-  color: $generalBlueColor;
+  color: $linkPrimary;
   text-decoration: underline;
 }
 
 // Visited links have a darker default
 .tabbed dd ul li:hover a:hover ~ a:visited {
-  color: $generalDarkerBlueColor;
+  color: $linkSecondary;
 }
 
 .tabbed dd ul li:hover span:hover ~ a:visited {
-  color: $generalDarkerBlueColor;
+  color: $linkSecondary;
 }
 
 .tabbed dd {
   a {
-    color: $generalBlueColor;
+    color: $linkPrimary;
     text-decoration: underline;
   }
 }
 
-@media (max-width: 1120px) {
+@media (max-width: $nypl-breakpoint-xl) {
   .additionalDetails {
     dt {
       float: none;
@@ -177,10 +177,10 @@ div .tabbed {
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $nypl-breakpoint-medium) {
   div .tabbed {
     ul[role="tablist"] >  li, ul[role="tablist"] > li.activeTab {
-      border: 1px solid var(--nypl-colors-ui-black);
+      border: 1px solid $black;
       border-bottom: none;
       display: block;
       width: 100%;

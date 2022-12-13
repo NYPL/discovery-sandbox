@@ -35,7 +35,7 @@ Import style rules from NYPL React module components
 // to temporarily use its previous style rules for the UI component.
 .old-ds-modal {
   padding: var(--nypl-space-s);
-  background-color: var(--nypl-colors-ui-gray-x-light-warm);
+  background-color: $grayXLightWarm;
   height: 100vh;
   left: 0;
   overflow-y: auto;
@@ -91,7 +91,7 @@ input[type=submit]:focus {
 
   a {
     padding: 0.5rem;
-    border: 0.08333rem solid $lightBorder;
+    border: 0.08333rem solid $borderDefault;
     border-radius: 0.2rem;
     font-weight: 500;
     width: 15%;
@@ -107,7 +107,7 @@ input[type=submit]:focus {
       height: 1.8rem;
       width: 1.8rem;
       margin-top: 0;
-      fill: var(--nypl-colors-ui-link-primary);
+      fill: $linkPrimary;
     }
   }
 
@@ -119,7 +119,7 @@ input[type=submit]:focus {
 }
 
 select {
-  color: var(--nypl-colors-ui-black);
+  color: $black;
 }
 
 .nypl-basic-table {
@@ -156,7 +156,6 @@ select {
 .nypl-results-publication {
   display: inline-block;
   margin-right: 1rem;
-  color: $darkColorBoxShadow;
   font-size: "";
   font-weight: 400;
 }
@@ -186,7 +185,7 @@ select {
   padding-top: 25vh;
 
   div {
-    background-color: $lightBackgroundColor;
+    background-color: $bgDefault;
     margin: auto;
     opacity: 100%;
     width: 472px;
@@ -221,12 +220,13 @@ select {
 
 .research-modal__content {
   align-items: flex-start;
-  background: $lightBackgroundColor;
-  border: 1px solid var(--nypl-colors-ui-gray-light-cool);
+  background: $bgDefault;
+  border: 1px solid $grayLightCool;
   border-radius: 5px;
   flex-flow: column wrap;
   min-height: 200px;
-  padding: var(--nypl-space-s) var(--nypl-space-l);
+  padding-left: var(--nypl-space-s);
+  padding-right: var(--nypl-space-s);
 
   .button-container {
     display: flex;
@@ -240,9 +240,8 @@ a:focus {
   box-shadow: none;
 }
 
-@media (max-width: 400px) {
+@include media($nypl-breakpoint-small) {
   .research-modal__content {
-    padding-left: var(--nypl-space-s);
-    padding-right: var(--nypl-space-s);
+    padding: var(--nypl-space-s) var(--nypl-space-l);
   }
 }

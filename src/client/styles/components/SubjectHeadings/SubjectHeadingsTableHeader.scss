@@ -21,17 +21,17 @@
 }
 
 .index thead {
-  border-bottom: 1.5px solid var(--nypl-colors-ui-black);
+  border-bottom: 1.5px solid $black;
 }
 
 .subjectHeadingsTable:not(.related) {
   .headingColumnHeader {
-    padding-left: 32px;
+    padding-left: 12px;
   }
 
-  @include media($mobile-breakpoint) {
+  @include media($nypl-breakpoint-medium) {
     .headingColumnHeader {
-      padding-left: 12px;
+      padding-left: 32px;
     }
   }
 }

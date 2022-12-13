@@ -77,36 +77,34 @@
     padding-top: var(--nypl-space-xl);
 
     a {
-      width: 165px;
-      text-align: center;
       text-decoration: none;
       display: inline-block !important;
       
       &:hover {
-        color: var(--nypl-colors-ui-link-secondary);
+        color: $linkSecondary;
       }
     }
   }
 
   .tabbed ul[role="tablist"] {
     &> li {
-      border-color: $accountBlue;
+      border-color: $linkPrimary;
     }
 
     &> li > span > a[aria-selected='true'] {
-      color: $accountBlue;
+      color: $linkPrimary;
     }
 
     &> li.activeTab {
-      border-color: $accountBlue;
+      border-color: $linkPrimary;
     }
   }
 
   .account-button {
     background: transparent;
     border-radius: 2px;
-    background-color: var(--nypl-colors-ui-white);
-    border: 1px solid var(--nypl-colors-ui-gray-light-cool);
+    background-color: $white;
+    border: 1px solid $grayLightCool;
     color: inherit;
     display: inline-block;
     font-size: 14px;
@@ -114,12 +112,12 @@
     padding: var(--nypl-space-xs);
 
     &:hover {
-      background-color: var(--nypl-colors-ui-gray-xx-light-cool);
+      background-color: $grayXXLightCool;
     }
   }
 
   tr.patFuncHeaders {
-    background-color: $accountBGLight;
+    background-color: $bgDefault;
     width: 100%;
   }
 
@@ -152,7 +150,7 @@
   }
 
   tr.patFuncFinesEntryTitle {
-    border-top: solid 1px $accountLightBorder;
+    border-top: solid 1px $borderDefault;
   }
 
   td {
@@ -183,7 +181,7 @@
     }
   }
 
-  @media (min-width: 920px) {
+  @include media($nypl-breakpoint-large) {
     .overdues {
       table {
         min-width: 846px;
@@ -201,13 +199,13 @@
     }
 
     tr:nth-last-of-type(2), tr:nth-last-of-type(3) {
-      border-bottom: solid 1px $accountLightBorder;
+      border-bottom: solid 1px $borderDefault;
     }
   }
 
   .items, .holds {
     tr {
-      border-bottom: solid 1px $accountLightBorder;
+      border-bottom: solid 1px $borderDefault;
     }
   }
 }
@@ -228,7 +226,7 @@
   }
 
   .edit-link {
-    color: $colorBlueText;
+    color: $linkPrimary;
     float: right;
     font-size: 20px;
     font-weight: 600;
@@ -279,20 +277,26 @@
 }
 
 
-@media (max-width: 600px) {
+.nypl-patron-page .tabbed ul[role="tablist"] {
+  &> li:last-of-type {
+    border-bottom: 1px solid $linkPrimary;
+  }
+  
+  a {
+    text-align: initial;
+    width: 100%;
+  }
+}
+@include media($nypl-breakpoint-medium) {
   .nypl-patron-page .tabbed ul[role="tablist"] {
-    &> li:last-of-type {
-      border-bottom: 1px solid $accountBlue;
-    }
-
     a {
-      text-align: initial;
-      width: 100%;
+      text-align: center;
+      width: 165px;
     }
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: $nypl-breakpoint-medium) {
   .nypl-patron-page {
     select {
       width: 100%;
@@ -300,8 +304,8 @@
 
     .items, .holds {
       td {
-        border-left: 1px solid $accountLightBorder;
-        border-right: 1px solid $accountLightBorder;
+        border-left: 1px solid $borderDefault;
+        border-right: 1px solid $borderDefault;
         display: block;
         padding-right: 1%;
         width: auto;
@@ -314,7 +318,7 @@
       }
 
       td.patFuncTitle {
-        border-top: 1px solid $accountLightBorder;
+        border-top: 1px solid $borderDefault;
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
       }
@@ -386,7 +390,7 @@
     }
 
     .account-table-buttons {
-      border-bottom: 1px solid $accountLightBorder;
+      border-bottom: 1px solid $borderDefault;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       display: flex;
