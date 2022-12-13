@@ -7,6 +7,7 @@ const Feedback = () => {
   const { FeedbackBox, isOpen, onClose, onOpen, itemMetadata, setItemMetadata } = useContext(FeedbackBoxContext)
   const closeAndResetItemMetadata = () => {
     if (itemMetadata) setItemMetadata(null)
+    trackDiscovery('Feedback', 'Close');
     onClose()
   }
   const submitFeedback = async (metadata) => {
