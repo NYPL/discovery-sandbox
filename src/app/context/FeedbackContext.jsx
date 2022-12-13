@@ -4,11 +4,11 @@ import { useFeedbackBox } from '@nypl/design-system-react-components';
 
 export const FeedbackBoxContext = createContext(null);
 export const FeedbackBoxProvider = ({ children }) => {
-  const [callNumber, setCallNumber] = useState('')
+  const [itemMetadata, setItemMetadata] = useState(null)
   const { FeedbackBox, isOpen, onOpen, onClose } = useFeedbackBox()
   return (
     <FeedbackBoxContext.Provider value={{
-      onOpen, FeedbackBox, isOpen, onClose, callNumber, setCallNumber
+      onOpen, FeedbackBox, isOpen, onClose, itemMetadata, setItemMetadata
     }}> {children}</FeedbackBoxContext.Provider >
   );
 };

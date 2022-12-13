@@ -1,22 +1,44 @@
 import React, { useContext } from 'react'
+
 import { FeedbackBoxContext } from '../../context/FeedbackContext'
+import { trackDiscovery } from '../../utils/utils';
 
 const Feedback = () => {
-  const { FeedbackBox, isOpen, onClose, onOpen, callNumber, setCallNumber } = useContext(FeedbackBoxContext)
-  const closeAndResetCallNumber = () => {
-    if (callNumber) setCallNumber('')
+  const { FeedbackBox, isOpen, onClose, onOpen, itemMetadata, setItemMetadata } = useContext(FeedbackBoxContext)
+  const closeAndResetItemMetadata = () => {
+    if (itemMetadata) setItemMetadata(null)
     onClose()
   }
+  const submitFeedback = async (metadata) => {
+    trackDiscovery('Feedback', 'Submit')
+    try {
+      const res = await axios({
+        method: 'POST',
+        url: `${appConfig.baseUrl}/api/feedback`,
+        data: {
+          fields,
+        },
+      })
+      if (res.data.error) {
+        console.error(res.data.error);
+        return;
+      }
+    } catch (e) {
+      console.error('Error posting feedback', e)
+    }
+  }
+
   return <>
     <FeedbackBox
+      onSubmit={submitFeedback}
       isOpen={isOpen}
-      onClose={closeAndResetCallNumber}
+      onClose={closeAndResetItemMetadata}
       onOpen={onOpen}
       descriptionText='We are here to help!'
       title='Help and Feedback'
       showEmailField
-      hiddenFields={{ callNumber }}
-      notificationText={callNumber ? `Call Number: ${callNumber}` : null}
+      hiddenFields={itemMetadata}
+      notificationText={itemMetadata && itemMetadata.callNumber ? `Call Number: ${itemMetadata.callNumber}` : null}
     />
   </>
 }

@@ -13,11 +13,11 @@ const locationUrlEndpoint = (location) => {
   return urls[loc]
 }
 
-const InformationLinks = ({ callNumber, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
-  const { onOpen: openFeedbackBox, setCallNumber } = useContext
+const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
+  const { onOpen: openFeedbackBox, setItemMetadata } = useContext
     (FeedbackBoxContext)
-  const onContact = (callNumber) => {
-    setCallNumber(callNumber)
+  const onContact = (metadata) => {
+    setItemMetadata(metadata)
     openFeedbackBox()
   }
   if (available) {
@@ -53,7 +53,7 @@ const InformationLinks = ({ callNumber, isRecap, computedAeonUrl: aeonUrl, avail
         <span className='unavailable-text'>Not available</span>
         {dueDate && dueDateAlert}
         <span>{' - Please '}
-          <Button onClick={() => onContact(callNumber)} buttonType='text' className='contact-librarian'>contact a librarian</Button>{' for assistance.'}
+          <Button onClick={() => onContact({ id, barcode, callNumber, bibId })} buttonType='text' id='contact-librarian'>contact a librarian</Button>{' for assistance.'}
         </span>
       </div>)
   }
