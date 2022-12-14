@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { union as _union } from 'underscore';
 
-import Feedback from '../Feedback/Feedback-new';
+import Feedback from '../Feedback/Feedback';
 import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 import { updateFeatures } from '../../actions/Actions';
