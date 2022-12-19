@@ -53,9 +53,9 @@ describe('DrbbContainer', () => {
       expect(component.find('DrbbResult').length).to.equal(1);
     });
     it('should render a link to the DRBB search results page', () => {
-      expect(component.find('a.drbb-description').prop('href')).to.deep.equal({
-        pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-        search: 'query=onework' });
+      expect(component.find('a.drbb-description').prop('href')).to.equal(
+        `${appConfig.drbbFrontEnd[appConfig.environment]}/search?query=onework`
+      );
     });
     it('link text should have result singular', () => {
       expect(component.find('a.drbb-frontend-link').render().text()).to.include('See 1 result');

@@ -22,10 +22,9 @@ const DrbbContainer = ({ drbbResults }) => {
         </ul>,
         <Link
           className="drbb-description drbb-frontend-link"
-          href={{
-            pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-            search: researchNowQueryString,
-          }}
+          href={
+            `${appConfig.drbbFrontEnd[appConfig.environment]}/search?${researchNowQueryString}`
+          }
           target="_blank"
           key="drbb-results-list-link"
         >
