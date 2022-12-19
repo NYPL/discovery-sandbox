@@ -204,6 +204,7 @@ const ItemFilters = (
       `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
     router.push(href);
+    setSelectedYear('');
   };
 
   const itemFilterComponentProps = {
@@ -252,6 +253,7 @@ const ItemFilters = (
                 <TextInput
                   id='search-year-input'
                   isClearable
+                  isClearableCallback={() => { setSelectedYear('') }}
                   labelText='Search by Year'
                   maxLength={4}
                   name='search-year'
