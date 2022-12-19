@@ -5,8 +5,9 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 
 import ItemFilters from './../../src/app/components/Item/ItemFilters';
+import ItemFilter from './../../src/app/components/Item/ItemFilter';
 import item from '../fixtures/libraryItems';
-import { itemsAggregations } from '../fixtures/itemFilterOptions';
+import { itemsAggregations, itemsAggregations2 } from '../fixtures/itemFilterOptions';
 
 const context = {
   router: {
@@ -175,4 +176,40 @@ describe('ItemFilters', () => {
       expect(component.find('h3').text()).to.equal('No Results Found');
     });
   });
+
+  describe('with blank or duplicated items aggregations', () => {
+    let component;
+    before(() => {
+      const contextWithMultipleFilters = context;
+      contextWithMultipleFilters.router.location.query = {
+        format: 'PRINT',
+        status: 'Requestable',
+      };
+      component = mount(
+        <ItemFilters
+          items={[
+            item.full,
+            item.missingData,
+            item.requestable_ReCAP_available,
+            item.requestable_ReCAP_not_available,
+            item.requestable_nonReCAP_NYPL,
+          ]}
+          numOfFilteredItems={0}
+          itemsAggregations={itemsAggregations2}
+          hasFilterApplied
+        />,
+        { context: contextWithMultipleFilters }
+      );
+    });
+
+    it('should remove blank aggregations and combine duplicated ones', () => {
+      const itemFilter = component.find(ItemFilter)
+      const locations = itemFilter.at(0).prop('options')
+      expect(locations.length).to.equal(2)
+      expect(locations[0].value).to.equal('loc:maj03')
+      expect(locations[0].label).to.equal('SASB M1 - General Research - Room 315')
+      expect(locations[1].value).to.equal('loc:rc2ma,offsite')
+      expect(locations[1].label).to.equal('Offsite')
+    })
+  })
 });
