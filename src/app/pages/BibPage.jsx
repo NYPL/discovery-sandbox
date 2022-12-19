@@ -96,6 +96,7 @@ export const BibPage = (
   }
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
+  const itemsAggregations = bib['itemAggregations'] || [];
   const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
   const isElectronicResources = items.every(
     (item) => item.isElectronicResource,
@@ -145,23 +146,18 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        {
-          items.length && !isElectronicResources ?
-            (
-              <section style={{ marginTop: '20px' }} id="items-table">
-                <ItemsContainer
-                  key={bibId}
-                  shortenItems={location.pathname.indexOf('all') !== -1}
-                  items={items}
-                  bibId={bibId}
-                  itemPage={location.search}
-                  searchKeywords={searchKeywords}
-                  holdings={newBibModel.holdings}
-                />
-              </section>
-            ) :
-            null
-        }
+        <section style={{ marginTop: '20px' }} id="items-table">
+          <ItemsContainer
+            key={bibId}
+            shortenItems={location.pathname.indexOf('all') !== -1}
+            items={items}
+            bibId={bibId}
+            itemPage={location.search}
+            searchKeywords={searchKeywords}
+            holdings={newBibModel.holdings}
+            itemsAggregations={itemsAggregations}
+          />
+        </section>
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>

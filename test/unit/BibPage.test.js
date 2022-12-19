@@ -130,7 +130,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
     });
 
     it('has section with id items-table', () => {
@@ -146,37 +146,6 @@ describe('BibPage', () => {
       expect(linkToLegacy.length).to.equal(1);
       expect(linkToLegacy.is('a')).to.equal(true);
       expect(linkToLegacy.prop('href')).to.equal('https://legacyBaseUrl.nypl.org/record=b11417539~S1');
-    });
-  });
-
-  describe('No items', () => {
-    const testStore = makeTestStore({
-      bib: {
-        done: true,
-        numItems: 0,
-      },
-    });
-
-    let component;
-    before(() => {
-      const bib = { ...bibs[0], ...annotatedMarc };
-      bib.items = [];
-      component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => { }}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-          />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
-    });
-
-    it('should not display ItemsContainer', () => {
-      expect(component.find('ItemsContainer').length).to.equal(0);
     });
   });
 
@@ -218,7 +187,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+      expect(component.find('h3').at(3).prop('children')).to.equal('Details');
     });
 
     it('has holdings section', () => {

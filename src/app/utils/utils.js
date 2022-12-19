@@ -619,7 +619,7 @@ const truncateStringOnWhitespace = (str, maxLength) => {
 };
 
 /**
-  this is used for the item Filters
+  This is used for the item filter options to make sure an option is checked.
   @param {array | string} filterValue
   @param {string} itemValue
   @return {boolean}
