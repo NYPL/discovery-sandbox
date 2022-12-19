@@ -201,6 +201,7 @@ describe('ItemFilters', () => {
         { context: contextWithMultipleFilters }
       );
     });
+
     it('should remove blank aggregations and combine duplicated ones', () => {
       const itemFilter = component.find(ItemFilter)
       const locations = itemFilter.at(0).prop('options')

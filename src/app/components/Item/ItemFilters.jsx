@@ -35,15 +35,17 @@ const ItemFilters = (
   reducedItemsAggregations.forEach((agg) => {
     const values = agg.values
     const reducedValues = {}
-    values.filter(value => value.label && value.label.length)
+    values.filter(value => value.label?.length)
       .forEach((value) => {
-        if (!reducedValues[value.label]) {
-          reducedValues[value.label] = []
+        let label = value.label
+        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
+        if (!reducedValues[label]) {
+          reducedValues[label] = new Set()
         }
-        reducedValues[value.label].push(value.value)
+        reducedValues[label].add(value.value)
       })
     agg.values = Object.keys(reducedValues)
-      .map(label => ({ value: reducedValues[label].join(","), label: label }))
+      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
   })
   // For every item aggregation, go through every filter in its `values` array
   // and map all the labels to their ids. This is done because the API expects

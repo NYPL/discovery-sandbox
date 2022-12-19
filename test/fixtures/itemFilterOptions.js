@@ -94,6 +94,26 @@ const itemsAggregations2 = [
         value: 'loc:rc2ma'
       },
       {
+        count: 12,
+        label: 'Off site',
+        value: 'loc:rc2ma'
+      },
+      {
+        count: 12,
+        label: 'Off-site',
+        value: 'loc:rc2ma'
+      },
+      {
+        count: 12,
+        label: 'off-site',
+        value: 'loc:rc2ma'
+      },
+      {
+        count: 12,
+        label: 'off site',
+        value: 'loc:rc2ma'
+      },
+      {
         count: 2,
         value: 'offsite',
         label: 'Offsite'
