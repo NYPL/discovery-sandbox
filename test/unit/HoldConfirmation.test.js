@@ -110,10 +110,11 @@ describe('HoldConfirmation', () => {
 
       it('should render the error message.', () => {
         const main = component.find('main');
+        console.log(main.html());
         const expectedHTML = new RegExp(
           '<p>(.*)We could not process your request at this time.' +
           '(.*)Please try again or contact 917-ASK-NYPL(.*)' +
-          '((.*)<a href="tel:19172756975">917-275-6975</a>(.*)).(.*)</p>');
+          '((.*)<a (.*) href="tel:19172756975">917-275-6975</a>(.*)).(.*)</p>');
         expect(
           expectedHTML
             .test(main.html()))

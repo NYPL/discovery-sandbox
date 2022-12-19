@@ -1,3 +1,4 @@
+import { Link } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -159,9 +160,9 @@ class ElectronicDeliveryForm extends React.Component {
                 You may request one chapter, one article, around 10% of work, or 50 pages for public domain works.
               </span><br />
               <span>
-                <a href={aboutUrl}>
+                <Link href={aboutUrl}>
                   Read more about this service
-                </a>.
+                </Link>.
               </span>
               <div className={`nypl-text-field ${errorClass.startPage}`}>
                 <label htmlFor="startPage" id="startPage-label">Starting Page Number
@@ -308,7 +309,7 @@ class ElectronicDeliveryForm extends React.Component {
               <div className="nypl-text-area-with-label">
                 <label htmlFor="requestNotes" id="requestNotes-label">Notes</label>
                 <p>
-                  Provide additional instructions here. For more information on placing an electronic delivery request, please see <span><a href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</a>.</span>
+                  Provide additional instructions here. For more information on placing an electronic delivery request, please see <span><Link href="https://www.nypl.org/help/request-research-materials">Requesting Research Materials</Link>.</span>
                 </p>
                 <textarea
                   className="nypl-text-area"
