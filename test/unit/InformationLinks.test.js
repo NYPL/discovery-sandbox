@@ -1,6 +1,6 @@
 import InformationLinks from "../../src/app/components/Item/InformationLinks"
 import { aeonUrl } from '../../src/app/components/Item/ItemTableRow'
-import { FeedbackBoxContext } from "../../src/app/context/FeedbackContext"; å
+import { FeedbackBoxContext } from "../../src/app/context/FeedbackContext";
 import Feedback from '../../src/app/components/Feedback/Feedback'
 
 import React from 'react';
