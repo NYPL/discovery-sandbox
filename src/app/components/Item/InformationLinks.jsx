@@ -14,8 +14,14 @@ const locationUrlEndpoint = (location) => {
 }
 
 const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
-  const { onOpen: openFeedbackBox, setItemMetadata } = useContext
-    (FeedbackBoxContext)
+  let openFeedbackBox, setItemMetadata
+
+  // conditional for testing 
+  const feedback = useContext(FeedbackBoxContext)
+  if (feedback) {
+    openFeedbackBox = feedback.onOpen
+    setItemMetadata = feedback.setItemMetadata
+  }
   const onContact = (metadata) => {
     setItemMetadata(metadata)
     openFeedbackBox()

@@ -5,7 +5,6 @@ import { trackDiscovery } from '../utils/utils';
 
 export const FeedbackBoxContext = createContext(null);
 export const FeedbackBoxProvider = ({ children, value }) => {
-  console.log(value)
   const [itemMetadata, setItemMetadata] = useState(value && value.itemMetadata ? value.itemMetadata : null)
   const { FeedbackBox, isOpen, onOpen, onClose } = useFeedbackBox()
   const openFeedbackBox = () => {
