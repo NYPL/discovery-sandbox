@@ -5,6 +5,10 @@ import { FeedbackBoxContext } from '../../context/FeedbackContext'
 import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig'
 
+/**
+ * Component that wraps the DS Feedback box. Can be opened by clicking the button rendered
+ * or by clicking on 'Contact a librarian' (located in src/app/components/Item/InformationLinks.jsx)
+ */
 const Feedback = () => {
   const [screen, setScreen] = useState('form')
   const { FeedbackBox, isOpen, onClose, onOpen, itemMetadata, setItemMetadata } = useContext(FeedbackBoxContext)
@@ -29,7 +33,7 @@ const Feedback = () => {
     }
   }
 
-  return <>
+  return (
     <FeedbackBox
       onSubmit={submitFeedback}
       isOpen={isOpen}
@@ -41,8 +45,7 @@ const Feedback = () => {
       hiddenFields={itemMetadata}
       notificationText={itemMetadata && itemMetadata.callNumber ? `Call Number: ${itemMetadata.callNumber}` : null}
       view={screen}
-    />
-  </>
+    />)
 }
 
 export default Feedback
