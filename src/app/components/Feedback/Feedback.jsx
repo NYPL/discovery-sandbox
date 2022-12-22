@@ -21,7 +21,7 @@ const Feedback = () => {
     trackDiscovery('Feedback', 'Submit')
     try {
       const res = await axios.post(`${appConfig.baseUrl}/api/feedback`,
-        metadataAndComment)
+        { fields: metadataAndComment })
       if (res.data.error) {
         console.error(res.data.error);
         return;
