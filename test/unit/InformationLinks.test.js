@@ -70,7 +70,7 @@ describe('information links', () => {
   // Enzyme cannot find the new DS Feedback modal, so these tests will have to wait until we upgrade to jest/react-testing-library
   xdescribe('clicking contact a librarian', () => {
     const item = libraryItems.requestable_ReCAP_not_available
-    const openSpy = sinon.spy()
+    // const openSpy = sinon.spy()
     const FeedBackAndInfoLinks = () => {
       const mockProvider = ({ children, value }) => {
         const [itemMetadata, setItemMetadata] = useState(value && value.itemMetadata ? value.itemMetadata : null)
@@ -97,7 +97,6 @@ describe('information links', () => {
       const open = component.find('Feedback').find('button#open')
       open.invoke('onClick')
       component.update()
-      console.log(component.html())
       expect()
     })
   })
