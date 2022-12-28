@@ -28,7 +28,6 @@ describe('BibPage', () => {
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
       bib: {
-        done: true,
         numItems: 0,
       },
     });
@@ -103,7 +102,6 @@ describe('BibPage', () => {
   describe('Non-serial bib', () => {
     const testStore = makeTestStore({
       bib: {
-        done: true,
         numItems: 0,
       },
     });
@@ -159,7 +157,6 @@ describe('BibPage', () => {
       const testStore = makeTestStore({
         bib: {
           items: [{ holdingLocationCode: 'lol', id: 1234 }],
-          done: true,
           numItems: 0,
         },
       });
@@ -253,7 +250,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });
@@ -283,7 +279,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['\u200FParallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });
@@ -313,7 +308,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });

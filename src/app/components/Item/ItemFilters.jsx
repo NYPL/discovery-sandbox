@@ -12,7 +12,7 @@ import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 
 const ItemFilters = (
-  { numOfFilteredItems, itemsAggregations = [], dispatch },
+  { numOfFilteredItems, itemsAggregations = [], dispatch, totalItemsLength },
   { router },
 ) => {
   const mediaType = React.useContext(MediaContext);
@@ -65,7 +65,7 @@ const ItemFilters = (
   // When new items are fetched, update the selected string dispaly.
   useEffect(() => {
     setSelectedFilterDisplayStr(parsedFilterSelections());
-  }, [numOfFilteredItems, parsedFilterSelections])
+  }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
    * When new filters are selected or unselected, fetch new items.
@@ -108,11 +108,9 @@ const ItemFilters = (
       bibApi,
       (resp) => {
         const { bib } = resp.data;
-        const done = !bib || !bib.items || bib.items.length < itemBatchSize;
         dispatch(
           updateBibPage({
             bib: Object.assign({}, bib, {
-              done,
               itemFrom: parseInt(itemBatchSize, 10),
             }),
           }),
@@ -285,8 +283,8 @@ const ItemFilters = (
       <div className="item-filter-info">
         <Heading level="three" size="callout">
           <>
-            {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
-            {numOfFilteredItems !== 1 ? 's' : null} Found
+            {totalItemsLength > 0 ? totalItemsLength : 'No'} Result
+            {totalItemsLength !== 1 ? 's' : null} Found
           </>
         </Heading>
         {selectedFilterDisplayStr ? (
@@ -308,9 +306,9 @@ const ItemFilters = (
 
 ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
-  hasFilterApplied: PropTypes.bool,
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
+  totalItemsLength: PropTypes.number,
 };
 
 ItemFilters.contextTypes = {

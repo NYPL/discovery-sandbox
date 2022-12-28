@@ -99,7 +99,6 @@ const context = {
 };
 
 const testBib = {
-  done: true,
   numItems: 0,
 };
 describe('ItemsContainer', () => {
@@ -252,7 +251,6 @@ describe('ItemsContainer', () => {
     let component
     const store = makeTestStore({
       bib: {
-        done: true,
         items: longListItems
       }
     })

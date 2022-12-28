@@ -1,12 +1,8 @@
-import { updateBibPage } from '@Actions';
 import { Heading } from '@nypl/design-system-react-components';
-import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
-
 // Components
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BibDetails from '../components/BibPage/BibDetails';
@@ -27,8 +23,6 @@ import {
   stringDirection,
   matchParallels,
 } from '../utils/bibDetailsUtils';
-import appConfig from '../data/appConfig';
-import { itemBatchSize } from '../data/constants';
 import {
   getAggregatedElectronicResources,
   isNyplBnumber,
@@ -39,60 +33,13 @@ import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
-const checkForMoreItems = (bib, dispatch) => {
-  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
-    // nothing to do
-  } else if (bib && bib.items.length < itemBatchSize) {
-    // done
-    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
-  } else {
-    // need to fetch more items
-    const baseUrl = appConfig.baseUrl;
-    const itemFrom = bib.itemFrom || itemBatchSize;
-    const bibApi = `${window.location.pathname.replace(
-      baseUrl,
-      `${baseUrl}/api`,
-    )}?itemFrom=${itemFrom}`;
-    ajaxCall(
-      bibApi,
-      (resp) => {
-        // put items in
-        const bibResp = resp.data.bib;
-        const done =
-          !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
-        dispatch(
-          updateBibPage({
-            bib: Object.assign({}, bib, {
-              items: bib.items.concat((bibResp && bibResp.items) || []),
-              done,
-              itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
-            }),
-          }),
-        );
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
-  }
-};
-
 export const BibPage = (
-  { bib, location, searchKeywords, dispatch, resultSelection, features },
+  { bib, location, searchKeywords, resultSelection, features },
   context,
 ) => {
   const useParallels = features && features.includes('parallels')
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
-  }
-
-  if (typeof window !== 'undefined') {
-    // check whether this is a server side or client side render
-    // by whether 'window' is defined. After the first render on the client side
-    // check for more items
-    checkForMoreItems(bib, dispatch);
-    // NOTE: I'm not entirely sure what this is doing yet, but I believe it should be
-    // done in an effect.
   }
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
