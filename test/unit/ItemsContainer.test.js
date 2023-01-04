@@ -200,7 +200,7 @@ describe('ItemsContainer', () => {
     });
 
     it('should have showAll state equal to true when the show all link is clicked', () => {
-      const allItemsLink = component.find('.view-all-items-container').find('a');
+      const allItemsLink = component.find('.view-all-items-container').find('button');
 
       expect(component.state('showAll')).to.equal(false);
       allItemsLink.simulate('click');
