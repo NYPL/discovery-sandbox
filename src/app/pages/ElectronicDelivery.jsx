@@ -32,7 +32,6 @@ class ElectronicDelivery extends React.Component {
       serverRedirect,
     });
 
-    this.requireUser = this.requireUser.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
     this.raiseError = this.raiseError.bind(this);
     this.fromUrl = this.fromUrl.bind(this);
@@ -40,7 +39,6 @@ class ElectronicDelivery extends React.Component {
   }
 
   componentDidMount() {
-    this.requireUser();
     if (this.state.serverRedirect) {
       this.setState({
         serverRedirect: false,
@@ -188,23 +186,6 @@ class ElectronicDelivery extends React.Component {
   raiseError(error) {
     this.setState({ raiseError: error });
     trackDiscovery('Error', 'EDD');
-  }
-
-  /**
-   * requireUser()
-   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
-   *
-   * @return {Boolean}
-   */
-  requireUser() {
-    if (this.props.patron && this.props.patron.id) {
-      return true;
-    }
-
-    const fullUrl = encodeURIComponent(window.location.href);
-    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-
-    return false;
   }
 
   render() {

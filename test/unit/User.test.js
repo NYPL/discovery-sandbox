@@ -50,10 +50,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     requireUser.restore();
   });
 
-  it('should return { redirect: true }', () => {
+  it('should return { redirect: [redirect url] }', () => {
     requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0].redirect).to.equal(true);
+    expect(requireUser.returnValues[0].redirect).to.equal('https://login.nypl.org/auth/login?redirect_uri=http%3A%2F%2Fhost%2Fhold%2Frequest%2Fb11995345-i14211097');
   });
 });
 
@@ -71,10 +71,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
       requireUser.restore();
     });
 
-    it('should return { redirect: true }', () => {
+    it('should return { redirect: [redirect url] }', () => {
       requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-      expect(requireUser.returnValues[0].redirect).to.equal(true);
+      expect(requireUser.returnValues[0].redirect).to.equal('https://login.nypl.org/auth/login?redirect_uri=http%3A%2F%2Fhost%2Fhold%2Frequest%2Fb11995345-i14211097');
     });
   },
 );
@@ -104,10 +104,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
       requireUser.restore();
     });
 
-    it('should return { redirect: true }', () => {
+    it('should return { redirect: [redirect url] }', () => {
       requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-      expect(requireUser.returnValues[0].redirect).to.equal(true);
+      expect(requireUser.returnValues[0].redirect).to.equal('https://login.nypl.org/auth/login?redirect_uri=http%3A%2F%2Fhost%2Fhold%2Frequest%2Fb11995345-i14211097');
     });
   },
 );
@@ -126,10 +126,10 @@ describe('If requireUser does not receive valid value from "req.patronTokenRespo
     requireUser.restore();
   });
 
-  it('should return { redirect: true }', () => {
+  it('should return { redirect: [redirect url] }', () => {
     requireUser(renderMockReq(mockPatronTokenResponse), mockRes);
 
-    expect(requireUser.returnValues[0].redirect).to.equal(true);
+    expect(requireUser.returnValues[0].redirect).to.equal('https://login.nypl.org/auth/login?redirect_uri=http%3A%2F%2Fhost%2Fhold%2Frequest%2Fb11995345-i14211097');
   });
 });
 
