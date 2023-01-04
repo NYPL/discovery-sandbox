@@ -1,9 +1,11 @@
 import InformationLinks from "../../src/app/components/Item/InformationLinks"
 import { aeonUrl } from '../../src/app/components/Item/ItemTableRow'
+import { FeedbackBoxContext } from "../../src/app/context/FeedbackContext";
+import Feedback from '../../src/app/components/Feedback/Feedback'
 
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import libraryItems from '../fixtures/libraryItems';
 
 describe('information links', () => {
@@ -65,4 +67,37 @@ describe('information links', () => {
       expect(component.html()).to.include(`href="${item.locationUrl}"`)
     })
   })
+  // Enzyme cannot find the new DS Feedback modal, so these tests will have to wait until we upgrade to jest/react-testing-library
+  // xdescribe('clicking contact a librarian', () => {
+  //   const item = libraryItems.requestable_ReCAP_not_available
+  //   // const openSpy = sinon.spy()
+  //   const FeedBackAndInfoLinks = () => {
+  //     const mockProvider = ({ children, value }) => {
+  //       const [itemMetadata, setItemMetadata] = useState(value && value.itemMetadata ? value.itemMetadata : null)
+  //       const useFeedbackBox = sinon.stub().returns({ onOpen: openSpy })
+  //       const { FeedbackBox, isOpen, onOpen, onClose } = useFeedbackBox()
+  //       const openFeedbackBox = () => {
+  //         openSpy()
+  //       }
+  //       return (
+  //         <FeedbackBoxContext.Provider value={{
+  //           onOpen: openFeedbackBox, FeedbackBox, isOpen, onClose, itemMetadata, setItemMetadata
+  //         }}> {children}</FeedbackBoxContext.Provider >
+  //       );
+  //     }
+  //     return (
+  //       <FeedbackBoxProvider >
+  //         <InformationLinks {...item} />
+  //       </FeedbackBoxProvider>)
+  //   }
+  //   const component = mount(<FeedBackAndInfoLinks />)
+  //   it('should open feedback dialog with item metadata', async () => {
+  //     // const contact = component.find('#contact-librarian').at(0)
+  //     // await contact.invoke('onClick')
+  //     const open = component.find('Feedback').find('button#open')
+  //     open.invoke('onClick')
+  //     component.update()
+  //     expect()
+  //   })
+  // })
 })
