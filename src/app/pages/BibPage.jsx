@@ -1,6 +1,6 @@
 import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 // Components
@@ -14,6 +14,8 @@ import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import LibraryItem from '../utils/item';
 import SccContainer from '../components/SccContainer/SccContainer';
 // Utils and configs
+import { updateBibPage } from '@Actions';
+import { ajaxCall } from '@utils';
 import {
   allFields,
   annotatedMarcDetails,
@@ -29,15 +31,61 @@ import {
   pluckAeonLinksFromResource,
 } from '../utils/utils';
 import getOwner from '../utils/getOwner';
+import appConfig from '../data/appConfig';
+import { itemBatchSize } from '../data/constants';
 import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
+const checkForMoreItems = (bib, dispatch, numItemsTotal) => {
+  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+    // nothing to do
+  } else if (bib && bib.items.length >= numItemsTotal) {
+    // done
+    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
+  } else {
+    // need to fetch more items
+    const baseUrl = appConfig.baseUrl;
+    const itemFrom = bib.itemFrom || itemBatchSize;
+    const bibApi = `${window.location.pathname.replace(
+      baseUrl,
+      `${baseUrl}/api`,
+    )}?itemFrom=${itemFrom}`;
+    ajaxCall(
+      bibApi,
+      (resp) => {
+        // put items in
+        const bibResp = resp.data.bib;
+        const done =
+          !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+        dispatch(
+          updateBibPage({
+            bib: Object.assign({}, bib, {
+              items: bib.items.concat((bibResp && bibResp.items) || []),
+              done,
+              itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
+            }),
+          }),
+        );
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  }
+};
+
 export const BibPage = (
-  { bib, location, searchKeywords, resultSelection, features },
+  { bib, location, searchKeywords, resultSelection, features, dispatch },
   context,
 ) => {
-  const useParallels = features && features.includes('parallels')
+  const useParallels = features && features.includes('parallels');
+  const numItemsTotal = bib.numItemsTotal;
+
+  useEffect(() => {
+    checkForMoreItems(bib, dispatch, numItemsTotal);
+  }, [bib, dispatch, numItemsTotal]);
+
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
@@ -103,6 +151,7 @@ export const BibPage = (
             searchKeywords={searchKeywords}
             holdings={newBibModel.holdings}
             itemsAggregations={itemsAggregations}
+            numItemsTotal={numItemsTotal}
           />
         </section>
 

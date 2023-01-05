@@ -124,9 +124,8 @@ class ItemsContainer extends React.Component {
   }
 
   render() {
-    const { bibId, dispatch, itemsAggregations }= this.props;
+    const { bibId, dispatch, itemsAggregations, numItemsTotal }= this.props;
     const shortenItems = !this.props.shortenItems;
-    const totalItemsLength = this.state.items.length;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
     
@@ -164,12 +163,12 @@ class ItemsContainer extends React.Component {
             numOfFilteredItems={itemsToDisplay.length}
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
-            totalItemsLength={totalItemsLength}
+            numItemsTotal={numItemsTotal}
           />
           {itemTable}
           {!!(
             shortenItems &&
-            totalItemsLength > itemsListPageLimit &&
+            numItemsTotal > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -206,6 +205,7 @@ ItemsContainer.propTypes = {
   holdings: PropTypes.array,
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
+  numItemsTotal: PropTypes.number,
 };
 
 ItemsContainer.defaultProps = {

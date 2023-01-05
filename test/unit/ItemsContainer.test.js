@@ -141,7 +141,9 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(<ItemsContainer items={longListItems} bib={testBib} />, { context });
+      component = mount(
+        <ItemsContainer items={longListItems} bib={testBib} numItemsTotal={longListItems.length} />,
+        { context });
     });
 
     it('should render an ItemTable component', () => {
@@ -161,7 +163,15 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
+      component = shallow(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib} 
+          numItemsTotal={longListItems.length}
+        />,
+        { context }
+      );
     });
 
     it('should render a "View All Items" link', () => {
@@ -190,7 +200,12 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+          numItemsTotal={longListItems.length}
+        />,
         { context },
       );
     });
