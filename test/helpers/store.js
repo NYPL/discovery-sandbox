@@ -8,6 +8,10 @@ import thunk from 'redux-thunk';
 import initialState from '../../src/app/stores/InitialState';
 import { PatronProvider } from '../../src/app/context/PatronContext';
 
+/**
+ * Helper component to wrap components being tested that need access to
+ * either the Redux store or the PatronContext.
+ */
 const TestProvider = ({ store, children, patron }) => {
   return (
     <PatronProvider patron={patron}>
