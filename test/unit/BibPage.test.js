@@ -14,7 +14,7 @@ import { BibPage } from './../../src/app/pages/BibPage';
 import bibs from '../fixtures/bibs';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 import mockBibWithHolding from '../fixtures/mockBibWithHolding.json';
-import { makeTestStore } from '../helpers/store';
+import { makeTestStore, mountTestRender, shallowTestRender } from '../helpers/store';
 import { mockRouterContext } from '../helpers/routing';
 import BackToSearchResults from '../../src/app/components/BibPage/BackToSearchResults';
 import { Link } from 'react-router';
@@ -22,6 +22,7 @@ import BibDetails from '../../src/app/components/BibPage/BibDetails';
 import ElectronicResources from '../../src/app/components/BibPage/ElectronicResources'
 import { isAeonLink } from '../../src/app/utils/utils';
 import { Heading } from '@nypl/design-system-react-components';
+
 
 describe('BibPage', () => {
   const context = mockRouterContext();
@@ -34,19 +35,17 @@ describe('BibPage', () => {
     });
 
     const bib = { ...bibs[2] };
-    const page = mount(
-      <Provider store={testStore}>
-        <BibPage
-          location={{ search: 'search', pathname: '' }}
-          bib={bib}
-          dispatch={() => { }}
-          resultSelection={{
-            fromUrl: '',
-            bibId: '',
-          }}
-        />
-      </Provider>,
-      { context, childContextTypes: { router: PropTypes.object } },
+    const page = mountTestRender(
+      <BibPage
+        location={{ search: 'search', pathname: '' }}
+        bib={bib}
+        dispatch={() => {}}
+        resultSelection={{
+          fromUrl: '',
+          bibId: '',
+        }}
+      />,
+      { context, childContextTypes: { router: PropTypes.object }, store: testStore },
     );
 
     it('should have an Aeon link available', () => {
@@ -80,20 +79,18 @@ describe('BibPage', () => {
 
     it('should not render Electronic Resources component when there are no electronic resources', () => {
       const noElectronicResourcesBib = bibs[0]
-      const noElectronicResourcesBibPage = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={noElectronicResourcesBib}
-            dispatch={() => { }}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-          />
-        </Provider>,
-        { context, childContextTypes: { router: PropTypes.object } })
-
+      const noElectronicResourcesBibPage = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={noElectronicResourcesBib}
+          dispatch={() => { }}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />,
+        { context, childContextTypes: { router: PropTypes.object }, store: testStore }
+      );
       expect(noElectronicResourcesBibPage.find(ElectronicResources)).to.have.lengthOf(0)
     })
 
@@ -110,18 +107,18 @@ describe('BibPage', () => {
     let component;
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
-      component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => { }}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-          />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+      component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => { }}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />,
+        { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+      );
     });
 
 
@@ -161,18 +158,18 @@ describe('BibPage', () => {
     before(() => {
       const bib = { ...bibs[0], ...annotatedMarc };
       bib.items = [];
-      component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => { }}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-          />
-        </Provider>, { context, childContextTypes: { router: PropTypes.object } });
+      component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => { }}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />,
+        { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+      );
     });
 
     it('should not display ItemsContainer', () => {
@@ -195,21 +192,18 @@ describe('BibPage', () => {
         },
       });
 
-      component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => { }}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-          />
-        </Provider>, {
-        context,
-        childContextTypes: { router: PropTypes.object },
-      });
+      component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => { }}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+        />,
+        { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+      );
 
     });
 
@@ -288,22 +282,21 @@ describe('BibPage', () => {
           numItems: 0,
         },
       });
-      const component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => undefined}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-            features={['parallels']}
-          />
-        </Provider>,
+      const component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => undefined}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+          features={['parallels']}
+        />,
         {
           context,
           childContextTypes: { router: PropTypes.object },
+          store: testStore,
         },
       );
 
@@ -318,22 +311,21 @@ describe('BibPage', () => {
           numItems: 0,
         },
       });
-      const component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => undefined}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-            features={['parallels']}
-          />
-        </Provider>,
+      const component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => undefined}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+          features={['parallels']}
+        />,
         {
           context,
           childContextTypes: { router: PropTypes.object },
+          store: testStore,
         },
       );
 
@@ -348,22 +340,21 @@ describe('BibPage', () => {
           numItems: 0,
         },
       });
-      const component = mount(
-        <Provider store={testStore}>
-          <BibPage
-            location={{ search: 'search', pathname: '' }}
-            bib={bib}
-            dispatch={() => undefined}
-            resultSelection={{
-              fromUrl: '',
-              bibId: '',
-            }}
-            features={['parallels']}
-          />
-        </Provider>,
+      const component = mountTestRender(
+        <BibPage
+          location={{ search: 'search', pathname: '' }}
+          bib={bib}
+          dispatch={() => undefined}
+          resultSelection={{
+            fromUrl: '',
+            bibId: '',
+          }}
+          features={['parallels']}
+        />,
         {
           context,
           childContextTypes: { router: PropTypes.object },
+          store: testStore,
         },
       );
 

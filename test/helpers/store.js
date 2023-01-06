@@ -6,26 +6,32 @@ import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
 import initialState from '../../src/app/stores/InitialState';
+import { PatronProvider } from '../../src/app/context/PatronContext';
 
-const TestProvider = ({
-  store,
-  children,
-}) => {
-
-  return < Provider store={store} > {children}</Provider >;
+const TestProvider = ({ store, children, patron }) => {
+  return (
+    <PatronProvider patron={patron}>
+      <Provider store={store}>
+        {children}
+      </Provider>
+    </PatronProvider>
+  );
 }
 
-function testRender(ui, renderFunc, { store, ...otherOpts }) {
-  return renderFunc(<TestProvider store={store}>{ui}</TestProvider>, {
-    context: {
-      router: {
-        location: { query: {}, pathname: '' },
-        createHref: () => {},
-        push: () => {},
+function testRender(ui, renderFunc, { store, patron, ...otherOpts }) {
+  return renderFunc(
+    <TestProvider store={store} patron={patron}>{ui}</TestProvider>,
+    {
+      context: {
+        router: {
+          location: { query: {}, pathname: '' },
+          createHref: () => {},
+          push: () => {},
+        },
       },
-    },
-    ...otherOpts,
-  });
+      ...otherOpts,
+    }
+  );
 }
 
 export const shallowTestRender = (ui, { store, ...otherOpts }) => testRender(
