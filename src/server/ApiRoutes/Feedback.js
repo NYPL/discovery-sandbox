@@ -11,7 +11,7 @@ export default {
     aws.config.update({ region: 'us-east-1' });
 
     const { fields } = req.body;
-    const fieldsLabels = ['comment', 'email', 'id', 'barcode', 'callNumber', 'bibId']
+    const fieldsLabels = Object.keys(fields)
     const fullUrl = encodeHTML(req.headers.referer);
     const submissionText = fieldsLabels.map(label => `${label}: ${encodeHTML(fields[label])}`).join(', ');
     const emailText = `Question/Feedback from Research Catalog (SCC): ${submissionText} URL: ${fullUrl}`;
