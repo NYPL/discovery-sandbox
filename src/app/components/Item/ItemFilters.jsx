@@ -12,7 +12,7 @@ import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 
 const ItemFilters = (
-  { numOfFilteredItems, itemsAggregations = [], dispatch, totalItemsLength },
+  { numOfFilteredItems, itemsAggregations = [], dispatch, numItemsTotal },
   { router },
 ) => {
   const mediaType = React.useContext(MediaContext);
@@ -283,8 +283,8 @@ const ItemFilters = (
       <div className="item-filter-info">
         <Heading level="three" size="callout">
           <>
-            {totalItemsLength > 0 ? totalItemsLength : 'No'} Result
-            {totalItemsLength !== 1 ? 's' : null} Found
+            {numItemsTotal > 0 ? numItemsTotal : 'No'} Result
+            {numItemsTotal !== 1 ? 's' : null} Found
           </>
         </Heading>
         {selectedFilterDisplayStr ? (
@@ -308,7 +308,7 @@ ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
-  totalItemsLength: PropTypes.number,
+  numItemsTotal: PropTypes.number,
 };
 
 ItemFilters.contextTypes = {

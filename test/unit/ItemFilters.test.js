@@ -36,7 +36,7 @@ describe('ItemFilters', () => {
         <ItemFilters
           items={items}
           numOfFilteredItems={items.length}
-          totalItemsLength={items.length}
+          numItemsTotal={items.length}
           itemsAggregations={itemsAggregations}
         />,
         { context }
@@ -99,7 +99,7 @@ describe('ItemFilters', () => {
         <ItemFilters
           items={items}
           numOfFilteredItems={items.length}
-          totalItemsLength={items.length}
+          numItemsTotal={items.length}
           itemsAggregations={itemsAggregations}
         />,
         { context: contextWithOneFilter }
@@ -133,7 +133,7 @@ describe('ItemFilters', () => {
           numOfFilteredItems={items.length}
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
-          totalItemsLength={1}
+          numItemsTotal={1}
           itemsAggregations={itemsAggregations}
         />,
         { context: contextWithMultipleFilters }
@@ -170,7 +170,7 @@ describe('ItemFilters', () => {
           numOfFilteredItems={0}
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
-          totalItemsLength={0}
+          numItemsTotal={0}
           itemsAggregations={itemsAggregations}
         />,
         { context: contextWithMultipleFilters }
@@ -205,7 +205,7 @@ describe('ItemFilters', () => {
         <ItemFilters
           items={items}
           numOfFilteredItems={0}
-          totalItemsLength={items.length}
+          numItemsTotal={items.length}
           itemsAggregations={itemsAggregations2}
         />,
         { context: contextWithMultipleFilters }
