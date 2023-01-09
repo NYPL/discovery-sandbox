@@ -324,76 +324,41 @@ function newHoldRequest(req, res, resolve) {
         return resolve({ redirect: true });
       }
 
-      const requireUser = User.requireUser(req, res);
-      const { redirect } = requireUser;
-      if (redirect) return resolve({ redirect });
-
-      getDeliveryLocations(
-        barcode,
-        patronId,
-        (deliveryLocations, isEddRequestable) => {
-          resolve({
-            bib,
-            deliveryLocations,
-            isEddRequestable,
-          });
-        },
-        (deliveryLocationsError) => {
-          logger.error(
-            `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
-            deliveryLocationsError,
-          );
-
-          resolve({
-            bib,
-            deliveryLocations: [],
-            isEddRequestable: false,
-          });
+      const userRedirect = User.requireUser(req, res).redirect;
+      if (userRedirect) {
+        return resolve({ redirect: userRedirect });
+      }
+      return User.eligibility(req, res).then((eligibilityResponse) => {
+        if (eligibilityResponse.redirect) {
+          return resolve({ redirect: eligibilityResponse.redirect });
         }
-      );
+
+        return getDeliveryLocations(
+          barcode,
+          patronId,
+          (deliveryLocations, isEddRequestable) => {
+            resolve({
+              bib,
+              deliveryLocations,
+              isEddRequestable,
+            });
+          },
+          (deliveryLocationsError) => {
+            logger.error(
+              `Error retrieving serverside delivery locations in newHoldRequest, bibId: ${bibId}`,
+              deliveryLocationsError,
+            );
+
+            resolve({
+              bib,
+              deliveryLocations: [],
+              isEddRequestable: false,
+            });
+          }
+        );
+      })
     },
     bibResponseError => resolve(bibResponseError),
-    {
-      fetchSubjectHeadingData: false,
-      features: urlEnabledFeatures,
-    },
-  );
-}
-
-function newHoldRequestServerEdd(req, res, next) {
-  const { dispatch } = req.store;
-  const requireUser = User.requireUser(req, res);
-  const { redirect } = requireUser;
-  const error = req.query.error ? JSON.parse(req.query.error) : {};
-  const form = req.query.form ? JSON.parse(req.query.form) : {};
-  const bibId = req.params.bibId || '';
-  const itemId = req.params.itemId || '';
-  const { features } = req.query;
-  const urlEnabledFeatures = extractFeatures(features);
-
-  if (redirect) return false;
-
-  // Retrieve item
-  return Bib.fetchBib(
-    bibId + (itemId.length ? `-${itemId}` : ''),
-    (data) => {
-      dispatch(updateBib(data.bib));
-      dispatch(updateSearchKeywords(req.query.searchKeywords));
-      next();
-    },
-    (bibResponseError) => {
-      logger.error(
-        `Error retrieving server side bib record in newHoldRequestServerEdd, id: ${bibId}`,
-        bibResponseError,
-      );
-      dispatch(updateHoldRequestPage({
-        bib: {},
-        searchKeywords: req.query.searchKeywords || '',
-        error,
-        form,
-      }));
-      next();
-    },
     {
       fetchSubjectHeadingData: false,
       features: urlEnabledFeatures,
@@ -539,7 +504,6 @@ export default {
   getDeliveryLocations,
   confirmRequestServer,
   newHoldRequest,
-  newHoldRequestServerEdd,
   createHoldRequestServer,
   eddServer,
 };
