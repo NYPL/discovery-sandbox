@@ -12,7 +12,13 @@ import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 
 const ItemFilters = (
-  { numOfFilteredItems, itemsAggregations = [], dispatch, numItemsTotal },
+  {
+    numOfFilteredItems,
+    itemsAggregations = [],
+    dispatch,
+    numItemsTotal,
+    mappedItemsLabelToIds = {}
+  },
   { router },
 ) => {
   const mediaType = React.useContext(MediaContext);
@@ -30,37 +36,6 @@ const ItemFilters = (
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
-  // normalize item aggregations by dropping values with no label and combining duplicate lables
-  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations))
-  reducedItemsAggregations.forEach((agg) => {
-    const values = agg.values
-    const reducedValues = {}
-    values.filter(value => value.label?.length)
-      .forEach((value) => {
-        let label = value.label
-        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
-        if (!reducedValues[label]) {
-          reducedValues[label] = new Set()
-        }
-        reducedValues[label].add(value.value)
-      })
-    agg.values = Object.keys(reducedValues)
-      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
-  })
-  // For every item aggregation, go through every filter in its `values` array
-  // and map all the labels to their ids. This is done because the API expects
-  // the ids of the filters to be sent over, not the labels.
-  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
-    const filter = aggregation.field;
-    const mappedValues = aggregation.values.reduce((acc, value) => ({
-      ...acc,
-      [value.label]: value.value
-    }), {})
-    return {
-      ...accc,
-      [filter]: mappedValues,
-    };
-  }, {});
 
   // When new items are fetched, update the selected string dispaly.
   useEffect(() => {
@@ -145,7 +120,7 @@ const ItemFilters = (
 
   // join filter selections and add single quotes
   const parsedFilterSelections = useCallback(() => {
-    let filterSelectionString = reducedItemsAggregations
+    let filterSelectionString = itemsAggregations
       .map((filter) => {
         const filters = selectedFilters[filter.field];
         if (filters.length) {
@@ -166,7 +141,7 @@ const ItemFilters = (
     }
 
     return filterSelectionString.join(', ');
-  }, [reducedItemsAggregations, selectedFilters, selectedYear]);
+  }, [itemsAggregations, selectedFilters, selectedYear]);
 
   const resetFilters = () => {
     const clear = true;
@@ -217,7 +192,7 @@ const ItemFilters = (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
-          itemsAggregations={reducedItemsAggregations}
+          itemsAggregations={itemsAggregations}
           {...itemFilterComponentProps}
         />
       ) : (
@@ -229,7 +204,7 @@ const ItemFilters = (
         >
           <div>
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
-            {reducedItemsAggregations.map((filter) => (
+            {itemsAggregations.map((filter) => (
               <ItemFilter
                 filter={filter.field}
                 key={filter.id}
@@ -309,6 +284,7 @@ ItemFilters.propTypes = {
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  mappedItemsLabelToIds: PropTypes.object,
 };
 
 ItemFilters.contextTypes = {
