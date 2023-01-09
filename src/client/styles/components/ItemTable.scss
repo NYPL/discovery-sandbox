@@ -58,6 +58,13 @@
   & a {
     text-decoration: underline;
   }
+  #contact-librarian {
+    display: inline;
+    padding: 0;
+    text-decoration: underline;
+    font-size: inherit;
+    font-weight: inherit;
+  }
 }
 .available-text {
   color: $succesPrimary;

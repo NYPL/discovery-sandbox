@@ -12,6 +12,7 @@ import DataLoader from '../DataLoader/DataLoader';
 import appConfig from '../../data/appConfig';
 import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
+import { FeedbackBoxProvider } from '../../context/FeedbackContext';
 
 export const MediaContext = React.createContext('desktop');
 
@@ -80,23 +81,25 @@ export class Application extends React.Component {
     );
 
     return (
-      <MediaContext.Provider value={this.state.media}>
-        <div className="app-wrapper">
-          <Header
-            navData={navConfig.current}
-            patron={this.props.patron}
-            skipNav={{ target: 'mainContent' }}
-          />
-          <DataLoader
-            location={this.context.router.location}
-            key={JSON.stringify(dataLocation)}
-          >
-            {React.cloneElement(this.props.children)}
-          </DataLoader>
-          <Footer />
-          <Feedback />
-        </div>
-      </MediaContext.Provider>
+      <FeedbackBoxProvider>
+        <MediaContext.Provider value={this.state.media}>
+          <div className="app-wrapper">
+            <Header
+              navData={navConfig.current}
+              patron={this.props.patron}
+              skipNav={{ target: 'mainContent' }}
+            />
+            <DataLoader
+              location={this.context.router.location}
+              key={JSON.stringify(dataLocation)}
+            >
+              {React.cloneElement(this.props.children)}
+            </DataLoader>
+            <Footer />
+            <Feedback />
+          </div>
+        </MediaContext.Provider>
+      </FeedbackBoxProvider>
     );
   }
 }
