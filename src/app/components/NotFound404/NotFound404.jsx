@@ -1,3 +1,4 @@
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
 import DocumentTitle from 'react-document-title';
 import { Link } from 'react-router';
@@ -10,13 +11,15 @@ const NotFound404 = () => (
       <div className='nypl-full-width-wrapper'>
         <div className='nypl-row'>
           <div className='nypl-column-three-quarters'>
-            <h1>{`404 Not Found`}</h1>
-            <p>{`We're sorry...`}</p>
-            <p>{`The page you were looking for doesn't exist.`}</p>
+            <h1>404 Not Found</h1>
+            <p>We&apos;re sorry...</p>
+            <p>The page you were looking for doesn&apos;t exist.</p>
             <p>
-              Search the <Link to={`${appConfig.baseUrl}/`}>
-              {appConfig.displayTitle}</Link> or our <a href={appConfig.legacyBaseUrl}>
-              Legacy Catalog</a> for research materials.</p>
+              Search the <DSLink><Link to={`${appConfig.baseUrl}/`}>
+              {appConfig.displayTitle}</Link></DSLink> or our{' '}
+              <DSLink href={appConfig.legacyBaseUrl}>Legacy Catalog</DSLink>{' '}
+              for research materials.
+            </p>
           </div>
         </div>
       </div>

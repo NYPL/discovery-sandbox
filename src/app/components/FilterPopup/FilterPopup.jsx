@@ -1,6 +1,8 @@
+import { Button, Link } from '@nypl/design-system-react-components';
+import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
+import PropTypes from 'prop-types';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import {
   findWhere as _findWhere,
@@ -12,8 +14,6 @@ import {
   clone as _clone,
   union as _union,
 } from 'underscore';
-import { CheckSoloIcon } from '@nypl/dgx-svg-icons';
-import { Button } from '@nypl/design-system-react-components';
 
 import {
   trackDiscovery,
@@ -175,7 +175,7 @@ export class FilterPopup extends React.Component {
     _map(errors, (val, key) => {
       if (val.name && val.value) {
         const anchorTag = (this.state.js) ?
-          <a href={`#${headlineError[val.name]}`}>{val.value}</a> :
+          <Link href={`#${headlineError[val.name]}`}>{val.value}</Link> :
           <span>{val.value}</span>;
 
         errorArray.push(<li key={key}>{anchorTag}</li>);

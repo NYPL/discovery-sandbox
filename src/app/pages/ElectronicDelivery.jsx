@@ -1,3 +1,4 @@
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -10,6 +11,7 @@ import {
   isEmpty as _isEmpty,
   mapObject as _mapObject,
 } from 'underscore';
+
 import { updateLoadingStatus } from '../actions/Actions';
 import ElectronicDeliveryForm from '../components/ElectronicDeliveryForm/ElectronicDeliveryForm';
 import Notification from '../components/Notification/Notification';
@@ -104,7 +106,15 @@ class ElectronicDelivery extends React.Component {
     }
 
     _mapObject(raiseError, (val, key) => {
-      raisedErrors.push(<li key={key}><a href={`#${key}`}>{headlineError[key]}</a></li>);
+      raisedErrors.push(
+        <li key={key}>
+          <DSLink>
+            <Link to={`#${key}`}>
+              {headlineError[key]}
+            </Link>
+          </DSLink>
+        </li>
+      );
     });
 
     return raisedErrors;
@@ -205,12 +215,14 @@ class ElectronicDelivery extends React.Component {
         />
         <div className="nypl-request-item-summary">
           <h2>
-            <Link
-              to={`${appConfig.baseUrl}/bib/${bibId}`}
-              onClick={() => trackDiscovery('EDD - Bib', title)}
-            >
-              {title}
-            </Link>
+            <DSLink>
+              <Link
+                to={`${appConfig.baseUrl}/bib/${bibId}`}
+                onClick={() => trackDiscovery('EDD - Bib', title)}
+              >
+                {title}
+              </Link>
+            </DSLink>
           </h2>
           {
             callNo && (
@@ -225,7 +237,7 @@ class ElectronicDelivery extends React.Component {
           <h2 className='nypl-request-form-title'>
             Electronic delivery options for this item are currently unavailable.
             Please try again later or contact 917-ASK-NYPL (
-            <a href='tel:917-275-6975'>917-275-6975</a>).
+            <DSLink href='tel:917-275-6975'>917-275-6975</DSLink>).
           </h2>
         ) : (
           <div>
