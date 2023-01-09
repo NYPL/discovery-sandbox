@@ -1,45 +1,39 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import { ModalTrigger } from '@nypl/design-system-react-components';
+import PropTypes from 'prop-types';
+import React from 'react';
 
 import ItemFilter from './ItemFilter';
-import { itemFilters } from '../../data/constants';
 
 /**
  * This renders the button that acts as a Modal Trigger. Clicking the button
  * opens a Modal from the new Reservoir Design System, which contains the 
  * items filters.
  */
-
-
 const ItemFiltersMobile = ({
-  options,
+  itemsAggregations,
   manageFilterDisplay,
   selectedFilters,
   setSelectedFilters,
   submitFilterSelections,
   initialFilters,
 }) => {
-  if (!options) return null;
+  if (!itemsAggregations) return null;
   const showResultsAction = () => {
-    submitFilterSelections(selectedFilters);
+    submitFilterSelections();
   };
 
   const modalProps = {
     bodyContent: (
-      <div
-        className="scc-item-filters"
-        id="item-filters-mobile"
-      >
+      <div className="scc-item-filters" id="item-filters-mobile">
         <div id="item-filters" className="item-table-filters">
           {
-            itemFilters.map(filter => (
+            itemsAggregations.map(filter => (
               <ItemFilter
-                filter={filter.type}
-                options={options[filter.type]}
-                manageFilterDisplay={manageFilterDisplay}
-                key={filter.type}
+                filter={filter.field}
+                key={filter.id}
+                options={filter.values}
                 mobile
+                manageFilterDisplay={manageFilterDisplay}
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
                 submitFilterSelections={submitFilterSelections}
@@ -67,7 +61,7 @@ const ItemFiltersMobile = ({
 };
 
 ItemFiltersMobile.propTypes = {
-  options: PropTypes.object,
+  itemsAggregations: PropTypes.object,
   manageFilterDisplay: PropTypes.func,
   selectedFilters: PropTypes.object,
   setSelectedFilters: PropTypes.func,

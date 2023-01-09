@@ -5,18 +5,24 @@ import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
 
-export const parseDistinctOptions = options =>
-  Array.from(
-    new Set(options.reduce((optionLabels, option) => {
-      if (Array.isArray(option.label)) return optionLabels.concat(option.label);
-      return optionLabels.concat([option.label]);
-    }, [])),
-  )
-    .map(label => ({
-      id: label,
-      label,
-    }));
+/**
+ * This is to better structure the data for the checkboxes.
+ */
+const updateOptions = options =>
+  options.map(option => ({
+    id: option.label,
+    label: option.label,
+  }));
+const initialFiltersObj = {
+  location: [],
+  format: [],
+  status: [],
+  year: [],
+};
 
+/**
+ * The individual filter dropdown component.
+ */
 const ItemFilter = ({
   filter,
   options,
@@ -26,11 +32,17 @@ const ItemFilter = ({
   submitFilterSelections,
   setSelectedFilters,
   isOpen,
-  initialFilters,
+  initialFilters = initialFiltersObj,
 }) => {
-  if (!options || !filter) return null;
   const [selectionMade, setSelectionMade] = useState(false);
+  const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
+  if (!options || !filter) return null;
+
+  /**
+   * When a filter is selected, let the parent know through
+   * the `setSelectedFilters` function.
+   */
   const selectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
@@ -45,6 +57,10 @@ const ItemFilter = ({
     });
   };
 
+  /**
+   * When a filter is deselected, let the parent know through
+   * the `setSelectedFilters` function.
+   */   
   const deselectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };
@@ -56,72 +72,80 @@ const ItemFilter = ({
     });
   };
 
+  /**
+   * When a checkbox is clicked, check if it is selected or not.
+   */
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
     const currentSelection = selectedFilters[filter];
     if (currentSelection && currentSelection.includes(option.id)) {
       deselectFilter(option);
-    } else selectFilter(option);
+    } else {
+      selectFilter(option);
+    }
   };
 
-  const isSelected = (option) => {
-    if (!initialFilters) return false;
-    const result = isOptionSelected(selectedFilters[filter], option.id);
-
-    return result;
-  };
-
-  const distinctOptions = parseDistinctOptions(options);
-  const thisFilterSelections = initialFilters ? initialFilters[filter] : null;
-  const determineNumOfSelections = () => {
-    if (!thisFilterSelections) return null;
-    return typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
-  };
-  const numOfSelections = determineNumOfSelections();
-
-  const [mobileIsOpen, manageMobileFilter] = useState(false);
-
-  const clickHandler = () => (
-    mobile ? manageMobileFilter(prevState => !prevState) : manageFilterDisplay(filter)
-  );
-  const open = mobile ? mobileIsOpen : isOpen;
+  /**
+   * Clear all the selections for the filter and submit to
+   * get the new results.
+   */
   const clear = () => {
+    const clear = true;
     setSelectionMade(true);
     setSelectedFilters(prevSelectedFilters => ({
       ...prevSelectedFilters,
       [filter]: [],
     }));
+    submitFilterSelections && submitFilterSelections(clear);
   };
+
+  const isSelected = (option) =>
+    isOptionSelected(selectedFilters[filter], option.id);
+  const updatedOptions = updateOptions(options);
+  const determineNumOfSelections = () => {
+    const thisFilterSelections = initialFilters[filter];
+    const numSelection = thisFilterSelections.length === 0 ? '' :
+      typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
+
+    return numSelection ? ` (${numSelection})` : null;
+  };
+  const numOfSelections = determineNumOfSelections();
+  const clickHandler = () => (
+    mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(filter)
+  );
+  const open = mobile ? mobileIsOpen : isOpen;
 
   return (
     <FocusTrap
       focusTrapOptions={{
         clickOutsideDeactivates: true,
-        onDeactivate: () => { if (!mobile) manageFilterDisplay('none'); },
+        onDeactivate: () => {
+          if (!mobile) manageFilterDisplay('none');
+        },
         returnFocusOnDeactivate: false,
       }}
       active={isOpen}
       className="item-filter"
     >
       <Button
-        className={`item-filter-button ${
-          open ? ' open' : ''}`}
         buttonType="secondary"
+        className={`item-filter-button ${open ? ' open' : ''}`}
         id="item-filter-button"
         onClick={clickHandler}
         type="button"
       >
-        {filter}{numOfSelections ? ` (${numOfSelections})` : null} <Icon name={open ? 'minus' : 'plus'} />
+        {filter}{numOfSelections}
+        <Icon name={open ? 'minus' : 'plus'} size='medium' />
       </Button>
       {open ? (
         <div className="item-filter-content">
           <fieldset>
-            {distinctOptions.map((option, i) => (
+            {updatedOptions.map((option, key) => (
               <Checkbox
                 id={option.id}
                 labelText={option.label}
                 onChange={() => handleCheckbox(option)}
-                key={option.id || i}
+                key={key}
                 isChecked={isSelected(option)}
                 __css={{
                   span: {
@@ -145,7 +169,7 @@ const ItemFilter = ({
                   Clear
                 </Button>
                 <Button
-                  onClick={() => submitFilterSelections(selectedFilters)}
+                  onClick={() => submitFilterSelections()}
                   isDisabled={!selectionMade}
                   id="apply-filter-button"
                 >

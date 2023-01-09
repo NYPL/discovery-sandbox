@@ -1,27 +1,106 @@
-import { Button } from '@nypl/design-system-react-components';
+import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React, { Fragment, useState } from 'react';
-import { itemFilters } from '../../data/constants';
+import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
+
+import { updateBibPage } from '@Actions';
+import { ajaxCall } from '@utils';
+import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
+import { itemBatchSize } from '../../data/constants';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 
 const ItemFilters = (
-  { items, hasFilterApplied, numOfFilteredItems },
+  {
+    numOfFilteredItems,
+    itemsAggregations = [],
+    dispatch,
+    numItemsTotal,
+    mappedItemsLabelToIds = {}
+  },
   { router },
 ) => {
-  if (!items || !items.length) return null;
-  const [openFilter, setOpenFilter] = useState('none');
-  const { createHref } = router;
-  const query = router.location.query || {};
+  const mediaType = React.useContext(MediaContext);
+  const { createHref, location } = router;
+  const query = location.query || {};
   const initialFilters = {
     location: query.location || [],
     format: query.format || [],
     status: query.status || [],
   };
-
+  const resultsRef = useRef(null);
+  const [openFilter, setOpenFilter] = useState('none');
+  // The "year" filter is not used for the `ItemFilter` dropdown component
+  // and must be handled separately in the `SearchBar` component.
+  const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
+  const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
+
+  // When new items are fetched, update the selected string dispaly.
+  useEffect(() => {
+    setSelectedFilterDisplayStr(parsedFilterSelections());
+  }, [numOfFilteredItems, parsedFilterSelections]);
+
+  /**
+   * When new filters are selected or unselected, fetch new items.
+   */
+  const getNewBib = (clear = false, clearYear = false) => {
+    const baseUrl = appConfig.baseUrl;
+    let queryParams = [];
+    if (!clear) {
+      // If we are making a request, get all the selected filters and map
+      // the labels to their ids. That will be sent over to the API.
+      Object.keys(selectedFilters).forEach(filter => {
+        const selectedFilterArray = selectedFilters[filter];
+        const mappedFilter = mappedItemsLabelToIds[filter];
+        if (selectedFilterArray.length > 0) {
+          if (Array.isArray(selectedFilterArray)) {
+            queryParams.push(
+              ...selectedFilterArray.map(selectedFilter => {
+                const mappedFilterId = mappedFilter[selectedFilter];
+                return `${filter}=${mappedFilterId}`;
+              })
+            );
+          } else {
+            const mappedFilterId = mappedFilter[selectedFilterArray];
+            queryParams.push(`${filter}=${mappedFilterId}`);
+          }
+        }
+      });
+      // The "year" filter is stored separately from the other filters.
+      if (selectedYear && !clearYear) {
+        queryParams.push(`date=${selectedYear}`);
+      }
+    }
+
+    const bibApi = `${window.location.pathname.replace(
+      baseUrl,
+      `${baseUrl}/api`,
+    )}${queryParams.length ? `?${queryParams.join('&')}` : ''}`;
+    // Make the API call and let redux know.
+    ajaxCall(
+      bibApi,
+      (resp) => {
+        const { bib } = resp.data;
+        dispatch(
+          updateBibPage({
+            bib: Object.assign({}, bib, {
+              itemFrom: parseInt(itemBatchSize, 10),
+            }),
+          }),
+        );
+        // Once the new items are fetched, focus on the
+        // filter UI and the results.
+        if (resultsRef.current) {
+          resultsRef.current.focus();
+        }
+      },
+      (error) => {
+        console.error(error);
+      },
+    );
+  }
 
   const manageFilterDisplay = (filterType) => {
     // reset `selectFilters` to `initialFilters` any time `openFilter` changes
@@ -39,23 +118,11 @@ const ItemFilters = (
     }
   };
 
-  const options = {};
-  const mapFilterIdsToLabel = {};
-  itemFilters.forEach((filter) => {
-    const optionsObjEntry = options[filter.type];
-    const filterOptions =
-      optionsObjEntry || items.map((item) => filter.retrieveOption(item));
-    if (!optionsObjEntry) options[filter.type] = filterOptions;
-    filterOptions.forEach((option) => {
-      mapFilterIdsToLabel[option.id] = option.label;
-    });
-  });
-
   // join filter selections and add single quotes
-  const parsedFilterSelections = () =>
-    itemFilters
+  const parsedFilterSelections = useCallback(() => {
+    let filterSelectionString = itemsAggregations
       .map((filter) => {
-        const filters = initialFilters[filter.type];
+        const filters = selectedFilters[filter.field];
         if (filters.length) {
           let filtersString;
           if (Array.isArray(filters)) {
@@ -63,84 +130,149 @@ const ItemFilters = (
           } else {
             filtersString = filters;
           }
-          return `${filter.type}: '${filtersString}'`;
+          return `${filter.field}: '${filtersString}'`;
         }
         return null;
       })
-      .filter((selected) => selected)
-      .join(', ');
+      .filter((selected) => selected);
+
+    if (selectedYear) {
+      filterSelectionString.push(`year: '${selectedYear}'`);
+    }
+
+    return filterSelectionString.join(', ');
+  }, [itemsAggregations, selectedFilters, selectedYear]);
 
   const resetFilters = () => {
-    const href = router.createHref({
-      pathname: router.location.pathname,
+    const clear = true;
+    getNewBib(clear);
+    setSelectedFilters(initialFilters);
+    const href = createHref({
+      pathname: location.pathname,
       hash: '#item-filters',
     });
     router.push(href);
   };
 
-  const submitFilterSelections = (filters) => {
+  const submitFilterSelections = (clear = false, clearYear = false) => {
+    getNewBib(clear, clearYear);
+    const updatedSelectedFilters = { ...selectedFilters };
+    if (selectedYear) {
+      updatedSelectedFilters.date = selectedYear;
+    }
+    if (clearYear) {
+      delete updatedSelectedFilters.date;
+    }
+
     const href = createHref({
-      ...router.location,
+      ...location,
       ...{
-        query: filters,
+        query: updatedSelectedFilters,
         hash: '#item-filters',
         search: '',
       },
     });
     trackDiscovery(
       'Search Filters',
-      `Apply Filter - ${JSON.stringify(filters)}`,
+      `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
     router.push(href);
+    setSelectedYear('');
   };
 
   const itemFilterComponentProps = {
-    selectedFilters,
-    manageFilterDisplay,
-    setSelectedFilters,
-    submitFilterSelections,
     initialFilters,
+    selectedFilters,
+    setSelectedFilters,
+    manageFilterDisplay,
+    submitFilterSelections,
   };
 
   return (
     <Fragment>
-      <MediaContext.Consumer>
-        {(media) => (
-          <Fragment>
-            {['mobile', 'tabletPortrait'].includes(media) ? (
-              <ItemFiltersMobile
-                options={options}
+      {['mobile', 'tabletPortrait'].includes(mediaType) ? (
+        <ItemFiltersMobile
+          itemsAggregations={itemsAggregations}
+          {...itemFilterComponentProps}
+        />
+      ) : (
+        <div
+          id="item-filters"
+          className="item-table-filters"
+          ref={resultsRef}
+          tabIndex="-1"
+        >
+          <div>
+            <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
+            {itemsAggregations.map((filter) => (
+              <ItemFilter
+                filter={filter.field}
+                key={filter.id}
+                options={filter.values}
+                isOpen={openFilter === filter.field}
                 {...itemFilterComponentProps}
               />
-            ) : (
-              <div id="item-filters" className="item-table-filters">
-                {itemFilters.map((filter) => (
-                  <ItemFilter
-                    filter={filter.type}
-                    key={filter.type}
-                    options={options[filter.type]}
-                    isOpen={openFilter === filter.type}
-                    {...itemFilterComponentProps}
-                  />
-                ))}
-              </div>
-            )}
-          </Fragment>
-        )}
-      </MediaContext.Consumer>
+            ))}
+          </div>
+          <div className='search-year-wrapper'>
+            <Text isBold fontSize="text.caption" mb="xs">Search by Year</Text>
+            <SearchBar
+              id="search-year"
+              onSubmit={(event) => {
+                event.preventDefault();
+                submitFilterSelections();
+              }}
+              textInputElement={
+                <TextInput
+                  id='search-year-input'
+                  isClearable
+                  isClearableCallback={() => { setSelectedYear('') }}
+                  labelText='Search by Year'
+                  maxLength={4}
+                  name='search-year'
+                  pattern='[0-9]+'
+                  placeholder='YYYY'
+                  showLabel={false}
+                  textInputType='searchBarSelect'
+                  onChange={(event) => setSelectedYear(event.target.value)}
+                  value={selectedYear}
+                />
+              }
+            />
+            <Button
+              buttonType="text"
+              id="clear-year-button"
+              onClick={() => {
+                const clearYear = true;
+                setSelectedYear('');
+                submitFilterSelections(false, clearYear)
+              }}
+            >
+              Clear search year
+            </Button>
+          </div>
+          {/* Empty div for flexbox even columns. */}
+          <div></div>
+        </div>
+      )}
       <div className="item-filter-info">
-        <h3>
-          {numOfFilteredItems > 0 ? numOfFilteredItems : 'No'} Result
-          {numOfFilteredItems !== 1 ? 's' : null} Found
-        </h3>
-        {hasFilterApplied ? (
-          <span>Filtered by {parsedFilterSelections()}</span>
-        ) : null}
-        &nbsp;
-        {hasFilterApplied ? (
-          <Button id="clear-filters-button" buttonType="link" onClick={() => resetFilters()}>
-            Clear all filters
-          </Button>
+        <Heading level="three" size="callout">
+          <>
+            {numItemsTotal > 0 ? numItemsTotal : 'No'} Result
+            {numItemsTotal !== 1 ? 's' : null} Found
+          </>
+        </Heading>
+        {selectedFilterDisplayStr ? (
+          <>
+            <span>Filtered by {selectedFilterDisplayStr}</span>
+            <Button
+              buttonType="text"
+              id="clear-filters-button"
+              onClick={resetFilters}
+            >
+              Clear all filters
+            </Button>
+          </>
         ) : null}
       </div>
     </Fragment>
@@ -148,9 +280,11 @@ const ItemFilters = (
 };
 
 ItemFilters.propTypes = {
-  items: PropTypes.array,
-  hasFilterApplied: PropTypes.bool,
+  itemsAggregations: PropTypes.array,
   numOfFilteredItems: PropTypes.number,
+  dispatch: PropTypes.func,
+  numItemsTotal: PropTypes.number,
+  mappedItemsLabelToIds: PropTypes.object,
 };
 
 ItemFilters.contextTypes = {

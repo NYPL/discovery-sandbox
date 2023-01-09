@@ -5,6 +5,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
+import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 const context = {
   router: {
@@ -12,19 +13,6 @@ const context = {
       query: {},
     },
   },
-};
-
-const formatOptions = {
-  format: [
-    {
-      id: 'PRINT',
-      label: 'PRINT',
-    },
-    {
-      id: 'Text',
-      label: 'Text',
-    },
-  ],
 };
 
 describe('ItemFiltersMobile', () => {
@@ -48,7 +36,7 @@ describe('ItemFiltersMobile', () => {
       };
       component = mount(
         <ItemFiltersMobile
-          options={formatOptions}
+          itemsAggregations={itemsAggregations}
           setSelectedFilters={() => { }}
           submitFilterSelections={() => { }}
           initialFilters={initialFilters}
@@ -74,7 +62,7 @@ describe('ItemFiltersMobile', () => {
     it('should render `ItemFilter` for option types passed', () => {
       modalTrigger.simulate('click')
       const itemFilters = component.find('.item-filter')
-      expect(itemFilters.hostNodes().length).to.equal(1);
+      expect(itemFilters.hostNodes().length).to.equal(3);
     });
 
     describe('"Show Results" button', () => {
