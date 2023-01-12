@@ -96,7 +96,7 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsTotalCurrent = bib.items.length;
+  const numItemsTotalCurrent = bib.items ? bib.items.length : [];
   const numItemsTotal = bib.numItemsTotal;
 
   useEffect(() => {
