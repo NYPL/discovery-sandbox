@@ -4,6 +4,7 @@ import { Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import LogoutLink from '../LogoutLink/LogoutLink';
 import appConfig from '../../data/appConfig';
 
 const SubNavLink = ({ type, activeSection, href, children }) => (
@@ -24,6 +25,7 @@ SubNavLink.propTypes = {
 const SubNav = (props) => {
   const features = useSelector(state => state.features);
   const { baseUrl } = appConfig;
+
   return (
     <nav
       className="sub-nav"
@@ -58,6 +60,7 @@ const SubNav = (props) => {
             </>
           ) : null
         }
+        <LogoutLink baseUrl={baseUrl} delineate />
       </ul>
     </nav>
   );

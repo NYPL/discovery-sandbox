@@ -2,11 +2,17 @@
 /* eslint-disable react/jsx-filename-extension */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
-import { Provider } from 'react-redux';
 
 import SubNav from './../../src/app/components/SubNav/SubNav';
-import { makeTestStore } from '../helpers/store';
+import { makeTestStore, mountTestRender } from '../helpers/store';
+
+// To test the "My Account" link feature.
+const storeWithMyAccount = makeTestStore({
+  features: ['my-account'],
+  appConfig: {
+    baseUrl: 'baseUrl.com',
+  },
+});
 
 const mountSubNav = (
   props,
@@ -16,13 +22,8 @@ const mountSubNav = (
       baseUrl: 'baseUrl.com',
     },
   }),
-) => mount(
-  <Provider
-    store={store}
-  >
-    <SubNav {...props} />
-  </Provider>
-);
+  patron = {},
+) => mountTestRender(<SubNav {...props} />,  { store, patron });
 
 describe('SubNav', () => {
   describe('Default rendering, no features', () => {
@@ -56,6 +57,29 @@ describe('SubNav', () => {
 
     it('should have <a> for active section', () => {
       expect(component.find('a').at(1).text()).to.equal('Subject Heading Explorer');
+    });
+  });
+
+  describe('With my-account feature', () => {
+    it('should display the "My Account" link', () => {
+      const component = mountSubNav({}, storeWithMyAccount);
+      expect(component.find('a').last().text()).to.equal('My Account');
+    });
+  });
+
+  describe('Patron log in', () => {
+    it('should not display the "Log Out" link when not signed in', () => {
+      const component = mountSubNav({}, storeWithMyAccount, { loggedIn: false });
+
+      expect(component.find('a').last().text()).to.equal('My Account');
+      expect(component.find('a').last().text()).to.not.equal('Log Out');
+    });
+
+    it('should display the "Log Out" link when signed in', () => {
+      const component = mountSubNav({}, storeWithMyAccount, { loggedIn: true });
+
+      expect(component.find('a').last().text()).to.not.equal('My Account');
+      expect(component.find('a').last().text()).to.equal('Log Out');
     });
   });
 });

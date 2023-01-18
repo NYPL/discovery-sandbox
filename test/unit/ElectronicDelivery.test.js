@@ -19,7 +19,9 @@ describe('ElectronicDeliveryForm', () => {
       appConfigMock = mock(appConfig);
       appConfig.features = [];
       appConfig.eddAboutUrl.default = 'example.com/edd-default-url';
-      component = shallow(<ElectronicDeliveryForm fromUrl='example.com' />);
+      component = shallow(
+        <ElectronicDeliveryForm fromUrl='example.com' />
+      );
     });
 
     after(() => {
