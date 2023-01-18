@@ -2,22 +2,18 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount } from 'enzyme';
-import { Provider } from 'react-redux';
-import { makeTestStore } from '../helpers/store';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 import Home from '../../src/app/pages/Home';
-import appConfig from '../../src/app/data/appConfig';
 
 describe('Home', () => {
   let component;
 
   before(() => {
     const testStore = makeTestStore();
-    component = mount(
-      <Provider store={testStore}>
-        <Home />
-      </Provider>
+    component = mountTestRender(
+      <Home />,
+      { store: testStore }
     );
   });
 
@@ -47,10 +43,9 @@ describe('Home', () => {
   describe('with notification', () => {
     before(() => {
       const testStore = makeTestStore();
-      component = mount(
-        <Provider store={testStore}>
-          <Home />
-        </Provider>
+      component = mountTestRender(
+        <Home />,
+        { store: testStore }
       );
     });
 
