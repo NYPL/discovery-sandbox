@@ -15,7 +15,8 @@ const Feedback = () => {
   const closeAndResetItemMetadata = () => {
     if (itemMetadata) setItemMetadata(null)
     trackDiscovery('Feedback', 'Close');
-    onClose()
+    onClose();
+    setScreen('form');
   }
   const submitFeedback = async (metadataAndComment) => {
     trackDiscovery('Feedback', 'Submit')
@@ -43,7 +44,11 @@ const Feedback = () => {
       title='Help and Feedback'
       showEmailField
       hiddenFields={itemMetadata}
-      notificationText={itemMetadata && itemMetadata.callNumber ? `Call Number: ${itemMetadata.callNumber}` : null}
+      notificationText={
+        itemMetadata && itemMetadata.callNumber ?
+          `You are asking for help or information about ${itemMetadata.callNumber} in this record.`
+          : null
+      }
       view={screen}
     />)
 }
