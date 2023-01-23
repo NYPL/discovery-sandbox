@@ -135,7 +135,7 @@ describe('getDefaultFilters', () => {
  */
  describe('getElectronicResources', () => {
 
-   it('should return object with eResources, including checkInItems but not Aeon links, and count of physical items', () => {
+   it('should return object with eResources, and count of physical items', () => {
      const eResources = getElectronicResources(sampleBib);
      // the sample bib has 1 checkinitem, 1 regular physical item, 1 electronic item, and
      // 1 aeon link
