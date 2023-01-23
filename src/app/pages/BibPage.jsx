@@ -37,7 +37,7 @@ import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
-const checkForMoreItems = (bib, dispatch, numItemsTotal) => {
+const checkForMoreItems = (bib, dispatch, numItemsTotal, mappedItemsLabelToIds) => {
   if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
     // nothing to do
   } else if (bib && bib.items.length >= numItemsTotal) {
@@ -45,12 +45,28 @@ const checkForMoreItems = (bib, dispatch, numItemsTotal) => {
     dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
   } else {
     // need to fetch more items
+    const searchStr = window.location.search;
     const baseUrl = appConfig.baseUrl;
     const itemFrom = bib.itemFrom || itemBatchSize;
+    let filterQuery = '';
+
+    if (searchStr) {
+      const searchParams = new URLSearchParams(searchStr);
+      for (const [qKey, qValue] of searchParams) {
+        if (qKey === 'date') {
+          filterQuery += `&${qKey}=${qValue}`;
+        } else {
+          // For other filters, we need to map the label to the id.
+          filterQuery += `&${qKey}=${mappedItemsLabelToIds[qKey][qValue]}`;
+        }
+      }
+    }
+
     const bibApi = `${window.location.pathname.replace(
       baseUrl,
       `${baseUrl}/api`,
-    )}?itemFrom=${itemFrom}`;
+    )}?itemFrom=${itemFrom}${filterQuery}`;
+
     ajaxCall(
       bibApi,
       (resp) => {
@@ -80,11 +96,12 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
+  const numItemsTotalCurrent = bib.items.length;
   const numItemsTotal = bib.numItemsTotal;
 
   useEffect(() => {
-    checkForMoreItems(bib, dispatch, numItemsTotal);
-  }, [bib, dispatch, numItemsTotal]);
+    checkForMoreItems(bib, dispatch, numItemsTotal, mappedItemsLabelToIds);
+  }, [bib, dispatch, numItemsTotal, mappedItemsLabelToIds]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -92,6 +109,37 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
+  // normalize item aggregations by dropping values with no label and combining duplicate lables
+  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
+  reducedItemsAggregations.forEach((agg) => {
+    const values = agg.values
+    const reducedValues = {}
+    values.filter(value => value.label?.length)
+      .forEach((value) => {
+        let label = value.label
+        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
+        if (!reducedValues[label]) {
+          reducedValues[label] = new Set()
+        }
+        reducedValues[label].add(value.value)
+      })
+    agg.values = Object.keys(reducedValues)
+      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
+  });
+  // For every item aggregation, go through every filter in its `values` array
+  // and map all the labels to their ids. This is done because the API expects
+  // the ids of the filters to be sent over, not the labels.
+  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
+    const filter = aggregation.field;
+    const mappedValues = aggregation.values.reduce((acc, value) => ({
+      ...acc,
+      [value.label]: value.value
+    }), {})
+    return {
+      ...accc,
+      [filter]: mappedValues,
+    };
+  }, {});
   const items = LibraryItem.getItems(bib);
   const isElectronicResources = items.every(
     (item) => item.isElectronicResource,
@@ -150,8 +198,9 @@ export const BibPage = (
             itemPage={location.search}
             searchKeywords={searchKeywords}
             holdings={newBibModel.holdings}
-            itemsAggregations={itemsAggregations}
-            numItemsTotal={numItemsTotal}
+            itemsAggregations={reducedItemsAggregations}
+            mappedItemsLabelToIds={mappedItemsLabelToIds}
+            numItemsTotal={numItemsTotalCurrent}
           />
         </section>
 

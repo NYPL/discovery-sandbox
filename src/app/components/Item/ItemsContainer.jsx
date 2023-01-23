@@ -124,7 +124,13 @@ class ItemsContainer extends React.Component {
   }
 
   render() {
-    const { bibId, dispatch, itemsAggregations, numItemsTotal }= this.props;
+    const {
+      bibId,
+      dispatch,
+      itemsAggregations,
+      numItemsTotal,
+      mappedItemsLabelToIds
+    } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
@@ -164,6 +170,7 @@ class ItemsContainer extends React.Component {
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
             numItemsTotal={numItemsTotal}
+            mappedItemsLabelToIds={mappedItemsLabelToIds}
           />
           {itemTable}
           {!!(
@@ -206,6 +213,7 @@ ItemsContainer.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  mappedItemsLabelToIds: PropTypes.object,
 };
 
 ItemsContainer.defaultProps = {

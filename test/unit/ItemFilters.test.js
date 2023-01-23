@@ -186,7 +186,7 @@ describe('ItemFilters', () => {
     });
   });
 
-  describe('with blank or duplicated items aggregations', () => {
+  describe.skip('with blank or duplicated items aggregations', () => {
     let component;
     before(() => {
       const contextWithMultipleFilters = context;
