@@ -107,9 +107,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
         const { result } = resultObj;
         const { holdings } = resultObj.result;
         if (!result.items && !result.holdings) return;
-        // do we need to do this holdings thing? is the front end worried about any holdings data besides checkin cards?
         if (holdings) {
-          addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
             if (holding.location) locationCodes.add(holding.location[0].code);
