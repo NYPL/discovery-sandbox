@@ -8,20 +8,11 @@ import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
-const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr = "") => {
+const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom) => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
-  // Always pass merge_checkin_card_items=true to the API.
-  const checkinCards = '&merge_checkin_card_items=true';
-  return nyplApiClient()
-    .then(client =>
-      client.get(
-        `/discovery/resources/${query}${queryForItemPage}${itemQuery}${checkinCards}`,
-        requestOptions
-      )
-    );
+  return nyplApiClient().then(client => client.get(`/discovery/resources/${query}${queryForItemPage}`, requestOptions));
 };
 
 const shepApiCall = (bibId) => {
@@ -64,44 +55,6 @@ export const findUrl = (location, urls) => {
     (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
   if (!longestMatch || !longestMatch.url) return undefined;
   return longestMatch.url;
-};
-
-const checkInItemsForHolding = (holding) => {
-  let location = '';
-  let holdingLocationCode = '';
-  let locationUrl;
-  if (holding.location && holding.location.length) {
-    holdingLocationCode = holding.location[0].code;
-    location = holding.location[0].label;
-    locationUrl = holding.location[0].url;
-  }
-  const format = holding.format || '';
-  if (!holding.checkInBoxes) return [];
-  return holding.checkInBoxes.map(box => (
-    {
-      location,
-      locationUrl,
-      holdingLocationCode,
-      format,
-      position: box.position || 0,
-      status: { prefLabel: box.status || '' },
-      accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
-      volume: box.coverage || '',
-      callNumber: box.shelfMark || '',
-      available: true,
-      isSerial: true,
-      requestable: false,
-    }
-  ));
-};
-
-export const addCheckInItems = (bib) => {
-  bib.checkInItems = bib
-    .holdings
-    .map(holding => checkInItemsForHolding(holding))
-    .reduce((acc, el) => acc.concat(el), [])
-    .filter(box => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel))
-    .sort((box1, box2) => box2.position - box1.position);
 };
 
 export const fetchLocationUrls = codes => nyplApiClient()
@@ -159,9 +112,8 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
-
   return Promise.all([
-    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
+    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0),
     // Don't fetch annotated-marc for partner records:
     isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`, options.features) : null,
   ])
@@ -201,12 +153,6 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
     })
     .then((bib) => {
       if (bib.holdings) {
-        addCheckInItems(bib);
-      }
-      return bib;
-    })
-    .then((bib) => {
-      if (bib.holdings) {
         bib.holdings.forEach(holding => addHoldingDefinition(holding));
       }
       if (options.fetchSubjectHeadingData && bib.subjectLiteral && bib.subjectLiteral.length) {
@@ -232,12 +178,8 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
-  const query = req.query;
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
-  let filterItemsStr = Object.keys(query)
-    .map((key) => `item_${key}=${query[key]}`)
-    .join('&');
 
   return fetchBib(
     bibId,
@@ -247,7 +189,6 @@ function bibSearch (req, res, resolve) {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
       itemFrom,
-      filterItemsStr,
     },
     res,
   );
@@ -255,7 +196,6 @@ function bibSearch (req, res, resolve) {
 
 export default {
   addHoldingDefinition,
-  addCheckInItems,
   bibSearch,
   fetchBib,
   nyplApiClientCall,
