@@ -141,7 +141,7 @@ describe('getDefaultFilters', () => {
      // 1 aeon link
      expect(eResources.eResources.length).to.equal(1)
      expect(eResources.eResources[0].label).to.equal('Full text available via HathiTrust')
-     expect(eResources.totalPhysicalItems).to.equal(2)
+     expect(eResources.totalPhysicalItems).to.equal(1)
    });
 
  });
