@@ -92,7 +92,7 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
-  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
+  const items = LibraryItem.getItems(bib);
   const isElectronicResources = items.every(
     (item) => item.isElectronicResource,
   );
