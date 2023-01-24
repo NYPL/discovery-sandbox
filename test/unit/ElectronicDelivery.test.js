@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 /* eslint-disable react/jsx-filename-extension */
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import { mock } from 'sinon';
 import { makeTestStore, mountTestRender } from '../helpers/store';
@@ -19,9 +19,13 @@ describe('ElectronicDeliveryForm', () => {
       appConfigMock = mock(appConfig);
       appConfig.features = [];
       appConfig.eddAboutUrl.default = 'example.com/edd-default-url';
+<<<<<<< HEAD
       component = shallow(
         <ElectronicDeliveryForm fromUrl='example.com' />
       );
+=======
+      component = mount(<ElectronicDeliveryForm fromUrl='example.com' />);
+>>>>>>> SCC-3357/ds-link-styling
     });
 
     after(() => {
