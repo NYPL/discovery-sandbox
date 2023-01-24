@@ -455,7 +455,7 @@ describe('ResultsList', () => {
     it('should only count physical items in description', () => {
       const info = component.find('.nypl-results-info')
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('2 items')
+      expect(info.at(0).text()).to.equal('1 item')
     })
 
     it('should not display item table link for < 4 items', () => {

@@ -1,25 +1,6 @@
 const sampleBib = {
   '@id': 'res:b15523285',
   numItems: 3,
-  checkInItems: [
-    {
-      "@id": "res:i123456789",
-      "accessMessage": [
-        {
-          "@id": "accessMessage:1",
-          "prefLabel": "Use in library"
-        }
-      ],
-      "identifier": [
-        "urn:SierraNypl:123456789-e"
-      ],
-      "uri": "i123456789-e",
-      "idNyplSourceId": {
-        "@type": "SierraNypl",
-        "@value": "123456789-e"
-      }
-    }
-  ],
   items: [
     {
       "@id": "res:i11829350",

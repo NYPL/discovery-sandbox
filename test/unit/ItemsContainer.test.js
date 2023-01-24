@@ -2,14 +2,14 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow, mount } from 'enzyme';
-import { Provider } from 'react-redux';
+import { mount, shallow } from 'enzyme';
 import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
 import { makeTestStore, mountTestRender } from '../helpers/store';
+import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
 const WrappedItemsContainer = itemsContainerModule.ItemsContainer
@@ -99,28 +99,25 @@ const context = {
 };
 
 const testBib = {
-  done: true,
   numItems: 0,
 };
 describe('ItemsContainer', () => {
-  describe('Default rendering', () => {
-    it('should return null with no props passed', () => {
-      const component = shallow(<ItemsContainer bib={testBib} />, {
-        disableLifecycleMethods: true,
-        context,
-      });
-      expect(component.type()).to.equal(null);
-    });
-  });
-
   describe('Basic rendering', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={items} bib={testBib} />, {
-        disableLifecycleMethods: true,
-        context,
-      });
+      console.log("okaosdfkadofs", items.length);
+      component = shallow(
+        <ItemsContainer
+          items={items}
+          bib={testBib}
+          itemsAggregations={itemsAggregations}
+        />,
+        {
+          disableLifecycleMethods: true,
+          context,
+        }
+      );
     });
 
     it('should have its "js" state set to false by default', () => {
@@ -144,7 +141,9 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} bib={testBib} />, { context });
+      component = mount(
+        <ItemsContainer items={longListItems} bib={testBib} numItemsTotal={longListItems.length} />,
+        { context });
     });
 
     it('should render an ItemTable component', () => {
@@ -164,7 +163,15 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
+      component = shallow(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib} 
+          numItemsTotal={longListItems.length}
+        />,
+        { context }
+      );
     });
 
     it('should render a "View All Items" link', () => {
@@ -193,7 +200,12 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+          numItemsTotal={longListItems.length}
+        />,
         { context },
       );
     });
@@ -254,13 +266,12 @@ describe('ItemsContainer', () => {
     let component
     const store = makeTestStore({
       bib: {
-        done: true,
         items: longListItems
       }
     })
     before(() => {
       component = mountTestRender(
-        <WrappedItemsContainer />
+        <WrappedItemsContainer itemsAggregations={itemsAggregations} />
         , { store, childContextTypes: { router: PropTypes.object } });
     })
     after(() => {

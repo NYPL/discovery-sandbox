@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 
 // Import Bib helper functions for pre-processing
-import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
+import { addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/pages/BibPage';
@@ -29,7 +29,6 @@ describe('BibPage', () => {
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
       bib: {
-        done: true,
         numItems: 0,
       },
     });
@@ -100,7 +99,6 @@ describe('BibPage', () => {
   describe('Non-serial bib', () => {
     const testStore = makeTestStore({
       bib: {
-        done: true,
         numItems: 0,
       },
     });
@@ -127,7 +125,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(3).prop('children')).to.equal('Details');
+      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
     });
 
     it('has section with id items-table', () => {
@@ -182,12 +180,10 @@ describe('BibPage', () => {
     let component;
     before(() => {
       mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
-      addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
         bib: {
           items: [{ holdingLocationCode: 'lol', id: 1234 }],
-          done: true,
           numItems: 0,
         },
       });
@@ -212,7 +208,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(4).prop('children')).to.equal('Details');
+      expect(component.find('h3').at(3).prop('children')).to.equal('Details');
     });
 
     it('has holdings section', () => {
@@ -278,7 +274,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });
@@ -307,7 +302,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['\u200FParallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });
@@ -336,7 +330,6 @@ describe('BibPage', () => {
       const bib = { ...mockBibWithHolding, ...{ parallelTitle: ['Parallel Title'] } };
       const testStore = makeTestStore({
         bib: {
-          done: true,
           numItems: 0,
         },
       });
