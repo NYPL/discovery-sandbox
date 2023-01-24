@@ -140,7 +140,7 @@ export const BibPage = (
       [filter]: mappedValues,
     };
   }, {});
-  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
+  const items = LibraryItem.getItems(bib);
   const isElectronicResources = items.every(
     (item) => item.isElectronicResource,
   );

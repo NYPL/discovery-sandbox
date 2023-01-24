@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import { Provider } from 'react-redux';
 
 // Import Bib helper functions for pre-processing
-import { addCheckInItems, addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
+import { addHoldingDefinition } from './../../src/server/ApiRoutes/Bib';
 
 // Import the unwrapped component that is going to be tested
 import { BibPage } from './../../src/app/pages/BibPage';
@@ -152,7 +152,6 @@ describe('BibPage', () => {
     let component;
     before(() => {
       mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
-      addCheckInItems(mockBibWithHolding);
       const bib = { ...mockBibWithHolding, ...annotatedMarc };
       const testStore = makeTestStore({
         bib: {

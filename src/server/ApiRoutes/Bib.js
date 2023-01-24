@@ -66,44 +66,6 @@ export const findUrl = (location, urls) => {
   return longestMatch.url;
 };
 
-const checkInItemsForHolding = (holding) => {
-  let location = '';
-  let holdingLocationCode = '';
-  let locationUrl;
-  if (holding.location && holding.location.length) {
-    holdingLocationCode = holding.location[0].code;
-    location = holding.location[0].label;
-    locationUrl = holding.location[0].url;
-  }
-  const format = holding.format || '';
-  if (!holding.checkInBoxes) return [];
-  return holding.checkInBoxes.map(box => (
-    {
-      location,
-      locationUrl,
-      holdingLocationCode,
-      format,
-      position: box.position || 0,
-      status: { prefLabel: box.status || '' },
-      accessMessage: { '@id': 'accessMessage: 1', prefLabel: 'Use in library' },
-      volume: box.coverage || '',
-      callNumber: box.shelfMark || '',
-      available: true,
-      isSerial: true,
-      requestable: false,
-    }
-  ));
-};
-
-export const addCheckInItems = (bib) => {
-  bib.checkInItems = bib
-    .holdings
-    .map(holding => checkInItemsForHolding(holding))
-    .reduce((acc, el) => acc.concat(el), [])
-    .filter(box => !['Expected', 'Late', 'Removed'].includes(box.status.prefLabel))
-    .sort((box1, box2) => box2.position - box1.position);
-};
-
 export const fetchLocationUrls = codes => nyplApiClient()
   .then(client => client.get(`/locations?location_codes=${codes}`));
 
@@ -159,7 +121,6 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
-
   return Promise.all([
     nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:
@@ -198,12 +159,6 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
     .then((bib) => {
       appendDimensionsToExtent(bib)
       return addLocationUrls(bib)
-    })
-    .then((bib) => {
-      if (bib.holdings) {
-        addCheckInItems(bib);
-      }
-      return bib;
     })
     .then((bib) => {
       if (bib.holdings) {
@@ -247,7 +202,7 @@ function bibSearch (req, res, resolve) {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
       itemFrom,
-      filterItemsStr,
+      filterItemsStr
     },
     res,
   );
@@ -255,7 +210,6 @@ function bibSearch (req, res, resolve) {
 
 export default {
   addHoldingDefinition,
-  addCheckInItems,
   bibSearch,
   fetchBib,
   nyplApiClientCall,

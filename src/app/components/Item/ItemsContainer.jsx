@@ -227,7 +227,7 @@ ItemsContainer.contextTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const items = (state.bib.checkInItems || []).concat(LibraryItem.getItems(state.bib))
+  const items = LibraryItem.getItems(state.bib);
   return { items }
 };
 
