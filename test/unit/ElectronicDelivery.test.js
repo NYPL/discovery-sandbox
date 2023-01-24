@@ -19,13 +19,7 @@ describe('ElectronicDeliveryForm', () => {
       appConfigMock = mock(appConfig);
       appConfig.features = [];
       appConfig.eddAboutUrl.default = 'example.com/edd-default-url';
-<<<<<<< HEAD
-      component = shallow(
-        <ElectronicDeliveryForm fromUrl='example.com' />
-      );
-=======
       component = mount(<ElectronicDeliveryForm fromUrl='example.com' />);
->>>>>>> SCC-3357/ds-link-styling
     });
 
     after(() => {
