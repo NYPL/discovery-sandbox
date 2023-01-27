@@ -23,6 +23,15 @@ describe('ItemFilter', () => {
       );
       expect(component.type()).to.equal(null);
     });
+    it('should not render with empty `options`', () => {
+      component = shallow(
+        <ItemFilter
+          filter="category"
+          options={[]}
+        />,
+      );
+      expect(component.type()).to.equal(null);
+    })
     it('should not render without `filter`', () => {
       component = shallow(
         <ItemFilter

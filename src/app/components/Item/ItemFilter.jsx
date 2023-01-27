@@ -37,7 +37,7 @@ const ItemFilter = ({
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
-  if (!options || !filter) return null;
+  if (!options || !options.length || !filter) return null;
 
   /**
    * When a filter is selected, let the parent know through
@@ -60,7 +60,7 @@ const ItemFilter = ({
   /**
    * When a filter is deselected, let the parent know through
    * the `setSelectedFilters` function.
-   */   
+   */
   const deselectFilter = (value) => {
     setSelectedFilters((prevSelectedFilters) => {
       const updatedSelectedFilters = { ...prevSelectedFilters };

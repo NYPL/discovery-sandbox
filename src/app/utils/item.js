@@ -247,10 +247,11 @@ function LibraryItem() {
     );
     const materialType =
       bib && bib.materialType && bib.materialType[0] ? bib.materialType[0] : {};
+    const materialTypePrefLabel = materialType.prefLabel || ''
     const format =
-      bib && bib.holdings && bib.holdings.format
-        ? bib.holdings.format
-        : materialType.prefLabel;
+      item.formatLiteral && item.formatLiteral.length ?
+        item.formatLiteral[0]
+        : materialTypePrefLabel;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
