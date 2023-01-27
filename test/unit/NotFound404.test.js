@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import config from '../../src/app/data/appConfig';
 
@@ -11,16 +11,15 @@ describe('NotFound404', () => {
   let component;
 
   before(() => {
-    component = shallow(<NotFound404 />);
+    component = mount(<NotFound404 />);
   });
 
   it('should be wrapped in a .not-found-404 class', () => {
     expect(component.find('.not-found-404').length).to.equal(1);
   });
 
-  it('should contain a Link and an `a` element', () => {
-    expect(component.find('Link')).to.have.length(1);
-    expect(component.find('a')).to.have.length(1);
+  it('should contain two `a` elements', () => {
+    expect(component.find('a')).to.have.length(2);
   });
 
   it('should contain a link to the homepage', () => {
@@ -28,6 +27,6 @@ describe('NotFound404', () => {
   });
 
   it('should contain a link to the old catalog', () => {
-    expect(component.find('a').prop('href')).to.equal('https://legacyBaseUrl.nypl.org');
+    expect(component.find('a').at(1).prop('href')).to.equal('https://legacyBaseUrl.nypl.org');
   });
 });

@@ -106,7 +106,8 @@ class Tabbed extends React.Component {
                   onClick={this.clickHandler}
                   onKeyDown={this.keyDownHandler}
                   ref={(input) => { this.links[`${j}`] = input; }}
-                >{tab.title}
+                >
+                  {tab.title}
                 </a>
               </li>
             );
