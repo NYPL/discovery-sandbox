@@ -23,10 +23,6 @@ router
   .post(Hold.createHoldRequestServer);
 
 router
-  .route(`${appConfig.baseUrl}/hold/request/:bibId-:itemId/edd`)
-  .get(Hold.newHoldRequestServerEdd);
-
-router
   .route(`${appConfig.baseUrl}/hold/confirmation/:bibId-:itemId`)
   .get(Hold.confirmRequestServer);
 
@@ -41,16 +37,17 @@ router
 // Then client side the dataLoaderUtil will load the response into the store
 
 Object.keys(routes).forEach((routeName) => {
-  const { path, params } = routes[routeName];
+  const { path } = routes[routeName];
   ['/', '/api/'].forEach((pathType) => {
     const api = pathType === '/api/';
     router
-      .route(`${appConfig.baseUrl}${pathType}${path}${params}`)
+      .route(`${appConfig.baseUrl}${pathType}${path}`)
       .get((req, res, next) => new Promise(
-        resolve => routeMethods[routeName](req, res, resolve),
+        resolve => { return routeMethods[routeName](req, res, resolve) },
       )
-        .then(data => (
-          api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })))
+        .then(data => {
+          return api ? res.json(data) : successCb(routeName, req.store.dispatch)({ data })
+        })
         .then(() => (api ? null : next()))
         .catch(console.error)
       );
