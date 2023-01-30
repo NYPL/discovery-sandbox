@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 
 import ItemFilter from './ItemFilter';
+import DateSearchBar from './DateSearchBar';
 
 /**
  * This renders the button that acts as a Modal Trigger. Clicking the button
@@ -16,6 +17,8 @@ const ItemFiltersMobile = ({
   setSelectedFilters,
   submitFilterSelections,
   initialFilters,
+  selectedYear,
+  setSelectedYear,
 }) => {
   if (!itemsAggregations) return null;
   const showResultsAction = () => {
@@ -51,22 +54,32 @@ const ItemFiltersMobile = ({
     }
   }
   return (
-    <ModalTrigger
-      buttonType="secondary"
-      className="item-table-filters"
-      id="filters-button"
-      buttonText="Filters"
-      modalProps={modalProps} />
+    <>
+      <DateSearchBar
+        selectedYear={selectedYear}
+        setSelectedYear={setSelectedYear}
+        submitFilterSelections={submitFilterSelections}
+      />
+      <ModalTrigger
+        buttonType="secondary"
+        className="item-table-filters"
+        id="filters-button"
+        buttonText="Filters"
+        modalProps={modalProps}
+      />
+    </>
   );
 };
 
 ItemFiltersMobile.propTypes = {
-  itemsAggregations: PropTypes.object,
+  itemsAggregations: PropTypes.array,
   manageFilterDisplay: PropTypes.func,
   selectedFilters: PropTypes.object,
   setSelectedFilters: PropTypes.func,
   submitFilterSelections: PropTypes.func,
   initialFilters: PropTypes.object,
+  selectedYear: PropTypes.string,
+  setSelectedYear: PropTypes.func,
 };
 
 ItemFiltersMobile.contextTypes = {

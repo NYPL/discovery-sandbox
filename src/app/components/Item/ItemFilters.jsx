@@ -10,6 +10,7 @@ import { itemBatchSize } from '../../data/constants';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
+import DateSearchBar from './DateSearchBar';
 
 const ItemFilters = (
   {
@@ -36,7 +37,6 @@ const ItemFilters = (
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
-  const [invalidYear, setInvalidYear] = useState(false);
 
   // When new items are fetched, update the selected string dispaly.
   useEffect(() => {
@@ -194,6 +194,8 @@ const ItemFilters = (
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
           itemsAggregations={itemsAggregations}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
         />
       ) : (
@@ -215,50 +217,11 @@ const ItemFilters = (
               />
             ))}
           </div>
-          <div className='search-year-wrapper'>
-            <Text isBold fontSize="text.caption" mb="xs">Search by Year</Text>
-            <SearchBar
-              id="search-year"
-              onSubmit={(event) => {
-                event.preventDefault();
-                if (selectedYear.length === 4) {
-                  submitFilterSelections();
-                  setInvalidYear(false);
-                } else {
-                  setInvalidYear(true);
-                }
-              }}
-              textInputElement={
-                <TextInput
-                  id='search-year-input'
-                  isClearable
-                  isClearableCallback={() => { setSelectedYear('') }}
-                  isInvalid={invalidYear}
-                  invalidText='Please enter a valid year.'
-                  labelText='Search by Year'
-                  maxLength={4}
-                  name='search-year'
-                  pattern='[0-9]+'
-                  placeholder='YYYY'
-                  showLabel={false}
-                  textInputType='searchBarSelect'
-                  onChange={(event) => setSelectedYear(event.target.value)}
-                  value={selectedYear}
-                />
-              }
-            />
-            <Button
-              buttonType="text"
-              id="clear-year-button"
-              onClick={() => {
-                const clearYear = true;
-                setSelectedYear('');
-                submitFilterSelections(false, clearYear)
-              }}
-            >
-              Clear search year
-            </Button>
-          </div>
+          <DateSearchBar
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            submitFilterSelections={submitFilterSelections}
+          />
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
