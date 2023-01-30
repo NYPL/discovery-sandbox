@@ -103,6 +103,9 @@ class ItemsContainer extends React.Component {
    * @param {string} type Either Next or Previous.
    */
   updatePage(page, type) {
+    const itemsToDisplay = [...this.state.items];
+    const totalPages = Math.ceil(itemsToDisplay.length / itemsListPageLimit);
+    console.log("updatePage", itemsToDisplay.length, totalPages)
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
@@ -112,6 +115,13 @@ class ItemsContainer extends React.Component {
         itemPage: page,
       },
     });
+
+    if (page === totalPages) {
+      console.log("called")
+      // We only want to make one request to the API for more items.
+      const once = true;
+      this.props.checkForMoreItems && this.props.checkForMoreItems(once);
+    }
   }
 
   /*
@@ -120,6 +130,8 @@ class ItemsContainer extends React.Component {
    */
   showAll() {
     trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
+    // Trigger the call to make multiple batch requests to the API.
+    this.props.checkForMoreItems && this.props.checkForMoreItems();
     this.setState({ showAll: true });
   }
 
@@ -214,6 +226,7 @@ ItemsContainer.propTypes = {
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
+  checkForMoreItems: PropTypes.func,
 };
 
 ItemsContainer.defaultProps = {
