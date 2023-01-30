@@ -105,7 +105,6 @@ class ItemsContainer extends React.Component {
   updatePage(page, type) {
     const itemsToDisplay = [...this.state.items];
     const totalPages = Math.ceil(itemsToDisplay.length / itemsListPageLimit);
-    console.log("updatePage", itemsToDisplay.length, totalPages)
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
@@ -117,7 +116,6 @@ class ItemsContainer extends React.Component {
     });
 
     if (page === totalPages) {
-      console.log("called")
       // We only want to make one request to the API for more items.
       const once = true;
       this.props.checkForMoreItems && this.props.checkForMoreItems(once);
