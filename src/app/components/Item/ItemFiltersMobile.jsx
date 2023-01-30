@@ -53,6 +53,8 @@ const ItemFiltersMobile = ({
       showResultsAction()
     }
   }
+
+  // On mobile, the date input field is rendered outside of the modal.
   return (
     <>
       <DateSearchBar

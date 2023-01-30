@@ -1,4 +1,4 @@
-import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
+import { Button, Heading, Text } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 

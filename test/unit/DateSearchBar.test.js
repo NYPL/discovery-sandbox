@@ -54,8 +54,9 @@ describe('DateSearchBar', () => {
       expect(selectedYear).to.equal('');
       // Input field
       component.find('input').at(0).simulate('change', { target: { value: '2020' } });
-      // Search button
-      component.find('button').at(0).simulate('click');
+      // State for the value is updated in the parent so this
+      // must be passed down to the component.
+      component.setProps({ selectedYear: '2020' });
       
       expect(selectedYear).to.equal('2020');
     });
@@ -75,10 +76,9 @@ describe('DateSearchBar', () => {
     });
     
     it('should submit the form and call `submitFilterSelections`', () => {
+      expect(isSubmitted).to.equal(false);
       // Input field
       component.find('input').at(0).simulate('change', { target: { value: '2022' } });
-      // Search button
-      component.find('button').at(0).simulate('click');
       // State for the value is updated in the parent so this
       // must be passed down to the component.
       component.setProps({ selectedYear: '2022' });
