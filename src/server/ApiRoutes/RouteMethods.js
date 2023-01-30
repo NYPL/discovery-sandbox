@@ -11,5 +11,6 @@ export default {
   bib: Bib.bibSearch,
   search: Search.search,
   holdRequest: Hold.newHoldRequest,
+  eddRequest: Hold.newHoldRequest,
   account: Account.fetchAccountPage,
 };

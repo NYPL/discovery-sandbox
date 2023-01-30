@@ -1,16 +1,14 @@
 /* globals window document */
-import React from 'react';
-import PropTypes from 'prop-types';
-import {
-  Link,
-  withRouter,
-} from 'react-router';
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Link, withRouter } from 'react-router';
 import {
   isArray as _isArray,
   isEmpty as _isEmpty,
 } from 'underscore';
-import { connect } from 'react-redux';
 
 import SccContainer from '../components/SccContainer/SccContainer';
 import Notification from '../components/Notification/Notification';
@@ -55,15 +53,10 @@ export class HoldRequest extends React.Component {
 
     this.onRadioSelect = this.onRadioSelect.bind(this);
     this.submitRequest = this.submitRequest.bind(this);
-    this.checkEligibility = this.checkEligibility.bind(this);
-    this.conditionallyRedirect = this.conditionallyRedirect.bind(this);
-    this.requireUser = this.requireUser.bind(this);
   }
 
 
   componentDidMount() {
-    this.requireUser();
-    this.conditionallyRedirect();
     const title = document.getElementById('item-title');
     if (title) {
       title.focus();
@@ -127,23 +120,6 @@ export class HoldRequest extends React.Component {
   }
 
   /**
-   * requireUser()
-   * Redirects the patron to OAuth log in page if he/she hasn't been logged in yet.
-   *
-   * @return {Boolean}
-   */
-  requireUser() {
-    if (this.props.patron && this.props.patron.id) {
-      return true;
-    }
-
-    const fullUrl = encodeURIComponent(window.location.href);
-    window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
-
-    return false;
-  }
-
-  /**
    * modelDeliveryLocationName(prefLabel, shortName)
    * Renders the names of the radio input fields of delivery locations except EDD.
    *
@@ -161,40 +137,6 @@ export class HoldRequest extends React.Component {
     return '';
   }
 
-  // Redirects to HoldConfirmation if patron is ineligible to place holds. We are particularly
-  // checking for manual blocks, expired cards, and excessive fines.
-  conditionallyRedirect() {
-    const { params } = this.props;
-    return this.checkEligibility().then((eligibility) => {
-      if (!eligibility.eligibility) {
-        const bib = (this.props.bib && !_isEmpty(this.props.bib)) ?
-          this.props.bib : null;
-        let bibId = (bib && bib['@id'] && typeof bib['@id'] === 'string') ?
-          bib['@id'].substring(4) : '';
-        if (!bibId) bibId = (params && params.bibId) ? params.bibId : '';
-        const itemId = (params && params.itemId) ? params.itemId : '';
-        const path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
-        return this.redirectWithErrors(path, 'eligibility', JSON.stringify(eligibility));
-      }
-      return true;
-    });
-  }
-  // checks whether a patron is eligible to place a hold. Uses cookie to get the patron's id
-  checkEligibility() {
-    this.setState({ checkingPatronEligibility: true })
-
-    return axios.get(`${appConfig.baseUrl}/api/patronEligibility`)
-      .then(response => response.data)
-      .catch(() => ({ eligibility: true }))
-      .finally(() => this.setState({ checkingPatronEligibility: false }));
-  }
-
-  redirectWithErrors(path, status, message) {
-    this.context.router.replace(
-      `${path}?errorStatus=${status}` +
-      `&errorMessage=${message}`,
-    );
-  }
   /**
      * renderDeliveryLocation(deliveryLocations = [])
      * Renders the radio input fields of delivery locations except EDD.
@@ -274,7 +216,8 @@ export class HoldRequest extends React.Component {
       loading,
       params,
     } = this.props;
-    const { serverRedirect, checkingPatronEligibility } = this.state;
+
+    const { serverRedirect } = this.state;
     const bib =
       this.props.bib && !_isEmpty(this.props.bib) ? this.props.bib : null;
     const title =
@@ -326,7 +269,7 @@ export class HoldRequest extends React.Component {
         (
           <h2 className="nypl-request-form-title">
           Delivery options for this item are currently unavailable. Please try again later or
-          contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+          contact 917-ASK-NYPL (<DSLink href="tel:917-275-6975">917-275-6975</DSLink>).
           </h2>) :
         <h2 className="nypl-request-form-title">Choose a delivery location</h2>;
     let form = null;
@@ -377,7 +320,7 @@ export class HoldRequest extends React.Component {
     return (
       <>
         {
-          !userLoggedIn || loading || checkingPatronEligibility ? <LoadingLayer loading /> : null
+          !userLoggedIn || loading ? <LoadingLayer loading /> : null
         }
         <SccContainer
           activeSection="search"
@@ -392,7 +335,7 @@ export class HoldRequest extends React.Component {
                     (userLoggedIn && !loading && (!bib || !selectedItemAvailable)) &&
                       <h2>
                         This item cannot be requested at this time. Please try again later or
-                        contact 917-ASK-NYPL (<a href="tel:917-275-6975">917-275-6975</a>).
+                        contact 917-ASK-NYPL (<DSLink href="tel:917-275-6975">917-275-6975</DSLink>).
                       </h2>
                   }
                   {bibLink}
@@ -400,7 +343,9 @@ export class HoldRequest extends React.Component {
                 </div>
               </div>
 
-              {!checkingPatronEligibility ? form : null}
+              {
+                form
+              }
             </div>
           </div>
         </SccContainer>

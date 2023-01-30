@@ -33,9 +33,11 @@ describe('bibDetailsUtils', () => {
     });
 
     it('should have a link with correct information', () => {
-      const link = item.props.children[0];
-      expect(link.type).to.equal('a');
-      expect(link.props.href).to.equal('ItemContent');
+      const dsLink = item.props.children[0];
+      // The first child is a react-router Link.
+      const link = dsLink.props.children;
+
+      expect(link.props.to).to.equal('ItemContent');
       expect(link.props.title).to.equal(JSON.stringify(value.source, null, 2));
       expect(link.props.children).to.equal('ItemLabel');
     });
@@ -113,18 +115,20 @@ describe('bibDetailsUtils', () => {
       const mockOutput = annotatedMarcDetails(mockBib);
       expect(mockOutput.length).to.equal(2);
       expect(mockOutput[0].term).to.equal('Field1');
+      // The react-router `Link` is wrapped by the DSLink component,
+      // so more digging must be done.
       expect(
-        mockOutput[0].definition[0].props.children[0].props.children,
+        mockOutput[0].definition[0].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel1');
       expect(
-        mockOutput[0].definition[1].props.children[0].props.children,
+        mockOutput[0].definition[1].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel2');
       expect(mockOutput[1].term).to.equal('Field2');
       expect(
-        mockOutput[1].definition[0].props.children[0].props.children,
+        mockOutput[1].definition[0].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel3');
       expect(
-        mockOutput[1].definition[1].props.children[0].props.children,
+        mockOutput[1].definition[1].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel4');
     });
   });

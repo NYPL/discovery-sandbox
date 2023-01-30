@@ -202,7 +202,7 @@ describe('dataLoaderUtil', () => {
         sandbox = sinon.createSandbox();
         axiosSpy = sandbox.spy(axios, 'get');
         const mockLocation = {
-          pathname: `${appConfig.baseUrl}/hold/request/1`,
+          pathname: `${appConfig.baseUrl}/hold/request/b123-i456`,
           search: '',
         };
         mockDispatch = sandbox.spy(x => x);
@@ -216,7 +216,7 @@ describe('dataLoaderUtil', () => {
       it('should make an ajax call to the correct url', () => {
         expect(axiosSpy.getCalls()).to.have.lengthOf(1);
         expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
-        expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/hold/request/1`);
+        expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/hold/request/b123-i456`);
       });
       it('should call dispatch with the search action and the response', () => {
         // 4 calls: loading true, search action, updateLastLoaded, loading false
@@ -235,7 +235,7 @@ describe('dataLoaderUtil', () => {
         sandbox = sinon.createSandbox();
         axiosSpy = sandbox.spy(axios, 'get');
         const mockLocation = {
-          pathname: `${appConfig.baseUrl}/hold/request/1`,
+          pathname: `${appConfig.baseUrl}/hold/request/b123-i456`,
           search: '',
         };
         mockDispatch = sandbox.spy(x => x);
@@ -251,7 +251,7 @@ describe('dataLoaderUtil', () => {
       it('should make an ajax call to the correct url', () => {
         expect(axiosSpy.getCalls()).to.have.lengthOf(1);
         expect(axiosSpy.firstCall.args).to.have.lengthOf(1);
-        expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/hold/request/1`);
+        expect(axiosSpy.firstCall.args[0]).to.equal(`${appConfig.baseUrl}/api/hold/request/b123-i456`);
       });
 
       it('should console error', () => {
