@@ -193,6 +193,7 @@ const ItemFilters = (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
+          displayDateFilter={displayDateFilter}
           itemsAggregations={itemsAggregations}
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
