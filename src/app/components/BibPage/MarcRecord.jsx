@@ -1,3 +1,4 @@
+import { Link } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 
@@ -11,7 +12,7 @@ const MarcRecord = ({ bNumber }) => {
   const marcRecordLink =
     `https://catalog.nypl.org/search~S1?/.b${bNumber}/.b${bNumber}/1%2C1%2C1%2CB/marc`;
 
-  return (<a href={marcRecordLink} onClick={onClick}>MARC Record</a>);
+  return (<Link href={marcRecordLink} onClick={onClick}>MARC Record</Link>);
 };
 
 MarcRecord.propTypes = {

@@ -1,9 +1,10 @@
+import { Link } from '@nypl/design-system-react-components';
 import React from 'react';
-import { isEmail } from 'validator';
 import {
   mapObject as _mapObject,
   isEmpty as _isEmpty,
 } from 'underscore';
+import { isEmail } from 'validator';
 
 function isDate(input, minYear = 1902, maxYear = new Date().getFullYear()) {
   // regular expression to match required date format
@@ -79,12 +80,12 @@ function renderServerValidationError(object) {
         const restText = createAnchorText(object[key]).restText || '';
 
         errorMessage = (!anchorText && !anchorText) ? <li>One of the fields is incorrect.</li> :
-          <li key={index}><a href={createAnchorID(key)}>{anchorText}</a>{restText}</li>;
+          <li key={index}><Link href={createAnchorID(key)}>{anchorText}</Link>{restText}</li>;
       } else {
         if (key === 'email') {
           errorMessage = (
             <li key={index}>
-              Please enter a valid <a href={createAnchorID(key)}>email address</a>.
+              Please enter a valid <Link href={createAnchorID(key)}>email address</Link>.
             </li>
           );
         }

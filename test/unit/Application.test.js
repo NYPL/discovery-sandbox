@@ -33,6 +33,7 @@ describe('Application', () => {
 
     component.setState({ patron: {} });
   });
+  after(() => { component.unmount() })
 
   it('should be wrapped in a .app-wrapper class', () => {
     expect(component.find('.app-wrapper')).to.be.defined;

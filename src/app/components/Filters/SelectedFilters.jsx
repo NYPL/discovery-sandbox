@@ -1,5 +1,10 @@
-import React from 'react';
+import {
+  FilterIcon,
+  XIcon,
+} from '@nypl/dgx-svg-icons';
 import PropTypes from 'prop-types';
+import React from 'react';
+import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
   mapObject as _mapObject,
@@ -9,10 +14,6 @@ import {
   contains as _contains,
   isArray as _isArray,
 } from 'underscore';
-import {
-  FilterIcon,
-  XIcon,
-} from '@nypl/dgx-svg-icons';
 
 import appConfig from '../../data/appConfig';
 import {
@@ -228,15 +229,15 @@ class SelectedFilters extends React.Component {
                 });
 
                 filterBtn = (
-                  <a
+                  <Link
                     className="nypl-unset-filter"
-                    href={`${appConfig.baseUrl}/search?${apiQuery}`}
+                    to={`${appConfig.baseUrl}/search?${apiQuery}`}
                     aria-controls="selected-filters-container"
                     aria-label={`${singleDateLabel} ${filter.label} Remove Filter`}
                   >
                     {filter.label}
                     <XIcon fill="#fff" ariaHidden />
-                  </a>
+                  </Link>
                 );
               }
 
