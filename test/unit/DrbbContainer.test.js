@@ -27,10 +27,8 @@ describe('DrbbContainer', () => {
       expect(component.find('p').length).to.equal(1);
       // test that space is rendered before 'Read more...' link
       expect(component.find('p').text()).to.include('No Library Card is Required. Read more about the project.');
-      expect(component.find('p').find('span').length).to.equal(1);
-      expect(component.find('p').find('span').text()).to.equal('Read more about the project.');
-      expect(component.find('p').find('span').find('a').text()).to.equal('Read more about the project');
-      expect(component.find('p').find('span').find('a').prop('href')).to.equal(`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`);
+      expect(component.find('p').find('a').text()).to.equal('Read more about the project');
+      expect(component.find('p').find('a').prop('href')).to.equal(`${appConfig.drbbFrontEnd[appConfig.environment]}/about?source=catalog`);
     });
   });
 
@@ -55,12 +53,12 @@ describe('DrbbContainer', () => {
       expect(component.find('DrbbResult').length).to.equal(1);
     });
     it('should render a link to the DRBB search results page', () => {
-      expect(component.find('Link').prop('to')).to.deep.equal({
-        pathname: `${appConfig.drbbFrontEnd[appConfig.environment]}/search?`,
-        search: 'query=onework' });
+      expect(component.find('a.drbb-description').prop('href')).to.equal(
+        `${appConfig.drbbFrontEnd[appConfig.environment]}/search?query=onework`
+      );
     });
     it('link text should have result singular', () => {
-      expect(component.find('Link').render().text()).to.include('See 1 result');
+      expect(component.find('a.drbb-frontend-link').render().text()).to.include('See 1 result');
     });
   });
 
@@ -76,7 +74,7 @@ describe('DrbbContainer', () => {
     });
 
     it('link text should have results plural and correct thousands separators', () => {
-      expect(component.find('Link').render().text()).to.include('See 1,000 results');
+      expect(component.find('a.drbb-frontend-link').text()).to.include('See 1,000 results');
     });
   });
 
@@ -100,11 +98,11 @@ describe('DrbbContainer', () => {
     });
 
     it('link text should be "Explore Digital Research Books Beta"', () => {
-      expect(component.find('Link').render().text()).to.equal('Explore Digital Research Books Beta');
+      expect(component.find('a.drbb-description').render().text()).to.equal('Explore Digital Research Books Beta');
     });
 
     it('link text should be "Explore Digital Research Books Beta"', () => {
-      expect(component.find('Link').prop('to')).to.equal(appConfig.drbbFrontEnd[appConfig.environment]);
+      expect(component.find('a.drbb-description').prop('href')).to.equal(appConfig.drbbFrontEnd[appConfig.environment]);
     });
   });
 });

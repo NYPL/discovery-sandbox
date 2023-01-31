@@ -1,4 +1,4 @@
-import { Heading } from '@nypl/design-system-react-components';
+import { Button, Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -193,9 +193,16 @@ class ItemsContainer extends React.Component {
           ) && (
             <div className="view-all-items-container">
               {this.state.js ? (
-                <a href="#" onClick={this.showAll}>
+                <Button
+                  buttonType='text'
+                  onClick={this.showAll}
+                  sx={{
+                    padding: '0',
+                    textDecoration:'underline'
+                  }}
+                >
                   View All Items
-                </a>
+                </Button>
               ) : (
                 <Link
                   to={`${appConfig.baseUrl}/bib/${bibId}/all`}

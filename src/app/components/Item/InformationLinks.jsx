@@ -1,6 +1,7 @@
-import React from 'react';
-import { Text, Link } from '@nypl/design-system-react-components';
+import React, { useContext } from 'react';
+import { Text, Link, Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
+import { FeedbackBoxContext } from '../../context/FeedbackContext';
 
 const locationUrlEndpoint = (location) => {
   const loc = location.split(' ')[0]
@@ -12,7 +13,19 @@ const locationUrlEndpoint = (location) => {
   return urls[loc]
 }
 
-const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
+const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
+  let openFeedbackBox, setItemMetadata
+
+  // conditional for testing 
+  const feedback = useContext(FeedbackBoxContext)
+  if (feedback) {
+    openFeedbackBox = feedback.onOpen
+    setItemMetadata = feedback.setItemMetadata
+  }
+  const onContact = (metadata) => {
+    setItemMetadata(metadata)
+    openFeedbackBox()
+  }
   if (available) {
     if (isRecap && !aeonUrl) {
       //available recap item
@@ -46,7 +59,7 @@ const InformationLinks = ({ isRecap, computedAeonUrl: aeonUrl, available, locati
         <span className='unavailable-text'>Not available</span>
         {dueDate && dueDateAlert}
         <span>{' - Please '}
-          <Link href='https://www.nypl.org/about/divisions'>contact a librarian</Link>{' for assistance.'}
+          <Button onClick={() => onContact({ id, barcode, callNumber, bibId })} buttonType='text' id='contact-librarian'>contact a librarian</Button>{' for assistance.'}
         </span>
       </div>)
   }

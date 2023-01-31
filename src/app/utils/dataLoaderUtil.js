@@ -22,23 +22,24 @@ const baseUrl = appConfig.baseUrl;
 const routes = {
   bib: {
     action: updateBibPage,
-    path: 'bib',
-    params: '/:bibId',
+    path: 'bib/:bibId',
   },
   search: {
     action: updateSearchResultsPage,
     path: 'search',
-    params: '',
   },
   holdRequest: {
     action: updateHoldRequestPage,
-    path: 'hold/request',
-    params: '/:bibId-:itemId',
+    path: 'hold/request/:bibId-:itemId',
+  },
+  eddRequest: {
+    action: updateHoldRequestPage,
+    path: 'hold/request/:bibId-:itemId/edd'
   },
   account: {
     action: updateAccountPage,
-    path: 'account',
-    params: '/:content?',
+    path: 'account/:content?',
+    pathRegex: 'account'
   },
 };
 
@@ -48,8 +49,7 @@ const successCb = (pathType, dispatch) => (response) => {
   const { data } = response;
   if (data && data.redirect) {
     if (window) {
-      const fullUrl = encodeURIComponent(window.location.href);
-      window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
+      window.location.replace(data.redirect);
     }
     return { redirect: true };
   }
@@ -72,8 +72,9 @@ function loadDataForRoutes(location, dispatch) {
   }
 
   const matchingPath = Object.entries(routes).find(([pathKey, pathValue]) => {
-    const { path } = pathValue;
-    return pathname.match(`${baseUrl}/${path}`);
+    let { path, pathRegex } = pathValue;
+    pathRegex = pathRegex || new RegExp(`${baseUrl}/${path.replace(/:[^-\/]*/g, '[^-\/]*')}`)
+    return pathname.match(pathRegex);
   });
 
   if (!matchingPath) return new Promise(() => dispatch(updateLoadingStatus(false)));
@@ -92,12 +93,14 @@ function loadDataForRoutes(location, dispatch) {
   const path = `${pathname}${search}`;
 
   return ajaxCall(
-    location.pathname.replace(baseUrl, `${baseUrl}/api`).replace('/edd', '') + location.search,
+    location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
     errorCb,
   ).then((resp) => {
-    if (!resp || (resp && !resp.redirect)) dispatch(updateLastLoaded(path));
-    dispatch(updateLoadingStatus(false));
+    if (!resp || (resp && !resp.redirect)) {
+      dispatch(updateLastLoaded(path));
+      dispatch(updateLoadingStatus(false));
+    }
     return resp;
   }).catch((error) => {
     console.error(error);

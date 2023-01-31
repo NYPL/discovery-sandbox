@@ -8,7 +8,7 @@ import { mount } from 'enzyme';
 import AdditionalDetailsViewer from './../../src/app/components/BibPage/AdditionalDetailsViewer';
 import annotatedMarc from '../fixtures/annotatedMarc.json';
 
-describe('After Clicking on Button', () => {
+describe('AdditionalDetailsViewer after clicking on Button', () => {
   let component;
   let link;
 

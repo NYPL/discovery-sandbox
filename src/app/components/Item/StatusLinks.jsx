@@ -19,7 +19,7 @@ const StatusLinks = ({ item, bibId, searchKeywords, appConfig, page }) => {
         appConfig={appConfig}
         page={page}
       />
-      <InformationLinks {...item} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
+      <InformationLinks {...item} bibId={bibId} computedAeonUrl={isAeon ? aeonUrl(item) : undefined} />
     </div>
   )
 }

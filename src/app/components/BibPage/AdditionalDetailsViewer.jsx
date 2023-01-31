@@ -1,5 +1,7 @@
-import React from 'react';
+import { Link } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
+import React from 'react';
+
 import DefinitionList from './DefinitionList';
 
 class AdditionalDetailsViewer extends React.Component {
@@ -18,9 +20,9 @@ class AdditionalDetailsViewer extends React.Component {
 
   definitionItem(value, index = 0) {
     const link = (
-      <a href={value.content} title={JSON.stringify(value.source, null, 2)}>
+      <Link href={value.content} title={JSON.stringify(value.source, null, 2)}>
         {value.label}
-      </a>
+      </Link>
     );
 
     return (

@@ -1,4 +1,7 @@
+import { Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
+import { Link } from 'react-router';
+
 import LibraryItem from './item';
 
 // - `linkable` means that those values are links inside the app set
@@ -55,9 +58,11 @@ const allFields = {
 
 const definitionItem = (value, index = 0) => {
   const link = (
-    <a href={value.content} title={JSON.stringify(value.source, null, 2)}>
-      {value.label}
-    </a>
+    <DSLink>
+      <Link to={value.content} title={JSON.stringify(value.source, null, 2)}>
+        {value.label}
+      </Link>
+    </DSLink>
   );
 
   return (
