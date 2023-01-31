@@ -139,6 +139,7 @@ class ItemsContainer extends React.Component {
       dispatch,
       itemsAggregations,
       numItemsTotal,
+      numItemsCurrent,
       mappedItemsLabelToIds
     } = this.props;
     const shortenItems = !this.props.shortenItems;
@@ -180,12 +181,13 @@ class ItemsContainer extends React.Component {
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
             numItemsTotal={numItemsTotal}
+            numItemsCurrent={numItemsCurrent}
             mappedItemsLabelToIds={mappedItemsLabelToIds}
           />
           {itemTable}
           {!!(
             shortenItems &&
-            numItemsTotal > itemsListPageLimit &&
+            numItemsCurrent > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -223,6 +225,7 @@ ItemsContainer.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
   checkForMoreItems: PropTypes.func,
 };

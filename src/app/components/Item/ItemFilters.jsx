@@ -17,6 +17,7 @@ const ItemFilters = (
     itemsAggregations = [],
     dispatch,
     numItemsTotal,
+    numItemsCurrent,
     mappedItemsLabelToIds = {}
   },
   { router },
@@ -188,6 +189,9 @@ const ItemFilters = (
     manageFilterDisplay,
     submitFilterSelections,
   };
+  // If there are filters, display the number of items that match the filters.
+  // Otherwise, display the total number of items.
+  const resultsItemsNumber = selectedFilterDisplayStr ? numItemsCurrent : numItemsTotal;
 
   return (
     <Fragment>
@@ -266,8 +270,8 @@ const ItemFilters = (
       <div className="item-filter-info">
         <Heading level="three" size="callout">
           <>
-            {numItemsTotal > 0 ? numItemsTotal : 'No'} Result
-            {numItemsTotal !== 1 ? 's' : null} Found
+            {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
+            {resultsItemsNumber !== 1 ? 's' : null} Found
           </>
         </Heading>
         {selectedFilterDisplayStr ? (
@@ -292,6 +296,7 @@ ItemFilters.propTypes = {
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
 };
 

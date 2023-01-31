@@ -42,8 +42,8 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsTotalCurrent = bib.items ? bib.items.length : 0;
   const numItemsTotal = bib.numItemsTotal;
+  const numItemsCurrent = bib.items ? bib.items.length : 0;
 
   // Fetch more items only when we want to, e.g. when the user clicks on
   // the "View All Items" button or the pagination component.
@@ -219,7 +219,8 @@ export const BibPage = (
             holdings={newBibModel.holdings}
             itemsAggregations={reducedItemsAggregations}
             mappedItemsLabelToIds={mappedItemsLabelToIds}
-            numItemsTotal={numItemsTotalCurrent}
+            numItemsTotal={numItemsTotal}
+            numItemsCurrent={numItemsCurrent}
             checkForMoreItems={checkForMoreItems}
           />
         </section>

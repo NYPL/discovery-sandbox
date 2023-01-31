@@ -141,7 +141,12 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} bib={testBib} numItemsTotal={longListItems.length} />,
+        <ItemsContainer
+          items={longListItems}
+          bib={testBib}
+          numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
+        />,
         { context });
     });
 
@@ -168,6 +173,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib} 
           numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
         />,
         { context }
       );
@@ -204,6 +210,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib}
           numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
         />,
         { context },
       );
@@ -259,6 +266,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib}
           numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
           checkForMoreItems={checkForMoreItems}
         />,
         { context },

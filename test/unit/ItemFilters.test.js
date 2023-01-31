@@ -100,6 +100,7 @@ describe('ItemFilters', () => {
           items={items}
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
+          numItemsCurrent={items.length}
           itemsAggregations={itemsAggregations}
         />,
         { context: contextWithOneFilter }
@@ -134,6 +135,7 @@ describe('ItemFilters', () => {
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
           numItemsTotal={1}
+          numItemsCurrent={1}
           itemsAggregations={itemsAggregations}
         />,
         { context: contextWithMultipleFilters }
@@ -206,6 +208,7 @@ describe('ItemFilters', () => {
           items={items}
           numOfFilteredItems={0}
           numItemsTotal={items.length}
+          numItemsCurrent={items.length}
           itemsAggregations={itemsAggregations2}
         />,
         { context: contextWithMultipleFilters }
