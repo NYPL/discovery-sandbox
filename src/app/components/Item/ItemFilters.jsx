@@ -13,7 +13,7 @@ import ItemFiltersMobile from './ItemFiltersMobile';
 import DateSearchBar from './DateSearchBar';
 
 const ItemFilters = (
-  {
+  { displayDateFilter,
     numOfFilteredItems,
     itemsAggregations = [],
     dispatch,
@@ -193,6 +193,7 @@ const ItemFilters = (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
+          displayDateFilter={displayDateFilter}
           itemsAggregations={itemsAggregations}
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
@@ -217,11 +218,11 @@ const ItemFilters = (
               />
             ))}
           </div>
-          <DateSearchBar
+            {displayDateFilter && (<DateSearchBar
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
             submitFilterSelections={submitFilterSelections}
-          />
+            />)}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>

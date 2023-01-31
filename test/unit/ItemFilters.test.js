@@ -20,7 +20,39 @@ const context = {
 describe('ItemFilters', () => {
   const locationFilters = itemsAggregations[0];
   const statusFilters = itemsAggregations[2];
-
+  describe('DateSearchBar', () => {
+    const items = [
+      item.full
+    ];
+    let component
+    it('renders date filter', () => {
+      component = mount(
+        <ItemFilters
+          displayDateFilter={true}
+          items={items}
+          numOfFilteredItems={items.length}
+          numItemsTotal={items.length}
+          itemsAggregations={itemsAggregations}
+        />,
+        { context }
+      );
+      const displayDateFilter = component.html().includes('Search by year')
+      expect(displayDateFilter)
+    })
+    it('doesn\'t render date filter', () => {
+      component = mount(
+        <ItemFilters
+          displayDateFilter={false}
+          items={items}
+          numOfFilteredItems={items.length}
+          numItemsTotal={items.length}
+          itemsAggregations={itemsAggregations}
+        />,
+        { context });
+      const DateSearchBar = component.find('DateSearchBar');
+      expect(DateSearchBar).to.be.empty
+    })
+  })
   describe('with valid `items`, no filters', () => {
     let component;
     let itemFilters;

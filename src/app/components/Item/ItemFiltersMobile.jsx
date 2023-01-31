@@ -11,6 +11,7 @@ import DateSearchBar from './DateSearchBar';
  * items filters.
  */
 const ItemFiltersMobile = ({
+  displayDateFilter,
   itemsAggregations,
   manageFilterDisplay,
   selectedFilters,
@@ -57,11 +58,11 @@ const ItemFiltersMobile = ({
   // On mobile, the date input field is rendered outside of the modal.
   return (
     <>
-      <DateSearchBar
+      {displayDateFilter && <DateSearchBar
         selectedYear={selectedYear}
         setSelectedYear={setSelectedYear}
         submitFilterSelections={submitFilterSelections}
-      />
+      />}
       <ModalTrigger
         buttonType="secondary"
         className="item-table-filters"

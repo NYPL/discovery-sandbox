@@ -210,6 +210,7 @@ export const BibPage = (
 
         <section style={{ marginTop: '20px' }} id="items-table">
           <ItemsContainer
+            displayDateFilter={bib.hasItemDates}
             key={bibId}
             shortenItems={location.pathname.indexOf('all') !== -1}
             items={items}
