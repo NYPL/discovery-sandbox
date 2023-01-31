@@ -176,6 +176,7 @@ class ItemsContainer extends React.Component {
         <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
           <ItemFilters
+            displayDateFilter={this.props.displayDateFilter}
             items={itemsToDisplay}
             numOfFilteredItems={itemsToDisplay.length}
             itemsAggregations={itemsAggregations}

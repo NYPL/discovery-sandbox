@@ -29,3 +29,12 @@ button.item-table-filters {
     padding-right: 0;
   }
 }
+
+// For mobile `ItemFiltersMobile`
+.nypl-results-item {
+  #modal-open-btn {
+    width: 100%;
+    margin-bottom: 16px;
+    margin-top: 60px;
+  }
+}
