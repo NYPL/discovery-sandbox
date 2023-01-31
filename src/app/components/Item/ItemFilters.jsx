@@ -13,7 +13,7 @@ import ItemFiltersMobile from './ItemFiltersMobile';
 import DateSearchBar from './DateSearchBar';
 
 const ItemFilters = (
-  {
+  { displayDateFilter,
     numOfFilteredItems,
     itemsAggregations = [],
     dispatch,
@@ -217,11 +217,11 @@ const ItemFilters = (
               />
             ))}
           </div>
-          <DateSearchBar
+            {displayDateFilter && (<DateSearchBar
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
             submitFilterSelections={submitFilterSelections}
-          />
+            />)}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
