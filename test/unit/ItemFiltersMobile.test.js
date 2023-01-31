@@ -4,6 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
+import item from '../fixtures/libraryItems';
 import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
@@ -16,6 +17,35 @@ const context = {
 };
 
 describe('ItemFiltersMobile', () => {
+  describe('DateSearchBar', () => {
+    const items = [
+      item.full
+    ];
+    let component
+    it('renders date filter', () => {
+      component = mount(
+        <ItemFiltersMobile
+          displayDateFilter={true}
+          items={items}
+          itemsAggregations={itemsAggregations}
+        />,
+        { context }
+      );
+      const displayDateFilter = component.html().includes('Search by year')
+      expect(displayDateFilter)
+    })
+    it('doesn\'t render date filter', () => {
+      component = mount(
+        <ItemFiltersMobile
+          displayDateFilter={false}
+          items
+          itemsAggregations={itemsAggregations}
+        />,
+        { context });
+      const DateSearchBar = component.find('DateSearchBar');
+      expect(DateSearchBar).to.be.empty
+    })
+  })
   describe('without props', () => {
     it('should not render without props', () => {
       const component = shallow(<ItemFiltersMobile />, { context });

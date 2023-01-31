@@ -1,4 +1,4 @@
-import { Button, Heading, SearchBar, Text, TextInput } from '@nypl/design-system-react-components';
+import { Button, Heading, Text } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
@@ -10,13 +10,15 @@ import { itemBatchSize } from '../../data/constants';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
+import DateSearchBar from './DateSearchBar';
 
 const ItemFilters = (
-  {
+  { displayDateFilter,
     numOfFilteredItems,
     itemsAggregations = [],
     dispatch,
     numItemsTotal,
+    numItemsCurrent,
     mappedItemsLabelToIds = {}
   },
   { router },
@@ -36,7 +38,6 @@ const ItemFilters = (
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
-  const [invalidYear, setInvalidYear] = useState(false);
 
   // When new items are fetched, update the selected string dispaly.
   useEffect(() => {
@@ -188,12 +189,18 @@ const ItemFilters = (
     manageFilterDisplay,
     submitFilterSelections,
   };
+  // If there are filters, display the number of items that match the filters.
+  // Otherwise, display the total number of items.
+  const resultsItemsNumber = selectedFilterDisplayStr ? numItemsCurrent : numItemsTotal;
 
   return (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
         <ItemFiltersMobile
+          displayDateFilter={displayDateFilter}
           itemsAggregations={itemsAggregations}
+          selectedYear={selectedYear}
+          setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
         />
       ) : (
@@ -215,50 +222,11 @@ const ItemFilters = (
               />
             ))}
           </div>
-          <div className='search-year-wrapper'>
-            <Text isBold fontSize="text.caption" mb="xs">Search by Year</Text>
-            <SearchBar
-              id="search-year"
-              onSubmit={(event) => {
-                event.preventDefault();
-                if (selectedYear.length === 4) {
-                  submitFilterSelections();
-                  setInvalidYear(false);
-                } else {
-                  setInvalidYear(true);
-                }
-              }}
-              textInputElement={
-                <TextInput
-                  id='search-year-input'
-                  isClearable
-                  isClearableCallback={() => { setSelectedYear('') }}
-                  isInvalid={invalidYear}
-                  invalidText='Please enter a valid year.'
-                  labelText='Search by Year'
-                  maxLength={4}
-                  name='search-year'
-                  pattern='[0-9]+'
-                  placeholder='YYYY'
-                  showLabel={false}
-                  textInputType='searchBarSelect'
-                  onChange={(event) => setSelectedYear(event.target.value)}
-                  value={selectedYear}
-                />
-              }
-            />
-            <Button
-              buttonType="text"
-              id="clear-year-button"
-              onClick={() => {
-                const clearYear = true;
-                setSelectedYear('');
-                submitFilterSelections(false, clearYear)
-              }}
-            >
-              Clear search year
-            </Button>
-          </div>
+            {displayDateFilter && (<DateSearchBar
+            selectedYear={selectedYear}
+            setSelectedYear={setSelectedYear}
+            submitFilterSelections={submitFilterSelections}
+            />)}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
@@ -266,8 +234,8 @@ const ItemFilters = (
       <div className="item-filter-info">
         <Heading level="three" size="callout">
           <>
-            {numItemsTotal > 0 ? numItemsTotal : 'No'} Result
-            {numItemsTotal !== 1 ? 's' : null} Found
+            {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
+            {resultsItemsNumber !== 1 ? 's' : null} Found
           </>
         </Heading>
         {selectedFilterDisplayStr ? (
@@ -292,6 +260,7 @@ ItemFilters.propTypes = {
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
 };
 

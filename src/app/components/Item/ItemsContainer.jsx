@@ -103,6 +103,8 @@ class ItemsContainer extends React.Component {
    * @param {string} type Either Next or Previous.
    */
   updatePage(page, type) {
+    const itemsToDisplay = [...this.state.items];
+    const totalPages = Math.ceil(itemsToDisplay.length / itemsListPageLimit);
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
@@ -112,6 +114,12 @@ class ItemsContainer extends React.Component {
         itemPage: page,
       },
     });
+
+    if (page === totalPages) {
+      // We only want to make one request to the API for more items.
+      const once = true;
+      this.props.checkForMoreItems && this.props.checkForMoreItems(once);
+    }
   }
 
   /*
@@ -120,6 +128,8 @@ class ItemsContainer extends React.Component {
    */
   showAll() {
     trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
+    // Trigger the call to make multiple batch requests to the API.
+    this.props.checkForMoreItems && this.props.checkForMoreItems();
     this.setState({ showAll: true });
   }
 
@@ -129,6 +139,7 @@ class ItemsContainer extends React.Component {
       dispatch,
       itemsAggregations,
       numItemsTotal,
+      numItemsCurrent,
       mappedItemsLabelToIds
     } = this.props;
     const shortenItems = !this.props.shortenItems;
@@ -165,17 +176,19 @@ class ItemsContainer extends React.Component {
         <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
           <ItemFilters
+            displayDateFilter={this.props.displayDateFilter}
             items={itemsToDisplay}
             numOfFilteredItems={itemsToDisplay.length}
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
             numItemsTotal={numItemsTotal}
+            numItemsCurrent={numItemsCurrent}
             mappedItemsLabelToIds={mappedItemsLabelToIds}
           />
           {itemTable}
           {!!(
             shortenItems &&
-            numItemsTotal > itemsListPageLimit &&
+            numItemsCurrent > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -213,7 +226,9 @@ ItemsContainer.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
+  numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
+  checkForMoreItems: PropTypes.func,
 };
 
 ItemsContainer.defaultProps = {

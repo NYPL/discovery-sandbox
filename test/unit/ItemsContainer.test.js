@@ -106,7 +106,6 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      console.log("okaosdfkadofs", items.length);
       component = shallow(
         <ItemsContainer
           items={items}
@@ -142,7 +141,12 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer items={longListItems} bib={testBib} numItemsTotal={longListItems.length} />,
+        <ItemsContainer
+          items={longListItems}
+          bib={testBib}
+          numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
+        />,
         { context });
     });
 
@@ -169,6 +173,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib} 
           numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
         />,
         { context }
       );
@@ -205,6 +210,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib}
           numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
         />,
         { context },
       );
@@ -243,6 +249,40 @@ describe('ItemsContainer', () => {
       expect(component.state('page')).to.equal(1);
       component.instance().updatePage(3);
       expect(component.state('page')).to.equal(3);
+
+      // Reset back to the first page.
+      component.instance().updatePage(1);
+    });
+
+    it('should make an API request to get more items when using the Pagination', () => {
+      const checkForMoreItems = () => {
+        madeAPIRequest = true;
+      };
+      let madeAPIRequest = false;
+
+      const component = mount(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+          numItemsTotal={longListItems.length}
+          numItemsCurrent={longListItems.length}
+          checkForMoreItems={checkForMoreItems}
+        />,
+        { context },
+      );
+      const container = component.find('ItemsContainer').instance()
+      
+      expect(component.state('page')).to.equal(1);
+      expect(madeAPIRequest).to.equal(false);
+      
+      // There are only two pages for this example, so once
+      // get to the second page, make the call to fetch more
+      // items by calling `checkForMoreItems`.
+      container.updatePage(2, 'Next')
+      
+      expect(component.state('page')).to.equal(2);
+      expect(madeAPIRequest).to.equal(true);
     });
   });
 
