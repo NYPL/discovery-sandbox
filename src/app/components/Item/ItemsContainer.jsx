@@ -103,6 +103,8 @@ class ItemsContainer extends React.Component {
    * @param {string} type Either Next or Previous.
    */
   updatePage(page, type) {
+    const itemsToDisplay = [...this.state.items];
+    const totalPages = Math.ceil(itemsToDisplay.length / itemsListPageLimit);
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
@@ -112,6 +114,12 @@ class ItemsContainer extends React.Component {
         itemPage: page,
       },
     });
+
+    if (page === totalPages) {
+      // We only want to make one request to the API for more items.
+      const once = true;
+      this.props.checkForMoreItems && this.props.checkForMoreItems(once);
+    }
   }
 
   /*
@@ -120,14 +128,21 @@ class ItemsContainer extends React.Component {
    */
   showAll() {
     trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
+    // Trigger the call to make multiple batch requests to the API.
+    this.props.checkForMoreItems && this.props.checkForMoreItems();
     this.setState({ showAll: true });
   }
 
   render() {
-    const { bib, bibId, dispatch, itemsAggregations }= this.props;
-    const bibDone = bib?.done;
+    const {
+      bibId,
+      dispatch,
+      itemsAggregations,
+      numItemsTotal,
+      numItemsCurrent,
+      mappedItemsLabelToIds
+    } = this.props;
     const shortenItems = !this.props.shortenItems;
-    const totalItemsLength = this.state.items.length;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
     
@@ -155,42 +170,25 @@ class ItemsContainer extends React.Component {
       shortenItems,
       this.state.showAll,
     );
-    const numItemsEstimate = bib.numItems + (bib.checkInItems || []).length;
-    const itemLoadingMessage = (
-      <div className="item-filter-info">
-        <h3>
-          <br />
-          About {`${numItemsEstimate}`} Item
-          {numItemsEstimate !== 1 ? 's. ' : '. '}
-          <div className="items-loading">
-            Still Loading More items
-            <span className="dot1">.</span>
-            <span className="dot2">.</span>
-            <span className="dot3">.</span>
-          </div>
-        </h3>
-      </div>
-    );
 
     return (
       <>
         <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
-          {bibDone ? (
-            <ItemFilters
-              items={itemsToDisplay}
-              numOfFilteredItems={itemsToDisplay.length}
-              itemsAggregations={itemsAggregations}
-              dispatch={dispatch}
-            />
-            ) : (
-              itemLoadingMessage
-            )
-          }
+          <ItemFilters
+            displayDateFilter={this.props.displayDateFilter}
+            items={itemsToDisplay}
+            numOfFilteredItems={itemsToDisplay.length}
+            itemsAggregations={itemsAggregations}
+            dispatch={dispatch}
+            numItemsTotal={numItemsTotal}
+            numItemsCurrent={numItemsCurrent}
+            mappedItemsLabelToIds={mappedItemsLabelToIds}
+          />
           {itemTable}
           {!!(
             shortenItems &&
-            totalItemsLength > itemsListPageLimit &&
+            numItemsCurrent > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -226,7 +224,6 @@ class ItemsContainer extends React.Component {
 }
 
 ItemsContainer.propTypes = {
-  bib: PropTypes.object,
   items: PropTypes.array,
   itemPage: PropTypes.string,
   bibId: PropTypes.string,
@@ -235,6 +232,10 @@ ItemsContainer.propTypes = {
   holdings: PropTypes.array,
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
+  numItemsTotal: PropTypes.number,
+  numItemsCurrent: PropTypes.number,
+  mappedItemsLabelToIds: PropTypes.object,
+  checkForMoreItems: PropTypes.func,
 };
 
 ItemsContainer.defaultProps = {
@@ -248,8 +249,8 @@ ItemsContainer.contextTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const items = (state.bib.checkInItems || []).concat(LibraryItem.getItems(state.bib))
-  return { bib: state.bib, items }
+  const items = LibraryItem.getItems(state.bib);
+  return { items }
 };
 
 export default {

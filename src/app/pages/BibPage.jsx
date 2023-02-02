@@ -1,12 +1,8 @@
-import { updateBibPage } from '@Actions';
 import { Heading } from '@nypl/design-system-react-components';
-import { ajaxCall } from '@utils';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
-
-
 // Components
 import BackToSearchResults from '../components/BibPage/BackToSearchResults';
 import BibDetails from '../components/BibPage/BibDetails';
@@ -18,6 +14,8 @@ import LibraryHoldings from '../components/BibPage/LibraryHoldings';
 import LibraryItem from '../utils/item';
 import SccContainer from '../components/SccContainer/SccContainer';
 // Utils and configs
+import { updateBibPage } from '@Actions';
+import { ajaxCall } from '@utils';
 import {
   allFields,
   annotatedMarcDetails,
@@ -27,80 +25,143 @@ import {
   stringDirection,
   matchParallels,
 } from '../utils/bibDetailsUtils';
-import appConfig from '../data/appConfig';
-import { itemBatchSize } from '../data/constants';
 import {
   getAggregatedElectronicResources,
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
 import getOwner from '../utils/getOwner';
+import appConfig from '../data/appConfig';
+import { itemBatchSize } from '../data/constants';
 import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
-const checkForMoreItems = (bib, dispatch) => {
-  if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
-    // nothing to do
-  } else if (bib && bib.items.length < itemBatchSize) {
-    // done
-    dispatch(updateBibPage({ bib: Object.assign({}, bib, { done: true }) }));
-  } else {
-    // need to fetch more items
-    const baseUrl = appConfig.baseUrl;
-    const itemFrom = bib.itemFrom || itemBatchSize;
-    const bibApi = `${window.location.pathname.replace(
-      baseUrl,
-      `${baseUrl}/api`,
-    )}?itemFrom=${itemFrom}`;
-    ajaxCall(
-      bibApi,
-      (resp) => {
-        // put items in
-        const bibResp = resp.data.bib;
-        const done =
-          !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
-        dispatch(
-          updateBibPage({
-            bib: Object.assign({}, bib, {
-              items: bib.items.concat((bibResp && bibResp.items) || []),
-              done,
-              itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
-            }),
-          }),
-        );
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
-  }
-};
-
 export const BibPage = (
-  { bib, location, searchKeywords, dispatch, resultSelection, features },
+  { bib, location, searchKeywords, resultSelection, features, dispatch },
   context,
 ) => {
-  const useParallels = features && features.includes('parallels')
+  const useParallels = features && features.includes('parallels');
+  const numItemsTotal = bib.numItemsTotal;
+  const numItemsCurrent = bib.items ? bib.items.length : 0;
+
+  // Fetch more items only when we want to, e.g. when the user clicks on
+  // the "View All Items" button or the pagination component.
+  useEffect(() => {
+    if (bib && bib.fetchMoreItems) {
+      checkForMoreItems();
+    }
+  }, [bib, checkForMoreItems]);
+
+  /*
+   * Checks to see if we need to fetch more items. If the "View All Items"
+   * button is clicked, we want to make multiple batch requests to get all
+   * the items. If the pagination component is used, we only want to make
+   * one request for the next X items through the `once` argument.
+   */
+  const checkForMoreItems = useCallback((once = false) => {
+    if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
+      // nothing to do
+    } else if (bib && bib.items.length >= numItemsTotal) {
+      // Once we have fetched all the items, we're done,
+      // so stop fetching more items.
+      // `fetchMoreItems` is used to trigger the useEffect but
+      // `done` is used to stop the API requests.
+      dispatch(
+        updateBibPage({
+          bib: Object.assign({}, bib, { done: true, fetchMoreItems: false })
+        })
+      );
+    } else {
+      // We need to fetch for more items.
+      const searchStr = window.location.search;
+      const baseUrl = appConfig.baseUrl;
+      const itemFrom = bib.itemFrom || itemBatchSize;
+      let filterQuery = '';
+  
+      // If there are filters, we need to add them to the API query.
+      if (searchStr) {
+        const searchParams = new URLSearchParams(searchStr);
+        for (const [qKey, qValue] of searchParams) {
+          // For the date filter, we use the direct value.
+          if (qKey === 'date') {
+            filterQuery += `&${qKey}=${qValue}`;
+          } else if (qKey !== "itemPage") {
+            // For other filters, we need to map the label to the id.
+            filterQuery += `&${qKey}=${mappedItemsLabelToIds[qKey][qValue]}`;
+          }
+        }
+      }
+  
+      // Fetch the next batch of items using the `itemFrom` param.
+      const bibApi = `${window.location.pathname.replace(
+        baseUrl,
+        `${baseUrl}/api`,
+      )}?itemFrom=${itemFrom}${filterQuery}`;
+
+      ajaxCall(
+        bibApi,
+        (resp) => {
+          // Merge in the new items with the existing items.
+          const bibResp = resp.data.bib;
+          const done =
+            !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
+          dispatch(
+            updateBibPage({
+              bib: Object.assign({}, bib, {
+                items: bib.items.concat((bibResp && bibResp.items) || []),
+                done,
+                fetchMoreItems: once ? false : true,
+                itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
+              }),
+            }),
+          );
+        },
+        (error) => {
+          console.error(error);
+        },
+      );
+    }
+  }, [bib, dispatch, mappedItemsLabelToIds, numItemsTotal]);
+
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
 
-  if (typeof window !== 'undefined') {
-    // check whether this is a server side or client side render
-    // by whether 'window' is defined. After the first render on the client side
-    // check for more items
-    checkForMoreItems(bib, dispatch);
-    // NOTE: I'm not entirely sure what this is doing yet, but I believe it should be
-    // done in an effect.
-  }
-
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
-  const items = (bib.checkInItems || []).concat(LibraryItem.getItems(bib));
-  const isElectronicResources = items.every(
-    (item) => item.isElectronicResource,
-  );
+  // normalize item aggregations by dropping values with no label and combining duplicate lables
+  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
+  reducedItemsAggregations.forEach((agg) => {
+    const values = agg.values
+    const reducedValues = {}
+    values.filter(value => value.label?.length)
+      .forEach((value) => {
+        let label = value.label
+        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
+        if (!reducedValues[label]) {
+          reducedValues[label] = new Set()
+        }
+        reducedValues[label].add(value.value)
+      })
+    agg.values = Object.keys(reducedValues)
+      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
+  });
+  // For every item aggregation, go through every filter in its `values` array
+  // and map all the labels to their ids. This is done because the API expects
+  // the ids of the filters to be sent over, not the labels.
+  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
+    const filter = aggregation.field;
+    const mappedValues = aggregation.values.reduce((acc, value) => ({
+      ...acc,
+      [value.label]: value.value
+    }), {})
+    return {
+      ...accc,
+      [filter]: mappedValues,
+    };
+  }, {});
+  const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
@@ -122,7 +183,8 @@ export const BibPage = (
   const electronicResources = pluckAeonLinksFromResource(
     aggregatedElectronicResources,
     items
-  )
+  );
+
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -148,6 +210,7 @@ export const BibPage = (
 
         <section style={{ marginTop: '20px' }} id="items-table">
           <ItemsContainer
+            displayDateFilter={bib.hasItemDates}
             key={bibId}
             shortenItems={location.pathname.indexOf('all') !== -1}
             items={items}
@@ -155,7 +218,11 @@ export const BibPage = (
             itemPage={location.search}
             searchKeywords={searchKeywords}
             holdings={newBibModel.holdings}
-            itemsAggregations={itemsAggregations}
+            itemsAggregations={reducedItemsAggregations}
+            mappedItemsLabelToIds={mappedItemsLabelToIds}
+            numItemsTotal={numItemsTotal}
+            numItemsCurrent={numItemsCurrent}
+            checkForMoreItems={checkForMoreItems}
           />
         </section>
 

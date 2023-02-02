@@ -17,7 +17,6 @@ import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash
 import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
 import {
   addHoldingDefinition,
-  addCheckInItems,
   fetchLocationUrls,
   findUrl,
 } from './Bib';
@@ -109,7 +108,6 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
         const { holdings } = resultObj.result;
         if (!result.items && !result.holdings) return;
         if (holdings) {
-          addCheckInItems(result);
           holdings.slice(0, itemTableLimit).forEach((holding) => {
             addHoldingDefinition(holding);
             if (holding.location) locationCodes.add(holding.location[0].code);
@@ -131,7 +129,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
       return fetchLocationUrls(codes).then((resp) => {
         itemListElement.forEach((resultObj) => {
           const { result } = resultObj;
-          const items = (result.checkInItems || []).concat(result.items);
+          const items = result.items;
           items.slice(0, itemTableLimit).forEach((item) => {
             if (!item) return;
             if (item.holdingLocation) {
