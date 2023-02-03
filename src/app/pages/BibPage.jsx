@@ -163,6 +163,9 @@ export const BibPage = (
   }, {});
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const isElectronicResources = items.every(
+    (item) => item.isElectronicResource,
+  );
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
@@ -208,23 +211,26 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        <section style={{ marginTop: '20px' }} id="items-table">
-          <ItemsContainer
-            displayDateFilter={bib.hasItemDates}
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={newBibModel.holdings}
-            itemsAggregations={reducedItemsAggregations}
-            mappedItemsLabelToIds={mappedItemsLabelToIds}
-            numItemsTotal={numItemsTotal}
-            numItemsCurrent={numItemsCurrent}
-            checkForMoreItems={checkForMoreItems}
-          />
-        </section>
+        {items && items.length && !isElectronicResources ?
+          <section style={{ marginTop: '20px' }} id="items-table">
+            <ItemsContainer
+              displayDateFilter={bib.hasItemDates}
+              key={bibId}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              items={items}
+              bibId={bibId}
+              itemPage={location.search}
+              searchKeywords={searchKeywords}
+              holdings={newBibModel.holdings}
+              itemsAggregations={reducedItemsAggregations}
+              mappedItemsLabelToIds={mappedItemsLabelToIds}
+              numItemsTotal={numItemsTotal}
+              numItemsCurrent={numItemsCurrent}
+              checkForMoreItems={checkForMoreItems}
+            />
+          </section>
+          : null
+        }
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>

@@ -145,7 +145,10 @@ class ItemsContainer extends React.Component {
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
-    
+
+    if (!itemsToDisplay || !itemsToDisplay.length) {
+      return null;
+    }
 
     if (
       this.state.js &&
