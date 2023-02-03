@@ -13,7 +13,8 @@ import ItemFiltersMobile from './ItemFiltersMobile';
 import DateSearchBar from './DateSearchBar';
 
 const ItemFilters = (
-  { displayDateFilter,
+  {
+    displayDateFilter,
     numOfFilteredItems,
     itemsAggregations = [],
     dispatch,
@@ -38,10 +39,13 @@ const ItemFilters = (
   const [selectedYear, setSelectedYear] = useState(query.date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
-
-  // When new items are fetched, update the selected string dispaly.
+  
+  // When new items are fetched, update the selected string display.
   useEffect(() => {
     setSelectedFilterDisplayStr(parsedFilterSelections());
+    // Once the new items are fetched, focus on the
+    // filter UI and the results.
+    resultsRef.current &&  resultsRef.current.focus();
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
@@ -92,11 +96,6 @@ const ItemFilters = (
             }),
           }),
         );
-        // Once the new items are fetched, focus on the
-        // filter UI and the results.
-        if (resultsRef.current) {
-          resultsRef.current.focus();
-        }
       },
       (error) => {
         console.error(error);
@@ -207,7 +206,6 @@ const ItemFilters = (
         <div
           id="item-filters"
           className="item-table-filters"
-          ref={resultsRef}
           tabIndex="-1"
         >
           <div>
@@ -231,7 +229,7 @@ const ItemFilters = (
           <div></div>
         </div>
       )}
-      <div className="item-filter-info">
+      <div className="item-filter-info" ref={resultsRef} tabIndex="-1">
         <Heading level="three" size="callout">
           <>
             {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
@@ -262,6 +260,7 @@ ItemFilters.propTypes = {
   numItemsTotal: PropTypes.number,
   numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
+  displayDateFilter: PropTypes.bool,
 };
 
 ItemFilters.contextTypes = {
