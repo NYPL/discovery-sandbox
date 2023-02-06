@@ -22,7 +22,7 @@ class ItemsContainer extends React.Component {
     this.state = {
       showAll: false,
       js: false,
-      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
+      page: parseInt(props.itemPage, 10) || 1,
       items: this.props.items || [],
     };
     this.query = context.router.location.query;
@@ -239,6 +239,7 @@ ItemsContainer.propTypes = {
   numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
   checkForMoreItems: PropTypes.func,
+  displayDateFilter: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {

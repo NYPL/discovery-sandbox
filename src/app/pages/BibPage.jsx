@@ -78,7 +78,7 @@ export const BibPage = (
       const baseUrl = appConfig.baseUrl;
       const itemFrom = bib.itemFrom || itemBatchSize;
       let filterQuery = '';
-  
+
       // If there are filters, we need to add them to the API query.
       if (searchStr) {
         const searchParams = new URLSearchParams(searchStr);
@@ -92,7 +92,7 @@ export const BibPage = (
           }
         }
       }
-  
+
       // Fetch the next batch of items using the `itemFrom` param.
       const bibApi = `${window.location.pathname.replace(
         baseUrl,
@@ -188,6 +188,8 @@ export const BibPage = (
     items
   );
 
+  const searchParams = new URLSearchParams(location.search)
+
   return (
     <RouterProvider value={context}>
       <SccContainer
@@ -219,7 +221,7 @@ export const BibPage = (
               shortenItems={location.pathname.indexOf('all') !== -1}
               items={items}
               bibId={bibId}
-              itemPage={location.search}
+              itemPage={searchParams.get('itemPage')}
               searchKeywords={searchKeywords}
               holdings={newBibModel.holdings}
               itemsAggregations={reducedItemsAggregations}
