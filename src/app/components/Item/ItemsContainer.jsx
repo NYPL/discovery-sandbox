@@ -22,7 +22,7 @@ class ItemsContainer extends React.Component {
     this.state = {
       showAll: false,
       js: false,
-      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
+      page: parseInt(props.itemPage, 10) || 1,
       items: this.props.items || [],
     };
     this.query = context.router.location.query;
@@ -145,7 +145,7 @@ class ItemsContainer extends React.Component {
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
-    
+
 
     if (
       this.state.js &&
