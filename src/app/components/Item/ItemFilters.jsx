@@ -164,6 +164,7 @@ const ItemFilters = (
     }
     if (clearYear) {
       delete updatedSelectedFilters.date;
+      setSelectedYear('');
     }
 
     const href = createHref({
@@ -179,7 +180,6 @@ const ItemFilters = (
       `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
     router.push(href);
-    setSelectedYear('');
   };
 
   const itemFilterComponentProps = {
