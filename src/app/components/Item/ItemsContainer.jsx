@@ -236,6 +236,7 @@ ItemsContainer.propTypes = {
   numItemsCurrent: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
   checkForMoreItems: PropTypes.func,
+  displayDateFilter: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {
