@@ -9,10 +9,13 @@ import { isOptionSelected } from '../../utils/utils';
  * This is to better structure the data for the checkboxes.
  */
 const updateOptions = options =>
-  options.map(option => ({
-    id: option.label,
+  options.map(option => {
+    return {
+      id: option.value,
     label: option.label,
-  }));
+      value: option.value
+    }
+  });
 const initialFiltersObj = {
   location: [],
   format: [],

@@ -27,16 +27,17 @@ const ItemFilters = (
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
+  // reverse mappeditemslabeltoids
   const initialFilters = {
-    location: query.location || [],
-    format: query.format || [],
-    status: query.status || [],
+    location: query.item_location || [],
+    format: query.item_format || [],
+    status: query.item_status || [],
   };
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
   // and must be handled separately in the `SearchBar` component.
-  const [selectedYear, setSelectedYear] = useState(query.date || '');
+  const [selectedYear, setSelectedYear] = useState(query.item_date || '');
   const [selectedFilters, setSelectedFilters] = useState(initialFilters);
   const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
   
@@ -51,56 +52,43 @@ const ItemFilters = (
   /**
    * When new filters are selected or unselected, fetch new items.
    */
-  const getNewBib = (clear = false, clearYear = false) => {
+  const buildFilterUrl = (clear = false, clearYear = false) => {
     const baseUrl = appConfig.baseUrl;
     let queryParams = [];
     if (!clear) {
       // If we are making a request, get all the selected filters and map
       // the labels to their ids. That will be sent over to the API.
       Object.keys(selectedFilters).forEach(filter => {
-        const selectedFilterArray = selectedFilters[filter];
-        const mappedFilter = mappedItemsLabelToIds[filter];
-        if (selectedFilterArray.length > 0) {
-          if (Array.isArray(selectedFilterArray)) {
+        const selectedFilterValues = selectedFilters[filter].join(',')
+        if (selectedFilterValues.length > 0) {
             queryParams.push(
-              ...selectedFilterArray.map(selectedFilter => {
-                const mappedFilterId = mappedFilter[selectedFilter];
-                return `${filter}=${mappedFilterId}`;
-              })
-            );
-          } else {
-            const mappedFilterId = mappedFilter[selectedFilterArray];
-            queryParams.push(`${filter}=${mappedFilterId}`);
-          }
+              `item_${filter}=${selectedFilterValues}`);
         }
       });
       // The "year" filter is stored separately from the other filters.
       if (selectedYear && !clearYear) {
-        queryParams.push(`date=${selectedYear}`);
+        queryParams.push(`item_date=${selectedYear}`);
       }
     }
-
-    const bibApi = `${window.location.pathname.replace(
-      baseUrl,
-      `${baseUrl}/api`,
-    )}${queryParams.length ? `?${queryParams.join('&')}` : ''}`;
+    const queryString = (queryParams.length > 0 ? `?${queryParams.join('&')}` : '')
+    return queryString
     // Make the API call and let redux know.
-    ajaxCall(
-      bibApi,
-      (resp) => {
-        const { bib } = resp.data;
-        dispatch(
-          updateBibPage({
-            bib: Object.assign({}, bib, {
-              itemFrom: parseInt(itemBatchSize, 10),
-            }),
-          }),
-        );
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
+    // ajaxCall(
+    //   bibApi,
+    //   (resp) => {
+    //     const { bib } = resp.data;
+    //     dispatch(
+    //       updateBibPage({
+    //         bib: Object.assign({}, bib, {
+    //           itemFrom: parseInt(itemBatchSize, 10),
+    //         }),
+    //       }),
+    //     );
+    //   },
+    //   (error) => {
+    //     console.error(error);
+    //   },
+    // );
   }
 
   const manageFilterDisplay = (filterType) => {
@@ -146,7 +134,7 @@ const ItemFilters = (
 
   const resetFilters = () => {
     const clear = true;
-    getNewBib(clear);
+    // getNewBib(clear);
     setSelectedFilters(initialFilters);
     const href = createHref({
       pathname: location.pathname,
@@ -156,7 +144,7 @@ const ItemFilters = (
   };
 
   const submitFilterSelections = (clear = false, clearYear = false) => {
-    getNewBib(clear, clearYear);
+    const query = buildFilterUrl(clear, clearYear);
     const updatedSelectedFilters = { ...selectedFilters };
     if (selectedYear) {
       updatedSelectedFilters.date = selectedYear;
@@ -164,20 +152,12 @@ const ItemFilters = (
     if (clearYear) {
       delete updatedSelectedFilters.date;
     }
-
-    const href = createHref({
-      ...location,
-      ...{
-        query: updatedSelectedFilters,
-        hash: '#item-filters',
-        search: '',
-      },
-    });
+    const urlWithFilterParams = location.pathname + query
+    router.push(urlWithFilterParams + '#item-filters')
     trackDiscovery(
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
-    router.push(href);
     setSelectedYear('');
   };
 

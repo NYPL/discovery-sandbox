@@ -133,16 +133,16 @@ export const BibPage = (
   // normalize item aggregations by dropping values with no label and combining duplicate lables
   const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
   reducedItemsAggregations.forEach((agg) => {
-    const values = agg.values
+    const fieldAggregation = agg.values
     const reducedValues = {}
-    values.filter(value => value.label?.length)
-      .forEach((value) => {
-        let label = value.label
+    fieldAggregation.filter(aggregation => aggregation.label?.length)
+      .forEach((aggregation) => {
+        let label = aggregation.label
         if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
         if (!reducedValues[label]) {
           reducedValues[label] = new Set()
         }
-        reducedValues[label].add(value.value)
+        reducedValues[label].add(aggregation.value)
       })
     agg.values = Object.keys(reducedValues)
       .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))

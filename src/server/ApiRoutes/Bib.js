@@ -15,6 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr =
   const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
   // Always pass merge_checkin_card_items=true to the API.
   const checkinCards = '&merge_checkin_card_items=true';
+  console.log('bib api call', `/discovery/resources/${query}${queryForItemPage}${itemQuery}${checkinCards}`)
   return nyplApiClient()
     .then(client =>
       client.get(
@@ -188,6 +189,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const query = req.query;
+  console.log(query)
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
   let filterItemsStr = Object.keys(query)

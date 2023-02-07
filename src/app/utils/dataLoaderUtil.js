@@ -66,6 +66,7 @@ const successCb = (pathType, dispatch) => (response) => {
 // corresponding api route can be found simply by adding /api/
 
 function loadDataForRoutes(location, dispatch) {
+  console.log('dataloaderutil', location)
   const { pathname, search } = location;
   if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
@@ -91,7 +92,7 @@ function loadDataForRoutes(location, dispatch) {
   dispatch(updateLoadingStatus(true));
 
   const path = `${pathname}${search}`;
-
+  console.log(location.search)
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
