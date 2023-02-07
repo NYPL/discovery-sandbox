@@ -80,6 +80,8 @@ export class Application extends React.Component {
         key: null,
       },
     );
+    // console.log("this.context.router.location.pathname: ", this.context.router.location.pathname)
+    // console.log("this.context.router.location.query ", this.context.router.location.query)
 
     return (
       <PatronProvider patron={this.props.patron}>
@@ -93,6 +95,7 @@ export class Application extends React.Component {
               />
               <DataLoader
                 location={this.context.router.location}
+                query={this.context.router.location.query}
                 key={JSON.stringify(dataLocation)}
               >
                 {React.cloneElement(this.props.children)}

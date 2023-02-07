@@ -55,6 +55,7 @@ const ItemFilters = (
   const buildFilterUrl = (clear = false, clearYear = false) => {
     const baseUrl = appConfig.baseUrl;
     let queryParams = [];
+    let queryObj = {};
     if (!clear) {
       // If we are making a request, get all the selected filters and map
       // the labels to their ids. That will be sent over to the API.
@@ -63,15 +64,17 @@ const ItemFilters = (
         if (selectedFilterValues.length > 0) {
             queryParams.push(
               `item_${filter}=${selectedFilterValues}`);
+            queryObj[`item_${filter}`] = selectedFilterValues;
         }
       });
       // The "year" filter is stored separately from the other filters.
       if (selectedYear && !clearYear) {
         queryParams.push(`item_date=${selectedYear}`);
+        queryObj['item_date'] = selectedYear;
       }
     }
     const queryString = (queryParams.length > 0 ? `?${queryParams.join('&')}` : '')
-    return queryString
+    return queryObj
     // Make the API call and let redux know.
     // ajaxCall(
     //   bibApi,
@@ -152,12 +155,22 @@ const ItemFilters = (
     if (clearYear) {
       delete updatedSelectedFilters.date;
     }
-    const urlWithFilterParams = location.pathname + query
-    router.push(urlWithFilterParams + '#item-filters')
+    // const urlWithFilterParams = location.pathname + query;
+    // console.log({urlWithFilterParams})
+    const href = createHref({
+      ...location,
+      ...{
+        query,
+        hash: '#item-filters',
+        search: '',
+      },
+    });
+    console.log({href})
     trackDiscovery(
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFilters)}`,
     );
+    router.push(href)
     setSelectedYear('');
   };
 

@@ -21,8 +21,20 @@ export class DataLoader extends React.Component {
       dispatch(updateLoadingStatus(false));
       return;
     }
+    console.log("componentDidMount", this.props)
 
     dataLoaderUtil.loadDataForRoutes(location, dispatch);
+  }
+  
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    // const { location, dispatch } = props;
+    console.log("nextProps", nextProps);
+    console.log("this.props", this.props);
+
+    // if (prevProps.query !== this.props.query) {
+    //   console.log("this got called!")
+    //   dataLoaderUtil.loadDataForRoutes(location, dispatch);
+    // }
   }
 
   render() {
@@ -39,6 +51,7 @@ DataLoader.propTypes = {
   dispatch: PropTypes.func,
   children: PropTypes.element,
   lastLoaded: PropTypes.string,
+  query: PropTypes.string,
 };
 
 DataLoader.contextTypes = {

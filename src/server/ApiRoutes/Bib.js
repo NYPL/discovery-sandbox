@@ -189,11 +189,11 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const query = req.query;
-  console.log(query)
+  console.log("bibSearch", query)
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
   let filterItemsStr = Object.keys(query)
-    .map((key) => `item_${key}=${query[key]}`)
+    .map((key) => `${key}=${query[key]}`)
     .join('&');
 
   return fetchBib(
