@@ -215,7 +215,7 @@ export const BibPage = (
 
         {/* Display the items filter container component when:
           1: there are items through the `numItemsTotal` property,
-          2: there are items and none of those items are electronic resources,
+          2: there are items and they are not all electronic resources.
           
           Otherwise, if there are items but they are all electronic resources,
           do not display the items filter container component.
