@@ -39,7 +39,7 @@ const ItemFilters = (
 
   // }
   const getLabelsForValues = (values, field) => {
-    return values.split(',').reduce((acc, val) => acc + ', ' + getLabelForValue(val, field), '').substr(2)
+    return values.split(',').map((val) => getLabelForValue(val, field))
   }
   const getLabelForValue = (value, field) => {
     const labels = Object.keys(mappedItemsLabelToIds[field])
@@ -138,7 +138,7 @@ const ItemFilters = (
           let filtersString;
           // inital filters may be [undefined]
           if (Array.isArray(selectedOptions) && selectedOptions[0]) {
-            filtersString = selectedOptions.map(value => getLabelsForValues(value, field)).join(', ');
+            filtersString = selectedOptions.map(value => getLabelsForValues(value, field).join(', ')).join(', ');
           } else {
             filtersString = selectedOptions;
           }
