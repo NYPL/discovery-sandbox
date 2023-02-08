@@ -25,17 +25,29 @@ const ItemFilters = (
   },
   { router },
 ) => {
-  const getLabelsForValues = (values) => {
-    return values.split(',').reduce((acc, val) => acc + ',' + getLabelForValue(val), '')
+  // const reverseMap = Object.keys(mappedItemsLabelToIds).reduce((newMap, field)=> {
+  //   // [location, status, format]
+  //   const labels = Object.keys(field)
+  //   // [{sasb: 'loc123'},]
+  //   const values = Object.values(field)
+  //   {...newMap}
+  // }, {})
+  // const reduceValues = 
+  // const buildReverseMap = () => {
+  //   const fields = Object.keys(mappedItemsLabelToIds)
+  //   const allOptions = fields.reduce((acc, field) =>( {...acc, mappedItemsLabelToIds[field]}), { })
+
+  // }
+  const getLabelsForValues = (values, field) => {
+    return values.split(',').reduce((acc, val) => acc + ', ' + getLabelForValue(val, field), '').substr(2)
   }
-  const getLabelForValue = (value) => {
-    const labels = Object.keys(mappedItemsLabelToIds)
-    return labels.find((label) => mappedItemsLabelToIds[label].includes(value))
+  const getLabelForValue = (value, field) => {
+    const labels = Object.keys(mappedItemsLabelToIds[field])
+    return labels.find((label) => mappedItemsLabelToIds[field][label].includes(value))
   }
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
-  // reverse mappeditemslabeltoids
   const initialFilters = {
     location: query.item_location ? [query.item_location] : [],
     format: query.item_format ? [query.item_format] : [],
@@ -119,17 +131,18 @@ const ItemFilters = (
   // join filter selections and add single quotes
   const parsedFilterSelections = useCallback(() => {
     let filterSelectionString = itemsAggregations
-      .map((filter) => {
-        const filters = selectedFields[filter.field];
-        if (filters.length) {
+      .map((aggregation) => {
+        const field = aggregation.field
+        const selectedOptions = selectedFields[field];
+        if (selectedOptions.length) {
           let filtersString;
           // inital filters may be [undefined]
-          if (Array.isArray(filters) && filters[0]) {
-            filtersString = filters.map(filter => getLabelsForValues(filter)).join(', ');
+          if (Array.isArray(selectedOptions) && selectedOptions[0]) {
+            filtersString = selectedOptions.map(value => getLabelsForValues(value, field)).join(', ');
           } else {
-            filtersString = filters;
+            filtersString = selectedOptions;
           }
-          return `${filter.field}: '${filtersString}'`;
+          return `${aggregation.field}: '${filtersString}'`;
         }
         return null;
       })
@@ -162,8 +175,6 @@ const ItemFilters = (
     if (clearYear) {
       delete updatedselectedFields.date;
     }
-    // const urlWithFilterParams = location.pathname + query;
-    // console.log({urlWithFilterParams})
     const href = createHref({
       ...location,
       ...{
@@ -216,6 +227,7 @@ const ItemFilters = (
                 options={filter.values}
                 isOpen={openFilter === filter.field}
                 {...itemFilterComponentProps}
+                getLabelForValue
               />
             ))}
           </div>

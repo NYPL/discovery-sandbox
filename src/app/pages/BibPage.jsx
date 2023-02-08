@@ -150,6 +150,7 @@ export const BibPage = (
   // For every item aggregation, go through every filter in its `values` array
   // and map all the labels to their ids. This is done because the API expects
   // the ids of the filters to be sent over, not the labels.
+  console.log({ reducedItemsAggregations })
   const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
     const filter = aggregation.field;
     const mappedValues = aggregation.values.reduce((acc, value) => ({

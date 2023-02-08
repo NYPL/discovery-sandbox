@@ -15,7 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr =
   const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
   // Always pass merge_checkin_card_items=true to the API.
   const checkinCards = '&merge_checkin_card_items=true';
-  console.log('bib api call', `/discovery/resources/${query}${queryForItemPage}${itemQuery}${checkinCards}`)
+
   return nyplApiClient()
     .then(client =>
       client.get(

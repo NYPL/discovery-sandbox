@@ -35,17 +35,18 @@ const ItemFilter = ({
   setSelectedFields,
   isOpen,
   initialFilters = initialFiltersObj,
+  getLabelForValue
 }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
   if (!options || !options.length || !filter) return null;
-
   /**
    * When a filter is selected, let the parent know through
    * the `setSelectedFields` function.
    */
   const selectFilter = (option) => {
+    console.log(selectedFields)
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
       const prevSelection = prevSelectedFields[filter];
@@ -106,7 +107,9 @@ const ItemFilter = ({
     isOptionSelected(selectedFields[filter], option.value);
   const updatedOptions = updateOptions(options);
   const determineNumOfSelections = () => {
+    console.log(initialFilters)
     const thisFilterSelections = initialFilters[filter];
+    // get labels from label function, count those!!!
     const numSelection = thisFilterSelections.length === 0 ? '' :
       typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
 
