@@ -35,7 +35,7 @@ const ItemFilter = ({
   setSelectedFields,
   isOpen,
   initialFilters = initialFiltersObj,
-  getLabelForValue
+  getLabelsForValues
 }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
@@ -46,7 +46,6 @@ const ItemFilter = ({
    * the `setSelectedFields` function.
    */
   const selectFilter = (option) => {
-    console.log(selectedFields)
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
       const prevSelection = prevSelectedFields[filter];
@@ -82,9 +81,12 @@ const ItemFilter = ({
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
     const currentSelection = selectedFields[filter];
+    console.log(currentSelection)
     if (currentSelection && currentSelection.includes(option.value)) {
+      console.log('deselect')
       deselectFilter(option);
     } else {
+      console.log('select')
       selectFilter(option);
     }
   };
@@ -107,11 +109,13 @@ const ItemFilter = ({
     isOptionSelected(selectedFields[filter], option.value);
   const updatedOptions = updateOptions(options);
   const determineNumOfSelections = () => {
-    console.log(initialFilters)
     const thisFilterSelections = initialFilters[filter];
+    let numSelection
+    if (thisFilterSelections) {
+      const labels = getLabelsForValues(thisFilterSelections, filter)
     // get labels from label function, count those!!!
-    const numSelection = thisFilterSelections.length === 0 ? '' :
-      typeof thisFilterSelections === 'string' ? 1 : thisFilterSelections.length;
+      numSelection = labels.length
+    }
 
     return numSelection ? ` (${numSelection})` : null;
   };

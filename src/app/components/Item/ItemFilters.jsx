@@ -25,22 +25,13 @@ const ItemFilters = (
   },
   { router },
 ) => {
-  // const reverseMap = Object.keys(mappedItemsLabelToIds).reduce((newMap, field)=> {
-  //   // [location, status, format]
-  //   const labels = Object.keys(field)
-  //   // [{sasb: 'loc123'},]
-  //   const values = Object.values(field)
-  //   {...newMap}
-  // }, {})
-  // const reduceValues = 
-  // const buildReverseMap = () => {
-  //   const fields = Object.keys(mappedItemsLabelToIds)
-  //   const allOptions = fields.reduce((acc, field) =>( {...acc, mappedItemsLabelToIds[field]}), { })
-
-  // }
+  // given values of filter options ('loc:mal82,loc:rc2ma'), and the field they 
+  // belongs to, returns an array of the labels they correspond to
   const getLabelsForValues = (values, field) => {
-    return values.split(',').map((val) => getLabelForValue(val, field))
+    return values.map((val) => getLabelForValue(val, field))
   }
+  // given one value and the field it belongs to, returns the label it 
+  // corresponds to
   const getLabelForValue = (value, field) => {
     const labels = Object.keys(mappedItemsLabelToIds[field])
     return labels.find((label) => mappedItemsLabelToIds[field][label].includes(value))
@@ -49,9 +40,9 @@ const ItemFilters = (
   const { createHref, location } = router;
   const query = location.query || {};
   const initialFilters = {
-    location: query.item_location ? [query.item_location] : [],
-    format: query.item_format ? [query.item_format] : [],
-    status: query.item_status ? [query.item_status] : [],
+    location: query.item_location ? [query.item_location.split(',')] : [],
+    format: query.item_format ? [query.item_format.split(',')] : [],
+    status: query.item_status ? [query.item_status.split(',')] : [],
   };
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
@@ -227,7 +218,7 @@ const ItemFilters = (
                 options={filter.values}
                 isOpen={openFilter === filter.field}
                 {...itemFilterComponentProps}
-                getLabelForValue
+                getLabelsForValues={getLabelsForValues}
               />
             ))}
           </div>
