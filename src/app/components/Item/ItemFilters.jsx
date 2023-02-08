@@ -229,7 +229,12 @@ const ItemFilters = (
           <div></div>
         </div>
       )}
-      <div className="item-filter-info" ref={resultsRef} tabIndex="-1">
+      <div
+        aria-live="polite"
+        className="item-filter-info"
+        ref={resultsRef}
+        tabIndex="-1"
+      >
         <Heading level="three" size="callout">
           <>
             {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
