@@ -11,6 +11,7 @@ import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 import DateSearchBar from './DateSearchBar';
+import reverseItemFilterMap from '../../utils/reverseItemFilterMap';
 
 const ItemFilters = (
   {
@@ -24,26 +25,33 @@ const ItemFilters = (
   },
   { router },
 ) => {
+  const getLabelsForValues = (values) => {
+    return values.split(',').reduce((acc, val) => acc + ',' + getLabelForValue(val), '')
+  }
+  const getLabelForValue = (value) => {
+    const labels = Object.keys(mappedItemsLabelToIds)
+    return labels.find((label) => mappedItemsLabelToIds[label].includes(value))
+  }
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
   // reverse mappeditemslabeltoids
   const initialFilters = {
-    location: query.item_location || [],
-    format: query.item_format || [],
-    status: query.item_status || [],
+    location: query.item_location ? [query.item_location] : [],
+    format: query.item_format ? [query.item_format] : [],
+    status: query.item_status ? [query.item_status] : [],
   };
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
   // and must be handled separately in the `SearchBar` component.
   const [selectedYear, setSelectedYear] = useState(query.item_date || '');
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
-  const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
+  const [selectedFields, setSelectedFields] = useState(initialFilters);
+  const [selectedFieldDisplayStr, setSelectedFieldDisplayStr] = useState('');
   
   // When new items are fetched, update the selected string display.
   useEffect(() => {
-    setSelectedFilterDisplayStr(parsedFilterSelections());
+    setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the
     // filter UI and the results.
     resultsRef.current &&  resultsRef.current.focus();
@@ -53,14 +61,13 @@ const ItemFilters = (
    * When new filters are selected or unselected, fetch new items.
    */
   const buildFilterUrl = (clear = false, clearYear = false) => {
-    const baseUrl = appConfig.baseUrl;
     let queryParams = [];
     let queryObj = {};
     if (!clear) {
       // If we are making a request, get all the selected filters and map
       // the labels to their ids. That will be sent over to the API.
-      Object.keys(selectedFilters).forEach(filter => {
-        const selectedFilterValues = selectedFilters[filter].join(',')
+      Object.keys(selectedFields).forEach(filter => {
+        const selectedFilterValues = selectedFields[filter].join(',')
         if (selectedFilterValues.length > 0) {
             queryParams.push(
               `item_${filter}=${selectedFilterValues}`);
@@ -73,7 +80,6 @@ const ItemFilters = (
         queryObj['item_date'] = selectedYear;
       }
     }
-    const queryString = (queryParams.length > 0 ? `?${queryParams.join('&')}` : '')
     return queryObj
     // Make the API call and let redux know.
     // ajaxCall(
@@ -96,7 +102,7 @@ const ItemFilters = (
 
   const manageFilterDisplay = (filterType) => {
     // reset `selectFilters` to `initialFilters` any time `openFilter` changes
-    setSelectedFilters(initialFilters);
+    setSelectedFields(initialFilters);
     if (filterType === openFilter) {
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
       setOpenFilter('none');
@@ -114,11 +120,12 @@ const ItemFilters = (
   const parsedFilterSelections = useCallback(() => {
     let filterSelectionString = itemsAggregations
       .map((filter) => {
-        const filters = selectedFilters[filter.field];
+        const filters = selectedFields[filter.field];
         if (filters.length) {
           let filtersString;
-          if (Array.isArray(filters)) {
-            filtersString = filters.join("', '");
+          // inital filters may be [undefined]
+          if (Array.isArray(filters) && filters[0]) {
+            filtersString = filters.map(filter => getLabelsForValues(filter)).join(', ');
           } else {
             filtersString = filters;
           }
@@ -133,12 +140,12 @@ const ItemFilters = (
     }
 
     return filterSelectionString.join(', ');
-  }, [itemsAggregations, selectedFilters, selectedYear]);
+  }, [itemsAggregations, selectedFields, selectedYear]);
 
   const resetFilters = () => {
     const clear = true;
     // getNewBib(clear);
-    setSelectedFilters(initialFilters);
+    setSelectedFields(initialFilters);
     const href = createHref({
       pathname: location.pathname,
       hash: '#item-filters',
@@ -148,12 +155,12 @@ const ItemFilters = (
 
   const submitFilterSelections = (clear = false, clearYear = false) => {
     const query = buildFilterUrl(clear, clearYear);
-    const updatedSelectedFilters = { ...selectedFilters };
+    const updatedselectedFields = { ...selectedFields };
     if (selectedYear) {
-      updatedSelectedFilters.date = selectedYear;
+      updatedselectedFields.date = selectedYear;
     }
     if (clearYear) {
-      delete updatedSelectedFilters.date;
+      delete updatedselectedFields.date;
     }
     // const urlWithFilterParams = location.pathname + query;
     // console.log({urlWithFilterParams})
@@ -165,10 +172,9 @@ const ItemFilters = (
         search: '',
       },
     });
-    console.log({href})
     trackDiscovery(
       'Search Filters',
-      `Apply Filter - ${JSON.stringify(selectedFilters)}`,
+      `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
     router.push(href)
     setSelectedYear('');
@@ -176,14 +182,14 @@ const ItemFilters = (
 
   const itemFilterComponentProps = {
     initialFilters,
-    selectedFilters,
-    setSelectedFilters,
+    selectedFields,
+    setSelectedFields,
     manageFilterDisplay,
     submitFilterSelections,
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
-  const resultsItemsNumber = selectedFilterDisplayStr ? numItemsCurrent : numItemsTotal;
+  const resultsItemsNumber = selectedFieldDisplayStr ? numItemsCurrent : numItemsTotal;
 
   return (
     <Fragment>
@@ -229,9 +235,9 @@ const ItemFilters = (
             {resultsItemsNumber !== 1 ? 's' : null} Found
           </>
         </Heading>
-        {selectedFilterDisplayStr ? (
+        {selectedFieldDisplayStr ? (
           <>
-            <span>Filtered by {selectedFilterDisplayStr}</span>
+            <span>Filtered by {selectedFieldDisplayStr}</span>
             <Button
               buttonType="text"
               id="clear-filters-button"

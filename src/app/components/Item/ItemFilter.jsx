@@ -11,7 +11,6 @@ import { isOptionSelected } from '../../utils/utils';
 const updateOptions = options =>
   options.map(option => {
     return {
-      id: option.value,
     label: option.label,
       value: option.value
     }
@@ -31,9 +30,9 @@ const ItemFilter = ({
   options,
   manageFilterDisplay,
   mobile,
-  selectedFilters,
+  selectedFields,
   submitFilterSelections,
-  setSelectedFilters,
+  setSelectedFields,
   isOpen,
   initialFilters = initialFiltersObj,
 }) => {
@@ -44,44 +43,45 @@ const ItemFilter = ({
 
   /**
    * When a filter is selected, let the parent know through
-   * the `setSelectedFilters` function.
+   * the `setSelectedFields` function.
    */
-  const selectFilter = (value) => {
-    setSelectedFilters((prevSelectedFilters) => {
-      const updatedSelectedFilters = { ...prevSelectedFilters };
-      const prevSelection = prevSelectedFilters[filter];
-      if (!prevSelection || !prevSelection.length) updatedSelectedFilters[filter] = [value.id];
+  const selectFilter = (option) => {
+    setSelectedFields((prevSelectedFields) => {
+      const updatedSelectedFields = { ...prevSelectedFields };
+      const prevSelection = prevSelectedFields[filter];
+      if (!prevSelection || !prevSelection.length) updatedSelectedFields[filter] = [option.value];
       else {
-        updatedSelectedFilters[filter] = Array.isArray(prevSelection) ?
-          [...prevSelection, value.id] : [prevSelection, value.id];
+        updatedSelectedFields[filter] = Array.isArray(prevSelection) ?
+          [...prevSelection, option.value] : [prevSelection, option.value];
       }
 
-      return updatedSelectedFilters;
+      return updatedSelectedFields;
     });
   };
 
   /**
    * When a filter is deselected, let the parent know through
-   * the `setSelectedFilters` function.
+   * the `setSelectedFields` function.
    */
-  const deselectFilter = (value) => {
-    setSelectedFilters((prevSelectedFilters) => {
-      const updatedSelectedFilters = { ...prevSelectedFilters };
-      const previousSelection = updatedSelectedFilters[filter];
-      updatedSelectedFilters[filter] = Array.isArray(previousSelection) ?
-        previousSelection.filter(prevSelection => prevSelection !== value.id)
+  const deselectFilter = (option) => {
+    setSelectedFields((prevSelectedFields) => {
+      const updatedSelectedFields = { ...prevSelectedFields };
+      const previousSelection = updatedSelectedFields[filter];
+      updatedSelectedFields[filter] = Array.isArray(previousSelection) ?
+        previousSelection.filter(prevSelectedOption => prevSelectedOption !== option.value)
         : [];
-      return updatedSelectedFilters;
+      return updatedSelectedFields;
     });
   };
 
   /**
    * When a checkbox is clicked, check if it is selected or not.
    */
+  // deletethiscomment handle checkbox works as needed
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
-    const currentSelection = selectedFilters[filter];
-    if (currentSelection && currentSelection.includes(option.id)) {
+    const currentSelection = selectedFields[filter];
+    if (currentSelection && currentSelection.includes(option.value)) {
       deselectFilter(option);
     } else {
       selectFilter(option);
@@ -95,15 +95,15 @@ const ItemFilter = ({
   const clear = () => {
     const clear = true;
     setSelectionMade(true);
-    setSelectedFilters(prevSelectedFilters => ({
-      ...prevSelectedFilters,
+    setSelectedFields(prevSelectedFields => ({
+      ...prevSelectedFields,
       [filter]: [],
     }));
     submitFilterSelections && submitFilterSelections(clear);
   };
 
   const isSelected = (option) =>
-    isOptionSelected(selectedFilters[filter], option.id);
+    isOptionSelected(selectedFields[filter], option.value);
   const updatedOptions = updateOptions(options);
   const determineNumOfSelections = () => {
     const thisFilterSelections = initialFilters[filter];
@@ -145,7 +145,7 @@ const ItemFilter = ({
           <fieldset>
             {updatedOptions.map((option, key) => (
               <Checkbox
-                id={option.id}
+                id={option.value}
                 labelText={option.label}
                 onChange={() => handleCheckbox(option)}
                 key={key}
@@ -166,7 +166,7 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
-                  isDisabled={!selectedFilters[filter].length}
+                    isDisabled={!selectedFields[filter].length}
                   id="clear-filter-button"
                 >
                   Clear
@@ -193,16 +193,16 @@ ItemFilter.propTypes = {
   isOpen: PropTypes.bool,
   manageFilterDisplay: PropTypes.func,
   mobile: PropTypes.bool,
-  selectedFilters: PropTypes.object,
+  selectedFields: PropTypes.object,
   submitFilterSelections: PropTypes.func,
-  setSelectedFilters: PropTypes.func,
+  setSelectedFields: PropTypes.func,
   initialFilters: PropTypes.object,
 };
 
 ItemFilter.defaultProps = {
   isOpen: false,
   mobile: false,
-  selectedFilters: {
+  selectedFields: {
     location: [],
     format: [],
     status: [],
