@@ -125,7 +125,7 @@ describe('BibPage', () => {
     });
 
     it('has Details section', () => {
-      expect(component.find('Heading').at(2).prop('children')).to.equal('Details');
+      expect(component.find('h3').at(2).prop('children')).to.equal('Details');
     });
 
     it('has section with id items-table', () => {
@@ -154,7 +154,9 @@ describe('BibPage', () => {
 
     let component;
     before(() => {
-      const bib = { ...bibs[0], ...annotatedMarc };
+      const bib = { ...bibs[0], ...annotatedMarc, numItemsTotal: 0 };
+      // This is not enough. The ItemsContainer component renders based on
+      // the `numItemsTotal` prop from the API.
       bib.items = [];
       component = mountTestRender(
         <BibPage

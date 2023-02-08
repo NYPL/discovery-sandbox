@@ -146,10 +146,6 @@ class ItemsContainer extends React.Component {
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
 
-    if (!itemsToDisplay || !itemsToDisplay.length) {
-      return null;
-    }
-
     if (
       this.state.js &&
       itemsToDisplay &&

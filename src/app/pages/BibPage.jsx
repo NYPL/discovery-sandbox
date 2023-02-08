@@ -213,25 +213,33 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        {items && items.length && !isElectronicResources ?
-          <section style={{ marginTop: '20px' }} id="items-table">
-            <ItemsContainer
-              displayDateFilter={bib.hasItemDates}
-              key={bibId}
-              shortenItems={location.pathname.indexOf('all') !== -1}
-              items={items}
-              bibId={bibId}
-              itemPage={searchParams.get('itemPage')}
-              searchKeywords={searchKeywords}
-              holdings={newBibModel.holdings}
-              itemsAggregations={reducedItemsAggregations}
-              mappedItemsLabelToIds={mappedItemsLabelToIds}
-              numItemsTotal={numItemsTotal}
-              numItemsCurrent={numItemsCurrent}
-              checkForMoreItems={checkForMoreItems}
-            />
-          </section>
-          : null
+        {/* Display the items filter container component when:
+          1: there are items through the `numItemsTotal` property,
+          2: there are items and none of those items are electronic resources,
+          
+          Otherwise, if there are items but they are all electronic resources,
+          do not display the items filter container component.
+        */}
+        {(numItemsTotal && numItemsTotal > 0) ||
+          (!isElectronicResources && (!items || items.length > 0)) ?
+            <section style={{ marginTop: '20px' }} id="items-table">
+              <ItemsContainer
+                displayDateFilter={bib.hasItemDates}
+                key={bibId}
+                shortenItems={location.pathname.indexOf('all') !== -1}
+                items={items}
+                bibId={bibId}
+                itemPage={searchParams.get('itemPage')}
+                searchKeywords={searchKeywords}
+                holdings={newBibModel.holdings}
+                itemsAggregations={reducedItemsAggregations}
+                mappedItemsLabelToIds={mappedItemsLabelToIds}
+                numItemsTotal={numItemsTotal}
+                numItemsCurrent={numItemsCurrent}
+                checkForMoreItems={checkForMoreItems}
+              />
+            </section>
+            : null
         }
 
         {newBibModel.holdings && (
