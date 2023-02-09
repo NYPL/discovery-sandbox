@@ -99,8 +99,8 @@ describe('ItemFilter', () => {
           selectedFields={selectedFields}
           options={reducedItemAggregationsLocationsOnly[0].options}
           field={reducedItemAggregationsLocationsOnly[0].field}
-          setSelectedFields={(reactGeneratedFunc) => {
-            updatedFilters = reactGeneratedFunc(selectedFields);
+          setSelectedFields={(newFields) => {
+            updatedFilters = newFields
           }}
         />);
       const clearButton = component.find('button').at(1);
