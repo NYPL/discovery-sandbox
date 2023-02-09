@@ -2,23 +2,17 @@ import { Button, Heading, Text } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
-import { updateBibPage } from '@Actions';
-import { ajaxCall } from '@utils';
-import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
-import { itemBatchSize } from '../../data/constants';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
 import DateSearchBar from './DateSearchBar';
-import reverseItemFilterMap from '../../utils/reverseItemFilterMap';
 
 const ItemFilters = (
   {
     displayDateFilter,
     numOfFilteredItems,
     itemsAggregations = [],
-    dispatch,
     numItemsTotal,
     numItemsCurrent,
     mappedItemsLabelToIds = {}
@@ -28,7 +22,7 @@ const ItemFilters = (
   // given values of filter options ('loc:mal82,loc:rc2ma'), and the field they 
   // belongs to, returns an array of the labels they correspond to
   const getLabelsForValues = (values, field) => {
-    return values.map((val) => getLabelForValue(val, field))
+    return values.map((val) => getLabelForValue(val, field)).filter(l => l)
   }
   // given one value and the field it belongs to, returns the label it 
   // corresponds to
@@ -69,12 +63,12 @@ const ItemFilters = (
     if (!clear) {
       // If we are making a request, get all the selected filters and map
       // the labels to their ids. That will be sent over to the API.
-      Object.keys(selectedFields).forEach(filter => {
-        const selectedFilterValues = selectedFields[filter].join(',')
+      Object.keys(selectedFields).forEach(field => {
+        const selectedFilterValues = selectedFields[field].join(',')
         if (selectedFilterValues.length > 0) {
           queryParams.push(
-            `item_${filter}=${selectedFilterValues}`);
-          queryObj[`item_${filter}`] = selectedFilterValues;
+            `item_${field}=${selectedFilterValues}`);
+          queryObj[`item_${field}`] = selectedFilterValues;
         }
       });
       // The "year" filter is stored separately from the other filters.
@@ -202,6 +196,7 @@ const ItemFilters = (
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
+          getLabelsForValues={getLabelsForValues}
         />
       ) : (
         <div
@@ -211,12 +206,12 @@ const ItemFilters = (
         >
           <div>
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
-            {itemsAggregations.map((filter) => (
+              {itemsAggregations.map((field) => (
               <ItemFilter
-                filter={filter.field}
-                key={filter.id}
-                options={filter.values}
-                isOpen={openFilter === filter.field}
+                  field={field.field}
+                  key={field.id}
+                  options={field.options}
+                  isOpen={openFilter === field.field}
                 {...itemFilterComponentProps}
                 getLabelsForValues={getLabelsForValues}
               />

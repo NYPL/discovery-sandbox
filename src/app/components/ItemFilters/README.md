@@ -18,3 +18,6 @@ selectedFields - object
 field2: [],
 field3: [value]}
 ```
+
+### Important functions to understand
+getLabelsForValues - takes an array of field option value strings and the field they belong to and returns an array of corresponding labels

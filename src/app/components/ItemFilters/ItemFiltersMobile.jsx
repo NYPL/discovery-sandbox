@@ -20,6 +20,7 @@ const ItemFiltersMobile = ({
   initialFilters,
   selectedYear,
   setSelectedYear,
+  getLabelsForValues
 }) => {
   if (!itemsAggregations) return null;
   const showResultsAction = () => {
@@ -31,17 +32,18 @@ const ItemFiltersMobile = ({
       <div className="scc-item-filters" id="item-filters-mobile">
         <div id="item-filters" className="item-table-filters">
           {
-            itemsAggregations.map(filter => (
+            itemsAggregations.map(field => (
               <ItemFilter
-                filter={filter.field}
-                key={filter.id}
-                options={filter.values}
+                field={field.field}
+                key={field.id}
+                options={field.options}
                 mobile
                 manageFilterDisplay={manageFilterDisplay}
                 selectedFilters={selectedFilters}
                 setSelectedFilters={setSelectedFilters}
                 submitFilterSelections={submitFilterSelections}
                 initialFilters={initialFilters}
+                getLabelsForValues={getLabelsForValues}
               />
             ))
           }

@@ -26,7 +26,7 @@ const initialFiltersObj = {
  * The individual filter dropdown component.
  */
 const ItemFilter = ({
-  filter,
+  field,
   options,
   manageFilterDisplay,
   mobile,
@@ -40,7 +40,7 @@ const ItemFilter = ({
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
 
-  if (!options || !options.length || !filter) return null;
+  if (!options || !options.length || !field) return null;
   /**
    * When a filter is selected, let the parent know through
    * the `setSelectedFields` function.
@@ -48,10 +48,10 @@ const ItemFilter = ({
   const selectFilter = (option) => {
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
-      const prevSelection = prevSelectedFields[filter];
-      if (!prevSelection || !prevSelection.length) updatedSelectedFields[filter] = [option.value];
+      const prevSelection = prevSelectedFields[field];
+      if (!prevSelection || !prevSelection.length) updatedSelectedFields[field] = [option.value];
       else {
-        updatedSelectedFields[filter] = Array.isArray(prevSelection) ?
+        updatedSelectedFields[field] = Array.isArray(prevSelection) ?
           [...prevSelection, option.value] : [prevSelection, option.value];
       }
       return updatedSelectedFields;
@@ -65,8 +65,8 @@ const ItemFilter = ({
   const deselectFilter = (option) => {
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
-      const previousSelection = updatedSelectedFields[filter];
-      updatedSelectedFields[filter] = Array.isArray(previousSelection) ?
+      const previousSelection = updatedSelectedFields[field];
+      updatedSelectedFields[field] = Array.isArray(previousSelection) ?
         previousSelection.filter(prevSelectedOption => prevSelectedOption !== option.value)
         : [];
       return updatedSelectedFields;
@@ -79,7 +79,7 @@ const ItemFilter = ({
   // deletethiscomment handle checkbox works as needed
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
-    const currentSelection = selectedFields[filter];
+    const currentSelection = selectedFields[field];
     console.log(currentSelection)
     if (currentSelection && currentSelection.includes(option.value)) {
       console.log('deselect')
@@ -99,19 +99,19 @@ const ItemFilter = ({
     setSelectionMade(true);
     setSelectedFields(prevSelectedFields => ({
       ...prevSelectedFields,
-      [filter]: [],
+      [field]: [],
     }));
     submitFilterSelections && submitFilterSelections(clear);
   };
 
   const isSelected = (option) =>
-    isOptionSelected(selectedFields[filter], option.value);
+    isOptionSelected(selectedFields[field], option.value);
   const updatedOptions = updateOptions(options);
   const determineNumOfSelections = () => {
-    const thisFilterSelections = initialFilters[filter];
+    const thisFilterSelections = initialFilters[field];
     let numSelection
     if (thisFilterSelections) {
-      const labels = getLabelsForValues(thisFilterSelections, filter)
+      const labels = getLabelsForValues(thisFilterSelections, field)
     // get labels from label function, count those!!!
       numSelection = labels.length
     }
@@ -120,7 +120,7 @@ const ItemFilter = ({
   };
   const numOfSelections = determineNumOfSelections();
   const clickHandler = () => (
-    mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(filter)
+    mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(field)
   );
   const open = mobile ? mobileIsOpen : isOpen;
 
@@ -143,7 +143,7 @@ const ItemFilter = ({
         onClick={clickHandler}
         type="button"
       >
-        {filter}{numOfSelections}
+        {field}{numOfSelections}
         <Icon name={open ? 'minus' : 'plus'} size='medium' />
       </Button>
       {open ? (
@@ -172,7 +172,7 @@ const ItemFilter = ({
                 <Button
                   buttonType="link"
                   onClick={() => clear()}
-                    isDisabled={!selectedFields[filter].length}
+                    isDisabled={!selectedFields[field].length}
                   id="clear-filter-button"
                 >
                   Clear

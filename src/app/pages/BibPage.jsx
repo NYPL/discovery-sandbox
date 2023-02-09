@@ -144,7 +144,7 @@ export const BibPage = (
         }
         reducedValues[label].add(aggregation.value)
       })
-    agg.values = Object.keys(reducedValues)
+    agg.options = Object.keys(reducedValues)
       .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
   });
   // For every item aggregation, go through every filter in its `values` array
