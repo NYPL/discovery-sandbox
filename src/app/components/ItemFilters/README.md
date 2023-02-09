@@ -5,9 +5,9 @@ label - human readable label for the option
 value - the query param that the API expects for that option
 
 ### Data shapes
-mappedItemsLabelToIds - object
+fieldToOptionsMap - object
 ```
-{field: {label: value, anotherLabel: anotherValue},
+ {field: {label: value, anotherLabel: anotherValue},
  field2: {label: value}
  }
 ```

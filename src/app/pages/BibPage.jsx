@@ -30,6 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import { buildReducedItemsAggregations } from '../utils/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -131,22 +132,8 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
   // normalize item aggregations by dropping values with no label and combining duplicate lables
-  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
-  reducedItemsAggregations.forEach((agg) => {
-    const fieldAggregation = agg.values
-    const reducedValues = {}
-    fieldAggregation.filter(aggregation => aggregation.label?.length)
-      .forEach((aggregation) => {
-        let label = aggregation.label
-        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
-        if (!reducedValues[label]) {
-          reducedValues[label] = new Set()
-        }
-        reducedValues[label].add(aggregation.value)
-      })
-    agg.options = Object.keys(reducedValues)
-      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
-  });
+
+  const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   // For every item aggregation, go through every filter in its `values` array
   // and map all the labels to their ids. This is done because the API expects
   // the ids of the filters to be sent over, not the labels.

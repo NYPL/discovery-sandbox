@@ -9,3 +9,22 @@ export const getLabelForValue = (value, field, map) => {
   const labels = Object.keys(map[field])
   return labels.find((label) => map[field][label].includes(value))
 }
+
+export const buildReducedItemsAggregations = (aggs) => {
+  return JSON.parse(JSON.stringify(aggs)).map((agg) => {
+    const fieldAggregation = agg.values
+    const reducedValues = {}
+    fieldAggregation.filter(aggregation => aggregation.label?.length)
+      .forEach((aggregation) => {
+        let label = aggregation.label
+        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
+        if (!reducedValues[label]) {
+          reducedValues[label] = new Set()
+        }
+        reducedValues[label].add(aggregation.value)
+      })
+    agg.options = Object.keys(reducedValues)
+      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
+    return agg
+  });
+}
