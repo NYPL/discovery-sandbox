@@ -43,16 +43,16 @@ describe.only('ItemFilter', () => {
     });
   });
 
-  describe.only('with `options` and `filter`', () => {
+  describe('with `options` and `filter`', () => {
     let component;
     it('should render a `div` and a `button`', () => {
-      const reducedItemAggregations = buildReducedItemsAggregations([locationItemFilter])
-      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregations)
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
       component = mount(
         <ItemFilter
           fieldToOptionsMap={fieldToOptionsMap}
-          options={reducedItemAggregations[0].options}
-          field={reducedItemAggregations[0].field}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
         />);
       expect(component.find('div').length).to.equal(1);
       expect(component.find('button').length).to.equal(1);
@@ -62,12 +62,13 @@ describe.only('ItemFilter', () => {
   describe('with required props, open state', () => {
     let component;
     it('should render a fieldset, 3 buttons, 2nd two buttons disabled', () => {
-      const fieldToOptionsMap = buildReducedItemsAggregations(JSON.stringify([locationItemFilter]))
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
       component = mount(
         <ItemFilter
           fieldToOptionsMap={fieldToOptionsMap}
-          options={locationItemFilter.options}
-          field={locationItemFilter.field}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
           isOpen
         />);
       expect(component.find('fieldset').length).to.equal(1);
@@ -77,26 +78,29 @@ describe.only('ItemFilter', () => {
     });
   });
 
-  describe('with `selectedFilters`', () => {
+  describe('with `selectedFields`', () => {
     /*
       Example of how to test state update when using
       `useState` and passing a function to manipulate the
       previous state
     */
-    it('clear button should remove selected filters for corresponding `filter`', () => {
-      let updatedFilters;
-      const selectedFilters = {
+    it('clear button should remove selected options for corresponding fields', () => {
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
+      let updatedFilters = 'abc';
+      const selectedFields = {
         location: ['loc:maj03', 'offsite'],
         status: ['status:a'],
       };
       const component = mount(
         <ItemFilter
           isOpen
-          selectedFilters={selectedFilters}
-          options={locationItemFilter.options}
-          field={locationItemFilter.field}
-          setSelectedFilters={(reactGeneratedFunc) => {
-            updatedFilters = reactGeneratedFunc(selectedFilters);
+          fieldToOptionsMap={fieldToOptionsMap}
+          selectedFields={selectedFields}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
+          setSelectedFields={(reactGeneratedFunc) => {
+            updatedFilters = reactGeneratedFunc(selectedFields);
           }}
         />);
       const clearButton = component.find('button').at(1);
