@@ -81,12 +81,9 @@ const ItemFilter = ({
   const handleCheckbox = (option) => {
     if (!selectionMade) setSelectionMade(true);
     const currentSelection = selectedFields[field];
-    console.log({ currentSelection })
     if (currentSelection && currentSelection.includes(option.value)) {
-      console.log('deselect')
       deselectFilter(option);
     } else {
-      console.log('select')
       selectFilter(option);
     }
   };

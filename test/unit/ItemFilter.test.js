@@ -8,7 +8,7 @@ import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
 import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
 
-describe.only('ItemFilter', () => {
+describe('ItemFilter', () => {
   const locationItemFilter = itemsAggregations[0];
   describe('missing props', () => {
     let component;

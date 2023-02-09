@@ -21,7 +21,6 @@ export class DataLoader extends React.Component {
       dispatch(updateLoadingStatus(false));
       return null;
     }
-    console.log("componentDidMount", this.props)
 
     dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
