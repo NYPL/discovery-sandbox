@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
 import { trackDiscovery } from '../../utils/utils';
+import { getLabelsForValues } from '../../utils/itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
@@ -15,21 +16,10 @@ const ItemFilters = (
     itemsAggregations = [],
     numItemsTotal,
     numItemsCurrent,
-    mappedItemsLabelToIds = {}
+    fieldToOptionsMap = {}
   },
   { router },
 ) => {
-  // given values of filter options ('loc:mal82,loc:rc2ma'), and the field they 
-  // belongs to, returns an array of the labels they correspond to
-  const getLabelsForValues = (values, field) => {
-    return values.map((val) => getLabelForValue(val, field)).filter(l => l)
-  }
-  // given one value and the field it belongs to, returns the label it 
-  // corresponds to
-  const getLabelForValue = (value, field) => {
-    const labels = Object.keys(mappedItemsLabelToIds[field])
-    return labels.find((label) => mappedItemsLabelToIds[field][label].includes(value))
-  }
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
@@ -123,7 +113,7 @@ const ItemFilters = (
           let filtersString;
           // inital filters may be [undefined]
           if (Array.isArray(selectedOptions) && selectedOptions[0]) {
-            filtersString = getLabelsForValues(selectedOptions, field).join(', ');
+            filtersString = getLabelsForValues(selectedOptions, field, fieldToOptionsMap).join(', ');
           } else {
             filtersString = selectedOptions;
           }
@@ -196,7 +186,7 @@ const ItemFilters = (
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
-          getLabelsForValues={getLabelsForValues}
+          fieldToOptionsMap={fieldToOptionsMap}
         />
       ) : (
         <div
@@ -213,7 +203,7 @@ const ItemFilters = (
                   options={field.options}
                   isOpen={openFilter === field.field}
                 {...itemFilterComponentProps}
-                getLabelsForValues={getLabelsForValues}
+                  fieldToOptionsMap={fieldToOptionsMap}
               />
             ))}
           </div>
@@ -256,7 +246,7 @@ ItemFilters.propTypes = {
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
   numItemsCurrent: PropTypes.number,
-  mappedItemsLabelToIds: PropTypes.object,
+  fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
 };
 

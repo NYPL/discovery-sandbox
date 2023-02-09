@@ -140,7 +140,7 @@ class ItemsContainer extends React.Component {
       itemsAggregations,
       numItemsTotal,
       numItemsCurrent,
-      mappedItemsLabelToIds
+      fieldToOptionsMap
     } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
@@ -183,7 +183,7 @@ class ItemsContainer extends React.Component {
             dispatch={dispatch}
             numItemsTotal={numItemsTotal}
             numItemsCurrent={numItemsCurrent}
-            mappedItemsLabelToIds={mappedItemsLabelToIds}
+            fieldToOptionsMap={fieldToOptionsMap}
           />
           {itemTable}
           {!!(
@@ -234,7 +234,7 @@ ItemsContainer.propTypes = {
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
   numItemsCurrent: PropTypes.number,
-  mappedItemsLabelToIds: PropTypes.object,
+  fieldToOptionsMap: PropTypes.object,
   checkForMoreItems: PropTypes.func,
   displayDateFilter: PropTypes.bool,
 };

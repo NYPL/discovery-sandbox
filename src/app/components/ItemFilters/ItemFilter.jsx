@@ -4,6 +4,7 @@ import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
 import { isOptionSelected } from '../../utils/utils';
+import { getLabelsForValues } from '../../utils/itemFilterUtils';
 
 /**
  * This is to better structure the data for the checkboxes.
@@ -35,7 +36,7 @@ const ItemFilter = ({
   setSelectedFields,
   isOpen,
   initialFilters = initialFiltersObj,
-  getLabelsForValues
+  fieldToOptionsMap
 }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
@@ -111,7 +112,7 @@ const ItemFilter = ({
     const thisFilterSelections = initialFilters[field];
     let numSelection
     if (thisFilterSelections) {
-      const labels = getLabelsForValues(thisFilterSelections, field)
+      const labels = getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap)
     // get labels from label function, count those!!!
       numSelection = labels.length
     }

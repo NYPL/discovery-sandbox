@@ -20,8 +20,7 @@ const ItemFiltersMobile = ({
   initialFilters,
   selectedYear,
   setSelectedYear,
-  getLabelsForValues
-}) => {
+  fieldToOptionsMap }) => {
   if (!itemsAggregations) return null;
   const showResultsAction = () => {
     submitFilterSelections();
@@ -43,7 +42,7 @@ const ItemFiltersMobile = ({
                 setSelectedFilters={setSelectedFilters}
                 submitFilterSelections={submitFilterSelections}
                 initialFilters={initialFilters}
-                getLabelsForValues={getLabelsForValues}
+                fieldToOptionsMap={fieldToOptionsMap}
               />
             ))
           }

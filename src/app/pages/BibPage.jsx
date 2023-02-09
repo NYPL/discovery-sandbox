@@ -88,7 +88,7 @@ export const BibPage = (
             filterQuery += `&${qKey}=${qValue}`;
           } else if (qKey !== "itemPage") {
             // For other filters, we need to map the label to the id.
-            filterQuery += `&${qKey}=${mappedItemsLabelToIds[qKey][qValue]}`;
+            filterQuery += `&${qKey}=${fieldToOptionsMap[qKey][qValue]}`;
           }
         }
       }
@@ -122,7 +122,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, mappedItemsLabelToIds, numItemsTotal]);
+  }, [bib, dispatch, fieldToOptionsMap, numItemsTotal]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -150,7 +150,7 @@ export const BibPage = (
   // For every item aggregation, go through every filter in its `values` array
   // and map all the labels to their ids. This is done because the API expects
   // the ids of the filters to be sent over, not the labels.
-  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
+  const fieldToOptionsMap = reducedItemsAggregations.reduce((accc, aggregation) => {
     const filter = aggregation.field;
     const mappedValues = aggregation.values.reduce((acc, value) => ({
       ...acc,
@@ -219,7 +219,7 @@ export const BibPage = (
             searchKeywords={searchKeywords}
             holdings={newBibModel.holdings}
             itemsAggregations={reducedItemsAggregations}
-            mappedItemsLabelToIds={mappedItemsLabelToIds}
+            fieldToOptionsMap={fieldToOptionsMap}
             numItemsTotal={numItemsTotal}
             numItemsCurrent={numItemsCurrent}
             checkForMoreItems={checkForMoreItems}

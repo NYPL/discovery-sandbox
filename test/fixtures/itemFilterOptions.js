@@ -19,13 +19,15 @@ const statusFilters = [
   { id: 'requestable', label: 'Requestable' },
 ];
 
+const fieldToOptionMap = { location: locationFilters, format: formatFilters, status: statusFilters }
+
 const itemsAggregations = [
   {
     '@id': 'res:location',
     '@type': "nypl:Aggregation",
     field: 'location',
     id:  'location',
-    values: [
+    options: [
       {
         count: 4,
         value: 'loc:maj03',
@@ -48,7 +50,7 @@ const itemsAggregations = [
     '@type': "nypl:Aggregation",
     field: 'format',
     id:  'format',
-    values: [
+    options: [
       {
         count: 12,
         label: 'Text',
@@ -61,7 +63,7 @@ const itemsAggregations = [
     '@type': "nypl:Aggregation",
     field: 'status',
     id:  'status',
-    values: [
+    options: [
       {
         count: 12,
         label: 'Available',
@@ -82,7 +84,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'location',
     id:  'location',
-    values: [
+    options: [
       {
         count: 4,
         value: 'loc:maj03',
@@ -134,7 +136,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'format',
     id:  'format',
-    values: [
+    options: [
       {
         count: 12,
         label: 'Text',
@@ -147,7 +149,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'status',
     id:  'status',
-    values: [
+    options: [
       {
         count: 12,
         label: 'Available',
