@@ -14,8 +14,8 @@ const ItemFiltersMobile = ({
   displayDateFilter,
   itemsAggregations,
   manageFilterDisplay,
-  selectedFilters,
-  setSelectedFilters,
+  selectedFields,
+  setSelectedFields,
   submitFilterSelections,
   initialFilters,
   selectedYear,
@@ -38,8 +38,8 @@ const ItemFiltersMobile = ({
                 options={field.options}
                 mobile
                 manageFilterDisplay={manageFilterDisplay}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
+                selectedFields={selectedFields}
+                setSelectedFields={setSelectedFields}
                 submitFilterSelections={submitFilterSelections}
                 initialFilters={initialFilters}
                 fieldToOptionsMap={fieldToOptionsMap}
