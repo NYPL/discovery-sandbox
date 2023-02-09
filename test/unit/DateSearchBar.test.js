@@ -72,7 +72,7 @@ describe('DateSearchBar', () => {
       // Form
       component.find('form').at(0).simulate('submit');
       
-      expect(component.find('div').at(0).text()).to.include('Please enter a valid year');
+      expect(component.find('div').at(0).text()).to.include('Error: Please enter a valid year');
     });
     
     it('should submit the form and call `submitFilterSelections`', () => {
