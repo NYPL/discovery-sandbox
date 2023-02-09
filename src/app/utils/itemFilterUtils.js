@@ -28,3 +28,18 @@ export const buildReducedItemsAggregations = (aggs) => {
     return agg
   });
 }
+
+// For every item aggregation, go through every filter in its `values` array
+// and map all the labels to their ids. This is done because the API expects
+// the ids of the filters to be sent over, not the labels.
+export const buildFieldToOptionsMap = (reducedItemsAggregations) => reducedItemsAggregations.reduce((accc, aggregation) => {
+  const filter = aggregation.field;
+  const mappedValues = aggregation.values.reduce((acc, value) => ({
+    ...acc,
+    [value.label]: value.value
+  }), {})
+  return {
+    ...accc,
+    [filter]: mappedValues,
+  };
+}, {});

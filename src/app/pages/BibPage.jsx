@@ -30,7 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
-import { buildReducedItemsAggregations } from '../utils/itemFilterUtils'
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../utils/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -134,20 +134,8 @@ export const BibPage = (
   // normalize item aggregations by dropping values with no label and combining duplicate lables
 
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
-  // For every item aggregation, go through every filter in its `values` array
-  // and map all the labels to their ids. This is done because the API expects
-  // the ids of the filters to be sent over, not the labels.
-  const fieldToOptionsMap = reducedItemsAggregations.reduce((accc, aggregation) => {
-    const filter = aggregation.field;
-    const mappedValues = aggregation.values.reduce((acc, value) => ({
-      ...acc,
-      [value.label]: value.value
-    }), {})
-    return {
-      ...accc,
-      [filter]: mappedValues,
-    };
-  }, {});
+
+  const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
 

@@ -27,7 +27,7 @@ const itemsAggregations = [
     '@type': "nypl:Aggregation",
     field: 'location',
     id:  'location',
-    options: [
+    values: [
       {
         count: 4,
         value: 'loc:maj03',
@@ -50,7 +50,7 @@ const itemsAggregations = [
     '@type': "nypl:Aggregation",
     field: 'format',
     id:  'format',
-    options: [
+    values: [
       {
         count: 12,
         label: 'Text',
@@ -63,7 +63,7 @@ const itemsAggregations = [
     '@type': "nypl:Aggregation",
     field: 'status',
     id:  'status',
-    options: [
+    values: [
       {
         count: 12,
         label: 'Available',
@@ -84,7 +84,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'location',
     id:  'location',
-    options: [
+    values: [
       {
         count: 4,
         value: 'loc:maj03',
@@ -136,7 +136,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'format',
     id:  'format',
-    options: [
+    values: [
       {
         count: 12,
         label: 'Text',
@@ -149,7 +149,7 @@ const itemsAggregations2 = [
     '@type': "nypl:Aggregation",
     field: 'status',
     id:  'status',
-    options: [
+    values: [
       {
         count: 12,
         label: 'Available',
