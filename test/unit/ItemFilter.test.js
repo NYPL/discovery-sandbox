@@ -6,8 +6,9 @@ import { shallow, mount } from 'enzyme';
 
 import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
+import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
 
-describe('ItemFilter', () => {
+describe.only('ItemFilter', () => {
   const locationItemFilter = itemsAggregations[0];
   describe('missing props', () => {
     let component;
@@ -18,7 +19,7 @@ describe('ItemFilter', () => {
     it('should not render without `options`', () => {
       component = shallow(
         <ItemFilter
-          filter="category"
+          field="category"
         />,
       );
       expect(component.type()).to.equal(null);
@@ -26,7 +27,7 @@ describe('ItemFilter', () => {
     it('should not render with empty `options`', () => {
       component = shallow(
         <ItemFilter
-          filter="category"
+          field="category"
           options={[]}
         />,
       );
@@ -42,13 +43,16 @@ describe('ItemFilter', () => {
     });
   });
 
-  describe('with `options` and `filter`', () => {
+  describe.only('with `options` and `filter`', () => {
     let component;
     it('should render a `div` and a `button`', () => {
+      const reducedItemAggregations = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregations)
       component = mount(
         <ItemFilter
-          options={locationItemFilter.values}
-          filter={locationItemFilter.field}
+          fieldToOptionsMap={fieldToOptionsMap}
+          options={reducedItemAggregations[0].options}
+          field={reducedItemAggregations[0].field}
         />);
       expect(component.find('div').length).to.equal(1);
       expect(component.find('button').length).to.equal(1);
@@ -58,10 +62,12 @@ describe('ItemFilter', () => {
   describe('with required props, open state', () => {
     let component;
     it('should render a fieldset, 3 buttons, 2nd two buttons disabled', () => {
+      const fieldToOptionsMap = buildReducedItemsAggregations(JSON.stringify([locationItemFilter]))
       component = mount(
         <ItemFilter
-          options={locationItemFilter.values}
-          filter={locationItemFilter.field}
+          fieldToOptionsMap={fieldToOptionsMap}
+          options={locationItemFilter.options}
+          field={locationItemFilter.field}
           isOpen
         />);
       expect(component.find('fieldset').length).to.equal(1);
@@ -87,8 +93,8 @@ describe('ItemFilter', () => {
         <ItemFilter
           isOpen
           selectedFilters={selectedFilters}
-          options={locationItemFilter.values}
-          filter={locationItemFilter.field}
+          options={locationItemFilter.options}
+          field={locationItemFilter.field}
           setSelectedFilters={(reactGeneratedFunc) => {
             updatedFilters = reactGeneratedFunc(selectedFilters);
           }}
