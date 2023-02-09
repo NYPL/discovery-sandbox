@@ -11,7 +11,7 @@ import {
 } from '../../data/constants';
 import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
-import ItemFilters from './ItemFilters';
+import ItemFilters from '../ItemFilters/ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
 

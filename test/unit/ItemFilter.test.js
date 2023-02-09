@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemFilter from './../../src/app/components/Item/ItemFilter';
+import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 describe('ItemFilter', () => {

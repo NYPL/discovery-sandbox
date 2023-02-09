@@ -54,7 +54,6 @@ const ItemFilter = ({
         updatedSelectedFields[filter] = Array.isArray(prevSelection) ?
           [...prevSelection, option.value] : [prevSelection, option.value];
       }
-
       return updatedSelectedFields;
     });
   };

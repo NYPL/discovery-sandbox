@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { mount } from 'enzyme';
 
 import ItemFilters from './../../src/app/components/Item/ItemFilters';
-import ItemFilter from './../../src/app/components/Item/ItemFilter';
+import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import item from '../fixtures/libraryItems';
 import { itemsAggregations, itemsAggregations2 } from '../fixtures/itemFilterOptions';
 

@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import DateSearchBar from './../../src/app/components/Item/DateSearchBar';
+import DateSearchBar from '../../src/app/components/ItemFilters/DateSearchBar';
 
 describe('DateSearchBar', () => {
   describe('Basic rendering', () => {

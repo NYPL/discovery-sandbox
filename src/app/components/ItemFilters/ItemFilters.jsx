@@ -40,9 +40,9 @@ const ItemFilters = (
   const { createHref, location } = router;
   const query = location.query || {};
   const initialFilters = {
-    location: query.item_location ? [query.item_location.split(',')] : [],
-    format: query.item_format ? [query.item_format.split(',')] : [],
-    status: query.item_status ? [query.item_status.split(',')] : [],
+    location: query.item_location ? query.item_location.split(',') : [],
+    format: query.item_format ? query.item_format.split(',') : [],
+    status: query.item_status ? query.item_status.split(',') : [],
   };
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
@@ -51,13 +51,13 @@ const ItemFilters = (
   const [selectedYear, setSelectedYear] = useState(query.item_date || '');
   const [selectedFields, setSelectedFields] = useState(initialFilters);
   const [selectedFieldDisplayStr, setSelectedFieldDisplayStr] = useState('');
-  
+
   // When new items are fetched, update the selected string display.
   useEffect(() => {
     setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the
     // filter UI and the results.
-    resultsRef.current &&  resultsRef.current.focus();
+    resultsRef.current && resultsRef.current.focus();
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
@@ -72,9 +72,9 @@ const ItemFilters = (
       Object.keys(selectedFields).forEach(filter => {
         const selectedFilterValues = selectedFields[filter].join(',')
         if (selectedFilterValues.length > 0) {
-            queryParams.push(
-              `item_${filter}=${selectedFilterValues}`);
-            queryObj[`item_${filter}`] = selectedFilterValues;
+          queryParams.push(
+            `item_${filter}=${selectedFilterValues}`);
+          queryObj[`item_${filter}`] = selectedFilterValues;
         }
       });
       // The "year" filter is stored separately from the other filters.
@@ -129,7 +129,7 @@ const ItemFilters = (
           let filtersString;
           // inital filters may be [undefined]
           if (Array.isArray(selectedOptions) && selectedOptions[0]) {
-            filtersString = selectedOptions.map(value => getLabelsForValues(value, field).join(', ')).join(', ');
+            filtersString = getLabelsForValues(selectedOptions, field).join(', ');
           } else {
             filtersString = selectedOptions;
           }
@@ -222,11 +222,11 @@ const ItemFilters = (
               />
             ))}
           </div>
-            {displayDateFilter && (<DateSearchBar
+          {displayDateFilter && (<DateSearchBar
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
             submitFilterSelections={submitFilterSelections}
-            />)}
+          />)}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
