@@ -120,6 +120,7 @@ describe.only('ItemFilters', () => {
   // one filter will be a string in the router context
   describe('with valid items, one filter', () => {
     let component;
+    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
     before(() => {
       const contextWithOneFilter = context;
       const items = [
@@ -129,7 +130,7 @@ describe.only('ItemFilters', () => {
         item.requestable_ReCAP_not_available,
         item.requestable_nonReCAP_NYPL,
       ];
-      contextWithOneFilter.router.location.query = { format: 'Text' };
+      contextWithOneFilter.router.location.query = { item_format: 'Text' };
       component = mount(
         <ItemFilters
           items={items}
@@ -137,6 +138,7 @@ describe.only('ItemFilters', () => {
           numItemsTotal={items.length}
           numItemsCurrent={items.length}
           itemsAggregations={itemsAggregations}
+          fieldToOptionsMap={fieldToOptionsMap}
         />,
         { context: contextWithOneFilter }
       );
@@ -152,6 +154,7 @@ describe.only('ItemFilters', () => {
   });
   // multiple filters will be an array in the router context
   describe('with valid Bib items, two filters, one item result', () => {
+    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
     let component;
     before(() => {
       const contextWithMultipleFilters = context;
@@ -162,7 +165,7 @@ describe.only('ItemFilters', () => {
         item.requestable_ReCAP_not_available,
         item.requestable_nonReCAP_NYPL,
       ];
-      contextWithMultipleFilters.router.location.query = { format: ['Text', 'PRINT'] };
+      contextWithMultipleFilters.router.location.query = { item_format: 'Text,PRINT' };
       component = mount(
         <ItemFilters
           items={items}
@@ -172,6 +175,7 @@ describe.only('ItemFilters', () => {
           numItemsTotal={1}
           numItemsCurrent={1}
           itemsAggregations={itemsAggregations}
+          fieldToOptionsMap={fieldToOptionsMap}
         />,
         { context: contextWithMultipleFilters }
       );
@@ -179,7 +183,7 @@ describe.only('ItemFilters', () => {
     it('should have description of filters', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text', 'PRINT'");
+      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text, PRINT'");
     });
     it('should display "1 Result Found"', () => {
       expect(component.find('h3').text()).to.equal('1 Result Found');
@@ -188,6 +192,7 @@ describe.only('ItemFilters', () => {
 
   describe('with valid Bib items, multiple filters, no filtered results', () => {
     let component;
+    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
     before(() => {
       const contextWithMultipleFilters = context;
       const items = [
@@ -198,8 +203,8 @@ describe.only('ItemFilters', () => {
         item.requestable_nonReCAP_NYPL,
       ];
       contextWithMultipleFilters.router.location.query = {
-        format: 'PRINT',
-        status: 'Requestable',
+        item_format: 'PRINT',
+        item_status: 'status:a',
       };
       component = mount(
         <ItemFilters
@@ -209,6 +214,7 @@ describe.only('ItemFilters', () => {
           // component after filtering the items.
           numItemsTotal={0}
           itemsAggregations={itemsAggregations}
+          fieldToOptionsMap={fieldToOptionsMap}
         />,
         { context: contextWithMultipleFilters }
       );
@@ -216,7 +222,7 @@ describe.only('ItemFilters', () => {
     it('should display correct description', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Requestable'");
+      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Available'");
     });
     it('should display "0 Results Found"', () => {
       expect(component.find('h3').text()).to.equal('No Results Found');
@@ -235,8 +241,8 @@ describe.only('ItemFilters', () => {
         item.requestable_nonReCAP_NYPL,
       ];
       contextWithMultipleFilters.router.location.query = {
-        format: 'PRINT',
-        status: 'Requestable',
+        item_format: 'PRINT',
+        item_status: 'status:a',
       };
       component = mount(
         <ItemFilters

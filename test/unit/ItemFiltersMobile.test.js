@@ -5,7 +5,7 @@ import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
 import item from '../fixtures/libraryItems';
-import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
+import ItemFiltersMobile from '../../src/app/components/ItemFilters/ItemFiltersMobile';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 const context = {

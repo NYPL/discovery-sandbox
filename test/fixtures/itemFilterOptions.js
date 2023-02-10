@@ -55,6 +55,11 @@ const itemsAggregations = [
         count: 12,
         label: 'Text',
         value: 'Text'
+      },
+      {
+        count: 1,
+        label: 'PRINT',
+        value: 'PRINT'
       }
     ]
   },
