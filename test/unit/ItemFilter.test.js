@@ -87,7 +87,7 @@ describe('ItemFilter', () => {
     it('clear button should remove selected options for corresponding fields', () => {
       const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
       const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
-      let updatedFilters = 'abc';
+      let updatedFields
       const selectedFields = {
         location: ['loc:maj03', 'offsite'],
         status: ['status:a'],
@@ -99,15 +99,15 @@ describe('ItemFilter', () => {
           selectedFields={selectedFields}
           options={reducedItemAggregationsLocationsOnly[0].options}
           field={reducedItemAggregationsLocationsOnly[0].field}
-          setSelectedFields={(newFields) => {
-            updatedFilters = newFields
+          setSelectedFields={(reactGeneratedFunc) => {
+            updatedFields = reactGeneratedFunc(selectedFields)
           }}
         />);
       const clearButton = component.find('button').at(1);
       expect(clearButton.prop('disabled')).to.equal(undefined);
       expect(clearButton.text()).to.equal('Clear');
       clearButton.simulate('click');
-      expect(updatedFilters).to.deep.equal({ location: [], status: ['status:a'] });
+      expect(updatedFields).to.deep.equal({ location: [], status: ['status:a'] });
     });
   });
 });

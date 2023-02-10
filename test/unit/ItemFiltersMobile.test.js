@@ -7,6 +7,7 @@ import { shallow, mount } from 'enzyme';
 import item from '../fixtures/libraryItems';
 import ItemFiltersMobile from '../../src/app/components/ItemFilters/ItemFiltersMobile';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../../src/app/utils/itemFilterUtils';
 
 const context = {
   router: {
@@ -17,6 +18,8 @@ const context = {
 };
 
 describe('ItemFiltersMobile', () => {
+  const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
+  const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   describe('DateSearchBar', () => {
     const items = [
       item.full
@@ -25,9 +28,10 @@ describe('ItemFiltersMobile', () => {
     it('renders date filter', () => {
       component = mount(
         <ItemFiltersMobile
+          fieldToOptionsMap={fieldToOptionsMap}
           displayDateFilter={true}
           items={items}
-          itemsAggregations={itemsAggregations}
+          itemsAggregations={reducedItemsAggregations}
         />,
         { context }
       );
@@ -37,9 +41,10 @@ describe('ItemFiltersMobile', () => {
     it('doesn\'t render date filter', () => {
       component = mount(
         <ItemFiltersMobile
+          fieldToOptionsMap={fieldToOptionsMap}
           displayDateFilter={false}
           items
-          itemsAggregations={itemsAggregations}
+          itemsAggregations={reducedItemsAggregations}
         />,
         { context });
       const DateSearchBar = component.find('DateSearchBar');
@@ -66,11 +71,12 @@ describe('ItemFiltersMobile', () => {
       };
       component = mount(
         <ItemFiltersMobile
-          itemsAggregations={itemsAggregations}
-          setSelectedFilters={() => { }}
+          fieldToOptionsMap={fieldToOptionsMap}
+          itemsAggregations={reducedItemsAggregations}
+          setSelectedFields={() => { }}
           submitFilterSelections={() => { }}
           initialFilters={initialFilters}
-          selectedFilters={initialFilters}
+          selectedFields={initialFilters}
         />,
       );
       modalTrigger = component.findWhere(node => {

@@ -25,7 +25,6 @@ const ItemFiltersMobile = ({
   const showResultsAction = () => {
     submitFilterSelections();
   };
-
   const modalProps = {
     bodyContent: (
       <div className="scc-item-filters" id="item-filters-mobile">
@@ -44,7 +43,8 @@ const ItemFiltersMobile = ({
                 initialFilters={initialFilters}
                 fieldToOptionsMap={fieldToOptionsMap}
               />
-            ))
+            )
+            )
           }
         </div>
       </div>

@@ -121,7 +121,6 @@ const ItemFilter = ({
     mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(field)
   );
   const open = mobile ? mobileIsOpen : isOpen;
-
   return (
     <FocusTrap
       focusTrapOptions={{

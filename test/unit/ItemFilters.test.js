@@ -18,7 +18,7 @@ const context = {
   },
 };
 
-describe.only('ItemFilters', () => {
+describe('ItemFilters', () => {
   const locationFilters = itemsAggregations[0];
   const statusFilters = itemsAggregations[2];
   describe('DateSearchBar', () => {
@@ -121,6 +121,7 @@ describe.only('ItemFilters', () => {
   describe('with valid items, one filter', () => {
     let component;
     const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
+    const reducedAggregations = buildReducedItemsAggregations(itemsAggregations)
     before(() => {
       const contextWithOneFilter = context;
       const items = [
@@ -137,7 +138,7 @@ describe.only('ItemFilters', () => {
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
           numItemsCurrent={items.length}
-          itemsAggregations={itemsAggregations}
+          itemsAggregations={reducedAggregations}
           fieldToOptionsMap={fieldToOptionsMap}
         />,
         { context: contextWithOneFilter }
