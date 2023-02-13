@@ -134,7 +134,6 @@ export const BibPage = (
   // normalize item aggregations by dropping values with no label and combining duplicate lables
 
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
-  console.log({ reducedItemsAggregations })
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);

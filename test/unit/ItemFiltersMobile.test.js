@@ -65,9 +65,9 @@ describe('ItemFiltersMobile', () => {
 
     beforeEach(() => {
       initialFilters = {
-        format: [],
-        status: [],
-        location: [],
+        item_format: [],
+        item_status: [],
+        item_location: [],
       };
       component = mount(
         <ItemFiltersMobile

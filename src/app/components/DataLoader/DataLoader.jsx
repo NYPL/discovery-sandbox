@@ -39,7 +39,6 @@ DataLoader.propTypes = {
   dispatch: PropTypes.func,
   children: PropTypes.element,
   lastLoaded: PropTypes.string,
-  query: PropTypes.string,
 };
 
 DataLoader.contextTypes = {

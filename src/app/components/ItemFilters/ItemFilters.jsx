@@ -48,43 +48,19 @@ const ItemFilters = (
    * When new filters are selected or unselected, fetch new items.
    */
   const buildFilterUrl = (clear = false, clearYear = false) => {
-    let queryParams = [];
     let queryObj = {};
     if (!clear) {
-      // If we are making a request, get all the selected filters and map
-      // the labels to their ids. That will be sent over to the API.
       Object.keys(selectedFields).forEach(field => {
         const selectedFilterValues = selectedFields[field].join(',')
-        if (selectedFilterValues.length > 0) {
-          queryParams.push(
-            `item_${field}=${selectedFilterValues}`);
-          queryObj[`item_${field}`] = selectedFilterValues;
-        }
+        // build query  object with discovery-api-friendly item_(field) params
+        queryObj[`item_${field}`] = selectedFilterValues;
       });
       // The "year" filter is stored separately from the other filters.
       if (selectedYear && !clearYear) {
-        queryParams.push(`item_date=${selectedYear}`);
         queryObj['item_date'] = selectedYear;
       }
     }
     return queryObj
-    // Make the API call and let redux know.
-    // ajaxCall(
-    //   bibApi,
-    //   (resp) => {
-    //     const { bib } = resp.data;
-    //     dispatch(
-    //       updateBibPage({
-    //         bib: Object.assign({}, bib, {
-    //           itemFrom: parseInt(itemBatchSize, 10),
-    //         }),
-    //       }),
-    //     );
-    //   },
-    //   (error) => {
-    //     console.error(error);
-    //   },
-    // );
   }
 
   const manageFilterDisplay = (filterType) => {
@@ -113,11 +89,11 @@ const ItemFilters = (
           let filtersString;
           // inital filters may be [undefined]
           if (Array.isArray(selectedOptions) && selectedOptions[0]) {
-            filtersString = getLabelsForValues(selectedOptions, field, fieldToOptionsMap).join(', ');
+            filtersString = getLabelsForValues(selectedOptions, field, fieldToOptionsMap).map(label => `'${label}'`).join(', ');
           } else {
             filtersString = selectedOptions;
           }
-          return `${aggregation.field}: '${filtersString}'`;
+          return `${aggregation.field}: ${filtersString}`;
         }
         return null;
       })
@@ -131,8 +107,6 @@ const ItemFilters = (
   }, [itemsAggregations, selectedFields, selectedYear]);
 
   const resetFilters = () => {
-    const clear = true;
-    // getNewBib(clear);
     setSelectedFields(initialFilters);
     const href = createHref({
       pathname: location.pathname,
