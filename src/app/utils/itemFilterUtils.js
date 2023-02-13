@@ -7,6 +7,7 @@ export const getLabelsForValues = (values, field, map) => {
 // corresponds to
 export const getLabelForValue = (value, field, map) => {
   const labels = Object.keys(map[field])
+  console.log({ map, field, value })
   return labels.find((label) => map[field][label].includes(value))
 }
 
@@ -34,12 +35,29 @@ export const buildReducedItemsAggregations = (aggs) => {
 // the ids of the filters to be sent over, not the labels.
 export const buildFieldToOptionsMap = (reducedItemsAggregations) => reducedItemsAggregations.reduce((accc, aggregation) => {
   const filter = aggregation.field;
-  const mappedValues = aggregation.values.reduce((acc, value) => ({
+  const mappedValues = aggregation.values.reduce((acc, option) => {
+    // account for multiple values for offsite label
+    let value = option.value
+    if (acc[option.label]) value = acc[option.label] + ',' + option.value
+    return {
     ...acc,
-    [value.label]: value.value
-  }), {})
+      [option.label]: value
+    }
+  }, {})
   return {
     ...accc,
     [filter]: mappedValues,
   };
 }, {});
+
+/**
+  This is used for the item filter options to make sure an option is checked.
+  @param {array | string} filterValue
+  @param {string} itemValue
+  @return {boolean}
+*/
+export const isOptionSelected = (filterValue, itemValue) => {
+  const itemValues = Array.isArray(itemValue) ? itemValue : [itemValue];
+  let filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
+  return filterValues.some((filter) => itemValues.includes(filter));
+};

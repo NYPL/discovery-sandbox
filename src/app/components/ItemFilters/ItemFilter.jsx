@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
-import { isOptionSelected } from '../../utils/utils';
-import { getLabelsForValues } from '../../utils/itemFilterUtils';
+import { getLabelsForValues, isOptionSelected } from '../../utils/itemFilterUtils';
 
 /**
  * This is to better structure the data for the checkboxes.
@@ -102,14 +101,16 @@ const ItemFilter = ({
     submitFilterSelections && submitFilterSelections(clear);
   };
 
-  const isSelected = (option) =>
-    isOptionSelected(selectedFields[field], option.value);
+  const isSelected = (option) => {
+    return isOptionSelected(selectedFields[field], option.value);
+  }
   const updatedOptions = updateOptions(options);
   const determineNumOfSelections = () => {
     const thisFilterSelections = initialFilters[field];
     let numSelection
     if (thisFilterSelections) {
-      const labels = getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap)
+      const labels = [...new Set(getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap))]
+      if (field === 'location') console.log(labels)
     // get labels from label function, count those!!!
       numSelection = labels.length
     }

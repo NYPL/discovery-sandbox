@@ -23,11 +23,20 @@ const ItemFilters = (
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
+  // there are multiple location codes for the single label offsite, 
+  //   to keep count and maintain state for the Offsite location filter,
+  //   we need to combine those filters back into one string
+  const initialLocations = (locations) => {
+    const concatenatedRecapLocations = locations.filter((loc) => loc.startsWith('loc:rc')).join(',')
+    const removeRecap = locations.filter((loc) => !concatenatedRecapLocations.includes(loc))
+    return [...removeRecap, concatenatedRecapLocations]
+  }
   const initialFilters = {
-    location: query.item_location ? query.item_location.split(',') : [],
+    location: query.item_location ? initialLocations(query.item_location.split(',')) : [],
     format: query.item_format ? query.item_format.split(',') : [],
     status: query.item_status ? query.item_status.split(',') : [],
   };
+  console.log({ initialFilters })
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
@@ -50,7 +59,7 @@ const ItemFilters = (
   const buildFilterUrl = (clear = false, clearYear = false) => {
     let queryObj = {};
     if (!clear) {
-      Object.keys(selectedFields).forEach(field => {
+      Object.keys(selectedFields).filter(field => selectedFields[field].length).forEach(field => {
         const selectedFilterValues = selectedFields[field].join(',')
         // build query  object with discovery-api-friendly item_(field) params
         queryObj[`item_${field}`] = selectedFilterValues;
