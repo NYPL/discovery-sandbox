@@ -7,7 +7,6 @@ export const getLabelsForValues = (values, field, map) => {
 // corresponds to
 export const getLabelForValue = (value, field, map) => {
   const labels = Object.keys(map[field])
-  console.log({ map, field, value })
   return labels.find((label) => map[field][label].includes(value))
 }
 

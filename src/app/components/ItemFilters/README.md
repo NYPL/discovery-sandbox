@@ -3,21 +3,25 @@ field - category of filter, ie location, format, status
 option - selection within that category, encompassing both label and value
 label - human readable label for the option
 value - the query param that the API expects for that option
+filter - as much as possible, this word is only used to represent the combination of fields and selected options
 
 ### Data shapes
 fieldToOptionsMap - object
 convenience map generated to simplify switching from value to label
 ```
- {field: {label: value, anotherLabel: anotherValue},
- field2: {label: value}
+ {
+  field: {label: value, anotherLabel: anotherValue},
+  field2: {label: value}
  }
 ```
 
 selectedFields - object
 ```
-{field: [value, value, value],
-field2: [],
-field3: [value]}
+{
+  field: [value, value, value],
+  field2: [],
+  field3: [value]
+}
 ```
 
 reducedItemAggregations - array

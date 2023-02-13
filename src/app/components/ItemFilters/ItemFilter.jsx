@@ -110,7 +110,6 @@ const ItemFilter = ({
     let numSelection
     if (thisFilterSelections) {
       const labels = [...new Set(getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap))]
-      if (field === 'location') console.log(labels)
     // get labels from label function, count those!!!
       numSelection = labels.length
     }

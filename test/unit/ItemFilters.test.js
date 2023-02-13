@@ -184,7 +184,7 @@ describe('ItemFilters', () => {
     it('should have description of filters', () => {
       const itemFilterInfo = component.find('.item-filter-info');
       expect(itemFilterInfo.find('span').length).to.equal(1);
-      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text, PRINT'");
+      expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text', 'PRINT'");
     });
     it('should display "1 Result Found"', () => {
       expect(component.find('h3').text()).to.equal('1 Result Found');

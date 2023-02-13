@@ -36,7 +36,6 @@ const ItemFilters = (
     format: query.item_format ? query.item_format.split(',') : [],
     status: query.item_status ? query.item_status.split(',') : [],
   };
-  console.log({ initialFilters })
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
