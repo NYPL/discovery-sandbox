@@ -30,6 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../utils/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -88,7 +89,7 @@ export const BibPage = (
             filterQuery += `&${qKey}=${qValue}`;
           } else if (qKey !== "itemPage") {
             // For other filters, we need to map the label to the id.
-            filterQuery += `&${qKey}=${mappedItemsLabelToIds[qKey][qValue]}`;
+            filterQuery += `&${qKey}=${fieldToOptionsMap[qKey][qValue]}`;
           }
         }
       }
@@ -122,7 +123,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, mappedItemsLabelToIds, numItemsTotal]);
+  }, [bib, dispatch, fieldToOptionsMap, numItemsTotal]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -131,36 +132,9 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
   // normalize item aggregations by dropping values with no label and combining duplicate lables
-  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
-  reducedItemsAggregations.forEach((agg) => {
-    const values = agg.values
-    const reducedValues = {}
-    values.filter(value => value.label?.length)
-      .forEach((value) => {
-        let label = value.label
-        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
-        if (!reducedValues[label]) {
-          reducedValues[label] = new Set()
-        }
-        reducedValues[label].add(value.value)
-      })
-    agg.values = Object.keys(reducedValues)
-      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
-  });
-  // For every item aggregation, go through every filter in its `values` array
-  // and map all the labels to their ids. This is done because the API expects
-  // the ids of the filters to be sent over, not the labels.
-  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
-    const filter = aggregation.field;
-    const mappedValues = aggregation.values.reduce((acc, value) => ({
-      ...acc,
-      [value.label]: value.value
-    }), {})
-    return {
-      ...accc,
-      [filter]: mappedValues,
-    };
-  }, {});
+
+  const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
+  const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
   const isElectronicResources = items.every(
@@ -233,10 +207,10 @@ export const BibPage = (
                 searchKeywords={searchKeywords}
                 holdings={newBibModel.holdings}
                 itemsAggregations={reducedItemsAggregations}
-                mappedItemsLabelToIds={mappedItemsLabelToIds}
                 numItemsTotal={numItemsTotal}
                 numItemsCurrent={numItemsCurrent}
                 checkForMoreItems={checkForMoreItems}
+                fieldToOptionsMap={fieldToOptionsMap}
               />
             </section>
             : null

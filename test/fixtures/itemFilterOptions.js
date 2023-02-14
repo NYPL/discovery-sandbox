@@ -19,6 +19,8 @@ const statusFilters = [
   { id: 'requestable', label: 'Requestable' },
 ];
 
+const fieldToOptionMap = { location: locationFilters, format: formatFilters, status: statusFilters }
+
 const itemsAggregations = [
   {
     '@id': 'res:location',
@@ -53,6 +55,11 @@ const itemsAggregations = [
         count: 12,
         label: 'Text',
         value: 'Text'
+      },
+      {
+        count: 1,
+        label: 'PRINT',
+        value: 'PRINT'
       }
     ]
   },
@@ -162,10 +169,32 @@ const itemsAggregations2 = [
   },
 ];
 
+const itemsAggregationsOffsite = [
+  {
+    '@id': 'res:location',
+    '@type': "nypl:Aggregation",
+    field: 'location',
+    id: 'location',
+    values: [
+
+      {
+        count: 12,
+        value: 'loc:rc',
+        label: 'offsite'
+      },
+      {
+        count: 2,
+        value: 'loc:rc123',
+        label: 'Offsite'
+      }
+    ]
+  }] 
+
 export {
   locationFilters,
   formatFilters,
   statusFilters,
   itemsAggregations,
-  itemsAggregations2
+  itemsAggregations2,
+  itemsAggregationsOffsite
 };
