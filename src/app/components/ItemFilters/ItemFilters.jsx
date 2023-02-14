@@ -122,7 +122,8 @@ const ItemFilters = (
       updatedselectedFields.date = selectedYear;
     }
     if (clearYear) {
-      delete updatedselectedFields.date;
+      delete updatedSelectedFilters.date;
+      setSelectedYear('');
     }
     const href = createHref({
       ...location,
@@ -136,8 +137,7 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
-    router.push(href)
-    setSelectedYear('');
+    router.push(href);
   };
 
   const itemFilterComponentProps = {

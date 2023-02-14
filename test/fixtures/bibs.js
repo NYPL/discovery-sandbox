@@ -102,6 +102,7 @@ const bibs = [
     ],
     numAvailable: 1,
     numItems: 1,
+    numItemsTotal: 1,
     placeOfPublication: ['Oxford [England] : New York :'],
     publicationStatement: [
       'Oxford [England] : Clarendon Press ; New York : Oxford University Press, 1991.',

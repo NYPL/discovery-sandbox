@@ -79,7 +79,7 @@ export const BibPage = (
       const baseUrl = appConfig.baseUrl;
       const itemFrom = bib.itemFrom || itemBatchSize;
       let filterQuery = '';
-  
+
       // If there are filters, we need to add them to the API query.
       if (searchStr) {
         const searchParams = new URLSearchParams(searchStr);
@@ -93,7 +93,7 @@ export const BibPage = (
           }
         }
       }
-  
+
       // Fetch the next batch of items using the `itemFrom` param.
       const bibApi = `${window.location.pathname.replace(
         baseUrl,
@@ -137,6 +137,9 @@ export const BibPage = (
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const isElectronicResources = items.every(
+    (item) => item.isElectronicResource,
+  );
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
@@ -158,6 +161,8 @@ export const BibPage = (
     aggregatedElectronicResources,
     items
   );
+
+  const searchParams = new URLSearchParams(location.search)
 
   return (
     <RouterProvider value={context}>
@@ -182,23 +187,34 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        <section style={{ marginTop: '20px' }} id="items-table">
-          <ItemsContainer
-            displayDateFilter={bib.hasItemDates}
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={newBibModel.holdings}
-            itemsAggregations={reducedItemsAggregations}
-            fieldToOptionsMap={fieldToOptionsMap}
-            numItemsTotal={numItemsTotal}
-            numItemsCurrent={numItemsCurrent}
-            checkForMoreItems={checkForMoreItems}
-          />
-        </section>
+        {/* Display the items filter container component when:
+          1: there are items through the `numItemsTotal` property,
+          2: there are items and they are not all electronic resources.
+          
+          Otherwise, if there are items but they are all electronic resources,
+          do not display the items filter container component.
+        */}
+        {(numItemsTotal && numItemsTotal > 0) ||
+          (!isElectronicResources && (!items || items.length > 0)) ?
+            <section style={{ marginTop: '20px' }} id="items-table">
+              <ItemsContainer
+                displayDateFilter={bib.hasItemDates}
+                key={bibId}
+                shortenItems={location.pathname.indexOf('all') !== -1}
+                items={items}
+                bibId={bibId}
+                itemPage={searchParams.get('itemPage')}
+                searchKeywords={searchKeywords}
+                holdings={newBibModel.holdings}
+                itemsAggregations={reducedItemsAggregations}
+                numItemsTotal={numItemsTotal}
+                numItemsCurrent={numItemsCurrent}
+                checkForMoreItems={checkForMoreItems}
+                fieldToOptionsMap={fieldToOptionsMap}
+              />
+            </section>
+            : null
+        }
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>
