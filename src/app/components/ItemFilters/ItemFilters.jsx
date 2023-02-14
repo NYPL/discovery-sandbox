@@ -2,11 +2,8 @@ import { Button, Heading, Text } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
-import { updateBibPage } from '@Actions';
-import { ajaxCall } from '@utils';
-import appConfig from '../../data/appConfig';
 import { trackDiscovery } from '../../utils/utils';
-import { itemBatchSize } from '../../data/constants';
+import { getLabelsForValues, initialLocations } from '../../utils/itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
@@ -16,11 +13,10 @@ const ItemFilters = (
   {
     displayDateFilter,
     numOfFilteredItems,
-    itemsAggregations = [],
-    dispatch,
     numItemsTotal,
     numItemsCurrent,
-    mappedItemsLabelToIds = {}
+    fieldToOptionsMap = {},
+    itemsAggregations = []
   },
   { router },
 ) => {
@@ -28,84 +24,48 @@ const ItemFilters = (
   const { createHref, location } = router;
   const query = location.query || {};
   const initialFilters = {
-    location: query.location || [],
-    format: query.format || [],
-    status: query.status || [],
+    location: query.item_location ? initialLocations(query.item_location.split(',')) : [],
+    format: query.item_format ? query.item_format.split(',') : [],
+    status: query.item_status ? query.item_status.split(',') : [],
   };
   const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
   // and must be handled separately in the `SearchBar` component.
-  const [selectedYear, setSelectedYear] = useState(query.date || '');
-  const [selectedFilters, setSelectedFilters] = useState(initialFilters);
-  const [selectedFilterDisplayStr, setSelectedFilterDisplayStr] = useState('');
-  
+  const [selectedYear, setSelectedYear] = useState(query.item_date || '');
+  const [selectedFields, setSelectedFields] = useState(initialFilters);
+  const [selectedFieldDisplayStr, setSelectedFieldDisplayStr] = useState('');
+
   // When new items are fetched, update the selected string display.
   useEffect(() => {
-    setSelectedFilterDisplayStr(parsedFilterSelections());
+    setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the
     // filter UI and the results.
-    resultsRef.current &&  resultsRef.current.focus();
+    resultsRef.current && resultsRef.current.focus();
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
    * When new filters are selected or unselected, fetch new items.
    */
-  const getNewBib = (clear = false, clearYear = false) => {
-    const baseUrl = appConfig.baseUrl;
-    let queryParams = [];
+  const buildFilterUrl = (clear = false, clearYear = false) => {
+    let queryObj = {};
     if (!clear) {
-      // If we are making a request, get all the selected filters and map
-      // the labels to their ids. That will be sent over to the API.
-      Object.keys(selectedFilters).forEach(filter => {
-        const selectedFilterArray = selectedFilters[filter];
-        const mappedFilter = mappedItemsLabelToIds[filter];
-        if (selectedFilterArray.length > 0) {
-          if (Array.isArray(selectedFilterArray)) {
-            queryParams.push(
-              ...selectedFilterArray.map(selectedFilter => {
-                const mappedFilterId = mappedFilter[selectedFilter];
-                return `${filter}=${mappedFilterId}`;
-              })
-            );
-          } else {
-            const mappedFilterId = mappedFilter[selectedFilterArray];
-            queryParams.push(`${filter}=${mappedFilterId}`);
-          }
-        }
+      Object.keys(selectedFields).filter(field => selectedFields[field].length).forEach(field => {
+        const selectedFilterValues = selectedFields[field].join(',')
+        // build query  object with discovery-api-friendly item_(field) params
+        queryObj[`item_${field}`] = selectedFilterValues;
       });
       // The "year" filter is stored separately from the other filters.
       if (selectedYear && !clearYear) {
-        queryParams.push(`date=${selectedYear}`);
+        queryObj['item_date'] = selectedYear;
       }
     }
-
-    const bibApi = `${window.location.pathname.replace(
-      baseUrl,
-      `${baseUrl}/api`,
-    )}${queryParams.length ? `?${queryParams.join('&')}` : ''}`;
-    // Make the API call and let redux know.
-    ajaxCall(
-      bibApi,
-      (resp) => {
-        const { bib } = resp.data;
-        dispatch(
-          updateBibPage({
-            bib: Object.assign({}, bib, {
-              itemFrom: parseInt(itemBatchSize, 10),
-            }),
-          }),
-        );
-      },
-      (error) => {
-        console.error(error);
-      },
-    );
+    return queryObj
   }
 
   const manageFilterDisplay = (filterType) => {
     // reset `selectFilters` to `initialFilters` any time `openFilter` changes
-    setSelectedFilters(initialFilters);
+    setSelectedFields(initialFilters);
     if (filterType === openFilter) {
       trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
       setOpenFilter('none');
@@ -122,16 +82,18 @@ const ItemFilters = (
   // join filter selections and add single quotes
   const parsedFilterSelections = useCallback(() => {
     let filterSelectionString = itemsAggregations
-      .map((filter) => {
-        const filters = selectedFilters[filter.field];
-        if (filters.length) {
+      .map((aggregation) => {
+        const field = aggregation.field
+        const selectedOptions = selectedFields[field];
+        if (selectedOptions.length) {
           let filtersString;
-          if (Array.isArray(filters)) {
-            filtersString = filters.join("', '");
+          // inital filters may be [undefined]
+          if (Array.isArray(selectedOptions) && selectedOptions[0]) {
+            filtersString = getLabelsForValues(selectedOptions, field, fieldToOptionsMap).map(label => `'${label}'`).join(', ');
           } else {
-            filtersString = filters;
+            filtersString = selectedOptions;
           }
-          return `${filter.field}: '${filtersString}'`;
+          return `${aggregation.field}: ${filtersString}`;
         }
         return null;
       })
@@ -142,12 +104,10 @@ const ItemFilters = (
     }
 
     return filterSelectionString.join(', ');
-  }, [itemsAggregations, selectedFilters, selectedYear]);
+  }, [itemsAggregations, selectedFields, selectedYear]);
 
   const resetFilters = () => {
-    const clear = true;
-    getNewBib(clear);
-    setSelectedFilters(initialFilters);
+    setSelectedFields(initialFilters);
     const href = createHref({
       pathname: location.pathname,
       hash: '#item-filters',
@@ -156,42 +116,40 @@ const ItemFilters = (
   };
 
   const submitFilterSelections = (clear = false, clearYear = false) => {
-    getNewBib(clear, clearYear);
-    const updatedSelectedFilters = { ...selectedFilters };
+    const query = buildFilterUrl(clear, clearYear);
+    const updatedselectedFields = { ...selectedFields };
     if (selectedYear) {
-      updatedSelectedFilters.date = selectedYear;
+      updatedselectedFields.date = selectedYear;
     }
     if (clearYear) {
       delete updatedSelectedFilters.date;
       setSelectedYear('');
     }
-
     const href = createHref({
       ...location,
       ...{
-        query: updatedSelectedFilters,
+        query,
         hash: '#item-filters',
         search: '',
       },
     });
     trackDiscovery(
       'Search Filters',
-      `Apply Filter - ${JSON.stringify(selectedFilters)}`,
+      `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
     router.push(href);
   };
 
   const itemFilterComponentProps = {
     initialFilters,
-    selectedFilters,
-    setSelectedFilters,
+    selectedFields,
+    setSelectedFields,
     manageFilterDisplay,
     submitFilterSelections,
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
-  const resultsItemsNumber = selectedFilterDisplayStr ? numItemsCurrent : numItemsTotal;
-
+  const resultsItemsNumber = selectedFieldDisplayStr ? numItemsCurrent : numItemsTotal;
   return (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
@@ -201,6 +159,7 @@ const ItemFilters = (
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
+          fieldToOptionsMap={fieldToOptionsMap}
         />
       ) : (
         <div
@@ -210,21 +169,22 @@ const ItemFilters = (
         >
           <div>
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
-            {itemsAggregations.map((filter) => (
+              {itemsAggregations.map((field) => (
               <ItemFilter
-                filter={filter.field}
-                key={filter.id}
-                options={filter.values}
-                isOpen={openFilter === filter.field}
+                  field={field.field}
+                  key={field.id}
+                  options={field.options}
+                  isOpen={openFilter === field.field}
                 {...itemFilterComponentProps}
+                  fieldToOptionsMap={fieldToOptionsMap}
               />
             ))}
           </div>
-            {displayDateFilter && (<DateSearchBar
+          {displayDateFilter && (<DateSearchBar
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
             submitFilterSelections={submitFilterSelections}
-            />)}
+          />)}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
@@ -236,9 +196,9 @@ const ItemFilters = (
             {resultsItemsNumber !== 1 ? 's' : null} Found
           </>
         </Heading>
-        {selectedFilterDisplayStr ? (
+        {selectedFieldDisplayStr ? (
           <>
-            <span>Filtered by {selectedFilterDisplayStr}</span>
+            <span>Filtered by {selectedFieldDisplayStr}</span>
             <Button
               buttonType="text"
               id="clear-filters-button"
@@ -255,11 +215,10 @@ const ItemFilters = (
 
 ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
-  numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
   numItemsCurrent: PropTypes.number,
-  mappedItemsLabelToIds: PropTypes.object,
+  fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
 };
 

@@ -65,7 +65,7 @@ const successCb = (pathType, dispatch) => (response) => {
 // on. Note that it makes use of the fact that now for every frontend route, the
 // corresponding api route can be found simply by adding /api/
 
-function loadDataForRoutes(location, dispatch) {
+function loadDataForRoutes (location, dispatch) {
   const { pathname, search } = location;
   if (pathname === `${baseUrl}/` || pathname.includes('/account')) {
     dispatch(resetState());
@@ -91,7 +91,6 @@ function loadDataForRoutes(location, dispatch) {
   dispatch(updateLoadingStatus(true));
 
   const path = `${pathname}${search}`;
-
   return ajaxCall(
     location.pathname.replace(baseUrl, `${baseUrl}/api`) + location.search,
     successCb(pathType, dispatch),
