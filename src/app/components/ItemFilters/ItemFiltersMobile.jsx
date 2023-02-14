@@ -76,14 +76,16 @@ const ItemFiltersMobile = ({
 };
 
 ItemFiltersMobile.propTypes = {
+  displayDateFilter: PropTypes.bool,
   itemsAggregations: PropTypes.array,
   manageFilterDisplay: PropTypes.func,
-  selectedFilters: PropTypes.object,
-  setSelectedFilters: PropTypes.func,
+  selectedFields: PropTypes.object,
+  setSelectedFields: PropTypes.func,
   submitFilterSelections: PropTypes.func,
   initialFilters: PropTypes.object,
   selectedYear: PropTypes.string,
   setSelectedYear: PropTypes.func,
+  fieldToOptionsMap: PropTypes.object
 };
 
 ItemFiltersMobile.contextTypes = {

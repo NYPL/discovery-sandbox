@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
 import { trackDiscovery } from '../../utils/utils';
-import { getLabelsForValues } from '../../utils/itemFilterUtils';
+import { getLabelsForValues, initialLocations } from '../../utils/itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
@@ -13,24 +13,16 @@ const ItemFilters = (
   {
     displayDateFilter,
     numOfFilteredItems,
-    itemsAggregations = [],
     numItemsTotal,
     numItemsCurrent,
-    fieldToOptionsMap = {}
+    fieldToOptionsMap = {},
+    itemsAggregations = []
   },
   { router },
 ) => {
   const mediaType = React.useContext(MediaContext);
   const { createHref, location } = router;
   const query = location.query || {};
-  // there are multiple location codes for the single label offsite, 
-  //   to keep count and maintain state for the Offsite location filter,
-  //   we need to combine those filters back into one string
-  const initialLocations = (locations) => {
-    const concatenatedRecapLocations = locations.filter((loc) => loc.startsWith('loc:rc')).join(',')
-    const removeRecap = locations.filter((loc) => !concatenatedRecapLocations.includes(loc))
-    return [...removeRecap, concatenatedRecapLocations]
-  }
   const initialFilters = {
     location: query.item_location ? initialLocations(query.item_location.split(',')) : [],
     format: query.item_format ? query.item_format.split(',') : [],
@@ -158,7 +150,6 @@ const ItemFilters = (
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
   const resultsItemsNumber = selectedFieldDisplayStr ? numItemsCurrent : numItemsTotal;
-
   return (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
@@ -224,7 +215,6 @@ const ItemFilters = (
 
 ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
-  numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
   numItemsCurrent: PropTypes.number,

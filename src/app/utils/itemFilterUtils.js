@@ -1,6 +1,6 @@
 // given a map of filter fields and valid options, an array of filter option values (['loc:mal82,loc:rc2ma']), and the field they 
 // belongs to, returns an array of the labels they correspond to
-export const getLabelsForValues = (values, field, map) => {
+export const getLabelsForValues = (values = [], field = 'default', map = { field }) => {
   return values.map((val) => getLabelForValue(val, field, map)).filter(l => l)
 }
 // given one value and the field it belongs to, returns the label it 
@@ -10,7 +10,7 @@ export const getLabelForValue = (value, field, map) => {
   return labels.find((label) => map[field][label].includes(value))
 }
 
-export const buildReducedItemsAggregations = (aggs) => {
+export const buildReducedItemsAggregations = (aggs = []) => {
   return JSON.parse(JSON.stringify(aggs)).map((agg) => {
     const fieldAggregation = agg.values
     const reducedValues = {}
@@ -34,7 +34,7 @@ export const buildReducedItemsAggregations = (aggs) => {
 // the ids of the filters to be sent over, not the labels.
 export const buildFieldToOptionsMap = (reducedItemsAggregations) => reducedItemsAggregations.reduce((accc, aggregation) => {
   const filter = aggregation.field;
-  const mappedValues = aggregation.values.reduce((acc, option) => {
+  const mappedValues = aggregation.options.reduce((acc, option) => {
     // account for multiple values for offsite label
     let value = option.value
     if (acc[option.label]) value = acc[option.label] + ',' + option.value
@@ -60,3 +60,15 @@ export const isOptionSelected = (filterValue, itemValue) => {
   let filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
   return filterValues.some((filter) => itemValues.includes(filter));
 };
+
+// there are multiple location codes for the single label offsite, 
+//   to keep count and maintain state for the Offsite location filter,
+//   1. concat those location codes
+//   2. remove them from the array
+//   3. add the concatenated location codes back
+export const initialLocations = (locations) => {
+  // all ReCAP/Offsite materials have location codes beginning loc:rc
+  const concatenatedRecapLocations = locations.filter((loc) => loc.startsWith('loc:rc')).join(',')
+  const removeRecap = locations.filter((loc) => !concatenatedRecapLocations.includes(loc))
+  return [...removeRecap, concatenatedRecapLocations]
+}

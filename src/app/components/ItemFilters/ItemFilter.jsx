@@ -39,7 +39,6 @@ const ItemFilter = ({
 }) => {
   const [selectionMade, setSelectionMade] = useState(false);
   const [mobileIsOpen, setMobileIsOpen] = useState(false);
-
   if (!options || !options.length || !field) return null;
   /**
    * When a filter is selected, let the parent know through
@@ -109,8 +108,7 @@ const ItemFilter = ({
     const thisFilterSelections = initialFilters[field];
     let numSelection
     if (thisFilterSelections) {
-      const labels = [...new Set(getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap))]
-    // get labels from label function, count those!!!
+      const labels = getLabelsForValues(thisFilterSelections, field, fieldToOptionsMap)
       numSelection = labels.length
     }
 
@@ -191,7 +189,7 @@ const ItemFilter = ({
 };
 
 ItemFilter.propTypes = {
-  filter: PropTypes.string,
+  field: PropTypes.string,
   options: PropTypes.array,
   isOpen: PropTypes.bool,
   manageFilterDisplay: PropTypes.func,
@@ -200,6 +198,7 @@ ItemFilter.propTypes = {
   submitFilterSelections: PropTypes.func,
   setSelectedFields: PropTypes.func,
   initialFilters: PropTypes.object,
+  fieldToOptionsMap: PropTypes.object
 };
 
 ItemFilter.defaultProps = {
@@ -209,6 +208,7 @@ ItemFilter.defaultProps = {
     location: [],
     format: [],
     status: [],
+    year: []
   },
 };
 

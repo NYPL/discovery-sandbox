@@ -7,7 +7,8 @@ filter - as much as possible, this word is only used to represent the combinatio
 
 ### Data shapes
 fieldToOptionsMap - object
-convenience map generated to simplify switching from value to label
+convenience map generated to simplify switching from value to label. does not contain information about the number
+of each aggregation.
 ```
  {
   field: {label: value, anotherLabel: anotherValue},
@@ -26,6 +27,7 @@ selectedFields - object
 
 reducedItemAggregations - array
 generated from the item aggregations array from the api response. created to combine separate offsite options into one.
+also contains the specific counts of each aggregation
 ```
 [
   {@id: 'res:field',

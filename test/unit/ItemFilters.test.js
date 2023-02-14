@@ -7,7 +7,7 @@ import { mount } from 'enzyme';
 import ItemFilters from './../../src/app/components/ItemFilters/ItemFilters';
 import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import item from '../fixtures/libraryItems';
-import { itemsAggregations, itemsAggregations2 } from '../fixtures/itemFilterOptions';
+import { itemsAggregations, itemsAggregations2, itemsAggregationsOffsite } from '../fixtures/itemFilterOptions';
 import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
 
 const context = {
@@ -72,7 +72,7 @@ describe('ItemFilters', () => {
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
           itemsAggregations={reducedAggregations}
-          fieldToOptionsMap={buildFieldToOptionsMap(itemsAggregations)}
+          fieldToOptionsMap={buildFieldToOptionsMap(reducedAggregations)}
         />,
         { context }
       );
@@ -120,8 +120,8 @@ describe('ItemFilters', () => {
   // one filter will be a string in the router context
   describe('with valid items, one filter', () => {
     let component;
-    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
     const reducedAggregations = buildReducedItemsAggregations(itemsAggregations)
+    const fieldToOptionsMap = buildFieldToOptionsMap(reducedAggregations)
     before(() => {
       const contextWithOneFilter = context;
       const items = [
@@ -155,7 +155,8 @@ describe('ItemFilters', () => {
   });
   // multiple filters will be an array in the router context
   describe('with valid Bib items, two filters, one item result', () => {
-    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
+    const reducedAggregations = buildReducedItemsAggregations(itemsAggregations)
+    const fieldToOptionsMap = buildFieldToOptionsMap(reducedAggregations)
     let component;
     before(() => {
       const contextWithMultipleFilters = context;
@@ -193,7 +194,8 @@ describe('ItemFilters', () => {
 
   describe('with valid Bib items, multiple filters, no filtered results', () => {
     let component;
-    const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
+    const reducedAggregations = buildReducedItemsAggregations(itemsAggregations)
+    const fieldToOptionsMap = buildFieldToOptionsMap(reducedAggregations)
     before(() => {
       const contextWithMultipleFilters = context;
       const items = [
@@ -265,6 +267,34 @@ describe('ItemFilters', () => {
       expect(locations[0].label).to.equal('SASB M1 - General Research - Room 315')
       expect(locations[1].value).to.equal('loc:rc2ma,offsite')
       expect(locations[1].label).to.equal('Offsite')
+    })
+  })
+  describe('initial query contains offsite location codes', () => {
+    let component
+    before(() => {
+      const context = {
+        router: {
+          location: {
+            query: { item_location: 'loc:rc,loc:rc123' },
+          },
+        },
+      };
+      const reducedAggregations = buildReducedItemsAggregations(itemsAggregationsOffsite)
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedAggregations)
+      const items = [{ id: '1234567' }]
+      component = mount(
+        <ItemFilters
+          displayDateFilter={false}
+          items={items}
+          numOfFilteredItems={items.length}
+          numItemsTotal={items.length}
+          itemsAggregations={reducedAggregations}
+          fieldToOptionsMap={fieldToOptionsMap}
+        />,
+        { context });
+    })
+    it('combines the two codes into one option', () => {
+      expect(component.html()).to.include('location (1)')
     })
   })
 });

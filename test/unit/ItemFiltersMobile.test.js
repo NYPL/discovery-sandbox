@@ -18,8 +18,8 @@ const context = {
 };
 
 describe('ItemFiltersMobile', () => {
-  const fieldToOptionsMap = buildFieldToOptionsMap(itemsAggregations)
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
+  const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   describe('DateSearchBar', () => {
     const items = [
       item.full
