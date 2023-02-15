@@ -42,8 +42,7 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsTotal = bib.numItemsTotal;
-  const numItemsCurrent = bib.items ? bib.items.length : 0;
+  const numItemsMatched = bib.numItemsMatched
 
   // Fetch more items only when we want to, e.g. when the user clicks on
   // the "View All Items" button or the pagination component.
@@ -62,7 +61,7 @@ export const BibPage = (
   const checkForMoreItems = useCallback((once = false) => {
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numItemsTotal) {
+    } else if (bib && bib.items.length >= numMatched) {
       // Once we have fetched all the items, we're done,
       // so stop fetching more items.
       // `fetchMoreItems` is used to trigger the useEffect but
@@ -78,7 +77,7 @@ export const BibPage = (
       const baseUrl = appConfig.baseUrl;
       const itemFrom = bib.itemFrom || itemBatchSize;
       let filterQuery = '';
-  
+
       // If there are filters, we need to add them to the API query.
       if (searchStr) {
         const searchParams = new URLSearchParams(searchStr);
@@ -92,7 +91,7 @@ export const BibPage = (
           }
         }
       }
-  
+
       // Fetch the next batch of items using the `itemFrom` param.
       const bibApi = `${window.location.pathname.replace(
         baseUrl,
@@ -122,7 +121,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, mappedItemsLabelToIds, numItemsTotal]);
+  }, [bib, dispatch, mappedItemsLabelToIds, numItemsMatched]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -220,8 +219,7 @@ export const BibPage = (
             holdings={newBibModel.holdings}
             itemsAggregations={reducedItemsAggregations}
             mappedItemsLabelToIds={mappedItemsLabelToIds}
-            numItemsTotal={numItemsTotal}
-            numItemsCurrent={numItemsCurrent}
+            numItemsMatched={numItemsMatched}
             checkForMoreItems={checkForMoreItems}
           />
         </section>

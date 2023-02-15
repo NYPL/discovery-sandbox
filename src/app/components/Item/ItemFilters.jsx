@@ -17,8 +17,7 @@ const ItemFilters = (
     numOfFilteredItems,
     itemsAggregations = [],
     dispatch,
-    numItemsTotal,
-    numItemsCurrent,
+    numItemsMatched,
     mappedItemsLabelToIds = {}
   },
   { router },
@@ -191,7 +190,7 @@ const ItemFilters = (
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
-  const resultsItemsNumber = selectedFilterDisplayStr ? numItemsCurrent : numItemsTotal;
+  const resultsItemsNumber = numItemsMatched;
 
   return (
     <Fragment>
@@ -259,8 +258,7 @@ ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
   numOfFilteredItems: PropTypes.number,
   dispatch: PropTypes.func,
-  numItemsTotal: PropTypes.number,
-  numItemsCurrent: PropTypes.number,
+  numItemsMatched: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
 };
 

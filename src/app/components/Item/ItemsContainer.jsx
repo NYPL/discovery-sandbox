@@ -138,24 +138,22 @@ class ItemsContainer extends React.Component {
       bibId,
       dispatch,
       itemsAggregations,
-      numItemsTotal,
-      numItemsCurrent,
+      numItemsMatched,
       mappedItemsLabelToIds
     } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
-    
+
 
     if (
       this.state.js &&
-      itemsToDisplay &&
-      itemsToDisplay.length > itemsListPageLimit &&
+      numItemsMatched > itemsListPageLimit &&
       !this.state.showAll
     ) {
       pagination = (
         <Pagination
-          total={itemsToDisplay.length}
+          total={numItemsMatched}
           perPage={itemsListPageLimit}
           page={this.state.page}
           updatePage={this.updatePage}
@@ -181,14 +179,13 @@ class ItemsContainer extends React.Component {
             numOfFilteredItems={itemsToDisplay.length}
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
-            numItemsTotal={numItemsTotal}
-            numItemsCurrent={numItemsCurrent}
+            numItemsMatched={numItemsMatched}
             mappedItemsLabelToIds={mappedItemsLabelToIds}
           />
           {itemTable}
           {!!(
             shortenItems &&
-            numItemsCurrent > itemsListPageLimit &&
+            numItemsMatched > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -232,8 +229,7 @@ ItemsContainer.propTypes = {
   holdings: PropTypes.array,
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
-  numItemsTotal: PropTypes.number,
-  numItemsCurrent: PropTypes.number,
+  numItemsMatched: PropTypes.number,
   mappedItemsLabelToIds: PropTypes.object,
   checkForMoreItems: PropTypes.func,
 };

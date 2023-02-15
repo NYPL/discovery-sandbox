@@ -78,6 +78,7 @@ const ResultsList = ({
   }
 
   const generateBibLi = (bib, i) => {
+    console.log('bib: ', bib)
     // eslint-disable-next-line no-mixed-operators
     if (_isEmpty(bib) || bib.result && (_isEmpty(bib.result) || !bib.result.title)) {
       return null;
@@ -96,7 +97,7 @@ const ResultsList = ({
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
-    const { totalPhysicalItems, eResources } = getElectronicResources(result);
+    const { totalPhysicalItems, eResources, eResourcesTotal } = getElectronicResources(result);
     const resourcesOnClick = () => {
       updateResultSelection({
         fromUrl: `${pathname}${search}`,
@@ -105,8 +106,8 @@ const ResultsList = ({
     }
 
     const hasPhysicalItems = totalPhysicalItems > 0;
-    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length;
-    const resourceType = hasPhysicalItems ? 'item' : 'resource';
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResourcesTotal;
+    const resourceType = hasPhysicalItems ? 'Item' : 'Resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -164,7 +165,7 @@ const ResultsList = ({
                         id="physical-items-link"
                       >
                         <Text isBold size="caption">
-                          {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
+                          {`View All ${itemMessage}`} <RightWedgeIcon />
                         </Text>
                       </Link>
                     </CardActions>
