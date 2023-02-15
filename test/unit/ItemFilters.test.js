@@ -8,7 +8,7 @@ import ItemFilters from './../../src/app/components/ItemFilters/ItemFilters';
 import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import item from '../fixtures/libraryItems';
 import { itemsAggregations, itemsAggregations2, itemsAggregationsOffsite } from '../fixtures/itemFilterOptions';
-import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
+import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/components/ItemFilters/itemFilterUtils';
 
 const context = {
   router: {

@@ -7,7 +7,7 @@ import { shallow, mount } from 'enzyme';
 import item from '../fixtures/libraryItems';
 import ItemFiltersMobile from '../../src/app/components/ItemFilters/ItemFiltersMobile';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
-import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../../src/app/utils/itemFilterUtils';
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../../src/app/components/ItemFilters/itemFilterUtils';
 
 const context = {
   router: {

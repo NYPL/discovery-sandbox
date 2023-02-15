@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
 import FocusTrap from 'focus-trap-react';
 
-import { getLabelsForValues, isOptionSelected } from '../../utils/itemFilterUtils';
+import { getLabelsForValues, isOptionSelected } from './itemFilterUtils';
 
 /**
  * This is to better structure the data for the checkboxes.
@@ -91,13 +91,12 @@ const ItemFilter = ({
    * get the new results.
    */
   const clear = () => {
-    const clear = true;
     setSelectionMade(true);
     setSelectedFields(prevSelectedFields => ({
       ...prevSelectedFields,
       [field]: [],
     }));
-    submitFilterSelections && submitFilterSelections(clear);
+    submitFilterSelections && submitFilterSelections(field);
   };
 
   const isSelected = (option) => {

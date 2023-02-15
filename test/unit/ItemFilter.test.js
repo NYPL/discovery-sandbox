@@ -6,7 +6,7 @@ import { shallow, mount } from 'enzyme';
 
 import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
-import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
+import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/components/ItemFilters/itemFilterUtils';
 
 describe('ItemFilter', () => {
   const locationItemFilter = itemsAggregations[0];

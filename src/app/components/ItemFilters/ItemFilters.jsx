@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
 import { trackDiscovery } from '../../utils/utils';
-import { getLabelsForValues, initialLocations } from '../../utils/itemFilterUtils';
+import { getLabelsForValues, initialLocations } from './itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
@@ -45,13 +45,27 @@ const ItemFilters = (
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
-   * When new filters are selected or unselected, fetch new items.
+   * When filters are appied or cleared, build new filter query
    */
   const buildFilterQuery = (clear = false, clearYear = false) => {
-    let queryObj = {};
-    if (!clear) {
-      Object.keys(selectedFields).filter(field => selectedFields[field].length).forEach(field => {
-        const selectedFilterValues = selectedFields[field].join(',')
+    let queryObj = {}
+    let fieldsToQuery
+    // clear is only true when we are clearing all filters, so return 
+    //   empty query object
+    if (clear === true) return queryObj
+    // clear equals false indicates a filter is being applied
+    if (clear === false) {
+      fieldsToQuery = selectedFields
+      // clear is a field, to indicate which field we want to clear
+    } else if (clear.length) {
+      const fieldToClear = clear
+      fieldsToQuery = {
+        ...selectedFields,
+        [fieldToClear]: [],
+      }
+    }
+    Object.keys(fieldsToQuery).filter(field => fieldsToQuery[field].length).forEach(field => {
+      const selectedFilterValues = fieldsToQuery[field].join(',')
         // build query  object with discovery-api-friendly item_(field) params
         queryObj[`item_${field}`] = selectedFilterValues;
       });
@@ -59,7 +73,6 @@ const ItemFilters = (
       if (selectedYear && !clearYear) {
         queryObj['item_date'] = selectedYear;
       }
-    }
     return queryObj
   }
 
@@ -115,8 +128,8 @@ const ItemFilters = (
     router.push(href);
   };
 
-  const submitFilterSelections = (clear = false, clearYear = false) => {
-    const query = buildFilterQuery(clear, clearYear);
+  const submitFilterSelections = (clearAll = false, clearYear = false) => {
+    const query = buildFilterQuery(clearAll, clearYear);
     const updatedSelectedFields = { ...selectedFields };
     if (selectedYear) {
       updatedSelectedFields.date = selectedYear;
@@ -137,6 +150,7 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
+    console.log({ query })
     router.push(href);
   };
 
