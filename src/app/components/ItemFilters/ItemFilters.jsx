@@ -117,12 +117,12 @@ const ItemFilters = (
 
   const submitFilterSelections = (clear = false, clearYear = false) => {
     const query = buildFilterUrl(clear, clearYear);
-    const updatedselectedFields = { ...selectedFields };
+    const updatedSelectedFields = { ...selectedFields };
     if (selectedYear) {
-      updatedselectedFields.date = selectedYear;
+      updatedSelectedFields.date = selectedYear;
     }
     if (clearYear) {
-      delete updatedSelectedFilters.date;
+      delete updatedSelectedFields.date;
       setSelectedYear('');
     }
     const href = createHref({
