@@ -47,7 +47,7 @@ const ItemFilters = (
   /**
    * When new filters are selected or unselected, fetch new items.
    */
-  const buildFilterUrl = (clear = false, clearYear = false) => {
+  const buildFilterQuery = (clear = false, clearYear = false) => {
     let queryObj = {};
     if (!clear) {
       Object.keys(selectedFields).filter(field => selectedFields[field].length).forEach(field => {
@@ -116,7 +116,7 @@ const ItemFilters = (
   };
 
   const submitFilterSelections = (clear = false, clearYear = false) => {
-    const query = buildFilterUrl(clear, clearYear);
+    const query = buildFilterQuery(clear, clearYear);
     const updatedSelectedFields = { ...selectedFields };
     if (selectedYear) {
       updatedSelectedFields.date = selectedYear;

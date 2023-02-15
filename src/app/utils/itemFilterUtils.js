@@ -70,5 +70,5 @@ export const initialLocations = (locations) => {
   // all ReCAP/Offsite materials have location codes beginning loc:rc
   const concatenatedRecapLocations = locations.filter((loc) => loc.startsWith('loc:rc')).join(',')
   const removeRecap = locations.filter((loc) => !concatenatedRecapLocations.includes(loc))
-  return [...removeRecap, concatenatedRecapLocations]
+  return [...removeRecap, concatenatedRecapLocations.length ? concatenatedRecapLocations : null]
 }
