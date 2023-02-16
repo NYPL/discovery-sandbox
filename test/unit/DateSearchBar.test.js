@@ -4,7 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 
-import DateSearchBar from './../../src/app/components/Item/DateSearchBar';
+import DateSearchBar from '../../src/app/components/ItemFilters/DateSearchBar';
 
 describe('DateSearchBar', () => {
   describe('Basic rendering', () => {
@@ -72,7 +72,7 @@ describe('DateSearchBar', () => {
       // Form
       component.find('form').at(0).simulate('submit');
       
-      expect(component.find('div').at(0).text()).to.include('Please enter a valid year');
+      expect(component.find('div').at(0).text()).to.include('Error: Please enter a valid year');
     });
     
     it('should submit the form and call `submitFilterSelections`', () => {

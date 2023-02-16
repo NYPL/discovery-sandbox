@@ -14,36 +14,37 @@ const ItemFiltersMobile = ({
   displayDateFilter,
   itemsAggregations,
   manageFilterDisplay,
-  selectedFilters,
-  setSelectedFilters,
+  selectedFields,
+  setSelectedFields,
   submitFilterSelections,
   initialFilters,
   selectedYear,
   setSelectedYear,
-}) => {
+  fieldToOptionsMap }) => {
   if (!itemsAggregations) return null;
   const showResultsAction = () => {
     submitFilterSelections();
   };
-
   const modalProps = {
     bodyContent: (
       <div className="scc-item-filters" id="item-filters-mobile">
         <div id="item-filters" className="item-table-filters">
           {
-            itemsAggregations.map(filter => (
+            itemsAggregations.map(field => (
               <ItemFilter
-                filter={filter.field}
-                key={filter.id}
-                options={filter.values}
+                field={field.field}
+                key={field.id}
+                options={field.options}
                 mobile
                 manageFilterDisplay={manageFilterDisplay}
-                selectedFilters={selectedFilters}
-                setSelectedFilters={setSelectedFilters}
+                selectedFields={selectedFields}
+                setSelectedFields={setSelectedFields}
                 submitFilterSelections={submitFilterSelections}
                 initialFilters={initialFilters}
+                fieldToOptionsMap={fieldToOptionsMap}
               />
-            ))
+            )
+            )
           }
         </div>
       </div>
@@ -75,14 +76,16 @@ const ItemFiltersMobile = ({
 };
 
 ItemFiltersMobile.propTypes = {
+  displayDateFilter: PropTypes.bool,
   itemsAggregations: PropTypes.array,
   manageFilterDisplay: PropTypes.func,
-  selectedFilters: PropTypes.object,
-  setSelectedFilters: PropTypes.func,
+  selectedFields: PropTypes.object,
+  setSelectedFields: PropTypes.func,
   submitFilterSelections: PropTypes.func,
   initialFilters: PropTypes.object,
   selectedYear: PropTypes.string,
   setSelectedYear: PropTypes.func,
+  fieldToOptionsMap: PropTypes.object
 };
 
 ItemFiltersMobile.contextTypes = {

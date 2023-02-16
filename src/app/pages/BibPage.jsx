@@ -30,6 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../components/ItemFilters/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -61,7 +62,7 @@ export const BibPage = (
   const checkForMoreItems = useCallback((once = false) => {
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numMatched) {
+    } else if (bib && bib.items.length >= numItemsMatched) {
       // Once we have fetched all the items, we're done,
       // so stop fetching more items.
       // `fetchMoreItems` is used to trigger the useEffect but
@@ -87,7 +88,7 @@ export const BibPage = (
             filterQuery += `&${qKey}=${qValue}`;
           } else if (qKey !== "itemPage") {
             // For other filters, we need to map the label to the id.
-            filterQuery += `&${qKey}=${mappedItemsLabelToIds[qKey][qValue]}`;
+            filterQuery += `&${qKey}=${fieldToOptionsMap[qKey][qValue]}`;
           }
         }
       }
@@ -121,7 +122,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, mappedItemsLabelToIds, numItemsMatched]);
+  }, [bib, dispatch, fieldToOptionsMap, numItemsMatched]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -130,38 +131,14 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
   // normalize item aggregations by dropping values with no label and combining duplicate lables
-  const reducedItemsAggregations = JSON.parse(JSON.stringify(itemsAggregations));
-  reducedItemsAggregations.forEach((agg) => {
-    const values = agg.values
-    const reducedValues = {}
-    values.filter(value => value.label?.length)
-      .forEach((value) => {
-        let label = value.label
-        if (label.toLowerCase().replace(/[^\w]/g, '') === 'offsite') { label = "Offsite" }
-        if (!reducedValues[label]) {
-          reducedValues[label] = new Set()
-        }
-        reducedValues[label].add(value.value)
-      })
-    agg.values = Object.keys(reducedValues)
-      .map(label => ({ value: Array.from(reducedValues[label]).join(","), label: label }))
-  });
-  // For every item aggregation, go through every filter in its `values` array
-  // and map all the labels to their ids. This is done because the API expects
-  // the ids of the filters to be sent over, not the labels.
-  const mappedItemsLabelToIds = reducedItemsAggregations.reduce((accc, aggregation) => {
-    const filter = aggregation.field;
-    const mappedValues = aggregation.values.reduce((acc, value) => ({
-      ...acc,
-      [value.label]: value.value
-    }), {})
-    return {
-      ...accc,
-      [filter]: mappedValues,
-    };
-  }, {});
+
+  const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
+  const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const isElectronicResources = items.every(
+    (item) => item.isElectronicResource,
+  );
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
@@ -183,6 +160,8 @@ export const BibPage = (
     aggregatedElectronicResources,
     items
   );
+
+  const searchParams = new URLSearchParams(location.search)
 
   return (
     <RouterProvider value={context}>
@@ -207,22 +186,33 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        <section style={{ marginTop: '20px' }} id="items-table">
-          <ItemsContainer
-            displayDateFilter={bib.hasItemDates}
-            key={bibId}
-            shortenItems={location.pathname.indexOf('all') !== -1}
-            items={items}
-            bibId={bibId}
-            itemPage={location.search}
-            searchKeywords={searchKeywords}
-            holdings={newBibModel.holdings}
-            itemsAggregations={reducedItemsAggregations}
-            mappedItemsLabelToIds={mappedItemsLabelToIds}
-            numItemsMatched={numItemsMatched}
-            checkForMoreItems={checkForMoreItems}
-          />
-        </section>
+        {/* Display the items filter container component when:
+          1: there are items through the `numItemsMatched` property,
+          2: there are items and they are not all electronic resources.
+          
+          Otherwise, if there are items but they are all electronic resources,
+          do not display the items filter container component.
+        */}
+        {(numItemsMatched && numItemsMatched > 0) ||
+          (!isElectronicResources && (!items || items.length > 0)) ?
+            <section style={{ marginTop: '20px' }} id="items-table">
+              <ItemsContainer
+                displayDateFilter={bib.hasItemDates}
+                key={bibId}
+                shortenItems={location.pathname.indexOf('all') !== -1}
+                items={items}
+                bibId={bibId}
+                itemPage={searchParams.get('itemPage')}
+                searchKeywords={searchKeywords}
+                holdings={newBibModel.holdings}
+                itemsAggregations={reducedItemsAggregations}
+                numItemsMatched={numItemsMatched}
+                checkForMoreItems={checkForMoreItems}
+                fieldToOptionsMap={fieldToOptionsMap}
+              />
+            </section>
+            : null
+        }
 
         {newBibModel.holdings && (
           <section style={{ marginTop: '20px' }}>

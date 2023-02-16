@@ -15,6 +15,7 @@ const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr =
   const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
   // Always pass merge_checkin_card_items=true to the API.
   const checkinCards = '&merge_checkin_card_items=true';
+
   return nyplApiClient()
     .then(client =>
       client.get(
@@ -191,7 +192,7 @@ function bibSearch (req, res, resolve) {
   const { features, itemFrom } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
   let filterItemsStr = Object.keys(query)
-    .map((key) => `item_${key}=${query[key]}`)
+    .map((key) => `${key}=${query[key]}`)
     .join('&');
 
   return fetchBib(

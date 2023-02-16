@@ -29,7 +29,7 @@ const DateSearchBar = ({
             isClearable
             isClearableCallback={() => { setSelectedYear('') }}
             isInvalid={invalidYear}
-            invalidText='Please enter a valid year.'
+            invalidText='Error: Please enter a valid year.'
             labelText='Search by Year'
             maxLength={4}
             name='search-year'

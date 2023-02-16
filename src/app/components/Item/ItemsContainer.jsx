@@ -11,7 +11,7 @@ import {
 } from '../../data/constants';
 import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
-import ItemFilters from './ItemFilters';
+import ItemFilters from '../ItemFilters/ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
 
@@ -22,7 +22,7 @@ class ItemsContainer extends React.Component {
     this.state = {
       showAll: false,
       js: false,
-      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
+      page: parseInt(props.itemPage, 10) || 1,
       items: this.props.items || [],
     };
     this.query = context.router.location.query;
@@ -139,12 +139,11 @@ class ItemsContainer extends React.Component {
       dispatch,
       itemsAggregations,
       numItemsMatched,
-      mappedItemsLabelToIds
+      fieldToOptionsMap
     } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...this.state.items];
     let pagination = null;
-
 
     if (
       this.state.js &&
@@ -180,7 +179,7 @@ class ItemsContainer extends React.Component {
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
             numItemsMatched={numItemsMatched}
-            mappedItemsLabelToIds={mappedItemsLabelToIds}
+            fieldToOptionsMap={fieldToOptionsMap}
           />
           {itemTable}
           {!!(
@@ -230,8 +229,9 @@ ItemsContainer.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsMatched: PropTypes.number,
-  mappedItemsLabelToIds: PropTypes.object,
+  fieldToOptionsMap: PropTypes.object,
   checkForMoreItems: PropTypes.func,
+  displayDateFilter: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {

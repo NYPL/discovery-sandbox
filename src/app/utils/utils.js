@@ -619,18 +619,6 @@ const truncateStringOnWhitespace = (str, maxLength) => {
 };
 
 /**
-  This is used for the item filter options to make sure an option is checked.
-  @param {array | string} filterValue
-  @param {string} itemValue
-  @return {boolean}
-*/
-const isOptionSelected = (filterValue, itemValue) => {
-  const itemValues = Array.isArray(itemValue) ? itemValue : [itemValue];
-  const filterValues = Array.isArray(filterValue) ? filterValue : [filterValue];
-  return filterValues.some((filter) => itemValues.includes(filter));
-};
-
-/**
  * hasValidFilters (filters)
  *
  * Returns true if the hash of filters contains at least one valid filter value.
@@ -816,7 +804,6 @@ export {
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
-  isOptionSelected,
   hasValidFilters,
   encodeHTML,
   extractNoticePreference,
