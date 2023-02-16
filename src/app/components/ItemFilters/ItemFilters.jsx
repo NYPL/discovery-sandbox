@@ -45,24 +45,25 @@ const ItemFilters = (
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
-   * When filters are appied or cleared, build new filter query
+   * When filters are applied or cleared, build new filter query
    */
-  const buildFilterQuery = (clear = false, clearYear = false) => {
+  const buildFilterQuery = (clearAll = false, clearYear = false, fieldToClear) => {
     let queryObj = {}
     let fieldsToQuery
     // clear is only true when we are clearing all filters, so return 
     //   empty query object
-    if (clear === true) return queryObj
-    // clear equals false indicates a filter is being applied
-    if (clear === false) {
-      fieldsToQuery = selectedFields
-      // clear is a field, to indicate which field we want to clear
-    } else if (clear.length) {
-      const fieldToClear = clear
+    if (clearAll) return queryObj
+    // if there is a fieldToClear, need to build query with empty field.
+    //  this call happens right after a setSelectedFields, and selectedFields
+    //  is not yet updated with the new value by the time this query is built.
+    if (fieldToClear) {
       fieldsToQuery = {
         ...selectedFields,
         [fieldToClear]: [],
       }
+      // other wise, new filters are being applied
+    } else {
+      fieldsToQuery = selectedFields
     }
     Object.keys(fieldsToQuery).filter(field => fieldsToQuery[field].length).forEach(field => {
       const selectedFilterValues = fieldsToQuery[field].join(',')
@@ -128,8 +129,8 @@ const ItemFilters = (
     router.push(href);
   };
 
-  const submitFilterSelections = (clearAll = false, clearYear = false) => {
-    const query = buildFilterQuery(clearAll, clearYear);
+  const submitFilterSelections = (clearAll = false, clearYear = false, field) => {
+    const query = buildFilterQuery(clearAll, clearYear, field);
     const updatedSelectedFields = { ...selectedFields };
     if (selectedYear) {
       updatedSelectedFields.date = selectedYear;

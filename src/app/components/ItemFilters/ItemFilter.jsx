@@ -96,7 +96,9 @@ const ItemFilter = ({
       ...prevSelectedFields,
       [field]: [],
     }));
-    submitFilterSelections && submitFilterSelections(field);
+    const clearAll = false
+    const clearYear = false
+    submitFilterSelections && submitFilterSelections(clearAll, clearYear, field);
   };
 
   const isSelected = (option) => {
