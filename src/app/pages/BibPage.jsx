@@ -47,11 +47,12 @@ export const BibPage = (
   const hash = location.hash || '';
   const showAll = hash === '#view-all-items';
 
-  // Fetch more items only when we want to, e.g. when the user clicks on
-  // the "View All Items" button or the pagination component.
+  // Fetch more items only when the patron wants to view all items.
+  // If the patron switches to another bib page, or performs a new filter,
+  // then stop fetching more items.
   useEffect(() => {
     if (bib && bib.fetchMoreItems || showAll) {
-      checkForMoreItems();
+      checkForMoreItems(showAll);
     }
   }, [bib, checkForMoreItems, showAll]);
 
@@ -60,14 +61,16 @@ export const BibPage = (
    * button is clicked, we want to make multiple batch requests to get all
    * the items.
    */
-  const checkForMoreItems = useCallback(() => {
+  const checkForMoreItems = useCallback((showAll = false) => {
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numItemsMatched) {
-      // Once we have fetched all the items, we're done,
-      // so stop fetching more items.
-      // `fetchMoreItems` is used to trigger the useEffect but
-      // `done` is used to stop the API requests.
+    } else if (bib && bib.items.length >= numItemsMatched || !showAll) {
+      // 1. Once we have fetched all the items, we're done, so stop fetching
+      //   more items. `fetchMoreItems` is used to trigger the useEffect but
+      //   `done` is used to stop the API requests.
+      // 2. If `showAll` is false, stop fetching more items. This can happen
+      //   if the patron clicks on another bib page or performs a new filter
+      //   search.
       dispatch(
         updateBibPage({
           bib: Object.assign({}, bib, { done: true, fetchMoreItems: false })
@@ -86,7 +89,6 @@ export const BibPage = (
         `${baseUrl}/api`,
       )}?items_from=${itemFrom}${searchStr}`;
 
-      console.log({bibApi})
       ajaxCall(
         bibApi,
         (resp) => {
@@ -186,18 +188,17 @@ export const BibPage = (
           (!isElectronicResources && (!items || items.length > 0)) ?
             <section style={{ marginTop: '20px' }} id="items-table">
               <ItemsContainer
+                bibId={bibId}
                 displayDateFilter={bib.hasItemDates}
                 key={bibId}
-                shortenItems={location.pathname.indexOf('all') !== -1}
-                items={items}
-                bibId={bibId}
-                itemPage={searchParams.get('item_page')}
-                searchKeywords={searchKeywords}
+                fieldToOptionsMap={fieldToOptionsMap}
                 holdings={newBibModel.holdings}
+                itemPage={searchParams.get('item_page')}
+                items={items}
                 itemsAggregations={reducedItemsAggregations}
                 numItemsMatched={numItemsMatched}
-                checkForMoreItems={checkForMoreItems}
-                fieldToOptionsMap={fieldToOptionsMap}
+                searchKeywords={searchKeywords}
+                shortenItems={location.pathname.indexOf('all') !== -1}
                 showAll={showAll}
               />
             </section>

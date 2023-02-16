@@ -120,6 +120,7 @@ const ItemFilter = ({
     mobile ? setMobileIsOpen(prevState => !prevState) : manageFilterDisplay(field)
   );
   const open = mobile ? mobileIsOpen : isOpen;
+
   return (
     <FocusTrap
       focusTrapOptions={{
@@ -191,15 +192,15 @@ const ItemFilter = ({
 
 ItemFilter.propTypes = {
   field: PropTypes.string,
-  options: PropTypes.array,
+  fieldToOptionsMap: PropTypes.object,
+  initialFilters: PropTypes.object,
   isOpen: PropTypes.bool,
   manageFilterDisplay: PropTypes.func,
   mobile: PropTypes.bool,
+  options: PropTypes.array,
   selectedFields: PropTypes.object,
-  submitFilterSelections: PropTypes.func,
   setSelectedFields: PropTypes.func,
-  initialFilters: PropTypes.object,
-  fieldToOptionsMap: PropTypes.object
+  submitFilterSelections: PropTypes.func,
 };
 
 ItemFilter.defaultProps = {

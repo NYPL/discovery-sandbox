@@ -204,6 +204,8 @@ function bibSearch (req, res, resolve) {
     {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
+      // If items_from is set, use that value, otherwise calculate it
+      // based on the current page and the batch size.
       itemFrom: items_from ? items_from : (item_page - 1) * itemBatchSize,
       filterItemsStr
     },

@@ -20,8 +20,6 @@ class ItemsContainer extends React.Component {
     super(props, context);
 
     this.state = {
-      // TODO: REMOVE THIS.
-      showAll: this.props.showAll || false,
       js: false,
       page: parseInt(props.itemPage, 10) || 1,
     };
@@ -38,23 +36,22 @@ class ItemsContainer extends React.Component {
   }
 
   /*
-   * getTable(items, shortenItems, showAll)
+   * getTable(items, shortenItems,)
    * @description Display an HTML table with item data.
    * @param {array} items The array of items.
    * @param {bool} shortenItems Whether the array needs to be cut off or not.
-   * @param {bool} showAll Whether all items should be shown on the client side.
    */
-  getTable(items, shortenItems = false, showAll) {
+  getTable(items, shortenItems = false) {
     /*
      * If there are more items than the page limit AND
      * we need to shorten it to the page limit AND
      * not show all
      */
+    const { bibId, holdings, searchKeywords, showAll } = this.props;
     const itemsToDisplay =
       items && shortenItems && !showAll
         ? items.slice(0, itemsListPageLimit)
         : items;
-    const { bibId, holdings, searchKeywords } = this.props;
 
     return itemsToDisplay &&
       _isArray(itemsToDisplay) &&
@@ -101,17 +98,16 @@ class ItemsContainer extends React.Component {
       query: this.query,
       hash: "#view-all-items"
     });
-    this.setState({ showAll: true });
   }
 
   render() {
     const {
       bibId,
-      dispatch,
       items,
       itemsAggregations,
       numItemsMatched,
-      fieldToOptionsMap
+      fieldToOptionsMap,
+      showAll
     } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...items];
@@ -120,7 +116,7 @@ class ItemsContainer extends React.Component {
     if (
       this.state.js &&
       numItemsMatched > itemsListPageLimit &&
-      !this.state.showAll
+      !showAll
     ) {
       pagination = (
         <Pagination
@@ -133,11 +129,7 @@ class ItemsContainer extends React.Component {
         />
       );
     }
-    const itemTable = this.getTable(
-      itemsToDisplay,
-      shortenItems,
-      this.state.showAll,
-    );
+    const itemTable = this.getTable(itemsToDisplay, shortenItems);
 
     return (
       <>
@@ -145,19 +137,17 @@ class ItemsContainer extends React.Component {
         <div className="nypl-results-item">
           <ItemFilters
             displayDateFilter={this.props.displayDateFilter}
-            items={itemsToDisplay}
-            numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
-            itemsAggregations={itemsAggregations}
-            dispatch={dispatch}
-            numItemsMatched={numItemsMatched}
             fieldToOptionsMap={fieldToOptionsMap}
-            showAll={this.state.showAll}
+            itemsAggregations={itemsAggregations}
+            numItemsMatched={numItemsMatched}
+            numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
+            showAll={showAll}
           />
           {itemTable}
           {!!(
             shortenItems &&
             numItemsMatched > itemsListPageLimit &&
-            !this.state.showAll
+            !showAll
           ) && (
             <div className="view-all-items-container">
               {this.state.js ? (
@@ -192,17 +182,16 @@ class ItemsContainer extends React.Component {
 }
 
 ItemsContainer.propTypes = {
-  items: PropTypes.array,
-  itemPage: PropTypes.string,
   bibId: PropTypes.string,
-  shortenItems: PropTypes.bool,
-  searchKeywords: PropTypes.string,
-  holdings: PropTypes.array,
-  itemsAggregations: PropTypes.array,
-  dispatch: PropTypes.func,
-  numItemsMatched: PropTypes.number,
-  fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
+  fieldToOptionsMap: PropTypes.object,
+  holdings: PropTypes.array,
+  itemPage: PropTypes.string,
+  items: PropTypes.array,
+  itemsAggregations: PropTypes.array,
+  numItemsMatched: PropTypes.number,
+  searchKeywords: PropTypes.string,
+  shortenItems: PropTypes.bool,
   showAll: PropTypes.bool,
 };
 

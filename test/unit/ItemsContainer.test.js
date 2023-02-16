@@ -3,16 +3,13 @@
 import React from 'react';
 import { expect } from 'chai';
 import { mount, shallow } from 'enzyme';
-import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
-import { makeTestStore, mountTestRender } from '../helpers/store';
 import { itemsAggregations } from '../fixtures/itemFilterOptions';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
-const WrappedItemsContainer = itemsContainerModule.ItemsContainer
 const items = [
   {
     accessMessage: {
@@ -213,33 +210,12 @@ describe('ItemsContainer', () => {
       );
     });
 
-    it('should have showAll state equal to false', () => {
-      expect(component.state('showAll')).to.equal(false);
-    });
-
-    it('should have showAll state equal to true when the show all link is clicked', () => {
-      const allItemsLink = component.find('.view-all-items-container').find('button');
-
-      expect(component.state('showAll')).to.equal(false);
-      allItemsLink.simulate('click');
-      expect(component.state('showAll')).to.equal(true);
-    });
-
-    it('should have "js" state equal to false', () => {
-      expect(component.state('showAll')).to.equal(true);
+    it('should have "js" state equal to true after the component mounts', () => {
+      expect(component.state('js')).to.equal(true);
     });
 
     it('should have "page" state equal to 1 by default', () => {
       expect(component.state('page')).to.equal(1);
-    });
-
-    it('should have "showAll" state equal to true when the showAll function is invoked', () => {
-      // The component's 'showAll' state has been updated so here we are reverting it back:
-      component.setState({ showAll: false });
-
-      expect(component.state('showAll')).to.equal(false);
-      component.instance().showAll();
-      expect(component.state('showAll')).to.equal(true);
     });
 
     it('should have "page" state updated when the updatePage function is invoked', () => {
@@ -252,19 +228,34 @@ describe('ItemsContainer', () => {
     });
   });
 
-  describe('High page value', () => {
-    let component;
-
-    before(() => {
-      component = shallow(
-        <ItemsContainer items={longListItems} shortenItems={false} page="4" bib={testBib} />,
+  describe('ShowAll feature', () => {
+    it('should not display the "view all items" link when showAll is true', () => {
+      const component = shallow(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+          numItemsMatched={longListItems.length}
+          showAll={true}
+        />,
         { context },
       );
+      expect(component.find('.view-all-items-container').length).to.equal(0);
     });
 
-    it('should have "page" state updated to 1 since page 4 should not exist with the ' +
-      'small amount of items passed', () => {
-      expect(component.state('page')).to.equal(1);
+    it('should display the "view all items" link when showAll is false', () => {
+      const component = shallow(
+        <ItemsContainer
+          items={longListItems}
+          shortenItems={false}
+          bib={testBib}
+          // Mocking that we have more items to display.
+          numItemsMatched={100}
+          showAll={false}
+        />,
+        { context },
+      );
+      expect(component.find('.view-all-items-container').length).to.equal(1);
     });
   });
 
@@ -272,7 +263,7 @@ describe('ItemsContainer', () => {
     let component;
     before(() => {
       component = shallow(
-        <ItemsContainer items={twentyItems} shortenItems={false} page="4" bib={testBib} />,
+        <ItemsContainer items={twentyItems} shortenItems={false} itemPage="4" bib={testBib} />,
         { context },
       );
     });

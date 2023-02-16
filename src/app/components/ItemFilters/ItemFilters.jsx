@@ -39,10 +39,10 @@ const ItemFilters = (
   // When new items are fetched, update the selected string display.
   useEffect(() => {
     setSelectedFieldDisplayStr(parsedFilterSelections());
-    // Once the new items are fetched, focus on the
-    // filter UI and the results.
-    // this is annoying if you're using a screen reader and focus gets
-    /// added after every call!
+    // Once the new items are fetched, focus on the filter UI and the
+    // results, but don't do this if the user requested to view all items.
+    // It is annoying if the text keeps getting focused and the page
+    // keeps jumping around.
     if (!showAll) {
       resultsRef.current && resultsRef.current.focus();
     }
@@ -155,16 +155,16 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
-    console.log({ query })
     router.push(href);
   };
 
   const itemFilterComponentProps = {
     initialFilters,
+    manageFilterDisplay,
     selectedFields,
     setSelectedFields,
-    manageFilterDisplay,
     submitFilterSelections,
+    fieldToOptionsMap,
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
@@ -179,7 +179,6 @@ const ItemFilters = (
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
-          fieldToOptionsMap={fieldToOptionsMap}
         />
       ) : (
         <div
@@ -191,12 +190,11 @@ const ItemFilters = (
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
               {itemsAggregations.map((field) => (
               <ItemFilter
-                  field={field.field}
-                  key={field.id}
-                  options={field.options}
-                  isOpen={openFilter === field.field}
+                field={field.field}
+                isOpen={openFilter === field.field}
+                key={field.id}
+                options={field.options}
                 {...itemFilterComponentProps}
-                  fieldToOptionsMap={fieldToOptionsMap}
               />
             ))}
           </div>
@@ -234,12 +232,11 @@ const ItemFilters = (
 };
 
 ItemFilters.propTypes = {
+  displayDateFilter: PropTypes.bool,
+  fieldToOptionsMap: PropTypes.object,
   itemsAggregations: PropTypes.array,
-  dispatch: PropTypes.func,
   numItemsMatched: PropTypes.number,
   numOfFilteredItems: PropTypes.object,
-  fieldToOptionsMap: PropTypes.object,
-  displayDateFilter: PropTypes.bool,
   showAll: PropTypes.bool,
 };
 
