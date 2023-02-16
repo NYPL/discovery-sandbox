@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { isArray as _isArray, chunk as _chunk } from 'underscore';
+import { isArray as _isArray } from 'underscore';
 
 import appConfig from '../../data/appConfig';
 import {
@@ -20,10 +20,10 @@ class ItemsContainer extends React.Component {
     super(props, context);
 
     this.state = {
-      showAll: false,
+      // TODO: REMOVE THIS.
+      showAll: this.props.showAll || false,
       js: false,
       page: parseInt(props.itemPage, 10) || 1,
-      items: this.props.items || [],
     };
     this.query = context.router.location.query;
 
@@ -32,36 +32,9 @@ class ItemsContainer extends React.Component {
   }
 
   componentDidMount() {
-    // Mostly things we want to do on the client-side only:
-    const items = this.state.items;
-    let chunkedItems = [];
-    let noItemPage = false;
-
-    if (items && items.length > itemsListPageLimit) {
-      chunkedItems = _chunk(items, itemsListPageLimit);
-    }
-
-    // If the `itemPage` URL query is more than the number of pages, then
-    // go back to page 1 in the state and remove the query from the URL.
-    if (this.state.page > chunkedItems.length) {
-      noItemPage = true;
-    }
-
     this.setState({
       js: true,
-      page: noItemPage ? 1 : this.state.page,
     });
-  }
-
-  // Well, since we get updated items from the API, we need to
-  // update the internal state.
-  componentDidUpdate(prevProps) {
-    if (prevProps.items !== this.props.items) {
-      this.setState(prevState => ({
-        ...prevState,
-        items: this.props.items,
-      }));
-    }
   }
 
   /*
@@ -103,23 +76,15 @@ class ItemsContainer extends React.Component {
    * @param {string} type Either Next or Previous.
    */
   updatePage(page, type) {
-    const itemsToDisplay = [...this.state.items];
-    const totalPages = Math.ceil(itemsToDisplay.length / itemsListPageLimit);
     this.setState({ page });
     trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
       pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
       query: {
         ...this.query,
-        itemPage: page,
+        item_page: page,
       },
     });
-
-    if (page === totalPages) {
-      // We only want to make one request to the API for more items.
-      const once = true;
-      this.props.checkForMoreItems && this.props.checkForMoreItems(once);
-    }
   }
 
   /*
@@ -128,8 +93,14 @@ class ItemsContainer extends React.Component {
    */
   showAll() {
     trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
-    // Trigger the call to make multiple batch requests to the API.
-    this.props.checkForMoreItems && this.props.checkForMoreItems();
+    if (this.query && this.query.item_page) {
+      delete this.query.item_page;
+    }
+    this.context.router.push({
+      pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
+      query: this.query,
+      hash: "#view-all-items"
+    });
     this.setState({ showAll: true });
   }
 
@@ -137,32 +108,31 @@ class ItemsContainer extends React.Component {
     const {
       bibId,
       dispatch,
+      items,
       itemsAggregations,
       numItemsTotal,
-      numItemsCurrent,
       fieldToOptionsMap
     } = this.props;
     const shortenItems = !this.props.shortenItems;
-    let itemsToDisplay = [...this.state.items];
+    const numItemsMatched = this.props.numItemsMatched;
+    let itemsToDisplay = [...items];
     let pagination = null;
 
     if (
       this.state.js &&
-      itemsToDisplay &&
-      itemsToDisplay.length > itemsListPageLimit &&
+      numItemsMatched > itemsListPageLimit &&
       !this.state.showAll
     ) {
       pagination = (
         <Pagination
-          total={itemsToDisplay.length}
+          total={numItemsMatched}
           perPage={itemsListPageLimit}
           page={this.state.page}
           updatePage={this.updatePage}
-          to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?itemPage=` }}
+          to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?item_page=` }}
           ariaControls="bib-item-table"
         />
       );
-      itemsToDisplay = _chunk(itemsToDisplay, itemsListPageLimit)[this.state.page - 1];
     }
     const itemTable = this.getTable(
       itemsToDisplay,
@@ -177,17 +147,18 @@ class ItemsContainer extends React.Component {
           <ItemFilters
             displayDateFilter={this.props.displayDateFilter}
             items={itemsToDisplay}
-            numOfFilteredItems={itemsToDisplay.length}
+            numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
             numItemsTotal={numItemsTotal}
-            numItemsCurrent={numItemsCurrent}
+            numItemsMatched={numItemsMatched}
             fieldToOptionsMap={fieldToOptionsMap}
+            showAll={this.state.showAll}
           />
           {itemTable}
           {!!(
             shortenItems &&
-            numItemsCurrent > itemsListPageLimit &&
+            numItemsMatched > itemsListPageLimit &&
             !this.state.showAll
           ) && (
             <div className="view-all-items-container">
@@ -232,10 +203,10 @@ ItemsContainer.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
-  numItemsCurrent: PropTypes.number,
+  numItemsMatched: PropTypes.number,
   fieldToOptionsMap: PropTypes.object,
-  checkForMoreItems: PropTypes.func,
   displayDateFilter: PropTypes.bool,
+  showAll: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {

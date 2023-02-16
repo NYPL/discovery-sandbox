@@ -44,26 +44,28 @@ export const BibPage = (
 ) => {
   const useParallels = features && features.includes('parallels');
   const numItemsTotal = bib.numItemsTotal;
-  const numItemsCurrent = bib.items ? bib.items.length : 0;
+  const numItemsMatched = bib.numItemsMatched;
+  const hash = location.hash || '';
+  const showAll = hash === '#view-all-items';
 
   // Fetch more items only when we want to, e.g. when the user clicks on
   // the "View All Items" button or the pagination component.
   useEffect(() => {
-    if (bib && bib.fetchMoreItems) {
+    if (bib && bib.fetchMoreItems || showAll) {
       checkForMoreItems();
     }
-  }, [bib, checkForMoreItems]);
+  }, [bib, checkForMoreItems, showAll]);
 
   /*
    * Checks to see if we need to fetch more items. If the "View All Items"
    * button is clicked, we want to make multiple batch requests to get all
-   * the items. If the pagination component is used, we only want to make
-   * one request for the next X items through the `once` argument.
+   * the items.
    */
-  const checkForMoreItems = useCallback((once = false) => {
+  const checkForMoreItems = useCallback(() => {
+    const numToCheck = numItemsMatched ? numItemsMatched : numItemsTotal;
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numItemsTotal) {
+    } else if (bib && bib.items.length >= numToCheck) {
       // Once we have fetched all the items, we're done,
       // so stop fetching more items.
       // `fetchMoreItems` is used to trigger the useEffect but
@@ -75,31 +77,18 @@ export const BibPage = (
       );
     } else {
       // We need to fetch for more items.
-      const searchStr = window.location.search;
+      const searchStr =
+        window.location.search ? `&${window.location.search.substring(1)}` : '';
       const baseUrl = appConfig.baseUrl;
-      const itemFrom = bib.itemFrom || itemBatchSize;
-      let filterQuery = '';
-
-      // If there are filters, we need to add them to the API query.
-      if (searchStr) {
-        const searchParams = new URLSearchParams(searchStr);
-        for (const [qKey, qValue] of searchParams) {
-          // For the date filter, we use the direct value.
-          if (qKey === 'date') {
-            filterQuery += `&${qKey}=${qValue}`;
-          } else if (qKey !== "itemPage") {
-            // For other filters, we need to map the label to the id.
-            filterQuery += `&${qKey}=${fieldToOptionsMap[qKey][qValue]}`;
-          }
-        }
-      }
+      const itemFrom = !bib.itemFrom ? 0 : bib.itemFrom;
 
       // Fetch the next batch of items using the `itemFrom` param.
       const bibApi = `${window.location.pathname.replace(
         baseUrl,
         `${baseUrl}/api`,
-      )}?itemFrom=${itemFrom}${filterQuery}`;
+      )}?items_from=${itemFrom}${searchStr}`;
 
+      console.log({bibApi})
       ajaxCall(
         bibApi,
         (resp) => {
@@ -110,9 +99,10 @@ export const BibPage = (
           dispatch(
             updateBibPage({
               bib: Object.assign({}, bib, {
-                items: bib.items.concat((bibResp && bibResp.items) || []),
+                items: bib.done !== undefined ?
+                bib.items.concat((bibResp && bibResp.items) || []) : bibResp.items,
                 done,
-                fetchMoreItems: once ? false : true,
+                fetchMoreItems: true,
                 itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
               }),
             }),
@@ -123,7 +113,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, fieldToOptionsMap, numItemsTotal]);
+  }, [bib, dispatch, numItemsTotal, numItemsMatched]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -203,14 +193,14 @@ export const BibPage = (
                 shortenItems={location.pathname.indexOf('all') !== -1}
                 items={items}
                 bibId={bibId}
-                itemPage={searchParams.get('itemPage')}
+                itemPage={searchParams.get('item_page')}
                 searchKeywords={searchKeywords}
                 holdings={newBibModel.holdings}
                 itemsAggregations={reducedItemsAggregations}
                 numItemsTotal={numItemsTotal}
-                numItemsCurrent={numItemsCurrent}
-                checkForMoreItems={checkForMoreItems}
+                numItemsMatched={numItemsMatched}
                 fieldToOptionsMap={fieldToOptionsMap}
+                showAll={showAll}
               />
             </section>
             : null

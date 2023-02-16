@@ -145,7 +145,7 @@ describe('ItemsContainer', () => {
           items={longListItems}
           bib={testBib}
           numItemsTotal={longListItems.length}
-          numItemsCurrent={longListItems.length}
+          numItemsMatched={longListItems.length}
         />,
         { context });
     });
@@ -173,7 +173,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib} 
           numItemsTotal={longListItems.length}
-          numItemsCurrent={longListItems.length}
+          numItemsMatched={longListItems.length}
         />,
         { context }
       );
@@ -210,7 +210,7 @@ describe('ItemsContainer', () => {
           shortenItems={false}
           bib={testBib}
           numItemsTotal={longListItems.length}
-          numItemsCurrent={longListItems.length}
+          numItemsMatched={longListItems.length}
         />,
         { context },
       );
@@ -253,37 +253,6 @@ describe('ItemsContainer', () => {
       // Reset back to the first page.
       component.instance().updatePage(1);
     });
-
-    it('should make an API request to get more items when using the Pagination', () => {
-      const checkForMoreItems = () => {
-        madeAPIRequest = true;
-      };
-      let madeAPIRequest = false;
-
-      const component = mount(
-        <ItemsContainer
-          items={longListItems}
-          shortenItems={false}
-          bib={testBib}
-          numItemsTotal={longListItems.length}
-          numItemsCurrent={longListItems.length}
-          checkForMoreItems={checkForMoreItems}
-        />,
-        { context },
-      );
-      const container = component.find('ItemsContainer').instance()
-      
-      expect(component.state('page')).to.equal(1);
-      expect(madeAPIRequest).to.equal(false);
-      
-      // There are only two pages for this example, so once
-      // get to the second page, make the call to fetch more
-      // items by calling `checkForMoreItems`.
-      container.updatePage(2, 'Next')
-      
-      expect(component.state('page')).to.equal(2);
-      expect(madeAPIRequest).to.equal(true);
-    });
   });
 
   describe('High page value', () => {
@@ -299,32 +268,6 @@ describe('ItemsContainer', () => {
     it('should have "page" state updated to 1 since page 4 should not exist with the ' +
       'small amount of items passed', () => {
       expect(component.state('page')).to.equal(1);
-    });
-  });
-
-  describe('Breaking up the items passed into a chunked array', () => {
-    let component
-    const store = makeTestStore({
-      bib: {
-        items: longListItems
-      }
-    })
-    before(() => {
-      component = mountTestRender(
-        <WrappedItemsContainer itemsAggregations={itemsAggregations} />
-        , { store, childContextTypes: { router: PropTypes.object } });
-    })
-    after(() => {
-      component.unmount()
-    })
-    it(`should have ${itemsListPageLimit} on the first page of the item table and ${longListItems.length - itemsListPageLimit} on the second`, () => {
-      const container = component.find('ItemsContainer').instance()
-      let items = component.find('ItemTableRow')
-      expect(items.length).to.equal(itemsListPageLimit)
-      container.updatePage(2, 'Next')
-      component.setProps()
-      items = component.find('ItemTableRow')
-      expect(items.length).to.equal(longListItems.length - itemsListPageLimit)
     });
   });
 

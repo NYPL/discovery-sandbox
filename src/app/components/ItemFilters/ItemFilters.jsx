@@ -14,9 +14,10 @@ const ItemFilters = (
     displayDateFilter,
     numOfFilteredItems,
     numItemsTotal,
-    numItemsCurrent,
+    numItemsMatched,
     fieldToOptionsMap = {},
-    itemsAggregations = []
+    itemsAggregations = [],
+    showAll = false,
   },
   { router },
 ) => {
@@ -41,8 +42,12 @@ const ItemFilters = (
     setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the
     // filter UI and the results.
-    resultsRef.current && resultsRef.current.focus();
-  }, [numOfFilteredItems, parsedFilterSelections]);
+    // this is annoying if you're using a screen reader and focus gets
+    /// added after every call!
+    if (!showAll) {
+      resultsRef.current && resultsRef.current.focus();
+    }
+  }, [numOfFilteredItems, parsedFilterSelections, showAll]);
 
   /**
    * When new filters are selected or unselected, fetch new items.
@@ -104,7 +109,7 @@ const ItemFilters = (
     }
 
     return filterSelectionString.join(', ');
-  }, [itemsAggregations, selectedFields, selectedYear]);
+  }, [itemsAggregations, selectedFields, selectedYear, fieldToOptionsMap]);
 
   const resetFilters = () => {
     setSelectedFields(initialFilters);
@@ -149,7 +154,7 @@ const ItemFilters = (
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
-  const resultsItemsNumber = selectedFieldDisplayStr ? numItemsCurrent : numItemsTotal;
+  const resultsItemsNumber = selectedFieldDisplayStr ? numItemsMatched : numItemsTotal;
   return (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
@@ -217,9 +222,11 @@ ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
   numItemsTotal: PropTypes.number,
-  numItemsCurrent: PropTypes.number,
+  numItemsMatched: PropTypes.number,
   fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
+  numOfFilteredItems: PropTypes.number,
+  showAll: PropTypes.bool,
 };
 
 ItemFilters.contextTypes = {

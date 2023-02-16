@@ -189,8 +189,10 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
 function bibSearch (req, res, resolve) {
   const bibId = req.params.bibId;
   const query = req.query;
-  const { features, itemFrom } = req.query;
+  const { features, item_page = 1, items_from } = req.query;
   const urlEnabledFeatures = extractFeatures(features);
+  delete query.items_from;
+
   let filterItemsStr = Object.keys(query)
     .map((key) => `${key}=${query[key]}`)
     .join('&');
@@ -202,7 +204,7 @@ function bibSearch (req, res, resolve) {
     {
       features: urlEnabledFeatures,
       fetchSubjectHeadingData: true,
-      itemFrom,
+      itemFrom: items_from ? items_from : (item_page - 1) * itemBatchSize,
       filterItemsStr
     },
     res,
