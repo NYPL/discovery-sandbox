@@ -13,10 +13,9 @@ const ItemFilters = (
   {
     displayDateFilter,
     numOfFilteredItems,
-    numItemsTotal,
-    numItemsCurrent,
+    itemsAggregations = [],
+    numItemsMatched,
     fieldToOptionsMap = {},
-    itemsAggregations = []
   },
   { router },
 ) => {
@@ -118,7 +117,7 @@ const ItemFilters = (
     }
 
     return filterSelectionString.join(', ');
-  }, [itemsAggregations, selectedFields, selectedYear]);
+  }, [itemsAggregations, selectedFields, selectedYear, fieldToOptionsMap]);
 
   const resetFilters = () => {
     setSelectedFields(initialFilters);
@@ -164,7 +163,8 @@ const ItemFilters = (
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
-  const resultsItemsNumber = selectedFieldDisplayStr ? numItemsCurrent : numItemsTotal;
+  const resultsItemsNumber = numItemsMatched;
+
   return (
     <Fragment>
       {['mobile', 'tabletPortrait'].includes(mediaType) ? (
@@ -230,9 +230,8 @@ const ItemFilters = (
 
 ItemFilters.propTypes = {
   itemsAggregations: PropTypes.array,
-  dispatch: PropTypes.func,
-  numItemsTotal: PropTypes.number,
-  numItemsCurrent: PropTypes.number,
+  numItemsMatched: PropTypes.number,
+  numOfFilteredItems: PropTypes.object,
   fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
 };

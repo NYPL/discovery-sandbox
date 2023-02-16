@@ -43,8 +43,7 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsTotal = bib.numItemsTotal;
-  const numItemsCurrent = bib.items ? bib.items.length : 0;
+  const numItemsMatched = bib.numItemsMatched
 
   // Fetch more items only when we want to, e.g. when the user clicks on
   // the "View All Items" button or the pagination component.
@@ -63,7 +62,7 @@ export const BibPage = (
   const checkForMoreItems = useCallback((once = false) => {
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numItemsTotal) {
+    } else if (bib && bib.items.length >= numItemsMatched) {
       // Once we have fetched all the items, we're done,
       // so stop fetching more items.
       // `fetchMoreItems` is used to trigger the useEffect but
@@ -123,7 +122,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, fieldToOptionsMap, numItemsTotal]);
+  }, [bib, dispatch, fieldToOptionsMap, numItemsMatched]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -188,13 +187,13 @@ export const BibPage = (
         </section>
 
         {/* Display the items filter container component when:
-          1: there are items through the `numItemsTotal` property,
+          1: there are items through the `numItemsMatched` property,
           2: there are items and they are not all electronic resources.
           
           Otherwise, if there are items but they are all electronic resources,
           do not display the items filter container component.
         */}
-        {(numItemsTotal && numItemsTotal > 0) ||
+        {(numItemsMatched && numItemsMatched > 0) ||
           (!isElectronicResources && (!items || items.length > 0)) ?
             <section style={{ marginTop: '20px' }} id="items-table">
               <ItemsContainer
@@ -207,8 +206,7 @@ export const BibPage = (
                 searchKeywords={searchKeywords}
                 holdings={newBibModel.holdings}
                 itemsAggregations={reducedItemsAggregations}
-                numItemsTotal={numItemsTotal}
-                numItemsCurrent={numItemsCurrent}
+                numItemsMatched={numItemsMatched}
                 checkForMoreItems={checkForMoreItems}
                 fieldToOptionsMap={fieldToOptionsMap}
               />

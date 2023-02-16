@@ -687,6 +687,8 @@ const bibs = [
     ],
     numAvailable: 0,
     numItems: 6,
+    numItemsTotal: 5,
+    numElectronicResources: 1,
     nyplSource: ['sierra-nypl'],
     placeOfPublication: ['New York :'],
     publicationStatement: ['New York : Charles F. Heartman, 1916.'],
