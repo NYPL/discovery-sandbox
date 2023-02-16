@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
 import { trackDiscovery } from '../../utils/utils';
-import { getLabelsForValues, initialLocations } from '../../utils/itemFilterUtils';
+import { getLabelsForValues, initialLocations } from './itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
 import ItemFiltersMobile from './ItemFiltersMobile';
@@ -45,13 +45,28 @@ const ItemFilters = (
   }, [numOfFilteredItems, parsedFilterSelections]);
 
   /**
-   * When new filters are selected or unselected, fetch new items.
+   * When filters are applied or cleared, build new filter query
    */
-  const buildFilterUrl = (clear = false, clearYear = false) => {
-    let queryObj = {};
-    if (!clear) {
-      Object.keys(selectedFields).filter(field => selectedFields[field].length).forEach(field => {
-        const selectedFilterValues = selectedFields[field].join(',')
+  const buildFilterQuery = (clearAll = false, clearYear = false, fieldToClear) => {
+    let queryObj = {}
+    let fieldsToQuery
+    // clear is only true when we are clearing all filters, so return 
+    //   empty query object
+    if (clearAll) return queryObj
+    // if there is a fieldToClear, need to build query with empty field.
+    //  this call happens right after a setSelectedFields, and selectedFields
+    //  is not yet updated with the new value by the time this query is built.
+    if (fieldToClear) {
+      fieldsToQuery = {
+        ...selectedFields,
+        [fieldToClear]: [],
+      }
+      // other wise, new filters are being applied
+    } else {
+      fieldsToQuery = selectedFields
+    }
+    Object.keys(fieldsToQuery).filter(field => fieldsToQuery[field].length).forEach(field => {
+      const selectedFilterValues = fieldsToQuery[field].join(',')
         // build query  object with discovery-api-friendly item_(field) params
         queryObj[`item_${field}`] = selectedFilterValues;
       });
@@ -59,7 +74,6 @@ const ItemFilters = (
       if (selectedYear && !clearYear) {
         queryObj['item_date'] = selectedYear;
       }
-    }
     return queryObj
   }
 
@@ -115,8 +129,8 @@ const ItemFilters = (
     router.push(href);
   };
 
-  const submitFilterSelections = (clear = false, clearYear = false) => {
-    const query = buildFilterUrl(clear, clearYear);
+  const submitFilterSelections = (clearAll = false, clearYear = false, field) => {
+    const query = buildFilterQuery(clearAll, clearYear, field);
     const updatedSelectedFields = { ...selectedFields };
     if (selectedYear) {
       updatedSelectedFields.date = selectedYear;
@@ -137,6 +151,7 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
+    console.log({ query })
     router.push(href);
   };
 

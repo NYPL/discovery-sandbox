@@ -30,7 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
-import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../utils/itemFilterUtils'
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../components/ItemFilters/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
