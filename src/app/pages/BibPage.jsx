@@ -30,7 +30,7 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
-import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../utils/itemFilterUtils'
+import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../components/ItemFilters/itemFilterUtils'
 import getOwner from '../utils/getOwner';
 import appConfig from '../data/appConfig';
 import { itemBatchSize } from '../data/constants';
@@ -43,7 +43,6 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsTotal = bib.numItemsTotal;
   const numItemsMatched = bib.numItemsMatched;
   const hash = location.hash || '';
   const showAll = hash === '#view-all-items';
@@ -62,10 +61,9 @@ export const BibPage = (
    * the items.
    */
   const checkForMoreItems = useCallback(() => {
-    const numToCheck = numItemsMatched ? numItemsMatched : numItemsTotal;
     if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
       // nothing to do
-    } else if (bib && bib.items.length >= numToCheck) {
+    } else if (bib && bib.items.length >= numItemsMatched) {
       // Once we have fetched all the items, we're done,
       // so stop fetching more items.
       // `fetchMoreItems` is used to trigger the useEffect but
@@ -113,7 +111,7 @@ export const BibPage = (
         },
       );
     }
-  }, [bib, dispatch, numItemsTotal, numItemsMatched]);
+  }, [bib, dispatch, numItemsMatched]);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -178,13 +176,13 @@ export const BibPage = (
         </section>
 
         {/* Display the items filter container component when:
-          1: there are items through the `numItemsTotal` property,
+          1: there are items through the `numItemsMatched` property,
           2: there are items and they are not all electronic resources.
           
           Otherwise, if there are items but they are all electronic resources,
           do not display the items filter container component.
         */}
-        {(numItemsTotal && numItemsTotal > 0) ||
+        {(numItemsMatched && numItemsMatched > 0) ||
           (!isElectronicResources && (!items || items.length > 0)) ?
             <section style={{ marginTop: '20px' }} id="items-table">
               <ItemsContainer
@@ -197,8 +195,8 @@ export const BibPage = (
                 searchKeywords={searchKeywords}
                 holdings={newBibModel.holdings}
                 itemsAggregations={reducedItemsAggregations}
-                numItemsTotal={numItemsTotal}
                 numItemsMatched={numItemsMatched}
+                checkForMoreItems={checkForMoreItems}
                 fieldToOptionsMap={fieldToOptionsMap}
                 showAll={showAll}
               />

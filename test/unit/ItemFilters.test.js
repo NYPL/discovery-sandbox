@@ -8,7 +8,7 @@ import ItemFilters from './../../src/app/components/ItemFilters/ItemFilters';
 import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
 import item from '../fixtures/libraryItems';
 import { itemsAggregations, itemsAggregations2, itemsAggregationsOffsite } from '../fixtures/itemFilterOptions';
-import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/utils/itemFilterUtils';
+import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/components/ItemFilters/itemFilterUtils';
 
 const context = {
   router: {
@@ -136,7 +136,6 @@ describe('ItemFilters', () => {
         <ItemFilters
           items={items}
           numOfFilteredItems={items.length}
-          numItemsTotal={items.length}
           numItemsMatched={items.length}
           itemsAggregations={reducedAggregations}
           fieldToOptionsMap={fieldToOptionsMap}
@@ -174,7 +173,6 @@ describe('ItemFilters', () => {
           numOfFilteredItems={items.length}
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
-          numItemsTotal={1}
           numItemsMatched={1}
           itemsAggregations={itemsAggregations}
           fieldToOptionsMap={fieldToOptionsMap}

@@ -1,6 +1,8 @@
 const sampleBib = {
   '@id': 'res:b15523285',
   numItems: 3,
+  numItemsTotal: 1,
+  numElectronicResources: 2,
   items: [
     {
       "@id": "res:i11829350",

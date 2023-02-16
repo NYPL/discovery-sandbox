@@ -144,7 +144,6 @@ describe('ItemsContainer', () => {
         <ItemsContainer
           items={longListItems}
           bib={testBib}
-          numItemsTotal={longListItems.length}
           numItemsMatched={longListItems.length}
         />,
         { context });
@@ -171,8 +170,7 @@ describe('ItemsContainer', () => {
         <ItemsContainer
           items={longListItems}
           shortenItems={false}
-          bib={testBib} 
-          numItemsTotal={longListItems.length}
+          bib={testBib}
           numItemsMatched={longListItems.length}
         />,
         { context }
@@ -209,7 +207,6 @@ describe('ItemsContainer', () => {
           items={longListItems}
           shortenItems={false}
           bib={testBib}
-          numItemsTotal={longListItems.length}
           numItemsMatched={longListItems.length}
         />,
         { context },

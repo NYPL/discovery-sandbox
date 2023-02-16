@@ -201,7 +201,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('4 items');
+      expect(yearPublished.text()).to.equal('4 Items');
     });
 
     it('should have a table', () => {
@@ -230,7 +230,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('1 item');
+      expect(yearPublished.text()).to.equal('1 Item');
     });
 
     it('should have one table', () => {
@@ -455,10 +455,10 @@ describe('ResultsList', () => {
     it('should only count physical items in description', () => {
       const info = component.find('.nypl-results-info')
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('1 item')
+      expect(info.at(0).text()).to.equal('1 Item')
     })
 
-    it('should not display item table link for < 4 items', () => {
+    it('should not display item table link for < 4 Items', () => {
       const physicalItemsLink = component.find("#physical-items-link")
       expect(physicalItemsLink.length).to.equal(0)
     })
@@ -519,7 +519,7 @@ describe('ResultsList', () => {
     it('should announce resources in case no physical items', () => {
       const info = component.find('.nypl-results-info')
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('1 resource')
+      expect(info.at(0).text()).to.equal('1 Resource')
     })
   });
 

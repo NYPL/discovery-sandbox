@@ -110,11 +110,10 @@ class ItemsContainer extends React.Component {
       dispatch,
       items,
       itemsAggregations,
-      numItemsTotal,
+      numItemsMatched,
       fieldToOptionsMap
     } = this.props;
     const shortenItems = !this.props.shortenItems;
-    const numItemsMatched = this.props.numItemsMatched;
     let itemsToDisplay = [...items];
     let pagination = null;
 
@@ -150,7 +149,6 @@ class ItemsContainer extends React.Component {
             numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
             itemsAggregations={itemsAggregations}
             dispatch={dispatch}
-            numItemsTotal={numItemsTotal}
             numItemsMatched={numItemsMatched}
             fieldToOptionsMap={fieldToOptionsMap}
             showAll={this.state.showAll}
@@ -202,7 +200,6 @@ ItemsContainer.propTypes = {
   holdings: PropTypes.array,
   itemsAggregations: PropTypes.array,
   dispatch: PropTypes.func,
-  numItemsTotal: PropTypes.number,
   numItemsMatched: PropTypes.number,
   fieldToOptionsMap: PropTypes.object,
   displayDateFilter: PropTypes.bool,
