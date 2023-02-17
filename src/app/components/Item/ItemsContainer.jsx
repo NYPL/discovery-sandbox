@@ -107,7 +107,8 @@ class ItemsContainer extends React.Component {
       itemsAggregations,
       numItemsMatched,
       fieldToOptionsMap,
-      showAll
+      showAll,
+      finishedLoadingItems,
     } = this.props;
     const shortenItems = !this.props.shortenItems;
     let itemsToDisplay = [...items];
@@ -142,6 +143,7 @@ class ItemsContainer extends React.Component {
             numItemsMatched={numItemsMatched}
             numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
             showAll={showAll}
+            finishedLoadingItems={finishedLoadingItems}
           />
           {itemTable}
           {!!(
@@ -193,6 +195,7 @@ ItemsContainer.propTypes = {
   searchKeywords: PropTypes.string,
   shortenItems: PropTypes.bool,
   showAll: PropTypes.bool,
+  finishedLoadingItems: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {

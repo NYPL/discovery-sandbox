@@ -17,6 +17,7 @@ const ItemFilters = (
     fieldToOptionsMap = {},
     itemsAggregations = [],
     showAll = false,
+    finishedLoadingItems = false,
   },
   { router },
 ) => {
@@ -40,13 +41,13 @@ const ItemFilters = (
   useEffect(() => {
     setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the filter UI and the
-    // results, but don't do this if the user requested to view all items.
-    // It is annoying if the text keeps getting focused and the page
-    // keeps jumping around.
-    if (!showAll) {
+    // results, but don't do this if the user requested to view all items
+    // until all the items are fetched. It is annoying if the text keeps
+    // getting focused and the page keeps jumping around.
+    if (selectedFieldDisplayStr || finishedLoadingItems) {
       resultsRef.current && resultsRef.current.focus();
     }
-  }, [numOfFilteredItems, parsedFilterSelections, showAll]);
+  }, [numOfFilteredItems, parsedFilterSelections, finishedLoadingItems, selectedFieldDisplayStr]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -226,6 +227,11 @@ const ItemFilters = (
             </Button>
           </>
         ) : null}
+        {showAll ?
+          <p id="view-all-items">
+            Loading all items {finishedLoadingItems ? "complete." : "..."}
+          </p> : null
+        }
       </div>
     </Fragment>
   );
@@ -236,8 +242,9 @@ ItemFilters.propTypes = {
   fieldToOptionsMap: PropTypes.object,
   itemsAggregations: PropTypes.array,
   numItemsMatched: PropTypes.number,
-  numOfFilteredItems: PropTypes.object,
+  numOfFilteredItems: PropTypes.number,
   showAll: PropTypes.bool,
+  finishedLoadingItems: PropTypes.bool,
 };
 
 ItemFilters.contextTypes = {

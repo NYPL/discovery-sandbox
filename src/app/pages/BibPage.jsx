@@ -1,6 +1,6 @@
 import { Heading } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 // Components
@@ -15,7 +15,6 @@ import LibraryItem from '../utils/item';
 import SccContainer from '../components/SccContainer/SccContainer';
 // Utils and configs
 import { updateBibPage } from '@Actions';
-import { ajaxCall } from '@utils';
 import {
   allFields,
   annotatedMarcDetails,
@@ -30,10 +29,12 @@ import {
   isNyplBnumber,
   pluckAeonLinksFromResource,
 } from '../utils/utils';
-import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../components/ItemFilters/itemFilterUtils'
+import {
+  buildFieldToOptionsMap,
+  buildReducedItemsAggregations
+} from '../components/ItemFilters/itemFilterUtils'
 import getOwner from '../utils/getOwner';
-import appConfig from '../data/appConfig';
-import { itemBatchSize } from '../data/constants';
+import { useViewAllItems } from '../utils/bibPage';
 import { RouterProvider } from '../context/RouterContext';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
@@ -48,72 +49,7 @@ export const BibPage = (
   const showAll = hash === '#view-all-items';
 
   // Fetch more items only when the patron wants to view all items.
-  // If the patron switches to another bib page, or performs a new filter,
-  // then stop fetching more items.
-  useEffect(() => {
-    if (bib && bib.fetchMoreItems || showAll) {
-      checkForMoreItems(showAll);
-    }
-  }, [bib, checkForMoreItems, showAll]);
-
-  /*
-   * Checks to see if we need to fetch more items. If the "View All Items"
-   * button is clicked, we want to make multiple batch requests to get all
-   * the items.
-   */
-  const checkForMoreItems = useCallback((showAll = false) => {
-    if (!bib || !bib.items || !bib.items.length || (bib && bib.done)) {
-      // nothing to do
-    } else if (bib && bib.items.length >= numItemsMatched || !showAll) {
-      // 1. Once we have fetched all the items, we're done, so stop fetching
-      //   more items. `fetchMoreItems` is used to trigger the useEffect but
-      //   `done` is used to stop the API requests.
-      // 2. If `showAll` is false, stop fetching more items. This can happen
-      //   if the patron clicks on another bib page or performs a new filter
-      //   search.
-      dispatch(
-        updateBibPage({
-          bib: Object.assign({}, bib, { done: true, fetchMoreItems: false })
-        })
-      );
-    } else {
-      // We need to fetch for more items.
-      const searchStr =
-        window.location.search ? `&${window.location.search.substring(1)}` : '';
-      const baseUrl = appConfig.baseUrl;
-      const itemFrom = !bib.itemFrom ? 0 : bib.itemFrom;
-
-      // Fetch the next batch of items using the `itemFrom` param.
-      const bibApi = `${window.location.pathname.replace(
-        baseUrl,
-        `${baseUrl}/api`,
-      )}?items_from=${itemFrom}${searchStr}`;
-
-      ajaxCall(
-        bibApi,
-        (resp) => {
-          // Merge in the new items with the existing items.
-          const bibResp = resp.data.bib;
-          const done =
-            !bibResp || !bibResp.items || bibResp.items.length < itemBatchSize;
-          dispatch(
-            updateBibPage({
-              bib: Object.assign({}, bib, {
-                items: bib.done !== undefined ?
-                bib.items.concat((bibResp && bibResp.items) || []) : bibResp.items,
-                done,
-                fetchMoreItems: true,
-                itemFrom: parseInt(itemFrom, 10) + parseInt(itemBatchSize, 10),
-              }),
-            }),
-          );
-        },
-        (error) => {
-          console.error(error);
-        },
-      );
-    }
-  }, [bib, dispatch, numItemsMatched]);
+  useViewAllItems(bib, dispatch, updateBibPage, numItemsMatched, showAll);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
@@ -200,6 +136,7 @@ export const BibPage = (
                 searchKeywords={searchKeywords}
                 shortenItems={location.pathname.indexOf('all') !== -1}
                 showAll={showAll}
+                finishedLoadingItems={bib.done}
               />
             </section>
             : null
