@@ -43,8 +43,7 @@ const ItemFiltersMobile = ({
                 initialFilters={initialFilters}
                 fieldToOptionsMap={fieldToOptionsMap}
               />
-            )
-            )
+            ))
           }
         </div>
       </div>

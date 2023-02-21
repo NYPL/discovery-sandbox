@@ -13,9 +13,11 @@ const ItemFilters = (
   {
     displayDateFilter,
     numOfFilteredItems,
-    itemsAggregations = [],
     numItemsMatched,
     fieldToOptionsMap = {},
+    itemsAggregations = [],
+    showAll = false,
+    finishedLoadingItems = false,
   },
   { router },
 ) => {
@@ -38,10 +40,14 @@ const ItemFilters = (
   // When new items are fetched, update the selected string display.
   useEffect(() => {
     setSelectedFieldDisplayStr(parsedFilterSelections());
-    // Once the new items are fetched, focus on the
-    // filter UI and the results.
-    resultsRef.current && resultsRef.current.focus();
-  }, [numOfFilteredItems, parsedFilterSelections]);
+    // Once the new items are fetched, focus on the filter UI and the
+    // results, but don't do this if the user requested to view all items
+    // until all the items are fetched. It is annoying if the text keeps
+    // getting focused and the page keeps jumping around.
+    if (selectedFieldDisplayStr || finishedLoadingItems) {
+      resultsRef.current && resultsRef.current.focus();
+    }
+  }, [numOfFilteredItems, parsedFilterSelections, finishedLoadingItems, selectedFieldDisplayStr]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -150,16 +156,16 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
-    console.log({ query })
     router.push(href);
   };
 
   const itemFilterComponentProps = {
     initialFilters,
+    manageFilterDisplay,
     selectedFields,
     setSelectedFields,
-    manageFilterDisplay,
     submitFilterSelections,
+    fieldToOptionsMap,
   };
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
@@ -174,7 +180,6 @@ const ItemFilters = (
           selectedYear={selectedYear}
           setSelectedYear={setSelectedYear}
           {...itemFilterComponentProps}
-          fieldToOptionsMap={fieldToOptionsMap}
         />
       ) : (
         <div
@@ -186,12 +191,11 @@ const ItemFilters = (
             <Text isBold fontSize="text.caption" mb="xs">Filter by</Text>
               {itemsAggregations.map((field) => (
               <ItemFilter
-                  field={field.field}
-                  key={field.id}
-                  options={field.options}
-                  isOpen={openFilter === field.field}
+                field={field.field}
+                isOpen={openFilter === field.field}
+                key={field.id}
+                options={field.options}
                 {...itemFilterComponentProps}
-                  fieldToOptionsMap={fieldToOptionsMap}
               />
             ))}
           </div>
@@ -223,17 +227,24 @@ const ItemFilters = (
             </Button>
           </>
         ) : null}
+        {showAll ?
+          <p id="view-all-items">
+            Loading all items {finishedLoadingItems ? "complete." : "..."}
+          </p> : null
+        }
       </div>
     </Fragment>
   );
 };
 
 ItemFilters.propTypes = {
+  displayDateFilter: PropTypes.bool,
+  fieldToOptionsMap: PropTypes.object,
   itemsAggregations: PropTypes.array,
   numItemsMatched: PropTypes.number,
-  numOfFilteredItems: PropTypes.object,
-  fieldToOptionsMap: PropTypes.object,
-  displayDateFilter: PropTypes.bool,
+  numOfFilteredItems: PropTypes.number,
+  showAll: PropTypes.bool,
+  finishedLoadingItems: PropTypes.bool,
 };
 
 ItemFilters.contextTypes = {

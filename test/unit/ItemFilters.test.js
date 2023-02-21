@@ -30,10 +30,9 @@ describe('ItemFilters', () => {
       component = mount(
         <ItemFilters
           displayDateFilter={true}
-          items={items}
+          itemsAggregations={itemsAggregations}
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
-          itemsAggregations={itemsAggregations}
         />,
         { context }
       );
@@ -44,7 +43,6 @@ describe('ItemFilters', () => {
       component = mount(
         <ItemFilters
           displayDateFilter={false}
-          items={items}
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
           itemsAggregations={itemsAggregations}
@@ -68,7 +66,6 @@ describe('ItemFilters', () => {
       ];
       component = mount(
         <ItemFilters
-          items={items}
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
           itemsAggregations={reducedAggregations}
@@ -134,7 +131,6 @@ describe('ItemFilters', () => {
       contextWithOneFilter.router.location.query = { item_format: 'Text' };
       component = mount(
         <ItemFilters
-          items={items}
           numOfFilteredItems={items.length}
           numItemsMatched={items.length}
           itemsAggregations={reducedAggregations}
@@ -169,7 +165,6 @@ describe('ItemFilters', () => {
       contextWithMultipleFilters.router.location.query = { item_format: 'Text,PRINT' };
       component = mount(
         <ItemFilters
-          items={items}
           numOfFilteredItems={items.length}
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
@@ -209,7 +204,6 @@ describe('ItemFilters', () => {
       };
       component = mount(
         <ItemFilters
-          items={items}
           numOfFilteredItems={0}
           // This comes from the `ItemsContainer` parent
           // component after filtering the items.
@@ -247,11 +241,10 @@ describe('ItemFilters', () => {
       };
       component = mount(
         <ItemFilters
-          items={items}
+        itemsAggregations={itemsAggregations2}
           numOfFilteredItems={0}
           numItemsTotal={items.length}
-          numItemsCurrent={items.length}
-          itemsAggregations={itemsAggregations2}
+          numItemsMatched={items.length}
         />,
         { context: contextWithMultipleFilters }
       );
@@ -283,11 +276,10 @@ describe('ItemFilters', () => {
       component = mount(
         <ItemFilters
           displayDateFilter={false}
-          items={items}
+          fieldToOptionsMap={fieldToOptionsMap}
+          itemsAggregations={reducedAggregations}
           numOfFilteredItems={items.length}
           numItemsTotal={items.length}
-          itemsAggregations={reducedAggregations}
-          fieldToOptionsMap={fieldToOptionsMap}
         />,
         { context });
     })

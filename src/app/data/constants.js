@@ -1,5 +1,3 @@
-import appConfig from "@appConfig";
-
 // breakpoints ordered by `maxValue` ascending
 const breakpoints = [
   {
@@ -18,7 +16,7 @@ const breakpoints = [
 
 const bibPageItemsListLimit = 20;
 const searchResultItemsListLimit = 3;
-const itemBatchSize = appConfig.itemBatchSize;
+const itemBatchSize = 20;
 
 const noticePreferenceMapping = {
   'z': 'Email',
