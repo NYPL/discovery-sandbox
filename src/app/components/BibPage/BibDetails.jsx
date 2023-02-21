@@ -148,7 +148,9 @@ const BibDetails = (props) => {
           }
           dir={stringDirection(linkText, useParallels)}
         >
+          <Link>
           {linkText}
+          </Link>
         </DSLink>
       );
     }

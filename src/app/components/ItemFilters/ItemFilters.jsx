@@ -150,7 +150,6 @@ const ItemFilters = (
       'Search Filters',
       `Apply Filter - ${JSON.stringify(selectedFields)}`,
     );
-    console.log({ query })
     router.push(href);
   };
 

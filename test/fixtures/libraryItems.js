@@ -120,6 +120,7 @@ const item = {
     barcode: '33433078478272',
     callNumber: 'JFE 07-5007 ---',
     holdingLocationCode: 'loc:maj03',
+    branchEndpoint: 'schwarzman',
     id: 'i17326129',
     isElectronicResource: false,
     isOffsite: false,
@@ -136,33 +137,8 @@ const item = {
     url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
       '&institution=13777&type=1&language=1',
   },
-  requestable_nonReCAP_NYPL_schwarzman: {
-    accessMessage: {
-      '@id': 'accessMessage:1',
-      prefLabel: 'USE IN LIBRARY',
-    },
-    availability: 'available',
-    available: true,
-    barcode: '33433078478272',
-    callNumber: 'JFE 07-5007 ---',
-    holdingLocationCode: 'loc:maj03',
-    id: 'i17326129',
-    isElectronicResource: false,
-    isOffsite: false,
-    isRecap: false,
-    itemSource: 'sierra-nypl',
-    location: 'Schwarzman Building M2 - General Research Room 315',
-    nonRecapNYPL: true,
-    requestable: true,
-    status: {
-      '@id': 'status:a',
-      prefLabel: 'Available',
-    },
-    suppressed: false,
-    url: 'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?' +
-      '&institution=13777&type=1&language=1',
-  },
   requestable_nonReCAP_NYPL_lpa: {
+    branchEndpoint: 'lpa',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'USE IN LIBRARY',
@@ -196,6 +172,7 @@ const item = {
     availability: 'available',
     available: true,
     barcode: '33433078478272',
+    branchEndpoint: 'schomburg',
     callNumber: 'JFE 07-5007 ---',
     holdingLocationCode: 'loc:maj03',
     id: 'i17326129',
@@ -215,6 +192,7 @@ const item = {
       '&institution=13777&type=1&language=1',
   },
   requestable_nonReCAP_NYPL_not_available: {
+    branchEndpoint: 'schwarzman',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'USE IN LIBRARY',
@@ -242,6 +220,7 @@ const item = {
       '&institution=13777&type=1&language=1',
   },
   requestable_nonReCAP_NYPL: {
+    branchEndpoint: 'schwarzman',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'USE IN LIBRARY',
@@ -268,6 +247,7 @@ const item = {
       '&institution=13777&type=1&language=1',
   },
   nonrequestable_nonReCAP_NYPL: {
+    branchEndpoint: 'schwarzman',
     accessMessage: {
       '@id': 'accessMessage:1',
       prefLabel: 'USE IN LIBRARY',
