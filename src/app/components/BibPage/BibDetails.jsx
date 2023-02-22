@@ -138,8 +138,8 @@ const BibDetails = (props) => {
     if (fieldSelfLinkable) {
       const linkText = bibValue.prefLabel || bibValue.label || bibValue.url
       return (
-        <Link
-          to={bibValue.url}
+        <DSLink
+          href={bibValue.url}
           onClick={() =>
             trackDiscovery(
               'Bib fields',
@@ -149,7 +149,7 @@ const BibDetails = (props) => {
           dir={stringDirection(linkText, useParallels)}
         >
           {linkText}
-        </Link>
+        </DSLink>
       );
     }
 
