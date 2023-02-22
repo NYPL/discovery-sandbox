@@ -63,10 +63,8 @@ export const BibPage = (
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
   const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-  const isElectronicResources = items.every(
-    (item) => item.isElectronicResource,
-  );
-
+  const isOnlyElectronicResources = bib.numItemsTotal === 1 && bib.numElectronicResources > 0
+  const hasPhysicalItems = !isOnlyElectronicResources && bib.numItemsTotal > 0
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -113,15 +111,10 @@ export const BibPage = (
           {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
         </section>
 
-        {/* Display the items filter container component when:
-          1: there are items through the `numItemsMatched` property,
-          2: there are items and they are not all electronic resources.
-          
-          Otherwise, if there are items but they are all electronic resources,
-          do not display the items filter container component.
+        {/*
+          Display the Items Container only when there are physical items
         */}
-        {(numItemsMatched && numItemsMatched > 0) ||
-          (!isElectronicResources && (!items || items.length > 0)) ?
+        {hasPhysicalItems ?
             <section style={{ marginTop: '20px' }} id="items-table">
               <ItemsContainer
                 bibId={bibId}

@@ -182,11 +182,10 @@ describe('BibPage', () => {
     let component;
     before(() => {
       mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
-      const bib = { ...mockBibWithHolding, ...annotatedMarc };
+      const bib = { ...mockBibWithHolding, ...annotatedMarc, numItemsTotal: 1 };
       const testStore = makeTestStore({
         bib: {
           items: [{ holdingLocationCode: 'lol', id: 1234 }],
-          numItems: 0,
         },
       });
 
@@ -356,4 +355,113 @@ describe('BibPage', () => {
       expect(component.find('section').at(0).prop('dir')).to.eql(null)
     })
   });
+
+
+  describe('ItemsContainer conditional display', () => {
+    let component;
+    let testStore
+    const bib = { ...mockBibWithHolding, ...annotatedMarc }
+    before(() => {
+      mockBibWithHolding.holdings.forEach(holding => addHoldingDefinition(holding));
+
+      testStore = makeTestStore({
+        bib: {
+          items: [{ holdingLocationCode: 'lol', id: 1234 }],
+        },
+      });
+    })
+    describe('1 item, electronic resources', () => {
+      const oneItemYesER = { ...bib, numItemsTotal: 1, numElectronicResources: 20 }
+      before(() => {
+        component = mountTestRender(
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={oneItemYesER}
+            dispatch={() => { }}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />,
+          { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+        )
+      })
+      it('does not render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(0) })
+    })
+    describe('No item, no electronic resources', () => {
+      const noItemsNoEr = { ...bib, numItemsTotal: 0, numElectronicResources: 0 }
+      before(() => {
+        component = mountTestRender(
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={noItemsNoEr}
+            dispatch={() => { }}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />,
+          { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+        )
+      })
+      it(' does not render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(0) });
+    })
+    describe('1 item, no electronic resources does render ItemsContainer', () => {
+
+      const oneItemNoER = { ...bib, numItemsTotal: 1 };
+      before(() => {
+        component = mountTestRender(
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={oneItemNoER}
+            dispatch={() => { }}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />,
+          { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+        )
+      })
+      it(' does render ItemsContainer', () => {
+        expect(component.find('ItemsContainer').length).to.equal(1)
+      })
+    })
+    describe('Multi item, electronic resources', () => {
+      const multiItemsYesER = { ...bib, numItemsTotal: 20, numElectronicResources: 30 }
+      before(() => {
+        component = mountTestRender(
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={multiItemsYesER}
+            dispatch={() => { }}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />,
+          { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+        )
+      })
+      it(' does render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(1); })
+    })
+    describe('Multi item, no electronic resources does render ItemsContainer', () => {
+      const multiItemsNoER = { ...bib, numItemsTotal: 10 }
+      before(() => {
+        component = mountTestRender(
+          <BibPage
+            location={{ search: 'search', pathname: '' }}
+            bib={multiItemsNoER}
+            dispatch={() => { }}
+            resultSelection={{
+              fromUrl: '',
+              bibId: '',
+            }}
+          />,
+          { context, childContextTypes: { router: PropTypes.object }, store: testStore },
+        )
+      })
+      it(' does render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(1); })
+    })
+  })
 });
