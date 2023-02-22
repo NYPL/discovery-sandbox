@@ -427,7 +427,7 @@ describe('BibPage', () => {
         expect(component.find('ItemsContainer').length).to.equal(1)
       })
     })
-    it('Multi item, electronic resources', () => {
+    describe('Multi item, electronic resources', () => {
       const multiItemsYesER = { ...bib, numItemsTotal: 20, numElectronicResources: 30 }
       before(() => {
         component = mountTestRender(
