@@ -418,7 +418,7 @@ function getAggregatedElectronicResources(items = []) {
  * @param {array} items Items[ ]
  * @return {array}
  */
-function pluckAeonLinksFromResource(resources = [], items = []) {
+function removeAeonLinksFromResource (resources = [], items = []) {
   return (
     (resources.length &&
       featuredAeonList(items) && // Does items list contain an Aeon Request Button
@@ -753,7 +753,7 @@ function isNyplBnumber(bnum) {
  function getElectronicResources(bib) {
    const items = LibraryItem.getItems(bib);
    const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-   const eResources = pluckAeonLinksFromResource(aggregatedElectronicResources, items);
+   const eResources = removeAeonLinksFromResource(aggregatedElectronicResources, items);
    const totalPhysicalItems = bib.numItemsTotal;
    const eResourcesTotal = bib.numElectronicResources
    return { eResources, totalPhysicalItems, eResourcesTotal }
@@ -811,7 +811,7 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
-  pluckAeonLinksFromResource,
+  removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,
 };

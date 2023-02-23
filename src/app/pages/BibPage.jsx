@@ -27,7 +27,7 @@ import {
 import {
   getAggregatedElectronicResources,
   isNyplBnumber,
-  pluckAeonLinksFromResource,
+  removeAeonLinksFromResource,
 } from '../utils/utils';
 import {
   buildFieldToOptionsMap,
@@ -81,7 +81,7 @@ export const BibPage = (
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
-  const electronicResources = pluckAeonLinksFromResource(
+  const electronicResources = removeAeonLinksFromResource(
     aggregatedElectronicResources,
     items
   );
