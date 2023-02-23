@@ -25,9 +25,8 @@ import {
   matchParallels,
 } from '../utils/bibDetailsUtils';
 import {
-  getAggregatedElectronicResources,
   isNyplBnumber,
-  removeAeonLinksFromResource,
+  getElectronicResources
 } from '../utils/utils';
 import {
   buildFieldToOptionsMap,
@@ -58,13 +57,14 @@ export const BibPage = (
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
   // normalize item aggregations by dropping values with no label and combining duplicate lables
-
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
-  const isOnlyElectronicResources = bib.numItemsTotal === 1 && bib.numElectronicResources > 0
-  const hasPhysicalItems = !isOnlyElectronicResources && bib.numItemsTotal > 0
+
+  const allElectronicLocatorsWithAeon = bib.electronicResources
+  const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
+  const isOnlyElectronicResources = bib.numItemsTotal === 0 && bib.numElectronicResources > 0
+  const hasPhysicalItems = !isOnlyElectronicResources
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -81,10 +81,6 @@ export const BibPage = (
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
-  const electronicResources = removeAeonLinksFromResource(
-    aggregatedElectronicResources,
-    items
-  );
 
   const searchParams = new URLSearchParams(location.search)
 
@@ -104,11 +100,12 @@ export const BibPage = (
 
         <section style={{ marginTop: '20px' }}>
           <BibDetails
+            electronicResources={allElectronicLocatorsWithAeon}
             bib={newBibModel}
             fields={topFields}
             features={features}
           />
-          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
+          {eResourcesWithoutAeon.length ? <ElectronicResources electronicResources={eResourcesWithoutAeon} id="electronic-resources" /> : null}
         </section>
 
         {/*
@@ -150,7 +147,6 @@ export const BibPage = (
                 : []
             }
             bib={newBibModel}
-            electronicResources={aggregatedElectronicResources}
             fields={bottomFields}
             features={features}
           />

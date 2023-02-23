@@ -25,6 +25,18 @@ import { Heading } from '@nypl/design-system-react-components';
 
 
 describe('BibPage', () => {
+  const electronicResources = [
+    {
+      '@type': 'nypl:ElectronicLocation',
+      label: 'Full text available via HathiTrust',
+      url: 'http://hdl.handle.net/2027/nyp.33433076020639',
+    },
+    {
+      '@type': 'nypl:ElectronicLocation',
+      label: 'Request Access to Special Collections Material',
+      url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
+    },
+  ]
   const context = mockRouterContext();
   describe('Electronic Resources List', () => {
     const testStore = makeTestStore({
@@ -33,7 +45,7 @@ describe('BibPage', () => {
       },
     });
 
-    const bib = { ...bibs[2] };
+    const bib = { ...bibs[2], electronicResources };
     const page = mountTestRender(
       <BibPage
         location={{ search: 'search', pathname: '' }}
@@ -47,7 +59,7 @@ describe('BibPage', () => {
       { context, childContextTypes: { router: PropTypes.object }, store: testStore },
     );
 
-    it('should have an Aeon link available', () => {
+    it.only('should have an Aeon link available', () => {
       const bttBibComp = page.findWhere(
         (node) =>
           node.type() === BibDetails && node.prop('additionalData').length,
