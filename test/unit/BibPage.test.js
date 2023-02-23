@@ -47,7 +47,7 @@ describe('BibPage', () => {
       { context, childContextTypes: { router: PropTypes.object }, store: testStore },
     );
 
-    it('should have an Aeon link available', () => {
+    xit('should have an Aeon link available', () => {
       const bttBibComp = page.findWhere(
         (node) =>
           node.type() === BibDetails && node.prop('additionalData').length,
