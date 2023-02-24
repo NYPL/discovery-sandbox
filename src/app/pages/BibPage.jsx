@@ -49,7 +49,7 @@ export const BibPage = (
   const showAll = hash === '#view-all-items';
 
   // Fetch more items only when the patron wants to view all items.
-  useViewAllItems(bib, dispatch, updateBibPage, numItemsMatched, showAll);
+  useViewAllItems(bib, dispatch, numItemsMatched, showAll, updateBibPage);
 
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
