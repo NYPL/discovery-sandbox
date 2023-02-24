@@ -12,7 +12,6 @@ import DateSearchBar from './DateSearchBar';
 const ItemFilters = (
   {
     displayDateFilter,
-    numOfFilteredItems,
     numItemsMatched,
     fieldToOptionsMap = {},
     itemsAggregations = [],
@@ -29,7 +28,7 @@ const ItemFilters = (
     format: query.item_format ? query.item_format.split(',') : [],
     status: query.item_status ? query.item_status.split(',') : [],
   };
-  const resultsRef = useRef(null);
+  // const resultsRef = useRef(null);
   const [openFilter, setOpenFilter] = useState('none');
   // The "year" filter is not used for the `ItemFilter` dropdown component
   // and must be handled separately in the `SearchBar` component.
@@ -40,14 +39,7 @@ const ItemFilters = (
   // When new items are fetched, update the selected string display.
   useEffect(() => {
     setSelectedFieldDisplayStr(parsedFilterSelections());
-    // Once the new items are fetched, focus on the filter UI and the
-    // results, but don't do this if the user requested to view all items
-    // until all the items are fetched. It is annoying if the text keeps
-    // getting focused and the page keeps jumping around.
-    if (selectedFieldDisplayStr || finishedLoadingItems) {
-      resultsRef.current && resultsRef.current.focus();
-    }
-  }, [numOfFilteredItems, parsedFilterSelections, finishedLoadingItems, selectedFieldDisplayStr]);
+  }, [parsedFilterSelections]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -208,7 +200,7 @@ const ItemFilters = (
           <div></div>
         </div>
       )}
-      <div className="item-filter-info" ref={resultsRef} tabIndex="-1">
+      <div className="item-filter-info" tabIndex="-1" aria-live="polite" aria-atomic={true}>
         <Heading level="three" size="callout">
           <>
             {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
@@ -242,7 +234,6 @@ ItemFilters.propTypes = {
   fieldToOptionsMap: PropTypes.object,
   itemsAggregations: PropTypes.array,
   numItemsMatched: PropTypes.number,
-  numOfFilteredItems: PropTypes.number,
   showAll: PropTypes.bool,
   finishedLoadingItems: PropTypes.bool,
 };
