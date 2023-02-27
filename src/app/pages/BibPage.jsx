@@ -25,6 +25,7 @@ import {
   matchParallels,
 } from '../utils/bibDetailsUtils';
 import {
+  getAggregatedElectronicResources,
   isNyplBnumber,
   getElectronicResources
 } from '../utils/utils';
@@ -63,8 +64,8 @@ export const BibPage = (
 
   const allElectronicLocatorsWithAeon = bib.electronicResources
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
-  const isOnlyElectronicResources = bib.numItemsTotal === 0 && bib.numElectronicResources > 0
-  const hasPhysicalItems = !isOnlyElectronicResources
+  const isOnlyElectronicResources = bib.items.length === 0 && bib.electronicResources && bib.electronicResources.length > 0
+  const hasPhysicalItems = !isOnlyElectronicResources && bib.items.length > 0
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';

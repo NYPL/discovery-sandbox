@@ -31,7 +31,7 @@ const generateElectronicResourceLinksList = (electronicResources) => {
     const electronicItem = electronicResources[0];
     electronicElem = electronicResourcesLink({
       href: electronicItem.url,
-      label: electronicItem.label,
+      label: electronicItem.label || electronicItem.prefLabel,
     });
   } else {
     // Otherwise, create a list of anchors.
@@ -42,7 +42,7 @@ const generateElectronicResourceLinksList = (electronicResources) => {
           <li key={resource.label} style = {{ marginTop: 10, marginBottom:10 }}>
             {electronicResourcesLink({
               href: resource.url,
-              label: resource.label,
+              label: resource.label || resource.prefLabel,
             })}
           </li>
         ))}
