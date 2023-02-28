@@ -100,7 +100,7 @@ export const BibPage = (
   const isElectronicResources = items.every(
     (item) => item.isElectronicResource,
   );
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const aggregatedElectronicResources = bib.electronicResources || getAggregatedElectronicResources(items);
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
