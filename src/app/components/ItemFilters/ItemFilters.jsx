@@ -12,7 +12,6 @@ import DateSearchBar from './DateSearchBar';
 const ItemFilters = (
   {
     displayDateFilter,
-    numOfFilteredItems,
     numItemsMatched,
     fieldToOptionsMap = {},
     itemsAggregations = [],
@@ -39,15 +38,26 @@ const ItemFilters = (
 
   // When new items are fetched, update the selected string display.
   useEffect(() => {
+    let timeout;
     setSelectedFieldDisplayStr(parsedFilterSelections());
     // Once the new items are fetched, focus on the filter UI and the
     // results, but don't do this if the user requested to view all items
     // until all the items are fetched. It is annoying if the text keeps
     // getting focused and the page keeps jumping around.
-    if (selectedFieldDisplayStr || finishedLoadingItems) {
+    if (showAll && finishedLoadingItems)  {
       resultsRef.current && resultsRef.current.focus();
+    } else if (selectedFieldDisplayStr) {
+      // When filtering, delay the focus slightly because
+      // of the loading animation screen.
+      timeout = setTimeout(() => {
+        resultsRef.current && resultsRef.current.focus();
+      }, 1000);
     }
-  }, [numOfFilteredItems, parsedFilterSelections, finishedLoadingItems, selectedFieldDisplayStr]);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [parsedFilterSelections, showAll, finishedLoadingItems, selectedFieldDisplayStr]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -208,7 +218,7 @@ const ItemFilters = (
           <div></div>
         </div>
       )}
-      <div className="item-filter-info" ref={resultsRef} tabIndex="-1">
+      <div id="view-all-items" className="item-filter-info" tabIndex="-1" ref={resultsRef}>
         <Heading level="three" size="callout">
           <>
             {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
@@ -228,7 +238,7 @@ const ItemFilters = (
           </>
         ) : null}
         {showAll ?
-          <p id="view-all-items">
+          <p>
             Loading all items {finishedLoadingItems ? "complete." : "..."}
           </p> : null
         }
@@ -242,7 +252,6 @@ ItemFilters.propTypes = {
   fieldToOptionsMap: PropTypes.object,
   itemsAggregations: PropTypes.array,
   numItemsMatched: PropTypes.number,
-  numOfFilteredItems: PropTypes.number,
   showAll: PropTypes.bool,
   finishedLoadingItems: PropTypes.bool,
 };
