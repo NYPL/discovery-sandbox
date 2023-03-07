@@ -19,7 +19,9 @@ const loadLogoutIframe = (onload) => {
 
   logoutIframe.setAttribute(
     // The endpoint is the URL for logging out from Encore
-    'src', `https://${encoreDomain}/iii/encore/logoutFilterRedirect?suite=def`
+    // 'src', `https://${encoreDomain}/iii/encore/logoutFilterRedirect?suite=def`
+    // PB: Temporary fix to logout issue:
+    'src', 'https://ilsstaff.nypl.org/iii/cas/logout?url=https://duckduckgo.com'
   );
   // Assigns the ID for CSS ussage
   logoutIframe.setAttribute('id', 'logoutIframe');
