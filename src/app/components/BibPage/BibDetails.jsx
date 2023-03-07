@@ -140,12 +140,6 @@ const BibDetails = (props) => {
       return (
         <Link
           to={bibValue.url}
-          onClick={() =>
-            trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
-            )
-          }
           dir={stringDirection(linkText, useParallels)}
         >
           {linkText}

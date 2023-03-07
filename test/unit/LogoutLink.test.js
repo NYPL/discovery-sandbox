@@ -12,7 +12,9 @@ const mountLogoutLink = ({ loggedIn = false, delineate = false }) => mount(
     <LogoutLink delineate={delineate} />
   </PatronProvider>
 );
-const logoutLink = "https://login.nypl.org/auth/logout?redirect_uri=";
+// PB: Temporary fix to logout issue:
+// const logoutLink = "https://login.nypl.org/auth/logout?redirect_uri=";
+const logoutLink = 'https://ilsstaff.nypl.org/iii/cas/logout?url='
 
 describe('LogoutLink', () => {
   it('does not render if patron is not logged in', () => {

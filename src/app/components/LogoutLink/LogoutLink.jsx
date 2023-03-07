@@ -13,7 +13,8 @@ const LogoutLink = ({
   delineate = false
 }) => {
   // PB: Temporary fix to logout issue:
-  const logoutLink = 'https://ilsstaff.nypl.org/iii/cas/logout?url=' // "https://login.nypl.org/auth/logout?redirect_uri=";
+  // const logoutLink = "https://login.nypl.org/auth/logout?redirect_uri=";
+  const logoutLink = 'https://ilsstaff.nypl.org/iii/cas/logout?url='
   const [backLink, setBackLink] = useState('');
   const { loggedIn } = useContext(PatronContext);
 
