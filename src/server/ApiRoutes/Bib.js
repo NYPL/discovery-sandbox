@@ -35,7 +35,7 @@ const shepApiCall = (bibId) => {
   }, 5000)
   return axios({
     method: 'get',
-    url: `${appConfig.shepApi} / bibs / ${bibId} / subject_headings`,
+    url: `${appConfig.shepApi}/bibs/${bibId}/subject_headings`,
     timeout: 4000,
     cancelToken: source.token
   }).then((response) => {
@@ -71,7 +71,7 @@ export const findUrl = (location, urls) => {
 };
 
 export const fetchLocationUrls = codes => nyplApiClient()
-  .then(client => client.get(`/ locations ? location_codes = ${codes}`));
+  .then(client => client.get(`/locations?location_codes=${codes}`));
 
 const addLocationUrls = (bib) => {
   const { holdings } = bib;
@@ -144,10 +144,10 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
       const status = (!bib || !bib.uri || !bibId.includes(bib.uri)) ? '404' : '200';
       if (status === '404') {
         return nyplApiClient()
-          .then(client => client.get(`/ bibs / sierra - nypl / ${bibId.slice(1)}`))
+          .then(client => client.get(`/bibs/sierra-nypl/${bibId.slice(1)}`))
           .then((resp) => {
             const classic = appConfig.legacyBaseUrl;
-            if (resp.statusCode === 200) { res.redirect(`${appConfig.circulatingCatalog} / iii / encore / record / C__R${bibId}`); }
+            if (resp.statusCode === 200) { res.redirect(`${appConfig.circulatingCatalog}/iii/encore/record/C__R${bibId}`); }
           })
           .catch((err) => {
             console.log('error: ', err);
