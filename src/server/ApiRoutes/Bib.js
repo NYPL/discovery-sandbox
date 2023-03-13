@@ -19,7 +19,6 @@ const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
     const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
     fullQuery = `${query}${queryForItemPage}${itemQuery}&merge_checkin_card_items=true`
   }
-  console.log(query)
   return nyplApiClient()
     .then(client =>
       client.get(
