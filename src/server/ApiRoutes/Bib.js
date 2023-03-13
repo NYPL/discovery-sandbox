@@ -197,7 +197,7 @@ function bibSearch (req, res, resolve) {
   delete query.items_from;
 
   let filterItemsStr = Object.keys(query)
-    .map((key) => `${key} = ${query[key]}`)
+    .map((key) => `${key}=${query[key]}`)
     .join('&');
 
   return fetchBib(
