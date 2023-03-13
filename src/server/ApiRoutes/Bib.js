@@ -8,19 +8,21 @@ import { itemBatchSize } from '../../app/data/constants';
 import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
-const nyplApiClientCall = (query, urlEnabledFeatures, itemFrom, filterItemsStr = "") => {
+const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
   // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
-  const requestOptions = appConfig.features.includes('on-site-edd') || (urlEnabledFeatures || []).includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  const itemQuery = filterItemsStr ? `&${filterItemsStr}` : '';
-  // Always pass merge_checkin_card_items=true to the API.
-  const checkinCards = '&merge_checkin_card_items=true';
-
+  let fullQuery
+  if (query.includes('.annotated-marc')) {
+    fullQuery = query
+  }
+  else {
+    const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
+    fullQuery = `${query}${queryForItemPage}${itemQuery}&merge_checkin_card_items=true`
+  }
   return nyplApiClient()
     .then(client =>
       client.get(
-        `/discovery/resources/${query}${queryForItemPage}${itemQuery}${checkinCards}`,
-        requestOptions
+        `/discovery/resources/${query}`
       )
     );
 };
