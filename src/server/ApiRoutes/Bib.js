@@ -9,20 +9,18 @@ import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
-  // If on-site-edd feature enabled in front-end, enable it in discovery-api:
   const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
-  let fullQuery
+  let fullQuery;
   if (query.includes('.annotated-marc')) {
-    fullQuery = query
-  }
-  else {
+    fullQuery = query;
+  } else {
     const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
     fullQuery = `${query}${queryForItemPage}${itemQuery}&merge_checkin_card_items=true`
   }
   return nyplApiClient()
     .then(client =>
       client.get(
-        `/discovery/resources/${query}`
+        `/discovery/resources/${fullQuery}`
       )
     );
 };
@@ -125,9 +123,9 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
   return Promise.all([
-    nyplApiClientCall(bibId, options.features, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
+    nyplApiClientCall(bibId, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:
-    isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`, options.features) : null,
+    isNYPL ? nyplApiClientCall(`${bibId}.annotated-marc`) : null,
   ])
     .then((response) => {
       // First response is jsonld formatting:
