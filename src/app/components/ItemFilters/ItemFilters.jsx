@@ -44,9 +44,9 @@ const ItemFilters = (
     // results, but don't do this if the user requested to view all items
     // until all the items are fetched. It is annoying if the text keeps
     // getting focused and the page keeps jumping around.
-    if (showAll && finishedLoadingItems)  {
+    if (showAll && finishedLoadingItems) {
       resultsRef.current && resultsRef.current.focus();
-    } else if (selectedFieldDisplayStr) {
+    } else {
       // When filtering, delay the focus slightly because
       // of the loading animation screen.
       timeout = setTimeout(() => {
@@ -57,7 +57,7 @@ const ItemFilters = (
     return () => {
       clearTimeout(timeout);
     };
-  }, [parsedFilterSelections, showAll, finishedLoadingItems, selectedFieldDisplayStr]);
+  }, [parsedFilterSelections, showAll, finishedLoadingItems]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -209,11 +209,13 @@ const ItemFilters = (
               />
             ))}
           </div>
-          {displayDateFilter && (<DateSearchBar
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
-            submitFilterSelections={submitFilterSelections}
-          />)}
+          {displayDateFilter && (
+            <DateSearchBar
+              selectedYear={selectedYear}
+              setSelectedYear={setSelectedYear}
+              submitFilterSelections={submitFilterSelections}
+            />
+          )}
           {/* Empty div for flexbox even columns. */}
           <div></div>
         </div>
