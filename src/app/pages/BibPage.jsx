@@ -57,12 +57,11 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
-  // normalize item aggregations by dropping values with no label and combining duplicate lables
-
+  // normalize item aggregations by dropping values with no label and combining duplicate labels
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
-  const aggregatedElectronicResources = getAggregatedElectronicResources(items);
+  const aggregatedElectronicResources = bib.electronicResources || getAggregatedElectronicResources(items);
   const isOnlyElectronicResources = bib.numItemsTotal === 1 && bib.numElectronicResources > 0
   const hasPhysicalItems = !isOnlyElectronicResources && bib.numItemsTotal > 0
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
