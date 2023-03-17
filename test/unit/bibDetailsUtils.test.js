@@ -38,7 +38,6 @@ describe('bibDetailsUtils', () => {
       const link = dsLink.props.children;
 
       expect(link.props.to).to.equal('ItemContent');
-      expect(link.props.title).to.equal(JSON.stringify(value.source, null, 2));
       expect(link.props.children).to.equal('ItemLabel');
     });
 

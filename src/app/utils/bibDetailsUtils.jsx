@@ -59,7 +59,7 @@ const allFields = {
 const definitionItem = (value, index = 0) => {
   const link = (
     <DSLink>
-      <Link to={value.content} title={JSON.stringify(value.source, null, 2)}>
+      <Link to={value.content} title={value.label}>
         {value.label}
       </Link>
     </DSLink>
