@@ -27,9 +27,13 @@
     font-size: 0.95rem;
     padding-left: 0;
 
-    @include media($nypl-breakpoint-medium) {
-      display: grid;
-      grid-template-columns: 20% auto;
+    &::after,
+    &::before {
+      content: "";
+      display: table;
+    }
+    &::after {
+      clear: both;
     }
 
     dt {
@@ -43,8 +47,9 @@
       clear: both;
       
       @include media($nypl-breakpoint-medium) {
+        float: left;
+        width: 20%;
         margin-bottom: 1rem;
-        padding-right: .75em;
       }
     }
 
