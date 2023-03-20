@@ -60,7 +60,7 @@ const createAppHistory = () => {
  * @param {object} filters Filters in the url.
  * @param {object} apiFilters All filters from the API.
  */
-function destructureFilters (filters, apiFilters) {
+function destructureFilters(filters, apiFilters) {
   const selectedFilters = {};
   const filterArrayfromAPI =
     apiFilters &&
@@ -272,7 +272,7 @@ const basicQuery = (props = {}) => {
  * filters in the url from the `filter` query.
  * @param {object} query The request query object from Express.
  */
-function getReqParams (query = {}) {
+function getReqParams(query = {}) {
   const page = query.page || '1';
   const perPage = query.per_page || '50';
   const q = query.q || '';
@@ -331,7 +331,7 @@ function getReqParams (query = {}) {
  * @param {string} dateBefore The filter date to search before.
  * @return {object}
  */
-function parseServerSelectedFilters (filters, dateAfter, dateBefore) {
+function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   const selectedFilters = {
     materialType: [],
     language: [],
@@ -375,7 +375,7 @@ function parseServerSelectedFilters (filters, dateAfter, dateBefore) {
  * @param {array} items
  * @return {object}
  */
-function getAggregatedElectronicResources (items = []) {
+function getAggregatedElectronicResources(items = []) {
   if (!items && !items.length) {
     return [];
   }
@@ -418,7 +418,7 @@ function getAggregatedElectronicResources (items = []) {
  * @param {array} items Items[ ]
  * @return {array}
  */
-function removeAeonLinksFromResource (resources = [], items = []) {
+function removeAeonLinksFromResource(resources = [], items = []) {
   return (
     (resources.length &&
       featuredAeonList(items) && // Does items list contain an Aeon Request Button
@@ -435,7 +435,7 @@ function removeAeonLinksFromResource (resources = [], items = []) {
  * @param {array} items Items[ ]
  * @return {boolean}
  */
-function featuredAeonList (items) {
+function featuredAeonList(items) {
   const featured = features.includes('aeon-links');
 
   // Does a single item in the list have an aeon url
@@ -455,7 +455,7 @@ function featuredAeonList (items) {
  * - https://specialcollections.nypl.org/aeon/Aeon.dll
  * - https://nypl-aeon-test.aeon.atlas-sys.com
  */
-function isAeonLink (url) {
+function isAeonLink(url) {
   if (!url) return false;
   const aeonLinks = [
     'https://specialcollections.nypl.org/aeon/Aeon.dll',
@@ -512,7 +512,7 @@ const getUpdatedFilterValues = (props) => {
  *
  * @returns {string} A phrase like "for (keyword|title|author) TERM"
  */
-function displayContext ({
+function displayContext({
   searchKeywords,
   contributor,
   title,
@@ -672,7 +672,7 @@ const hasValidFilters = (selectedFilters) => {
  * Return a version of the string sanitized to protect against XSS.
  * @param {string} str - The string to be sanitized
  */
-function encodeHTML (str) {
+function encodeHTML(str) {
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -684,7 +684,7 @@ function encodeHTML (str) {
  * Returns 'None', 'Email', or 'Telephone'.
  * @param {string} fixedFields - Object coming from patron object `fixedFields` property
  */
-function extractNoticePreference (fixedFields) {
+function extractNoticePreference(fixedFields) {
   if (!fixedFields) return 'None';
   const noticePreferenceField = fixedFields['268'];
   if (!noticePreferenceField || !noticePreferenceField.value) return 'None';
@@ -699,7 +699,7 @@ function extractNoticePreference (fixedFields) {
  *      camelToShishKabobCase("firstCharCanBeLowerCase")
  *        => "first-char-can-be-lower-case"
  */
-function camelToShishKabobCase (s) {
+function camelToShishKabobCase(s) {
   return (
     s
       // Change capital letters into "-{lowercase letter}"
@@ -714,7 +714,7 @@ function camelToShishKabobCase (s) {
  * Given an nypl-source (e.g. 'recap-pul') returns a short institution name
  * (e.g. "Princeton")
  */
-function institutionNameByNyplSource (nyplSource) {
+function institutionNameByNyplSource(nyplSource) {
   return {
     'recap-pul': 'Princeton',
     'recap-cul': 'Columbia',
@@ -728,7 +728,7 @@ function institutionNameByNyplSource (nyplSource) {
  * Used for DRB
  */
 
-function addSource (url) {
+function addSource(url) {
   try {
     const parsedUrl = new URL(url);
     const searchParams = parsedUrl.searchParams;
@@ -743,20 +743,20 @@ function addSource (url) {
  * Given a bnumber (e.g. b12082323, pb123456, hb10000202040400) returns true
  * if it's an NYPL bnumber.
  */
-function isNyplBnumber (bnum) {
+function isNyplBnumber(bnum) {
   return /^b/.test(bnum);
 }
 
 /**
  * Given a bib, return the electronic resources and the number of physical items
  */
-function getElectronicResources (bib) {
+function getElectronicResources(bib) {
   const items = LibraryItem.getItems(bib);
   const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
   const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
   // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
-  // if data is stale, it does not have that property. We need to decrement numItems 
-  // if there are electronic resources on the bib, because even though the items array is 
+  // if data is stale, it does not have that property. Fall back on numItems. But!
+  // if there are electronic resources on the bib, we need to decrement numItems. Even though the items array is 
   // empty in updated api response, numItems still includes the electronic item in the count.
   const totalPhysicalItems = bib.numItemsTotal || (eResourcesWithoutAeonLinks.length ?
     bib.numItems - 1 : bib.numItems)
@@ -770,7 +770,7 @@ function getElectronicResources (bib) {
  * Given an item, return Aeon url with params added to pre-populate the form
  */
 
-function aeonUrl (item) {
+function aeonUrl(item) {
   const itemUrl = Array.isArray(item.aeonUrl)
     ? item.aeonUrl[0]
     : item.aeonUrl;
