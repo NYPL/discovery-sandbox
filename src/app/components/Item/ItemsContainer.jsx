@@ -141,7 +141,6 @@ class ItemsContainer extends React.Component {
             fieldToOptionsMap={fieldToOptionsMap}
             itemsAggregations={itemsAggregations}
             numItemsMatched={numItemsMatched}
-            numOfFilteredItems={itemsToDisplay && itemsToDisplay.length}
             showAll={showAll}
             finishedLoadingItems={finishedLoadingItems}
           />

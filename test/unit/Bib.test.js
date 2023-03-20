@@ -110,4 +110,25 @@ describe('Bib', () => {
       });
     });
   });
+  describe('nyplApiClientCall', () => {
+    let apiClientStub
+    before(() => {
+      apiClientStub = stub(NyplApiClient.prototype, 'get').returns({ bib: { id: '123' } })
+    });
+    after(() => {
+      apiClientStub.restore();
+    });
+    it('.annotated-marc', () => {
+      const query = 'b12345678.annotated-marc'
+      Bib.nyplApiClientCall(query)
+      expect(apiClientStub.calledWith(`/discovery/resources/${query}`))
+    })
+    it('regular bib call', () => {
+      const query = 'b12345678'
+      const itemFrom = 3
+      const itemFilterStr = 'items_location=loc:123'
+      Bib.nyplApiClientCall(query, itemFrom,)
+      expect(apiClientStub.calledWith(`/discovery/resources/${query}${itemFilterStr}&merge_checkin_card_items=true`))
+    })
+  })
 });

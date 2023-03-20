@@ -8,7 +8,7 @@ import { Link } from '@nypl/design-system-react-components'
  */
 const generateElectronicResourceLinksList = (electronicResources) => {
   if (!electronicResources) return null
-  const electronicResourcesLink = ({ href, label }) => (
+  const electronicResourcesLink = ({ href, label, prefLabel }) => (
     <Link
       href={href}
       target='_blank'
@@ -20,7 +20,7 @@ const generateElectronicResourceLinksList = (electronicResources) => {
       }
       rel='noreferrer'
     >
-      {label || href}
+      {label || prefLabel || href}
     </Link>
   );
   let electronicElem;
