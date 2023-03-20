@@ -754,8 +754,8 @@ function getElectronicResources (bib) {
   const items = LibraryItem.getItems(bib);
   const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
   const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
-  const totalPhysicalItems = bib.numItemsTotal;
-  const eResourcesTotal = bib.numElectronicResources
+  const totalPhysicalItems = bib.numItemsTotal || bib.numItems;
+  const eResourcesTotal = bib.numElectronicResources || eResourcesWithoutAeonLinks.length
   return {
     eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
   }
