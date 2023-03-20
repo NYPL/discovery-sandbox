@@ -754,7 +754,12 @@ function getElectronicResources (bib) {
   const items = LibraryItem.getItems(bib);
   const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
   const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
-  const totalPhysicalItems = bib.numItemsTotal || bib.numItems;
+  // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
+  // if data is stale, it does not have that property. We need to decrement numItems 
+  // if there are electronic resources on the bib, because even though the items array is 
+  // empty in updated api response, numItems still includes the electronic item in the count.
+  const totalPhysicalItems = bib.numItemsTotal || (eResourcesWithoutAeonLinks.length ?
+    bib.numItems - 1 : bib.numItems)
   const eResourcesTotal = bib.numElectronicResources || eResourcesWithoutAeonLinks.length
   return {
     eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
