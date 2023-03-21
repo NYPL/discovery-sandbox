@@ -57,7 +57,7 @@ export const BibPage = (
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
-  // normalize item aggregations by dropping values with no label and combining duplicate lables
+  // normalize item aggregations by dropping values with no label and combining duplicate labels
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
@@ -113,24 +113,24 @@ export const BibPage = (
           Display the Items Container only when there are physical items
         */}
         {hasPhysicalItems ?
-            <section style={{ marginTop: '20px' }} id="items-table">
-              <ItemsContainer
-                bibId={bibId}
-                displayDateFilter={bib.hasItemDates}
-                key={bibId}
-                fieldToOptionsMap={fieldToOptionsMap}
-                holdings={newBibModel.holdings}
-                itemPage={searchParams.get('item_page')}
-                items={items}
-                itemsAggregations={reducedItemsAggregations}
-                numItemsMatched={numItemsMatched}
-                searchKeywords={searchKeywords}
-                shortenItems={location.pathname.indexOf('all') !== -1}
-                showAll={showAll}
-                finishedLoadingItems={bib.done}
-              />
-            </section>
-            : null
+          <section style={{ marginTop: '20px' }} id="items-table">
+            <ItemsContainer
+              bibId={bibId}
+              displayDateFilter={bib.hasItemDates}
+              key={bibId}
+              fieldToOptionsMap={fieldToOptionsMap}
+              holdings={newBibModel.holdings}
+              itemPage={searchParams.get('item_page')}
+              items={items}
+              itemsAggregations={reducedItemsAggregations}
+              numItemsMatched={numItemsMatched}
+              searchKeywords={searchKeywords}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              showAll={showAll}
+              finishedLoadingItems={bib.done}
+            />
+          </section>
+          : null
         }
 
         {newBibModel.holdings && (
