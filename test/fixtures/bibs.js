@@ -633,27 +633,6 @@ const bibs = [
           '@value': '12169732',
         },
       },
-      {
-        '@id': 'res:i22030125-e',
-        electronicLocator: [
-          {
-            '@type': 'nypl:ElectronicLocation',
-            label: 'Full text available via HathiTrust',
-            url: 'http://hdl.handle.net/2027/nyp.33433076020639',
-          },
-          {
-            '@type': 'nypl:ElectronicLocation',
-            label: 'Request Access to Special Collections Material',
-            url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
-          },
-        ],
-        identifier: ['urn:SierraNypl:22030125-e'],
-        uri: 'i22030125-e',
-        idNyplSourceId: {
-          '@type': 'SierraNypl',
-          '@value': '22030125-e',
-        },
-      },
     ],
     language: ['{@id: "lang:eng", prefLabel: "English"}'],
     lccClassification: ['Z1231.P7 S3'],
@@ -683,6 +662,18 @@ const bibs = [
         '@type': 'bf:Note',
         prefLabel:
           'inscribed: in ink on recto of endleaf preceding series title leaf  "A.A. Schomburg." ; This copy is part of the original collection purchased from Arthur A. Schomburg in 1926.',
+      },
+    ],
+    electronicResources: [
+      {
+        '@type': 'nypl:ElectronicLocation',
+        label: 'Full text available via HathiTrust',
+        url: 'http://hdl.handle.net/2027/nyp.33433076020639',
+      },
+      {
+        '@type': 'nypl:ElectronicLocation',
+        label: 'Request Access to Special Collections Material',
+        url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
       },
     ],
     numAvailable: 0,

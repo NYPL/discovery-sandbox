@@ -100,10 +100,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={results} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a ul wrapper', () => {
@@ -126,10 +126,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={resultsBibs} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render two bib li items', () => {
@@ -166,10 +166,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render one main li', () => {
@@ -221,10 +221,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a total items description', () => {
@@ -246,7 +246,7 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(
           <ResultsList results={resultsBibs} />,
-          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
+          { context: { router: { createHref: () => { }, push: () => { }, replace: () => { } } } },
         );
         mock = new MockAdapter(axios);
         mock
@@ -267,7 +267,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: { createHref: () => { }, push: () => { } } } },
       );
       mock = new MockAdapter(axios);
       mock
@@ -359,7 +359,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: { createHref: () => { }, push: () => { } } } },
       );
       mock = new MockAdapter(axios);
       mock
@@ -386,10 +386,10 @@ describe('ResultsList', () => {
       before(() => {
         component = mountTestRender(
           <ResultsList results={resultsBibs} />, {
-            store: mockStore,
-            context,
-            childContextTypes,
-          }).find('ResultsList');
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -405,10 +405,10 @@ describe('ResultsList', () => {
         });
         component = mountTestRender(
           <ResultsList results={resultsBibs} />, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       it('should have components with .drbb-integration class', () => {
@@ -433,10 +433,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[electronicAndPhysicalItemsBib]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     after(() => {
@@ -476,10 +476,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[bibs[2]]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     it('should display link to item table in case > 3 items', () => {
@@ -506,10 +506,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[electronicItemsBib]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     after(() => {
@@ -536,11 +536,11 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords"/>, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords" />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       after(() => {
@@ -572,11 +572,11 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[]} searchKeywords="mock_keywords"/>, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          <ResultsList results={[]} searchKeywords="mock_keywords" />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       after(() => {

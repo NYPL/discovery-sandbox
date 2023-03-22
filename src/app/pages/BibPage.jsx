@@ -27,7 +27,7 @@ import {
 import {
   getAggregatedElectronicResources,
   isNyplBnumber,
-  pluckAeonLinksFromResource,
+  getElectronicResources
 } from '../utils/utils';
 import {
   buildFieldToOptionsMap,
@@ -61,9 +61,11 @@ export const BibPage = (
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
-  const aggregatedElectronicResources = bib.electronicResources || getAggregatedElectronicResources(items);
-  const isOnlyElectronicResources = bib.numItemsTotal === 1 && bib.numElectronicResources > 0
-  const hasPhysicalItems = !isOnlyElectronicResources && bib.numItemsTotal > 0
+
+  const allElectronicLocatorsWithAeon = bib.electronicResources
+  const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
+  const isOnlyElectronicResources = bib.items.length === 0 && bib.electronicResources && bib.electronicResources.length > 0
+  const hasPhysicalItems = !isOnlyElectronicResources && bib.items.length > 0
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
@@ -80,10 +82,6 @@ export const BibPage = (
   newBibModel['updatedSubjectLiteral'] = compressSubjectLiteral(bib);
 
   const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
-  const electronicResources = pluckAeonLinksFromResource(
-    aggregatedElectronicResources,
-    items
-  );
 
   const searchParams = new URLSearchParams(location.search)
 
@@ -103,35 +101,36 @@ export const BibPage = (
 
         <section style={{ marginTop: '20px' }}>
           <BibDetails
+            electronicResources={allElectronicLocatorsWithAeon}
             bib={newBibModel}
             fields={topFields}
             features={features}
           />
-          {electronicResources.length ? <ElectronicResources electronicResources={electronicResources} id="electronic-resources"/> : null}
+          {eResourcesWithoutAeon.length ? <ElectronicResources electronicResources={eResourcesWithoutAeon} id="electronic-resources" /> : null}
         </section>
 
         {/*
           Display the Items Container only when there are physical items
         */}
         {hasPhysicalItems ?
-            <section style={{ marginTop: '20px' }} id="items-table">
-              <ItemsContainer
-                bibId={bibId}
-                displayDateFilter={bib.hasItemDates}
-                key={bibId}
-                fieldToOptionsMap={fieldToOptionsMap}
-                holdings={newBibModel.holdings}
-                itemPage={searchParams.get('item_page')}
-                items={items}
-                itemsAggregations={reducedItemsAggregations}
-                numItemsMatched={numItemsMatched}
-                searchKeywords={searchKeywords}
-                shortenItems={location.pathname.indexOf('all') !== -1}
-                showAll={showAll}
-                finishedLoadingItems={bib.done}
-              />
-            </section>
-            : null
+          <section style={{ marginTop: '20px' }} id="items-table">
+            <ItemsContainer
+              bibId={bibId}
+              displayDateFilter={bib.hasItemDates}
+              key={bibId}
+              fieldToOptionsMap={fieldToOptionsMap}
+              holdings={newBibModel.holdings}
+              itemPage={searchParams.get('item_page')}
+              items={items}
+              itemsAggregations={reducedItemsAggregations}
+              numItemsMatched={numItemsMatched}
+              searchKeywords={searchKeywords}
+              shortenItems={location.pathname.indexOf('all') !== -1}
+              showAll={showAll}
+              finishedLoadingItems={bib.done}
+            />
+          </section>
+          : null
         }
 
         {newBibModel.holdings && (
@@ -149,7 +148,6 @@ export const BibPage = (
                 : []
             }
             bib={newBibModel}
-            electronicResources={aggregatedElectronicResources}
             fields={bottomFields}
             features={features}
           />

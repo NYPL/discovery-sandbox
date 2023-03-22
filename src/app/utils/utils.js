@@ -27,7 +27,7 @@ const { features } = appConfig;
  */
 const ajaxCall = (
   endpoint,
-  cb = () => {},
+  cb = () => { },
   errorcb = (error) => console.error('Error making ajaxCall', error),
 ) => {
   if (!endpoint) return null;
@@ -64,8 +64,8 @@ function destructureFilters(filters, apiFilters) {
   const selectedFilters = {};
   const filterArrayfromAPI =
     apiFilters &&
-    apiFilters.itemListElement &&
-    apiFilters.itemListElement.length
+      apiFilters.itemListElement &&
+      apiFilters.itemListElement.length
       ? apiFilters.itemListElement
       : [];
 
@@ -73,7 +73,7 @@ function destructureFilters(filters, apiFilters) {
     const id =
       key.indexOf('date') !== -1
         ? // Because filters are in the form of `filters[language][0]`;
-          key.substring(8, key.length - 1)
+        key.substring(8, key.length - 1)
         : key.substring(8, key.length - 4);
 
     if (id === 'dateAfter' || id === 'dateBefore') {
@@ -418,7 +418,7 @@ function getAggregatedElectronicResources(items = []) {
  * @param {array} items Items[ ]
  * @return {array}
  */
-function pluckAeonLinksFromResource(resources = [], items = []) {
+function removeAeonLinksFromResource(resources = [], items = []) {
   return (
     (resources.length &&
       featuredAeonList(items) && // Does items list contain an Aeon Request Button
@@ -750,41 +750,48 @@ function isNyplBnumber(bnum) {
 /**
  * Given a bib, return the electronic resources and the number of physical items
  */
- function getElectronicResources(bib) {
-   const items = LibraryItem.getItems(bib);
-   const aggregatedElectronicResources = bib.electronicResources || getAggregatedElectronicResources(items);
-   const eResources = pluckAeonLinksFromResource(aggregatedElectronicResources, items);
-   const totalPhysicalItems = bib.numItemsTotal;
-   const eResourcesTotal = bib.numElectronicResources
-   return { eResources, totalPhysicalItems, eResourcesTotal }
- }
+function getElectronicResources(bib) {
+  const items = LibraryItem.getItems(bib);
+  const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
+  const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
+  // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
+  // if data is stale, it does not have that property. Fall back on numItems. But!
+  // if there are electronic resources on the bib, we need to decrement numItems. Even though the items array is 
+  // empty in updated api response, numItems still includes the electronic item in the count.
+  const totalPhysicalItems = bib.numItemsTotal || (eResourcesWithoutAeonLinks.length ?
+    bib.numItems - 1 : bib.numItems)
+  const eResourcesTotal = bib.numElectronicResources || eResourcesWithoutAeonLinks.length
+  return {
+    eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
+  }
+}
 
- /**
-  * Given an item, return Aeon url with params added to pre-populate the form
-  */
+/**
+ * Given an item, return Aeon url with params added to pre-populate the form
+ */
 
- function aeonUrl(item) {
-   const itemUrl = Array.isArray(item.aeonUrl)
-     ? item.aeonUrl[0]
-     : item.aeonUrl;
+function aeonUrl(item) {
+  const itemUrl = Array.isArray(item.aeonUrl)
+    ? item.aeonUrl[0]
+    : item.aeonUrl;
 
-   const AeonUrl = new URL(itemUrl);
+  const AeonUrl = new URL(itemUrl);
 
-   const paramDict = {
-     ItemISxN: 'id',
-     itemNumber: 'barcode',
-     CallNumber: 'callNumber',
-   };
+  const paramDict = {
+    ItemISxN: 'id',
+    itemNumber: 'barcode',
+    CallNumber: 'callNumber',
+  };
 
-   // Add/Replace query parameters on AeonURL with item key values
-   Object.entries(paramDict).forEach(([param, key]) => {
-     // If item doesn't have a value use searchParams value
-     const value = item[key] ?? AeonUrl.searchParams.get(param);
-     if (value) AeonUrl.searchParams.set(param, value);
-   });
+  // Add/Replace query parameters on AeonURL with item key values
+  Object.entries(paramDict).forEach(([param, key]) => {
+    // If item doesn't have a value use searchParams value
+    const value = item[key] ?? AeonUrl.searchParams.get(param);
+    if (value) AeonUrl.searchParams.set(param, value);
+  });
 
-   return AeonUrl.toString();
- }
+  return AeonUrl.toString();
+}
 
 export {
   trackDiscovery,
@@ -811,7 +818,7 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
-  pluckAeonLinksFromResource,
+  removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,
 };
