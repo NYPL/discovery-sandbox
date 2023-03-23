@@ -91,12 +91,12 @@ const ResultsList = ({
     const yearPublished = getYearDisplay(result);
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
-    const items = (result.checkInItems || []).concat(ItemSorter.sortItems(LibraryItem.getItems(result)));
-    const totalItems = (result.checkInItems || []).length + result.numItems;
+    const items = ItemSorter.sortItems(LibraryItem.getItems(result));
+    const totalItems = result.numItems;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
-    const { totalPhysicalItems, eResources } = getElectronicResources(result);
+    const { totalPhysicalItems, eResources, eResourcesTotal } = getElectronicResources(result);
     const resourcesOnClick = () => {
       updateResultSelection({
         fromUrl: `${pathname}${search}`,
@@ -105,8 +105,8 @@ const ResultsList = ({
     }
 
     const hasPhysicalItems = totalPhysicalItems > 0;
-    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length;
-    const resourceType = hasPhysicalItems ? 'item' : 'resource';
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResourcesTotal;
+    const resourceType = hasPhysicalItems ? 'Item' : 'Resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
@@ -164,7 +164,7 @@ const ResultsList = ({
                         id="physical-items-link"
                       >
                         <Text isBold size="caption">
-                          {`View All ${totalPhysicalItems} Items`} <RightWedgeIcon />
+                          {`View All ${itemMessage}`} <RightWedgeIcon />
                         </Text>
                       </Link>
                     </CardActions>

@@ -100,10 +100,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={results} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a ul wrapper', () => {
@@ -126,10 +126,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={resultsBibs} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render two bib li items', () => {
@@ -166,10 +166,10 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should render one main li', () => {
@@ -201,7 +201,7 @@ describe('ResultsList', () => {
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('4 items');
+      expect(yearPublished.text()).to.equal('4 Items');
     });
 
     it('should have a table', () => {
@@ -221,16 +221,16 @@ describe('ResultsList', () => {
     before(() => {
       component = mountTestRender(
         <ResultsList results={[bib]} />, {
-          store: mockStore,
-          context,
-          childContextTypes,
-        }).find('ResultsList');
+        store: mockStore,
+        context,
+        childContextTypes,
+      }).find('ResultsList');
     });
 
     it('should have a total items description', () => {
       const yearPublished = component.find('.nypl-results-info');
       expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('1 item');
+      expect(yearPublished.text()).to.equal('1 Item');
     });
 
     it('should have one table', () => {
@@ -246,7 +246,7 @@ describe('ResultsList', () => {
       before(() => {
         component = mount(
           <ResultsList results={resultsBibs} />,
-          { context: { router: { createHref: () => {}, push: () => {}, replace: () => {} } } },
+          { context: { router: { createHref: () => { }, push: () => { }, replace: () => { } } } },
         );
         mock = new MockAdapter(axios);
         mock
@@ -267,7 +267,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: { createHref: () => { }, push: () => { } } } },
       );
       mock = new MockAdapter(axios);
       mock
@@ -359,7 +359,7 @@ describe('ResultsList', () => {
     before(() => {
       component = mount(
         <ResultsList results={resultsBibs} />,
-        { context: { router: { createHref: () => {}, push: () => {} } } },
+        { context: { router: { createHref: () => { }, push: () => { } } } },
       );
       mock = new MockAdapter(axios);
       mock
@@ -386,10 +386,10 @@ describe('ResultsList', () => {
       before(() => {
         component = mountTestRender(
           <ResultsList results={resultsBibs} />, {
-            store: mockStore,
-            context,
-            childContextTypes,
-          }).find('ResultsList');
+          store: mockStore,
+          context,
+          childContextTypes,
+        }).find('ResultsList');
       });
 
       it('should not have any components with .drbb-integration class', () => {
@@ -405,10 +405,10 @@ describe('ResultsList', () => {
         });
         component = mountTestRender(
           <ResultsList results={resultsBibs} />, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       it('should have components with .drbb-integration class', () => {
@@ -433,10 +433,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[electronicAndPhysicalItemsBib]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     after(() => {
@@ -455,10 +455,10 @@ describe('ResultsList', () => {
     it('should only count physical items in description', () => {
       const info = component.find('.nypl-results-info')
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('2 items')
+      expect(info.at(0).text()).to.equal('1 Item')
     })
 
-    it('should not display item table link for < 4 items', () => {
+    it('should not display item table link for < 4 Items', () => {
       const physicalItemsLink = component.find("#physical-items-link")
       expect(physicalItemsLink.length).to.equal(0)
     })
@@ -476,10 +476,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[bibs[2]]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     it('should display link to item table in case > 3 items', () => {
@@ -506,10 +506,10 @@ describe('ResultsList', () => {
       });
       component = mountTestRender(
         <ResultsList results={[electronicItemsBib]} />, {
-          store: mockDrbFeatureStore,
-          context,
-          childContextTypes,
-        });
+        store: mockDrbFeatureStore,
+        context,
+        childContextTypes,
+      });
     });
 
     after(() => {
@@ -519,7 +519,7 @@ describe('ResultsList', () => {
     it('should announce resources in case no physical items', () => {
       const info = component.find('.nypl-results-info')
       expect(info.length).to.equal(1);
-      expect(info.at(0).text()).to.equal('1 resource')
+      expect(info.at(0).text()).to.equal('1 Resource')
     })
   });
 
@@ -536,11 +536,11 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords"/>, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          <ResultsList results={[bibs[2]]} searchKeywords="mock_keywords" />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       after(() => {
@@ -572,11 +572,11 @@ describe('ResultsList', () => {
         });
 
         component = mountTestRender(
-          <ResultsList results={[]} searchKeywords="mock_keywords"/>, {
-            store: mockDrbFeatureStore,
-            context,
-            childContextTypes,
-          });
+          <ResultsList results={[]} searchKeywords="mock_keywords" />, {
+          store: mockDrbFeatureStore,
+          context,
+          childContextTypes,
+        });
       });
 
       after(() => {
