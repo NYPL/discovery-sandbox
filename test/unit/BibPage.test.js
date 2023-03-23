@@ -167,7 +167,7 @@ describe('BibPage', () => {
 
     let component;
     before(() => {
-      const bib = { ...bibs[0], electronicResources: [{ url: 'thebomb.com', label: 'a link' }], numElectronicResources: 1, ...annotatedMarc, numItemsTotal: 0 };
+      const bib = { ...bibs[0], electronicResources: [{ url: 'thebomb.com', label: 'a link' }], numElectronicResources: 1, ...annotatedMarc, numItemsTotal: 0, numItems: 0 };
       bib.items = [];
       component = mountTestRender(
         <BibPage
@@ -383,7 +383,7 @@ describe('BibPage', () => {
       });
     })
     describe('0 item, electronic resources', () => {
-      const oneItemYesER = { print: true, ...bib, electronicResources, items: [] }
+      const oneItemYesER = { print: true, ...bib, electronicResources, items: [], numItems: 0, numItemsTotal: 0 }
       before(() => {
         component = mountTestRender(
           <BibPage
