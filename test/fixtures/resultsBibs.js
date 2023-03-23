@@ -26,8 +26,6 @@ const resultsBibs = [
       titleDisplay: ['Hamlet without Hamlet / Margreta De Grazia.'],
       uri: 'b17692265',
       numItems: 2,
-      numItemsTotal: 4,
-      numElectronicResources: 0,
       numAvailable: 0,
       uris: [
         'b17692265',
@@ -110,8 +108,6 @@ const resultsBibs = [
       titleDisplay: ['Hamlet without Hamlet / Margreta De Grazia.'],
       uri: 'b17678038',
       numItems: 2,
-      numItemsTotal: 1,
-      numElectronicResources: 0,
       numAvailable: 0,
       uris: [
         'b17692265',

@@ -3,55 +3,83 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
-import { isArray as _isArray } from 'underscore';
-
+import { isArray as _isArray, chunk as _chunk } from 'underscore';
 import appConfig from '../../data/appConfig';
 import {
   bibPageItemsListLimit as itemsListPageLimit,
+  itemFilters,
 } from '../../data/constants';
 import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
-import ItemFilters from '../ItemFilters/ItemFilters';
+import ItemFilters from './ItemFilters';
 import ItemTable from './ItemTable';
 import LibraryItem from '../../utils/item'
+import { filterItems } from '../../utils/itemsContainer'
 
 class ItemsContainer extends React.Component {
   constructor(props, context) {
     super(props, context);
 
     this.state = {
+      showAll: false,
       js: false,
-      page: parseInt(props.itemPage, 10) || 1,
+      page: parseInt(this.props.itemPage.substring(10), 10) || 1,
     };
     this.query = context.router.location.query;
+    this.hasFilter = Object.keys(this.query).some((param) =>
+      itemFilters.map((filter) => filter.type).includes(param),
+    );
+
+    // NOTE: filteredItems: Setting 1
+    this.filteredItems =
+      this.props.bib && this.props.bib.done
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
+        : this.props.items || [];
 
     this.updatePage = this.updatePage.bind(this);
     this.showAll = this.showAll.bind(this);
   }
 
   componentDidMount() {
+    // Mostly things we want to do on the client-side only:
+    const items = this.filteredItems;
+    let chunkedItems = [];
+    let noItemPage = false;
+
+    if (items && items.length > itemsListPageLimit) {
+      chunkedItems = _chunk(items, itemsListPageLimit);
+    }
+
+    // If the `itemPage` URL query is more than the number of pages, then
+    // go back to page 1 in the state and remove the query from the URL.
+    if (this.state.page > chunkedItems.length) {
+      noItemPage = true;
+    }
+
     this.setState({
       js: true,
+      page: noItemPage ? 1 : this.state.page,
     });
   }
 
   /*
-   * getTable(items, shortenItems,)
+   * getTable(items, shortenItems, showAll)
    * @description Display an HTML table with item data.
    * @param {array} items The array of items.
    * @param {bool} shortenItems Whether the array needs to be cut off or not.
+   * @param {bool} showAll Whether all items should be shown on the client side.
    */
-  getTable(items, shortenItems = false) {
+  getTable(items, shortenItems = false, showAll) {
     /*
      * If there are more items than the page limit AND
      * we need to shorten it to the page limit AND
      * not show all
      */
-    const { bibId, holdings, searchKeywords, showAll } = this.props;
     const itemsToDisplay =
       items && shortenItems && !showAll
         ? items.slice(0, itemsListPageLimit)
         : items;
+    const bibId = this.props.bibId;
 
     return itemsToDisplay &&
       _isArray(itemsToDisplay) &&
@@ -60,8 +88,8 @@ class ItemsContainer extends React.Component {
         items={itemsToDisplay}
         bibId={bibId}
         id="bib-item-table"
-        searchKeywords={searchKeywords}
-        holdings={holdings}
+        searchKeywords={this.props.searchKeywords}
+          holdings={this.props.holdings}
       />
     ) : null;
   }
@@ -79,7 +107,7 @@ class ItemsContainer extends React.Component {
       pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
       query: {
         ...this.query,
-        item_page: page,
+        itemPage: page,
       },
     });
   }
@@ -90,65 +118,84 @@ class ItemsContainer extends React.Component {
    */
   showAll() {
     trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
-    if (this.query && this.query.item_page) {
-      delete this.query.item_page;
-    }
-    this.context.router.push({
-      pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
-      query: this.query,
-      hash: "#view-all-items"
-    });
+    this.setState({ showAll: true });
   }
 
   render() {
-    const {
-      bibId,
-      items,
-      itemsAggregations,
-      numItemsMatched,
-      fieldToOptionsMap,
-      showAll,
-      finishedLoadingItems,
-    } = this.props;
+    // NOTE: filteredItems: Setting 2
+    this.filteredItems =
+      this.props.bib && this.props.bib.done
+      ? filterItems(this.props.items, this.query, this.hasFilter) || []
+        : this.props.items || [];
+    const bibId = this.props.bibId;
+    const bibDone = this.props.bib && this.props.bib.done;
+    const { items } = this.props;
+    if (!items) return null;
     const shortenItems = !this.props.shortenItems;
-    let itemsToDisplay = [...items];
     let pagination = null;
 
+    let itemsToDisplay = this.filteredItems;
     if (
       this.state.js &&
-      numItemsMatched > itemsListPageLimit &&
-      !showAll
+      itemsToDisplay &&
+      itemsToDisplay.length > itemsListPageLimit &&
+      !this.state.showAll
     ) {
       pagination = (
         <Pagination
-          total={numItemsMatched}
+          total={itemsToDisplay.length}
           perPage={itemsListPageLimit}
           page={this.state.page}
           updatePage={this.updatePage}
-          to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?item_page=` }}
+          to={{ pathname: `${appConfig.baseUrl}/bib/${bibId}?itemPage=` }}
           ariaControls="bib-item-table"
         />
       );
+
+      itemsToDisplay = _chunk(items, itemsListPageLimit)[this.state.page - 1];
     }
-    const itemTable = this.getTable(itemsToDisplay, shortenItems);
+    const itemTable = this.getTable(
+      itemsToDisplay,
+      shortenItems,
+      this.state.showAll,
+    );
+    const numItemsEstimate =
+      this.props.bib.numItems + (this.props.bib.checkInItems || []).length;
+    const itemLoadingMessage = (
+      <div className="item-filter-info">
+        <h3>
+          <br />
+          About {`${numItemsEstimate}`} Item
+          {numItemsEstimate !== 1 ? 's. ' : '. '}
+          <div className="items-loading">
+            Still Loading More items
+            <span className="dot1">.</span>
+            <span className="dot2">.</span>
+            <span className="dot3">.</span>
+          </div>
+        </h3>
+      </div>
+    );
 
     return (
       <>
         <Heading level="three">Items in the Library & Off-site</Heading>
         <div className="nypl-results-item">
-          <ItemFilters
-            displayDateFilter={this.props.displayDateFilter}
-            fieldToOptionsMap={fieldToOptionsMap}
-            itemsAggregations={itemsAggregations}
-            numItemsMatched={numItemsMatched}
-            showAll={showAll}
-            finishedLoadingItems={finishedLoadingItems}
-          />
+          {bibDone ? (
+            <ItemFilters
+              items={items}
+              hasFilterApplied={this.hasFilter}
+              query={this.query}
+              numOfFilteredItems={this.filteredItems.length}
+            />
+          ) : (
+            itemLoadingMessage
+          )}
           {itemTable}
           {!!(
             shortenItems &&
-            numItemsMatched > itemsListPageLimit &&
-            !showAll
+            this.filteredItems.length > itemsListPageLimit &&
+            !this.state.showAll
           ) && (
             <div className="view-all-items-container">
               {this.state.js ? (
@@ -183,18 +230,12 @@ class ItemsContainer extends React.Component {
 }
 
 ItemsContainer.propTypes = {
-  bibId: PropTypes.string,
-  displayDateFilter: PropTypes.bool,
-  fieldToOptionsMap: PropTypes.object,
-  holdings: PropTypes.array,
-  itemPage: PropTypes.string,
   items: PropTypes.array,
-  itemsAggregations: PropTypes.array,
-  numItemsMatched: PropTypes.number,
-  searchKeywords: PropTypes.string,
+  itemPage: PropTypes.string,
+  bibId: PropTypes.string,
   shortenItems: PropTypes.bool,
-  showAll: PropTypes.bool,
-  finishedLoadingItems: PropTypes.bool,
+  searchKeywords: PropTypes.string,
+  holdings: PropTypes.array,
 };
 
 ItemsContainer.defaultProps = {
@@ -208,8 +249,8 @@ ItemsContainer.contextTypes = {
 };
 
 const mapStateToProps = (state) => {
-  const items = LibraryItem.getItems(state.bib);
-  return { items }
+  const items = (state.bib.checkInItems || []).concat(LibraryItem.getItems(state.bib))
+  return { bib: state.bib, items }
 };
 
 export default {

@@ -93,7 +93,6 @@ export class Application extends React.Component {
               />
               <DataLoader
                 location={this.context.router.location}
-                query={this.context.router.location.query}
                 key={JSON.stringify(dataLocation)}
               >
                 {React.cloneElement(this.props.children)}

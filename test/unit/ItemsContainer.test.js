@@ -2,14 +2,17 @@
 /* eslint-env mocha */
 import React from 'react';
 import { expect } from 'chai';
-import { mount, shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Provider } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import itemsContainerModule from './../../src/app/components/Item/ItemsContainer';
 import LibraryItem from './../../src/app/utils/item';
 import { bibPageItemsListLimit as itemsListPageLimit } from './../../src/app/data/constants';
-import { itemsAggregations } from '../fixtures/itemFilterOptions';
+import { makeTestStore, mountTestRender } from '../helpers/store';
 
 const ItemsContainer = itemsContainerModule.unwrappedItemsContainer;
+const WrappedItemsContainer = itemsContainerModule.ItemsContainer
 const items = [
   {
     accessMessage: {
@@ -96,24 +99,28 @@ const context = {
 };
 
 const testBib = {
+  done: true,
   numItems: 0,
 };
 describe('ItemsContainer', () => {
+  describe('Default rendering', () => {
+    it('should return null with no props passed', () => {
+      const component = shallow(<ItemsContainer bib={testBib} />, {
+        disableLifecycleMethods: true,
+        context,
+      });
+      expect(component.type()).to.equal(null);
+    });
+  });
+
   describe('Basic rendering', () => {
     let component;
 
     before(() => {
-      component = shallow(
-        <ItemsContainer
-          items={items}
-          bib={testBib}
-          itemsAggregations={itemsAggregations}
-        />,
-        {
-          disableLifecycleMethods: true,
-          context,
-        }
-      );
+      component = shallow(<ItemsContainer items={items} bib={testBib} />, {
+        disableLifecycleMethods: true,
+        context,
+      });
     });
 
     it('should have its "js" state set to false by default', () => {
@@ -137,13 +144,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = mount(
-        <ItemsContainer
-          items={longListItems}
-          bib={testBib}
-          numItemsMatched={longListItems.length}
-        />,
-        { context });
+      component = shallow(<ItemsContainer items={longListItems} bib={testBib} />, { context });
     });
 
     it('should render an ItemTable component', () => {
@@ -163,15 +164,7 @@ describe('ItemsContainer', () => {
     let component;
 
     before(() => {
-      component = shallow(
-        <ItemsContainer
-          items={longListItems}
-          shortenItems={false}
-          bib={testBib}
-          numItemsMatched={longListItems.length}
-        />,
-        { context }
-      );
+      component = shallow(<ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />, { context });
     });
 
     it('should render a "View All Items" link', () => {
@@ -200,62 +193,87 @@ describe('ItemsContainer', () => {
 
     before(() => {
       component = mount(
-        <ItemsContainer
-          items={longListItems}
-          shortenItems={false}
-          bib={testBib}
-          numItemsMatched={longListItems.length}
-        />,
+        <ItemsContainer items={longListItems} shortenItems={false} bib={testBib} />,
         { context },
       );
     });
 
-    it('should have "js" state equal to true after the component mounts', () => {
-      expect(component.state('js')).to.equal(true);
+    it('should have showAll state equal to false', () => {
+      expect(component.state('showAll')).to.equal(false);
+    });
+
+    it('should have showAll state equal to true when the show all link is clicked', () => {
+      const allItemsLink = component.find('.view-all-items-container').find('button');
+
+      expect(component.state('showAll')).to.equal(false);
+      allItemsLink.simulate('click');
+      expect(component.state('showAll')).to.equal(true);
+    });
+
+    it('should have "js" state equal to false', () => {
+      expect(component.state('showAll')).to.equal(true);
     });
 
     it('should have "page" state equal to 1 by default', () => {
       expect(component.state('page')).to.equal(1);
     });
 
+    it('should have "showAll" state equal to true when the showAll function is invoked', () => {
+      // The component's 'showAll' state has been updated so here we are reverting it back:
+      component.setState({ showAll: false });
+
+      expect(component.state('showAll')).to.equal(false);
+      component.instance().showAll();
+      expect(component.state('showAll')).to.equal(true);
+    });
+
     it('should have "page" state updated when the updatePage function is invoked', () => {
       expect(component.state('page')).to.equal(1);
       component.instance().updatePage(3);
       expect(component.state('page')).to.equal(3);
-
-      // Reset back to the first page.
-      component.instance().updatePage(1);
     });
   });
 
-  describe('ShowAll feature', () => {
-    it('should not display the "view all items" link when showAll is true', () => {
-      const component = shallow(
-        <ItemsContainer
-          items={longListItems}
-          shortenItems={false}
-          bib={testBib}
-          numItemsMatched={longListItems.length}
-          showAll={true}
-        />,
+  describe('High page value', () => {
+    let component;
+
+    before(() => {
+      component = shallow(
+        <ItemsContainer items={longListItems} shortenItems={false} page="4" bib={testBib} />,
         { context },
       );
-      expect(component.find('.view-all-items-container').length).to.equal(0);
     });
 
-    it('should display the "view all items" link when showAll is false', () => {
-      const component = shallow(
-        <ItemsContainer
-          items={longListItems}
-          shortenItems={false}
-          bib={testBib}
-          // Mocking that we have more items to display.
-          numItemsMatched={100}
-          showAll={false}
-        />,
-        { context },
-      );
-      expect(component.find('.view-all-items-container').length).to.equal(1);
+    it('should have "page" state updated to 1 since page 4 should not exist with the ' +
+      'small amount of items passed', () => {
+      expect(component.state('page')).to.equal(1);
+    });
+  });
+
+  describe('Breaking up the items passed into a chunked array', () => {
+    let component
+    const store = makeTestStore({
+      bib: {
+        done: true,
+        items: longListItems
+      }
+    })
+    before(() => {
+      component = mountTestRender(
+        <WrappedItemsContainer />
+        , { store, childContextTypes: { router: PropTypes.object } });
+    })
+    after(() => {
+      component.unmount()
+    })
+    it(`should have ${itemsListPageLimit} on the first page of the item table and ${longListItems.length - itemsListPageLimit} on the second`, () => {
+      const container = component.find('ItemsContainer').instance()
+      let items = component.find('ItemTableRow')
+      expect(items.length).to.equal(itemsListPageLimit)
+      container.updatePage(2, 'Next')
+      component.setProps()
+      items = component.find('ItemTableRow')
+      expect(items.length).to.equal(longListItems.length - itemsListPageLimit)
     });
   });
 
@@ -263,7 +281,7 @@ describe('ItemsContainer', () => {
     let component;
     before(() => {
       component = shallow(
-        <ItemsContainer items={twentyItems} shortenItems={false} itemPage="4" bib={testBib} />,
+        <ItemsContainer items={twentyItems} shortenItems={false} page="4" bib={testBib} />,
         { context },
       );
     });

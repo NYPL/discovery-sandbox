@@ -247,11 +247,10 @@ function LibraryItem() {
     );
     const materialType =
       bib && bib.materialType && bib.materialType[0] ? bib.materialType[0] : {};
-    const materialTypePrefLabel = materialType.prefLabel || ''
     const format =
-      item.formatLiteral && item.formatLiteral.length ?
-        item.formatLiteral[0]
-        : materialTypePrefLabel;
+      bib && bib.holdings && bib.holdings.format
+        ? bib.holdings.format
+        : materialType.prefLabel;
 
     if (availability === 'available') {
       // For all items that we want to send to the Hold Request Form.
@@ -272,7 +271,6 @@ function LibraryItem() {
       electronicResources,
       location: holdingLocation.prefLabel,
       locationUrl: holdingLocation.url,
-      branchEndpoint: holdingLocation.branchEndpoint,
       holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,
@@ -388,18 +386,7 @@ function LibraryItem() {
 
     // this is a physical resource
     if (item.holdingLocation && item.holdingLocation.length) {
-      const prefLabel = item.holdingLocation[0].prefLabel.replace(/SASB/, 'Schwarzman')
-      const locationUrlEndpoint = (location) => {
-        const loc = location.split(' ')[0]
-        const urls = {
-          'Schwarzman': 'schwarzman',
-          'Performing': 'lpa',
-          'Schomburg': 'schomburg'
-        }
-        return urls[loc]
-      }
       location = item.holdingLocation[0];
-      location.branchEndpoint = locationUrlEndpoint(prefLabel)
     }
 
     return location;

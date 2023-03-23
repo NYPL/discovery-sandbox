@@ -34,9 +34,12 @@ describe('bibDetailsUtils', () => {
 
     it('should have a link with correct information', () => {
       const dsLink = item.props.children[0];
+      // The first child is a react-router Link.
+      const link = dsLink.props.children;
 
-      expect(dsLink.props.href).to.equal('ItemContent');
-      expect(dsLink.props.children).to.equal('ItemLabel');
+      expect(link.props.to).to.equal('ItemContent');
+      expect(link.props.title).to.equal(JSON.stringify(value.source, null, 2));
+      expect(link.props.children).to.equal('ItemLabel');
     });
 
     it('should accept index param', () => {
@@ -112,18 +115,20 @@ describe('bibDetailsUtils', () => {
       const mockOutput = annotatedMarcDetails(mockBib);
       expect(mockOutput.length).to.equal(2);
       expect(mockOutput[0].term).to.equal('Field1');
+      // The react-router `Link` is wrapped by the DSLink component,
+      // so more digging must be done.
       expect(
-        mockOutput[0].definition[0].props.children[0].props.children,
+        mockOutput[0].definition[0].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel1');
       expect(
-        mockOutput[0].definition[1].props.children[0].props.children,
+        mockOutput[0].definition[1].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel2');
       expect(mockOutput[1].term).to.equal('Field2');
       expect(
-        mockOutput[1].definition[0].props.children[0].props.children,
+        mockOutput[1].definition[0].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel3');
       expect(
-        mockOutput[1].definition[1].props.children[0].props.children,
+        mockOutput[1].definition[1].props.children[0].props.children.props.children,
       ).to.equal('ItemLabel4');
     });
   });
@@ -279,16 +284,16 @@ describe('bibDetailsUtils', () => {
 
   describe('interleave', () => {
     it('should interleave two arrays', () => {
-      expect(interleaveParallel([1, 2, 3], [4, 5, 6])).to.eql([1, 4, 2, 5, 3, 6])
+      expect(interleaveParallel([1,2,3], [4,5,6])).to.eql([1,4,2,5,3,6])
     })
 
     it('should drop falsey values', () => {
-      expect(interleaveParallel([1, 2, null, 3, 8], [4, 5, 6, null, 7])).to.eql([1, 4, 2, 5, 6, 3, 8, 7])
+      expect(interleaveParallel([1,2,null,3,8], [4,5,6,null,7])).to.eql([1,4,2,5,6,3,8,7])
     })
 
     it('should include excess values from second argument at the end', () => {
-      expect(interleaveParallel([1], [2, 3, 4])).to.eql([1, 2, 3, 4])
-      expect(interleaveParallel([], [1, 2, 3])).to.eql([1, 2, 3])
+      expect(interleaveParallel([1], [2,3,4])).to.eql([1,2,3,4])
+      expect(interleaveParallel([], [1,2,3])).to.eql([1,2,3])
       expect(interleaveParallel([], [])).to.eql([])
     })
 
@@ -296,14 +301,14 @@ describe('bibDetailsUtils', () => {
       expect(
         interleaveParallel(
           ['parallel1', 'parallel2'],
-          [{ noteType: 'type1', '@type': '@type1', prefLabel: 'label1' }, { noteType: 'type2', '@type': '@type2', prefLabel: 'label2' }]
+          [{ noteType: 'type1', '@type': '@type1', prefLabel: 'label1'}, { noteType: 'type2', '@type': '@type2', prefLabel: 'label2'}]
         )
       ).to.eql(
         [
-          { noteType: 'type1', '@type': '@type1', prefLabel: 'parallel1' },
-          { noteType: 'type1', '@type': '@type1', prefLabel: 'label1' },
-          { noteType: 'type2', '@type': '@type2', prefLabel: 'parallel2' },
-          { noteType: 'type2', '@type': '@type2', prefLabel: 'label2' },
+          { noteType: 'type1', '@type': '@type1', prefLabel: 'parallel1'},
+          { noteType: 'type1', '@type': '@type1', prefLabel: 'label1'},
+          { noteType: 'type2', '@type': '@type2', prefLabel: 'parallel2'},
+          { noteType: 'type2', '@type': '@type2', prefLabel: 'label2'},
         ]
       )
     })

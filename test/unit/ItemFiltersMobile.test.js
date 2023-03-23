@@ -4,10 +4,7 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import item from '../fixtures/libraryItems';
-import ItemFiltersMobile from '../../src/app/components/ItemFilters/ItemFiltersMobile';
-import { itemsAggregations } from '../fixtures/itemFilterOptions';
-import { buildFieldToOptionsMap, buildReducedItemsAggregations } from '../../src/app/components/ItemFilters/itemFilterUtils';
+import ItemFiltersMobile from '../../src/app/components/Item/ItemFiltersMobile';
 
 const context = {
   router: {
@@ -17,40 +14,20 @@ const context = {
   },
 };
 
+const formatOptions = {
+  format: [
+    {
+      id: 'PRINT',
+      label: 'PRINT',
+    },
+    {
+      id: 'Text',
+      label: 'Text',
+    },
+  ],
+};
+
 describe('ItemFiltersMobile', () => {
-  const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
-  const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
-  describe('DateSearchBar', () => {
-    const items = [
-      item.full
-    ];
-    let component
-    it('renders date filter', () => {
-      component = mount(
-        <ItemFiltersMobile
-          fieldToOptionsMap={fieldToOptionsMap}
-          displayDateFilter={true}
-          items={items}
-          itemsAggregations={reducedItemsAggregations}
-        />,
-        { context }
-      );
-      const displayDateFilter = component.html().includes('Search by year')
-      expect(displayDateFilter)
-    })
-    it('doesn\'t render date filter', () => {
-      component = mount(
-        <ItemFiltersMobile
-          fieldToOptionsMap={fieldToOptionsMap}
-          displayDateFilter={false}
-          items
-          itemsAggregations={reducedItemsAggregations}
-        />,
-        { context });
-      const DateSearchBar = component.find('DateSearchBar');
-      expect(DateSearchBar).to.be.empty
-    })
-  })
   describe('without props', () => {
     it('should not render without props', () => {
       const component = shallow(<ItemFiltersMobile />, { context });
@@ -65,18 +42,17 @@ describe('ItemFiltersMobile', () => {
 
     beforeEach(() => {
       initialFilters = {
-        item_format: [],
-        item_status: [],
-        item_location: [],
+        format: [],
+        status: [],
+        location: [],
       };
       component = mount(
         <ItemFiltersMobile
-          fieldToOptionsMap={fieldToOptionsMap}
-          itemsAggregations={reducedItemsAggregations}
-          setSelectedFields={() => { }}
+          options={formatOptions}
+          setSelectedFilters={() => { }}
           submitFilterSelections={() => { }}
           initialFilters={initialFilters}
-          selectedFields={initialFilters}
+          selectedFilters={initialFilters}
         />,
       );
       modalTrigger = component.findWhere(node => {
@@ -98,7 +74,7 @@ describe('ItemFiltersMobile', () => {
     it('should render `ItemFilter` for option types passed', () => {
       modalTrigger.simulate('click')
       const itemFilters = component.find('.item-filter')
-      expect(itemFilters.hostNodes().length).to.equal(3);
+      expect(itemFilters.hostNodes().length).to.equal(1);
     });
 
     describe('"Show Results" button', () => {

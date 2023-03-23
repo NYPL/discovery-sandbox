@@ -9,7 +9,7 @@ import {
 // The sole responsibility of the DataLoader is to trigger a data reload whenever
 // the location changes.
 export class DataLoader extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     const { location, dispatch, lastLoaded } = this.props;
     const {
       search,
@@ -17,15 +17,15 @@ export class DataLoader extends React.Component {
     } = location;
     const nextPage = `${pathname}${search}`;
     const isItemFiltering = pathname === lastLoaded.split('?')[0] && pathname.includes('/bib/');
-    if (lastLoaded === nextPage) {
+    if (lastLoaded === nextPage || isItemFiltering) {
       dispatch(updateLoadingStatus(false));
-      return null;
+      return;
     }
 
     dataLoaderUtil.loadDataForRoutes(location, dispatch);
   }
 
-  render () {
+  render() {
     return (
       <React.Fragment>
         {this.props.children}

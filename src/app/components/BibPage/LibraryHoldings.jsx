@@ -31,10 +31,10 @@ const LibraryHoldings = ({ holdings }) => {
   return (
     <React.Fragment>
       <Heading level="three">Holdings</Heading>
-      {holdings.map((holding, index) => (
+      {holdings.map((holding) => (
         <DefinitionList
           data={htmlDefinitions(holding)}
-          key={index}
+          key={holding.holdingDefinition}
         />
       ))}
     </React.Fragment>

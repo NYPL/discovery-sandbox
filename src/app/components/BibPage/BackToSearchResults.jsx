@@ -4,12 +4,12 @@ import { Link } from 'react-router';
 
 const BackToSearchResults = ({ result, bibId }) => {
   return (
-    result && result.fromUrl &&
-    result.bibId === bibId ? (
+    result.fromUrl &&
+    result.bibId === bibId && (
       <DSLink>
         <Link to={result.fromUrl}>Back to search results</Link>
       </DSLink>
-    ) : null
+    )
   );
 };
 

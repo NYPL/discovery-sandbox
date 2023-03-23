@@ -323,8 +323,8 @@ describe('BibDetails', () => {
     ];
 
     it('should handle rtl text in a single self-linkable object value', () => {
-      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9', url: 'thebomb.com' }] }
-      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9', url: 'thebomb.com' }] }
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9' }]}
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9' }]}
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {
@@ -348,8 +348,8 @@ describe('BibDetails', () => {
     })
 
     it('should handle rtl text in a list of self-linkable object values', () => {
-      const mockBibRtl = { field3: [{ url: 'thebomb.com', '@id': 'id', prefLabel: '\u200F\u00E9' }, { url: 'thebomb.com', '@id': 'id', prefLabel: '\u200F\u00E9' }] }
-      const mockBibLtr = { field3: [{ url: 'thebomb.com', '@id': 'id', prefLabel: '\u00E9\u00E9' }, { url: 'thebomb.com', '@id': 'id', prefLabel: '\u00E9\u00E9' }] }
+      const mockBibRtl = { field3: [{ '@id': 'id', prefLabel: '\u200F\u00E9'}, { '@id': 'id', prefLabel: '\u200F\u00E9'}] }
+      const mockBibLtr = { field3: [{ '@id': 'id', prefLabel: '\u00E9\u00E9'}, { '@id': 'id', prefLabel: '\u00E9\u00E9'}] }
       const rtlComponent = mount(
         <RouterProvider value={{ push: () => {} }}>
           {

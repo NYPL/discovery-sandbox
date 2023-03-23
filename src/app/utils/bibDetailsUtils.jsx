@@ -1,5 +1,6 @@
 import { Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
+import { Link } from 'react-router';
 
 import LibraryItem from './item';
 
@@ -57,8 +58,10 @@ const allFields = {
 
 const definitionItem = (value, index = 0) => {
   const link = (
-    <DSLink href={value.content}>
-      {value.label}
+    <DSLink>
+      <Link to={value.content} title={JSON.stringify(value.source, null, 2)}>
+        {value.label}
+      </Link>
     </DSLink>
   );
 
@@ -221,7 +224,7 @@ const constructSubjectHeadingsArray = (url = '') => {
  * @param {string} string
  * @return  {boolean}
  */
-const isRtl = (string) => {
+const isRtl  = (string) => {
   if (typeof string !== 'string') { return false }
   return string.substring(0, 1) === '\u200F'
 }
@@ -246,11 +249,11 @@ const stringDirection = (string, useParallels) => {
  * @return {object}
  */
 
-const combineMatching = (el1, el2) => (
-  (el2 && el2.noteType) ?
-    { noteType: el2.noteType, '@type': el2['@type'], prefLabel: el1 } :
+ const combineMatching = (el1, el2) => (
+   (el2 && el2.noteType) ?
+    { noteType: el2.noteType, '@type' : el2['@type'], prefLabel: el1 } :
     el1
-);
+  );
 
 
 /**
@@ -268,7 +271,7 @@ const combineMatching = (el1, el2) => (
 const interleaveParallel = (arr1, arr2) => arr2.reduce(
   (acc, el, id) => {
     if (arr1[id]) { acc.push(combineMatching(arr1[id], el)) }
-    if (el) { acc.push(el) }
+    if(el) { acc.push(el) }
     return acc
   }, []
 )
@@ -289,7 +292,7 @@ const matchParallels = (bib, useParallels) => {
     const match = key.match(/parallel(.)(.*)/)
     const paralleledField = match && `${match[1].toLowerCase()}${match[2]}`
     const paralleledValues = paralleledField && bib[paralleledField]
-    return paralleledValues && { [paralleledField]: interleaveParallel(bib[key], paralleledValues) }
+    return paralleledValues && { [paralleledField] : interleaveParallel(bib[key], paralleledValues)}
   })
 
   return Object.assign({}, bib, ...parallelFieldMatches)
