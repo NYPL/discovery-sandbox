@@ -3,19 +3,8 @@ import { Text, Link, Button } from '@nypl/design-system-react-components';
 import { isEmpty as _isEmpty } from 'underscore';
 import { FeedbackBoxContext } from '../../context/FeedbackContext';
 
-const locationUrlEndpoint = (location) => {
-  const loc = location.split(' ')[0]
-  const urls = {
-    'Schwarzman': 'schwarzman',
-    'Performing': 'lpa',
-    'Schomburg': 'schomburg'
-  }
-  return urls[loc]
-}
-
-const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location }) => {
+const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeonUrl: aeonUrl, available, locationUrl: divisionUrl, dueDate, location, branchEndpoint }) => {
   let openFeedbackBox, setItemMetadata
-
   // conditional for testing 
   const feedback = useContext(FeedbackBoxContext)
   if (feedback) {
@@ -48,7 +37,7 @@ const InformationLinks = ({ bibId, callNumber, id, barcode, isRecap, computedAeo
         <Text className='availability-alert'>
           <span className='available-text'>Available </span>
           {'- Can be used on site. Please visit '}
-          <Link href={'https://www.nypl.org/locations/' + locationUrlEndpoint(location)}>{'New York Public Library - '}{locationShort}
+          <Link href={'https://www.nypl.org/locations/' + branchEndpoint}>{'New York Public Library - '}{locationShort}
           </Link>{' to submit a request in person.'}
         </Text>)
     }

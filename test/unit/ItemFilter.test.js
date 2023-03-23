@@ -4,10 +4,12 @@ import React from 'react';
 import { expect } from 'chai';
 import { shallow, mount } from 'enzyme';
 
-import ItemFilter from './../../src/app/components/Item/ItemFilter';
-import { locationFilters } from '../fixtures/itemFilterOptions';
+import ItemFilter from '../../src/app/components/ItemFilters/ItemFilter';
+import { itemsAggregations } from '../fixtures/itemFilterOptions';
+import { buildReducedItemsAggregations, buildFieldToOptionsMap } from '../../src/app/components/ItemFilters/itemFilterUtils';
 
 describe('ItemFilter', () => {
+  const locationItemFilter = itemsAggregations[0];
   describe('missing props', () => {
     let component;
     it('should not render without props', () => {
@@ -17,15 +19,24 @@ describe('ItemFilter', () => {
     it('should not render without `options`', () => {
       component = shallow(
         <ItemFilter
-          filter="category"
+          field="category"
         />,
       );
       expect(component.type()).to.equal(null);
     });
+    it('should not render with empty `options`', () => {
+      component = shallow(
+        <ItemFilter
+          field="category"
+          options={[]}
+        />,
+      );
+      expect(component.type()).to.equal(null);
+    })
     it('should not render without `filter`', () => {
       component = shallow(
         <ItemFilter
-          options={locationFilters}
+          options={locationItemFilter.values}
         />,
       );
       expect(component.type()).to.equal(null);
@@ -35,10 +46,13 @@ describe('ItemFilter', () => {
   describe('with `options` and `filter`', () => {
     let component;
     it('should render a `div` and a `button`', () => {
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
       component = mount(
         <ItemFilter
-          options={locationFilters}
-          filter="location"
+          fieldToOptionsMap={fieldToOptionsMap}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
         />);
       expect(component.find('div').length).to.equal(1);
       expect(component.find('button').length).to.equal(1);
@@ -48,10 +62,13 @@ describe('ItemFilter', () => {
   describe('with required props, open state', () => {
     let component;
     it('should render a fieldset, 3 buttons, 2nd two buttons disabled', () => {
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
       component = mount(
         <ItemFilter
-          options={locationFilters}
-          filter="location"
+          fieldToOptionsMap={fieldToOptionsMap}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
           isOpen
         />);
       expect(component.find('fieldset').length).to.equal(1);
@@ -61,33 +78,36 @@ describe('ItemFilter', () => {
     });
   });
 
-  describe('with `selectedFilters`', () => {
+  describe('with `selectedFields`', () => {
     /*
       Example of how to test state update when using
       `useState` and passing a function to manipulate the
       previous state
     */
-    it('clear button should remove selected filters for corresponding `filter`', () => {
-      let updatedFilters;
-      const selectedFilters = {
+    it('clear button should remove selected options for corresponding fields', () => {
+      const reducedItemAggregationsLocationsOnly = buildReducedItemsAggregations([locationItemFilter])
+      const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemAggregationsLocationsOnly)
+      let updatedFields
+      const selectedFields = {
         location: ['loc:maj03', 'offsite'],
         status: ['status:a'],
       };
       const component = mount(
         <ItemFilter
-          options={locationFilters}
           isOpen
-          selectedFilters={selectedFilters}
-          filter="location"
-          setSelectedFilters={(reactGeneratedFunc) => {
-            updatedFilters = reactGeneratedFunc(selectedFilters);
+          fieldToOptionsMap={fieldToOptionsMap}
+          selectedFields={selectedFields}
+          options={reducedItemAggregationsLocationsOnly[0].options}
+          field={reducedItemAggregationsLocationsOnly[0].field}
+          setSelectedFields={(reactGeneratedFunc) => {
+            updatedFields = reactGeneratedFunc(selectedFields)
           }}
         />);
       const clearButton = component.find('button').at(1);
       expect(clearButton.prop('disabled')).to.equal(undefined);
       expect(clearButton.text()).to.equal('Clear');
       clearButton.simulate('click');
-      expect(updatedFilters).to.deep.equal({ location: [], status: ['status:a'] });
+      expect(updatedFields).to.deep.equal({ location: [], status: ['status:a'] });
     });
   });
 });

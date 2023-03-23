@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import NyplApiClient from '@nypl/nypl-data-api-client';
 
-import Bib, { addCheckInItems } from './../../src/server/ApiRoutes/Bib';
+import Bib from './../../src/server/ApiRoutes/Bib';
 
 describe('Bib', () => {
   /* holding could lack location, as shown in second holding */
@@ -54,70 +54,6 @@ describe('Bib', () => {
     ],
   };
 
-  describe('addCheckInItems', () => {
-    it('should add correctly structured checkInItems', () => {
-      addCheckInItems(mockBib);
-      expect(mockBib.checkInItems).to.deep.equal([
-        {
-          accessMessage: {
-            '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
-          },
-          available: true,
-          callNumber: 'efgh',
-          format: 'Text',
-          holdingLocationCode: 'mm',
-          isSerial: true,
-          location: 'Mid-Manhattan',
-          locationUrl: undefined,
-          position: 3,
-          requestable: false,
-          status: {
-            prefLabel: 'available',
-          },
-          volume: '1001',
-        },
-        {
-          accessMessage: {
-            '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
-          },
-          available: true,
-          callNumber: 'ijkl',
-          format: 'AV',
-          isSerial: true,
-          location: '',
-          locationUrl: undefined,
-          holdingLocationCode: '',
-          position: 2,
-          requestable: false,
-          status: {
-            prefLabel: 'available',
-          },
-          volume: '1002',
-        },
-        {
-          accessMessage: {
-            '@id': 'accessMessage: 1',
-            prefLabel: 'Use in library',
-          },
-          available: true,
-          callNumber: 'abcd',
-          format: 'Text',
-          holdingLocationCode: 'mm',
-          isSerial: true,
-          location: 'Mid-Manhattan',
-          locationUrl: undefined,
-          position: 1,
-          requestable: false,
-          status: {
-            prefLabel: 'available',
-          },
-          volume: '1000',
-        },
-      ]);
-    });
-  });
   describe('addLocationUrls', () => {
     before(() => {
       stub(NyplApiClient.prototype, 'get').callsFake(() => Promise.resolve(
@@ -174,4 +110,25 @@ describe('Bib', () => {
       });
     });
   });
+  describe('nyplApiClientCall', () => {
+    let apiClientStub
+    before(() => {
+      apiClientStub = stub(NyplApiClient.prototype, 'get').returns({ bib: { id: '123' } })
+    });
+    after(() => {
+      apiClientStub.restore();
+    });
+    it('.annotated-marc', () => {
+      const query = 'b12345678.annotated-marc'
+      Bib.nyplApiClientCall(query)
+      expect(apiClientStub.calledWith(`/discovery/resources/${query}`))
+    })
+    it('regular bib call', () => {
+      const query = 'b12345678'
+      const itemFrom = 3
+      const itemFilterStr = 'items_location=loc:123'
+      Bib.nyplApiClientCall(query, itemFrom,)
+      expect(apiClientStub.calledWith(`/discovery/resources/${query}${itemFilterStr}&merge_checkin_card_items=true`))
+    })
+  })
 });
