@@ -64,7 +64,6 @@ export const BibPage = (
 
   const allElectronicLocatorsWithAeon = bib.electronicResources
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
-  console.log('bib: ', bib);
 
   const hasItems = (bib.numItemsTotal || bib.numItems) > 0
   const isOnlyElectronicResources = !hasItems && bib.electronicResources && bib.electronicResources.length > 0
