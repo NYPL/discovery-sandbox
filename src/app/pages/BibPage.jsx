@@ -61,11 +61,12 @@ export const BibPage = (
   const reducedItemsAggregations = buildReducedItemsAggregations(itemsAggregations)
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
+  const bibItemsLength = bib.items ? bib.items.length : 0;
 
   const allElectronicLocatorsWithAeon = bib.electronicResources
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
-  const isOnlyElectronicResources = bib.items.length === 0 && bib.electronicResources && bib.electronicResources.length > 0
-  const hasPhysicalItems = !isOnlyElectronicResources && bib.items.length > 0
+  const isOnlyElectronicResources = bibItemsLength === 0 && bib.electronicResources && bib.electronicResources.length > 0;
+  const hasPhysicalItems = !isOnlyElectronicResources;
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
