@@ -402,7 +402,7 @@ describe('BibPage', () => {
     })
 
     describe('No item, no electronic resources', () => {
-      const noItemsNoEr = { ...bib, items: [], electronicResources: [] }
+      const noItemsNoEr = { ...bib, items: [], electronicResources: [], numItems: 0 }
       before(() => {
         component = mountTestRender(
           <BibPage
