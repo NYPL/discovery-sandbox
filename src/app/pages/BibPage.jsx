@@ -65,8 +65,17 @@ export const BibPage = (
   const allElectronicLocatorsWithAeon = bib.electronicResources
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
 
-  const hasItems = (bib.numItemsTotal || bib.numItems) > 0
-  const isOnlyElectronicResources = !hasItems && bib.electronicResources && bib.electronicResources.length > 0
+  const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
+  let numPhysicalItems
+  if (bib.numItemsTotal !== undefined) {
+    numPhysicalItems = bib.numItemsTotal
+  } else if (hasElectronicResources) {
+    numPhysicalItems = bib.numItems - 1
+  } else {
+    numPhysicalItems = bib.numItems
+  }
+  const hasItems = numPhysicalItems > 0
+  const isOnlyElectronicResources = !hasItems && hasElectronicResources
   const hasPhysicalItems = !isOnlyElectronicResources && hasItems
 
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
