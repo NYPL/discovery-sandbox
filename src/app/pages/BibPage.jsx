@@ -64,8 +64,28 @@ export const BibPage = (
 
   const allElectronicLocatorsWithAeon = bib.electronicResources
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
-  const isOnlyElectronicResources = (!bib.items || bib.items.length === 0) && bib.electronicResources && bib.electronicResources.length > 0
-  const hasPhysicalItems = !isOnlyElectronicResources && bib.items && bib.items.length > 0
+
+  const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
+  let numPhysicalItems
+  // TODO: This is a temporary fix to handle records that may or may not have
+  // been recently indexed. When the API consistently serves bib.numItemsTotal,
+  // this can be simplified.
+  //
+  // Determine number of physical items:
+  // Newly indexed bibs have .numItemsTotal, which excludes electronic resource items:
+  if (bib.numItemsTotal !== undefined) {
+    numPhysicalItems = bib.numItemsTotal
+  } else if (hasElectronicResources) {
+    // Older bibs do not have .numItemsTotal, so we should use .numItems
+    // Decrement 1 when they have an e-resources item:
+    numPhysicalItems = bib.numItems - 1
+  } else {
+    numPhysicalItems = bib.numItems
+  }
+  const hasItems = numPhysicalItems > 0
+  const isOnlyElectronicResources = !hasItems && hasElectronicResources
+  const hasPhysicalItems = !isOnlyElectronicResources && hasItems
+
   // Related to removing MarcRecord because the webpack MarcRecord is not working. Sep/28/2017
   // const isNYPLReCAP = LibraryItem.isNYPLReCAP(bib['@id']);
   // const bNumber = bib && bib.idBnum ? bib.idBnum : '';
