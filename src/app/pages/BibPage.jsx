@@ -67,9 +67,17 @@ export const BibPage = (
 
   const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
   let numPhysicalItems
+  // TODO: This is a temporary fix to handle records that may or may not have
+  // been recently indexed. When the API consistently serves bib.numItemsTotal,
+  // this can be simplified.
+  //
+  // Determine number of physical items:
+  // Newly indexed bibs have .numItemsTotal, which excludes electronic resource items:
   if (bib.numItemsTotal !== undefined) {
     numPhysicalItems = bib.numItemsTotal
   } else if (hasElectronicResources) {
+    // Older bibs do not have .numItemsTotal, so we should use .numItems
+    // Decrement 1 when they have an e-resources item:
     numPhysicalItems = bib.numItems - 1
   } else {
     numPhysicalItems = bib.numItems
