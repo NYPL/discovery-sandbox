@@ -1,6 +1,6 @@
 import { SearchBar, Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -29,6 +29,11 @@ function Search (props) {
 
   const [selectField, setSelectField] = useState(field);
   const [keywords, setKeywords] = useState(searchKeywords);
+
+  useEffect(() => {
+    if (searchKeywords !== keywords) setKeywords(searchKeywords)
+    if (field !== selectField) setSelectField(field)
+  }, [searchKeywords, field])
 
   /**
    * onFieldChange(e)
@@ -96,12 +101,13 @@ function Search (props) {
       page: '1',
     });
 
-    updateSearchKeywords(searchKeywords);
-    updateField(field);
+    updateSearchKeywords(keywords);
+    updateField(selectField);
 
     router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
   console.log('keywords', keywords);
+  console.log('searchKeywords', searchKeywords)
   return (
     <>
       <SearchBar
