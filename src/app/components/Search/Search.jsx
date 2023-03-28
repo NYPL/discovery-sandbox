@@ -90,9 +90,9 @@ function Search (props) {
       clearContributor: true,
       clearSubject: true,
       clearTitle: true,
-      field,
+      field: selectField,
       selectedFilters: selectedFilters,
-      searchKeywords,
+      searchKeywords: keywords,
       page: '1',
     });
 
