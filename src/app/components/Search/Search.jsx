@@ -1,6 +1,6 @@
 import { SearchBar, Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
@@ -16,38 +16,27 @@ import {
 /**
  * The main container for the top Search section.
  */
-class Search extends React.Component {
-  constructor(props) {
-    super(props);
+function Search (props) {
+  const {
+    field,
+    searchKeywords,
+    selectedFilters,
+    createAPIQuery,
+    updateSearchKeywords,
+    updateField,
+    router
+  } = props;
 
-    this.state = {
-      field: this.props.field,
-      searchKeywords: this.props.searchKeywords,
-    };
-
-    this.inputChange = this.inputChange.bind(this);
-    this.submitSearchRequest = this.submitSearchRequest.bind(this);
-    this.triggerSubmit = this.triggerSubmit.bind(this);
-    this.onFieldChange = this.onFieldChange.bind(this);
-
-    // Build ref for the select element (aka search_scope) selector:
-    this.searchByFieldRef = null;
-    this.setSearchByFieldRef = (element) => {
-      this.searchByFieldRef = element;
-    };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    this.setState(nextProps);
-  }
+  const [selectField, setSelectField] = useState(field);
+  const [keywords, setKeywords] = useState(searchKeywords);
 
   /**
    * onFieldChange(e)
    * Listen to the select dropdown for field searching.
    */
-  onFieldChange(e) {
+  function onFieldChange(e) {
     const newFieldVal = e.target.value;
-    this.setState({ field: newFieldVal });
+    setSelectField(newFieldVal)
   }
 
   /**
@@ -57,9 +46,9 @@ class Search extends React.Component {
    *
    * @param {Event} event
    */
-  triggerSubmit(event) {
+  function triggerSubmit(event) {
     if (event && event.charCode === 13) {
-      this.submitSearchRequest(event);
+      submitSearchRequest(event);
     }
   }
 
@@ -71,92 +60,87 @@ class Search extends React.Component {
    * @param {Event Object} event - Passing event as the argument here
    * as FireFox doesn't accept event as a global variable.
    */
-  inputChange(event) {
-    this.setState({ searchKeywords: event.target.value });
+  function inputChange(event) {
+    setKeywords(event.target.value);
   }
 
   /**
    * submitSearchRequest()
    */
-  submitSearchRequest(e) {
+  function submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-    const {
-      field,
-    } = this.state;
 
-    const userSearchKeywords = this.state.searchKeywords.trim();
+    const userSearchKeywords = keywords.trim();
 
     // Track the submitted keyword search.
     trackDiscovery('Search', userSearchKeywords);
-    if (this.state.field) {
-      trackDiscovery('Search', `Field - ${this.state.field}`);
+    if (selectField) {
+      trackDiscovery('Search', `Field - ${selectField}`);
     }
 
     const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
-    if (field === 'subject') {
-      this.props.router.push(`${appConfig.baseUrl}/subject_headings?filter=${searchKeywords.charAt(0).toUpperCase() + searchKeywords.slice(1)}`);
+    if (selectField === 'subject') {
+      router.push(`${appConfig.baseUrl}/subject_headings?filter=${keywords.charAt(0).toUpperCase() + keywords.slice(1)}`);
       return;
     }
 
-    const apiQuery = this.props.createAPIQuery({
+    const apiQuery = createAPIQuery({
       clearContributor: true,
       clearSubject: true,
       clearTitle: true,
       field,
-      selectedFilters: this.props.selectedFilters,
+      selectedFilters: selectedFilters,
       searchKeywords,
       page: '1',
     });
 
-    this.props.updateSearchKeywords(searchKeywords);
-    this.props.updateField(field);
+    updateSearchKeywords(searchKeywords);
+    updateField(field);
 
-    this.props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
+    router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
-
-  render() {
-    return (
-      <>
-        <SearchBar
-          buttonOnClick={this.submitSearchRequest}
-          id="mainContent"
-          onSubmit={this.triggerSubmit}
-          className="content-primary"
-          method='POST'
-          action={`${appConfig.baseUrl}/search`}
-          labelText="SearchBar Label"
-          selectProps={{
-            labelText: 'Select a category',
-            name: 'search_scope',
-            optionsData: [
-              { text:"All fields", value: "all" },
-              { text:"Title", value: "title" },
-              { text:"Journal Title", value: "journal_title" },
-              { text:"Author/Contributor", value: "contributor" },
-              { text:"Standard Numbers", value: "standard_number" },
-              { text:"Subject", value: "subject" },
-            ],
-            onChange: this.onFieldChange,
-            value: this.state.field
-          }}
-          textInputProps={{
-            labelText: 'Search by keyword, title, journal title, or author/contributor',
-            name: 'q',
-            placeholder: 'Keyword, title, journal title, or author/contributor',
-            onChange: this.inputChange,
-            value: this.state.searchKeywords
-          }}
-        />
-        <div id="advanced-search-link-container">
-          <DSLink>
-            <Link to={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</Link>
-          </DSLink>
-        </div>
-      </>
-    );
-  }
+  console.log('keywords', keywords);
+  return (
+    <>
+      <SearchBar
+        buttonOnClick={submitSearchRequest}
+        id="mainContent"
+        onSubmit={triggerSubmit}
+        className="content-primary"
+        method='POST'
+        action={`${appConfig.baseUrl}/search`}
+        labelText="SearchBar Label"
+        selectProps={{
+          labelText: 'Select a category',
+          name: 'search_scope',
+          optionsData: [
+            { text:"All fields", value: "all" },
+            { text:"Title", value: "title" },
+            { text:"Journal Title", value: "journal_title" },
+            { text:"Author/Contributor", value: "contributor" },
+            { text:"Standard Numbers", value: "standard_number" },
+            { text:"Subject", value: "subject" },
+          ],
+          onChange: onFieldChange,
+          value: selectField
+        }}
+        textInputProps={{
+          labelText: 'Search by keyword, title, journal title, or author/contributor',
+          name: 'q',
+          placeholder: 'Keyword, title, journal title, or author/contributor',
+          onChange: inputChange,
+          value: keywords
+        }}
+      />
+      <div id="advanced-search-link-container">
+        <DSLink>
+          <Link to={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</Link>
+        </DSLink>
+      </div>
+    </>
+  );
 }
 
 Search.propTypes = {
