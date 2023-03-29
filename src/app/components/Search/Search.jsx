@@ -27,10 +27,12 @@ function Search (props) {
     router
   } = props;
 
+  // Set component level state based on props
   const [selectField, setSelectField] = useState(field);
   const [keywords, setKeywords] = useState(searchKeywords);
 
   useEffect(() => {
+    // Set component level state on prop changes
     if (searchKeywords !== keywords) setKeywords(searchKeywords)
     if (field !== selectField) setSelectField(field)
   }, [searchKeywords, field])
