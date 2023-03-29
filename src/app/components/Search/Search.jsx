@@ -131,8 +131,7 @@ function Search (props) {
         placeholder="Keyword, title, journal title, or author/contributor"
         onChange={inputChange}
         value={keywords}
-      >
-      </input>
+      />
     </div>
   )
 
