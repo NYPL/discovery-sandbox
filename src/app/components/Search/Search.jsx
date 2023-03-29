@@ -1,4 +1,4 @@
-import { SearchBar, Label, Link as DSLink } from '@nypl/design-system-react-components';
+import { SearchBar, Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
