@@ -117,25 +117,23 @@ function Search (props) {
   */
 
   const inputElement = (
-    <>
-      <div
-        style={{
-          flex: "1 1 80%"
-        }}
+    <div
+      style={{
+        flex: "1 1 80%"
+      }}
+    >
+      <input
+        id="searchbar-textinput-mainContent"
+        className="searchbar-input-temp"
+        type="text"
+        name="q"
+        aria-label="Search by keyword, title, journal title, or author/contributor"
+        placeholder="Keyword, title, journal title, or author/contributor"
+        onChange={inputChange}
+        value={keywords}
       >
-        <input
-          id="searchbar-textinput-mainContent"
-          className="searchbar-input-temp"
-          type="text"
-          name="q"
-          aria-label="Search by keyword, title, journal title, or author/contributor"
-          placeholder="Keyword, title, journal title, or author/contributor"
-          onChange={inputChange}
-          value={keywords}
-        >
-        </input>
-      </div>
-    </>
+      </input>
+    </div>
   )
 
   return (
