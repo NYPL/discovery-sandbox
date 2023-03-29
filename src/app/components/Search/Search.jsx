@@ -98,8 +98,8 @@ function Search (props) {
       clearSubject: true,
       clearTitle: true,
       field: selectField,
-      selectedFilters: selectedFilters,
-      searchKeywords: keywords,
+      selectedFilters,
+      searchKeywords,
       page: '1',
     });
 
