@@ -8,18 +8,6 @@ before_deploy: echo 'All unit tests passed; Successfull built distribution asset
   Preparing to deploy Discovery Research Catalog to AWS.'
 deploy:
 - provider: elasticbeanstalk
-  skip_cleanup: true
-  access_key_id: "$AWS_ACCESS_KEY_ID_DEVELOPMENT"
-  secret_access_key: "$AWS_SECRET_ACCESS_KEY_DEVELOPMENT"
-  region: us-east-1
-  app: discovery-ui
-  env: discovery-ui-shep-development
-  bucket_name: elasticbeanstalk-us-east-1-224280085904
-  bucket_path: discovery-ui-development
-  on:
-    repo: NYPL/discovery-front-end
-    branch: development
-- provider: elasticbeanstalk
   skip_cleanup: false
   access_key_id: "$AWS_ACCESS_KEY_ID_QA"
   secret_access_key: "$AWS_SECRET_ACCESS_KEY_QA"
