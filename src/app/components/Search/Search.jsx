@@ -1,4 +1,4 @@
-import { SearchBar, Link as DSLink } from '@nypl/design-system-react-components';
+import { SearchBar, Label, Link as DSLink } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
@@ -106,8 +106,36 @@ function Search (props) {
 
     router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
-  console.log('keywords', keywords);
-  console.log('searchKeywords', searchKeywords)
+  
+  /* 
+    Temporary input element override until the Design System's TextInput
+    allows for external clearing via value prop.
+    TODO: Remove when external input clearing fix is added to design system
+    https://jira.nypl.org/browse/SCC-3423
+  */
+
+  const inputElement = (
+    <>
+      <div
+        style={{
+          flex: "1 1 80%"
+        }}
+      >
+        <input
+          id="searchbar-textinput-mainContent"
+          className="searchbar-input-temp"
+          type="text"
+          name="q"
+          aria-label="Search by keyword, title, journal title, or author/contributor"
+          placeholder="Keyword, title, journal title, or author/contributor"
+          onChange={inputChange}
+          value={keywords}
+        >
+        </input>
+      </div>
+    </>
+  )
+
   return (
     <>
       <SearchBar
@@ -132,13 +160,7 @@ function Search (props) {
           onChange: onFieldChange,
           value: selectField
         }}
-        textInputProps={{
-          labelText: 'Search by keyword, title, journal title, or author/contributor',
-          name: 'q',
-          placeholder: 'Keyword, title, journal title, or author/contributor',
-          onChange: inputChange,
-          value: keywords
-        }}
+        textInputElement={inputElement}
       />
       <div id="advanced-search-link-container">
         <DSLink>
