@@ -35,7 +35,7 @@ function Search (props) {
     // Set component level state on prop changes
     if (searchKeywords !== keywords) setKeywords(searchKeywords)
     if (field !== selectField) setSelectField(field)
-  }, [searchKeywords, field])
+  }, [searchKeywords, keywords, field, selectField]);
 
   /**
    * onFieldChange(e)
@@ -43,7 +43,7 @@ function Search (props) {
    */
   function onFieldChange(e) {
     const newFieldVal = e.target.value;
-    setSelectField(newFieldVal)
+    setSelectField(newFieldVal);
   }
 
   /**
