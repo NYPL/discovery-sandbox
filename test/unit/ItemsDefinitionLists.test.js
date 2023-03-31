@@ -7,7 +7,7 @@ import StatusLinks from './../../src/app/components/Item/StatusLinks';
 import ItemsDefinitionLists from './../../src/app/components/Item/ItemsDefinitionLists';
 import appConfig from './../../src/app/data/appConfig'
 
-describe.only('ItemsDefinitionLists', () => {
+describe('ItemsDefinitionLists', () => {
 
   const fullItems = [
     {},

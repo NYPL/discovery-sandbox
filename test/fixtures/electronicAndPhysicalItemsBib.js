@@ -2,7 +2,8 @@ const sampleBib = {
   '@id': 'res:b15523285',
   numItems: 3,
   numItemsTotal: 1,
-  numElectronicResources: 2,
+  numElectronicResources: 1,
+  electronicResources: [{ url: 'hathitrust.com', label: 'Full text available via HathiTrust' }],
   items: [
     {
       "@id": "res:i11829350",
@@ -65,43 +66,6 @@ const sampleBib = {
       "idNyplSourceId": {
         "@type": "SierraNypl",
         "@value": "11829350"
-      }
-    },
-    {
-      "@id": "res:i15523285-e",
-      "electronicLocator": [
-        {
-          "@type": "nypl:ElectronicLocation",
-          "label": "Full text available via HathiTrust",
-          "url": "http://hdl.handle.net/2027/nyp.33433031805108"
-        }
-      ],
-      "identifier": [
-        "urn:SierraNypl:15523285-e"
-      ],
-      "uri": "i15523285-e",
-      "idNyplSourceId": {
-        "@type": "SierraNypl",
-        "@value": "15523285-e"
-      }
-    },
-    {
-      "@id": "res:i987654321-e",
-      "electronicLocator": [
-        {
-          "@type": "nypl:ElectronicLocation",
-          "label": "Aeon available via HathiTrust",
-          "url": "https://nypl-aeon-test.aeon.atlas-sys.com.33433031805108"
-        }
-      ],
-      aeonUrl: "https://nypl-aeon-test.aeon.atlas-sys.com.33433031805108",
-      "identifier": [
-        "urn:SierraNypl:987654321-e"
-      ],
-      "uri": "i987654321-e",
-      "idNyplSourceId": {
-        "@type": "SierraNypl",
-        "@value": "987654321-e"
       }
     }
   ]
