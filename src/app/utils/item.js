@@ -198,10 +198,6 @@ function LibraryItem() {
     // Taking the first value in the array;
     const suppressed =
       item.suppressed && item.suppressed.length ? item.suppressed[0] : false;
-    const isElectronicResource = this.isElectronicResource(item);
-    const electronicResources = isElectronicResource
-      ? this.getElectronicResources(item)
-      : null;
     // Taking the first status object in the array.
     const status = item.status && item.status.length ? item.status[0] : {};
     const volume =
@@ -268,8 +264,6 @@ function LibraryItem() {
       available,
       aeonUrl: item.aeonUrl,
       accessMessage,
-      isElectronicResource,
-      electronicResources,
       location: holdingLocation.prefLabel,
       locationUrl: holdingLocation.url,
       branchEndpoint: holdingLocation.branchEndpoint,
