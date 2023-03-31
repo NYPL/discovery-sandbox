@@ -726,23 +726,6 @@ function isNyplBnumber(bnum) {
 }
 
 /**
- * Given a bib, return the electronic resources and the number of physical items
- */
-function getElectronicResources(bib) {
-  const electronicResources = bib.electronicResources
-  const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
-  // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
-  // if data is stale, it does not have that property. Fall back on numItems. But!
-  // if there are electronic resources on the bib, we need to decrement numItems. Even though the items array is 
-  // empty in updated api response, numItems still includes the electronic item in the count.
-  const totalPhysicalItems = bib.numItemsTotal
-  const eResourcesTotal = bib.numElectronicResources
-  return {
-    eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
-  }
-}
-
-/**
  * Given an item, return Aeon url with params added to pre-populate the form
  */
 
@@ -782,7 +765,6 @@ export {
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
-  getElectronicResources,
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,

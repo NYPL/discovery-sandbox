@@ -10,8 +10,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import LibraryItem from '../../utils/item';
 import {
-  trackDiscovery,
-  getElectronicResources,
+  trackDiscovery
 } from '../../utils/utils';
 import SearchResultsItems from '../Item/SearchResultsItems';
 import appConfig from '../../data/appConfig';
@@ -92,11 +91,9 @@ const ResultsList = ({
     const publicationStatement = result.publicationStatement && result.publicationStatement.length ?
       result.publicationStatement[0] : '';
     const items = ItemSorter.sortItems(LibraryItem.getItems(result));
-    const totalItems = result.numItems;
     const hasRequestTable = items.length > 0;
     const { baseUrl } = appConfig;
     const bibUrl = `${baseUrl}/bib/${bibId}`;
-    const { totalPhysicalItems, eResources, eResourcesTotal } = getElectronicResources(result);
     const resourcesOnClick = () => {
       updateResultSelection({
         fromUrl: `${pathname}${search}`,
@@ -104,8 +101,10 @@ const ResultsList = ({
       })
     }
 
+    const eResources = result.electronicResources
+    const totalPhysicalItems = result.numItemsTotal
     const hasPhysicalItems = totalPhysicalItems > 0;
-    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResourcesTotal;
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length
     const resourceType = hasPhysicalItems ? 'Item' : 'Resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
@@ -132,7 +131,7 @@ const ResultsList = ({
               <li className="nypl-results-publication">{publicationStatement}</li>
               {yearPublished}
               {
-                totalItems > 0 ?
+                totalPhysicalItems > 0 || eResources.length > 0 ?
                   <li className="nypl-results-info">
                     {itemMessage}
                   </li>
