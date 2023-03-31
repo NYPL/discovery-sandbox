@@ -163,19 +163,6 @@ function LibraryItem() {
   };
 
   /**
-   * getElectronicResources(item)
-   * @param {object} items The item to get an electronic resource from.
-   * @return {array}
-   */
-  this.getElectronicResources = (item = {}) => {
-    if (item.electronicLocator) {
-      return item.electronicLocator;
-    }
-
-    return [];
-  };
-
-  /**
    * mapItem(item, title)
    * Massage data and update an item's properties.
    * @param {object} item The item to update the data for.
