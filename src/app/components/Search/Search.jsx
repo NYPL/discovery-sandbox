@@ -104,7 +104,6 @@ function Search (props) {
     });
     updateSearchKeywords(keywords);
     updateField(selectField);
-    console.log(apiQuery)
 
     router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
