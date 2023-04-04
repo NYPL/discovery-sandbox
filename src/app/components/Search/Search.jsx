@@ -24,7 +24,7 @@ function Search (props) {
     createAPIQuery,
     updateSearchKeywords,
     updateField,
-    router
+    router,
   } = props;
 
   // Set component level state based on props
@@ -35,7 +35,7 @@ function Search (props) {
     // Set component level state on prop changes
     if (searchKeywords !== keywords) setKeywords(searchKeywords)
     if (field !== selectField) setSelectField(field)
-  }, [searchKeywords, keywords]);
+  }, [field, searchKeywords]);
 
   /**
    * onFieldChange(e)
@@ -102,7 +102,7 @@ function Search (props) {
       searchKeywords,
       page: '1',
     });
-
+    console.log("I'm getting called", updateSearchKeywords)
     updateSearchKeywords(keywords);
     updateField(selectField);
 

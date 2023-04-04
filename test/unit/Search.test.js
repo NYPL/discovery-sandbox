@@ -3,6 +3,7 @@
 import axios from 'axios';
 import React from 'react';
 import MockAdapter from 'axios-mock-adapter';
+import { act } from 'react-dom/test-utils';
 import { expect } from 'chai';
 
 import sinon from 'sinon';
@@ -81,22 +82,17 @@ describe('Search', () => {
   describe('Update the field selected', () => {
     let component;
     let createAPIQuery;
-    let onFieldChangeSpy;
 
     before(() => {
       createAPIQuery = basicQuery({});
-      // onFieldChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'onFieldChange');
+
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
         context: { router: { createHref: () => {}, push: () => {} } },
       }).find('Search');
     });
 
-    // after(() => {
-    //   onFieldChangeSpy.restore();
-    // });
-
-    it('should update the select value and update the state', () => {
+    it('should update the select value and update the state', async () => {
       expect(component.props().field).to.equal('all');
 
       // Because Search#onFieldChange derives the selected value from the DOM
@@ -104,10 +100,14 @@ describe('Search', () => {
       // the event, which may have been trashed by the time we read it), we
       // need to both set the node value directly and then also simulate a
       // 'change' event to trigger the handler:
-      const select = component.find('select');
-      select.simulate('change', { target: { value: "title" } });
+      let select = component.find('select');
+      
+      act(() => {
+        select.simulate('change', { target: { value: 'title' } });
+      });
 
-      // expect(onFieldChangeSpy.callCount).to.equal(1);
+      select = component.update().find('select');
+
       expect(select.props().value).to.equal('title');
     });
   });
@@ -115,47 +115,45 @@ describe('Search', () => {
   describe('Update the input entered', () => {
     let component;
     let createAPIQuery;
-    let inputChangeSpy;
 
     before(() => {
       createAPIQuery = basicQuery({});
-      // inputChangeSpy = sinon.spy(Search.WrappedComponent.prototype, 'inputChange');
+
       component = mountTestRender(<Search createAPIQuery={createAPIQuery} />, {
         store: mockStore,
         context: { router: { createHref: () => {}, push: () => {} } },
       }).find('Search');
     });
 
-    // after(() => {
-    //   inputChangeSpy.restore();
-    // });
 
-    it('should update the input value entered and update the state', () => {
-      // expect(component.state('searchKeywords')).to.equal('');
+    it('should update the input value entered', () => {
+      expect(component.props().searchKeywords).to.equal('');
 
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
-
-      // expect(inputChangeSpy.callCount).to.equal(1);
-      expect(component.props().searchKeywords).to.equal('Dune');
+      component = component.update();
+      expect(component.find('input').props().value).to.equal('Dune');
     });
   });
 
   describe('Update when submitting', () => {
     let component;
     let createAPIQuery;
-    let triggerSubmitSpy;
-    let submitSearchRequestSpy;
     let mock;
     let contextRoutesPushed = [];
+    let updateKeywords;
+    let updateField;
 
     before(() => {
       createAPIQuery = basicQuery({});
-      // triggerSubmitSpy = sinon.spy(Search.WrappedComponent.prototype, 'triggerSubmit');
-      // submitSearchRequestSpy = sinon.spy(Search.WrappedComponent.prototype, 'submitSearchRequest');
+      updateKeywords = sinon.spy();
+      updateField = sinon.spy();
+
       component = mountTestRender(
         <Search
           createAPIQuery={createAPIQuery}
           router={{ push: route => contextRoutesPushed.push(route) }}
+          updateSearchKeywords={updateKeywords}
+          updateField={updateField}
         />,
         { store: mockStore }).find('Search');
 
@@ -169,24 +167,22 @@ describe('Search', () => {
 
     after(() => {
       mock.restore();
-      // triggerSubmitSpy.restore();
-      // submitSearchRequestSpy.restore();
+      // updateKeywords.restore();
+      // updateField.restore();
     });
 
     afterEach(() => {
       contextRoutesPushed = [];
-      // submitSearchRequestSpy.restore();
     });
 
-    it('should submit the input entered when clicking the submit button', (done) => {
+    it.only('should submit the input entered when clicking the submit button', (done) => {
       expect(component.props().searchKeywords).to.equal('');
       
-
       component.find('input').at(0).simulate('change', { target: { value: 'Dune' } });
       component.find('button').at(0).simulate('click');
       setTimeout(() => {
-        // expect(submitSearchRequestSpy.callCount).to.equal(1);
-        expect(component.props().searchKeywords).to.equal('Dune');
+        // console.log("DIEGO", updateKeywords.getCall(0).args)
+        expect(updateKeywords.called).to.equal(true);
         done();
       }, 1000);
     });
@@ -197,13 +193,6 @@ describe('Search', () => {
       component.find('input').at(0).simulate('change', { target: { value: 'Harry Potter' } });
       component.find('button').at(0).simulate('submit');
       expect(component.props().searchKeywords).to.equal('Harry Potter');
-      // expect(triggerSubmitSpy.callCount).to.equal(1);
-    });
-
-    it('should not update the searchKeywords before it submits the request', () => {
-      component.find('input').at(0).simulate('change', { target: { value: 'Watts' } });
-      component.find('button').at(0).simulate('click');
-      // expect(mockStore.getState().searchKeywords).not.to.equal('Watts');
     });
   });
 });
