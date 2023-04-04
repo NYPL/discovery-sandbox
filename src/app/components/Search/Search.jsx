@@ -102,9 +102,9 @@ function Search (props) {
       searchKeywords,
       page: '1',
     });
-    console.log("I'm getting called", updateSearchKeywords)
     updateSearchKeywords(keywords);
     updateField(selectField);
+    console.log(apiQuery)
 
     router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
