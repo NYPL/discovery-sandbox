@@ -129,7 +129,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
         itemListElement.forEach((resultObj) => {
           const { result } = resultObj;
           const items = result.items;
-          if (!items) return;
+          if (!items) return results;
           items.slice(0, itemTableLimit).forEach((item) => {
             if (!item) return;
             if (item.holdingLocation) {
