@@ -748,7 +748,8 @@ function isNyplBnumber(bnum) {
 }
 
 /**
- * Remove check digit from bnumber. Typically the 9th integer in the bibId.
+ * Strip check digit (int at 10th position) from bnumber if present
+ * Return the original bnumber if greater than or less than 10 characters.
  */
 function removeCheckDigit(bnum) {
   return bnum.length === 10 ? bnum.slice(0, -1) : bnum;
