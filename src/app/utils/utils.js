@@ -261,7 +261,7 @@ const basicQuery = (props = {}) => {
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
-    return completeQuery ? `q=${completeQuery}` : '';
+    return completeQuery ? `q=${completeQuery}` : null;
   };
 };
 
