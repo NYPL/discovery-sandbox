@@ -748,6 +748,13 @@ function isNyplBnumber(bnum) {
 }
 
 /**
+ * Remove check digit from bnumber. Typically the 9th integer in the bibId.
+ */
+function removeCheckDigit(bnum) {
+  return bnum.length === 10 ? bnum.slice(0, -1) : bnum;
+}
+
+/**
  * Given a bib, return the electronic resources and the number of physical items
  */
 function getElectronicResources(bib) {
@@ -818,6 +825,7 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
+  removeCheckDigit,
   removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,
