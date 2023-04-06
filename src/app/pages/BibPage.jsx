@@ -34,6 +34,7 @@ import {
 import getOwner from '../utils/getOwner';
 import { useViewAllItems } from '../utils/bibPage';
 import { RouterProvider } from '../context/RouterContext';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -52,6 +53,13 @@ export const BibPage = (
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
+  // this is a temporary fix to address a data loader async issue.
+  // !bib.items indicates that the bib in state is undefined, which
+  // should mean that we are still waiting on an api response. 
+  // The loading layer is rendered here as a safeguard 
+  // against accessing undefined bib properties before the api response
+  // has loaded.
+  if (!bib.items) return <LoadingLayer loading={true} />
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
