@@ -7,7 +7,7 @@ import StatusLinks from './StatusLinks';
 import appConfig from '../../data/appConfig';
 import { MediaContext } from '../Application/Application';
 
-const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
+const ItemTable = ({ items, bibId, id, searchKeywords, page, isArchiveCollection }) => {
   const media = React.useContext(MediaContext)
   if (
     !_isArray(items) ||
@@ -32,6 +32,9 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
     [items]
   );
   const volText = isDesktop ? 'Vol/Date' : 'Vol/\nDate'
+  const archiveColumnText = 'Container';
+  const volColumnHeading = isArchiveCollection ? archiveColumnText : volText;
+
   return (
     itemGroups.map(group => (
       <div key={`item-${group[0].id}-div`} className={ `results-items-element${page === 'SearchResults' ? ' search-results-table-div' : null}`}>
@@ -40,7 +43,7 @@ const ItemTable = ({ items, bibId, id, searchKeywords, page }) => {
           <thead>
             <tr>
               {isBibPage ? <th className={`status-links ${isDesktop ? '' : 'mobile'}`} scope="col">Status</th> : null}
-              {includeVolColumn ? <th scope="col">{volText}</th> : null}
+              {includeVolColumn ? <th scope="col">{volColumnHeading}</th> : null}
               <th scope="col">Format</th>
               { (!includeVolColumn && !isDesktop) ? <th scope="col">Call Number</th> : null }
               {isBibPage && isDesktop ? <th scope="col">Access</th> : null}
@@ -88,6 +91,7 @@ ItemTable.propTypes = {
   searchKeywords: PropTypes.string,
   holdings: PropTypes.array,
   page: PropTypes.string,
+  isArchiveCollection: PropTypes.bool,
 };
 
 ItemTable.defaultProps = {

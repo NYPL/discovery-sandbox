@@ -74,6 +74,9 @@ export const BibPage = (
   const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
 
   const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
+
+  const isArchiveCollection = Array.isArray(bib.issuance) && bib.issuance.some(issuance => issuance['@id'] === 'urn:biblevel:c');
+
   let numPhysicalItems
   // TODO: This is a temporary fix to handle records that may or may not have
   // been recently indexed. When the API consistently serves bib.numItemsTotal,
@@ -156,6 +159,7 @@ export const BibPage = (
               shortenItems={location.pathname.indexOf('all') !== -1}
               showAll={showAll}
               finishedLoadingItems={bib.done}
+              isArchiveCollection={isArchiveCollection}
             />
           </section>
           : null
