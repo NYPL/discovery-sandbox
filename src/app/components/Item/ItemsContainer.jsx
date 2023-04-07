@@ -202,7 +202,8 @@ ItemsContainer.propTypes = {
 ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
-  itemPage: '0'
+  itemPage: '0',
+  isArchiveCollection: false,
 };
 
 ItemsContainer.contextTypes = {

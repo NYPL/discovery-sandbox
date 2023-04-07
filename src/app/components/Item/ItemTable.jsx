@@ -96,6 +96,7 @@ ItemTable.propTypes = {
 
 ItemTable.defaultProps = {
   id: '',
+  isArchiveCollection: false
 };
 
 export default ItemTable;
