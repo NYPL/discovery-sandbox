@@ -369,28 +369,6 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   return selectedFilters;
 }
 
-/**
- * getAggregatedElectronicResources(items)
- * Get an aggregated array of electronic items from each item if available.
- * @param {array} items
- * @return {object}
- */
-function getAggregatedElectronicResources(items = []) {
-  if (!items && !items.length) {
-    return [];
-  }
-
-  const electronicResources = [];
-
-  _forEach(items, (item) => {
-    if (item.isElectronicResource) {
-      electronicResources.push(item.electronicResources);
-    }
-  });
-
-  return _flatten(electronicResources);
-}
-
 // TODO: [SCC-2996] Define Resources
 // interface Resources {
 //   @type: string;
@@ -748,25 +726,6 @@ function isNyplBnumber(bnum) {
 }
 
 /**
- * Given a bib, return the electronic resources and the number of physical items
- */
-function getElectronicResources(bib) {
-  const items = LibraryItem.getItems(bib);
-  const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
-  const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
-  // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
-  // if data is stale, it does not have that property. Fall back on numItems. But!
-  // if there are electronic resources on the bib, we need to decrement numItems. Even though the items array is 
-  // empty in updated api response, numItems still includes the electronic item in the count.
-  const totalPhysicalItems = bib.numItemsTotal || (eResourcesWithoutAeonLinks.length ?
-    bib.numItems - 1 : bib.numItems)
-  const eResourcesTotal = bib.numElectronicResources || eResourcesWithoutAeonLinks.length
-  return {
-    eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
-  }
-}
-
-/**
  * Given an item, return Aeon url with params added to pre-populate the form
  */
 
@@ -806,8 +765,6 @@ export {
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
-  getAggregatedElectronicResources,
-  getElectronicResources,
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
