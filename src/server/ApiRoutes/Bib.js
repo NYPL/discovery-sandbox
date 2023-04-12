@@ -5,7 +5,7 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
-import { isNyplBnumber } from '../../app/utils/utils';
+import { isNyplBnumber, removeCheckDigit } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
@@ -122,6 +122,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
+  bibId = removeCheckDigit(bibId);
   return Promise.all([
     nyplApiClientCall(bibId, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:

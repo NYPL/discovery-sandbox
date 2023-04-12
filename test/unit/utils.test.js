@@ -26,6 +26,7 @@ import {
   camelToShishKabobCase,
   institutionNameByNyplSource,
   isNyplBnumber,
+  removeCheckDigit,
 } from '../../src/app/utils/utils';
 
 /**
@@ -873,5 +874,15 @@ describe('getIdentifierQuery', () => {
       oclc: '34567',
       lccn: '45678',
     })).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
+  });
+});
+
+describe('removeCheckDigit', () => {
+  it('should return original bibId when not 10 characters long', () => {
+    expect(removeCheckDigit('b12345678')).to.eq('b12345678');
+    expect(removeCheckDigit('b1234567890')).to.eq('b1234567890');
+  });
+  it('should strip the last character when bibId is 10 characters long', () => {
+    expect(removeCheckDigit('b123456789')).to.eq('b12345678');
   });
 });
