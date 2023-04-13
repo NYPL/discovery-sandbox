@@ -726,11 +726,18 @@ function isNyplBnumber(bnum) {
 }
 
 /**
- * Strip check digit (int at 10th position) from bnumber if present
+ * Given a bnumber, return true if it is an NYPL bnumber and has a 10th character.
+ */
+function hasCheckDigit(bnum = "") {
+  return isNyplBnumber(bnum) && bnum.length === 10;
+}
+
+/**
+ * Given a bnumber, remove check digit (int at 10th position) fif present.
  * Return the original bnumber if greater than or less than 10 characters.
  */
-function removeCheckDigit(bnum) {
-  return bnum.length === 10 ? bnum.slice(0, -1) : bnum;
+function removeCheckDigit(bnum = "") {
+  return hasCheckDigit(bnum) ? bnum.slice(0, -1) : bnum;
 }
 
 /**
@@ -803,6 +810,7 @@ export {
   addSource,
   isNyplBnumber,
   removeCheckDigit,
+  hasCheckDigit,
   removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,

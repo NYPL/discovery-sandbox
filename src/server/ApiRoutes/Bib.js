@@ -5,7 +5,7 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
-import { isNyplBnumber, removeCheckDigit } from '../../app/utils/utils';
+import { isNyplBnumber, removeCheckDigit, hasCheckDigit } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
@@ -116,13 +116,14 @@ const addLocationUrls = (bib) => {
 };
 
 function fetchBib (bibId, cb, errorcb, reqOptions, res) {
+  // Redirect if bibId has a Check Digit
+  if (hasCheckDigit(bibId)) { res.redirect(`${appConfig.baseUrl}/bib/${removeCheckDigit(bibId)}`); }
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
   }, reqOptions);
   // Determine if it's an NYPL bibId:
   const isNYPL = isNyplBnumber(bibId);
-  bibId = removeCheckDigit(bibId);
   return Promise.all([
     nyplApiClientCall(bibId, reqOptions.itemFrom || 0, reqOptions.filterItemsStr),
     // Don't fetch annotated-marc for partner records:
@@ -182,7 +183,6 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
     .then(bib => cb(bib))
     .catch((error) => {
       logger.error(`Error attemping to fetch a Bib in fetchBib, id: ${bibId}`, error);
-
       errorcb(error);
     }); /* end axios call */
 }

@@ -101,7 +101,7 @@ const ResultsList = ({
       })
     }
 
-    const eResources = result.electronicResources
+    const eResources = result.electronicResources || [];
     const totalPhysicalItems = result.numItemsTotal
     const hasPhysicalItems = totalPhysicalItems > 0;
     const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length

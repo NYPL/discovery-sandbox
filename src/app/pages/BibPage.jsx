@@ -43,7 +43,7 @@ export const BibPage = (
   context,
 ) => {
   const useParallels = features && features.includes('parallels');
-  const numItemsMatched = bib.numItemsMatched;
+  const numItemsMatched = bib?.numItemsMatched || 0;
   const hash = location.hash || '';
   const showAll = hash === '#view-all-items';
 
