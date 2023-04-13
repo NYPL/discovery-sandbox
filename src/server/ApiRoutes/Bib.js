@@ -5,7 +5,7 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
-import { isNyplBnumber } from '../../app/utils/utils';
+import { isNyplBnumber, hasCheckDigit, removeCheckDigit } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
@@ -116,6 +116,9 @@ const addLocationUrls = (bib) => {
 };
 
 function fetchBib (bibId, cb, errorcb, reqOptions, res) {
+  // Redirect if bibId has a Check Digit
+  if (hasCheckDigit(bibId)) { res.redirect(`${appConfig.baseUrl}/bib/${removeCheckDigit(bibId)}`); }
+  
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
