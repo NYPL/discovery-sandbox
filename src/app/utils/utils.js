@@ -733,7 +733,7 @@ function hasCheckDigit(bnum = "") {
 }
 
 /**
- * Given a bnumber, remove check digit (int at 10th position) fif present.
+ * Given a bnumber, remove check digit (int at 10th position) if present.
  * Return the original bnumber if greater than or less than 10 characters.
  */
 function removeCheckDigit(bnum = "") {
