@@ -104,7 +104,8 @@ const ResultsList = ({
     const eResources = result.electronicResources
     const totalPhysicalItems = result.numItemsTotal
     const hasPhysicalItems = totalPhysicalItems > 0;
-    const itemCount = hasPhysicalItems ? totalPhysicalItems : eResources.length
+    const numElectronicResources = eResources?.length || 0;
+    const itemCount = hasPhysicalItems ? totalPhysicalItems : numElectronicResources;
     const resourceType = hasPhysicalItems ? 'Item' : 'Resource';
     const itemMessage = `${itemCount} ${resourceType}${itemCount !== 1 ? 's' : ''}`;
     return (
@@ -131,18 +132,20 @@ const ResultsList = ({
               <li className="nypl-results-publication">{publicationStatement}</li>
               {yearPublished}
               {
-                totalPhysicalItems > 0 || eResources.length > 0 ?
+                totalPhysicalItems > 0 || numElectronicResources > 0 ?
                   <li className="nypl-results-info">
                     {itemMessage}
                   </li>
                   : ''
               }
             </ul>
-            <ElectronicResourcesResultsItem
-              resources={eResources}
-              onClick={resourcesOnClick}
-              bibUrl={bibUrl}
-            />
+            {eResources && (
+              <ElectronicResourcesResultsItem
+                resources={eResources}
+                onClick={resourcesOnClick}
+                bibUrl={bibUrl}
+              />
+            )}
             {
               hasRequestTable &&
               <>
