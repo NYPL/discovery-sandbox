@@ -138,6 +138,7 @@ export const BibPage = (
               shortenItems={location.pathname.indexOf('all') !== -1}
               showAll={showAll}
               finishedLoadingItems={bib.done}
+              isArchiveCollection={isArchiveCollection}
             />
           </section>
           : null
