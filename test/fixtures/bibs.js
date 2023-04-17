@@ -181,8 +181,12 @@ const bibs = [
     updatedAt: 1524665261653,
     uri: 'b11417539',
     suppressed: false,
+    numElectronicResources: 0,
+    electronicResources: []
   },
   {
+    numElectronicResources: 0,
+    electronicResources: [],
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b11417539',
     carrierType: [{ '@id': 'carriertypes:nc', prefLabel: 'volume' }],
@@ -669,12 +673,7 @@ const bibs = [
         '@type': 'nypl:ElectronicLocation',
         label: 'Full text available via HathiTrust',
         url: 'http://hdl.handle.net/2027/nyp.33433076020639',
-      },
-      {
-        '@type': 'nypl:ElectronicLocation',
-        label: 'Request Access to Special Collections Material',
-        url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
-      },
+      }
     ],
     numAvailable: 0,
     numItems: 6,
@@ -1345,6 +1344,8 @@ const bibs = [
       'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
     '@type': ['nypl:Item', 'nypl:Resource'],
     '@id': 'res:b21147020',
+    numElectronicResources: 0,
+    electronicResources: [],
     carrierType: [
       {
         '@id': 'carriertypes:nc',

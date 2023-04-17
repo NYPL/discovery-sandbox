@@ -28,6 +28,7 @@ const resultsBibs = [
       numItems: 2,
       numItemsTotal: 4,
       numElectronicResources: 0,
+      electronicResources: [],
       numAvailable: 0,
       uris: [
         'b17692265',
@@ -112,6 +113,7 @@ const resultsBibs = [
       numItems: 2,
       numItemsTotal: 1,
       numElectronicResources: 0,
+      electronicResources: [],
       numAvailable: 0,
       uris: [
         'b17692265',
@@ -144,6 +146,8 @@ const resultsBibs = [
     result: {
       '@type': ['nypl:Item', 'nypl:Resource'],
       '@id': 'res:b11417539',
+      numElectronicResources: 0,
+      electronicResources: [],
       carrierType: [{ '@id': 'carriertypes:nc', prefLabel: 'volume' }],
       createdString: ['1991'],
       createdYear: 1991,
@@ -231,6 +235,7 @@ const resultsBibs = [
           },
         },
       ],
+      numItemsTotal: 1,
       language: [{ '@id': 'lang:eng', prefLabel: 'English' }],
       lccClassification: ['PR3071 .D4 1991'],
       materialType: [{ '@id': 'resourcetypes:txt', prefLabel: 'Text' }],
@@ -249,10 +254,10 @@ const resultsBibs = [
       publisherLiteral: ['Clarendon Press ; Oxford University Press,'],
       shelfMark: ['JFD 91-4064'],
       subjectLiteral:
-       ['Editing -- History -- 18th century.',
-         'Malone, Edmond, 1741-1812.',
-         'Shakespeare, William, 1564-1616 -- Criticism, Textual.',
-         'Shakespeare, William, 1564-1616.'],
+        ['Editing -- History -- 18th century.',
+          'Malone, Edmond, 1741-1812.',
+          'Shakespeare, William, 1564-1616 -- Criticism, Textual.',
+          'Shakespeare, William, 1564-1616.'],
       title: ['Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus'],
       titleDisplay: ['Shakespeare verbatim : the reproduction of authenticity and the 1790 apparatus / Margreta de Grazia.'],
       type: ['nypl:Item'],
