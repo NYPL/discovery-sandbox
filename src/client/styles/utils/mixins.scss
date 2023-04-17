@@ -70,3 +70,20 @@
     }
   }
 }
+
+
+// TODO: remove after a DS update.
+// Mixin - Wrapper
+// Outer container mixin for large screens
+@mixin wrapper(
+  $container-max-width: $max-width,
+  $outer-container-break: $nypl-breakpoint-small,
+  $v-margin: 0,
+  $v-padding: 0,
+  $h-padding: var(--nypl-space-s)
+) {
+  margin: #{$v-margin} auto;
+  max-width: #{$container-max-width};
+  padding: #{$v-padding} #{$h-padding};
+  width: 100%;
+}

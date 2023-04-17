@@ -1,8 +1,6 @@
 /* Import style rules from NYPL Design System */
 // This imports system-font styles and DatePicker styles.
 @import '~@nypl/design-system-react-components/dist/styles.css';
-// This imports DS breakpoints and mixins.
-@import '~@nypl/design-system-react-components/dist/resources.scss';
 
 /*
 App-specific utilities and defaults
@@ -18,9 +16,7 @@ Import style rules from NYPL React module components
 */
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
-
 @import "components/**/*.scss";
-
 @import "style-v2.scss";
 
 // From older DS version
