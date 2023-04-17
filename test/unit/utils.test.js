@@ -26,6 +26,8 @@ import {
   camelToShishKabobCase,
   institutionNameByNyplSource,
   isNyplBnumber,
+  hasCheckDigit,
+  removeCheckDigit
 } from '../../src/app/utils/utils';
 
 /**
@@ -862,6 +864,25 @@ describe('isNyplBnumber', () => {
     expect(isNyplBnumber('pb1234')).to.eq(false);
     expect(isNyplBnumber('hb1234')).to.eq(false);
     expect(isNyplBnumber('cb1234')).to.eq(false);
+  });
+});
+
+describe('hasCheckDigit', () => {
+  it('determine if bib id is NYPL bnumber and is 10 characters long', () => {
+    expect(hasCheckDigit('b123456789')).to.eq(true);
+    expect(hasCheckDigit('b12345678')).to.eq(false);
+    expect(hasCheckDigit('b1234567891')).to.eq(false);
+    expect(hasCheckDigit('cb12345678')).to.eq(false);
+  });
+});
+
+describe('removeCheckDigit', () => {
+  it('should remove check digit from bnumber when present', () => {
+    expect(removeCheckDigit('b123456789')).to.eq('b12345678');
+  });
+  it('should return original bnumber when check digit is absent', () => {
+    expect(removeCheckDigit('b12345678')).to.eq('b12345678');
+    expect(removeCheckDigit('b1234567891')).to.eq('b1234567891');
   });
 });
 
