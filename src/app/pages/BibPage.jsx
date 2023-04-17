@@ -73,6 +73,9 @@ export const BibPage = (
   const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
   const numPhysicalItems = bib.numItemsTotal
   const hasItems = numPhysicalItems > 0
+
+  const isArchiveCollection = Array.isArray(bib.issuance) && bib.issuance.some(issuance => issuance['@id'] === 'urn:biblevel:c');
+  
   const isOnlyElectronicResources = !hasItems && hasElectronicResources
   const hasPhysicalItems = !isOnlyElectronicResources && hasItems
 
