@@ -35,7 +35,7 @@ import {
  */
 describe('ajaxCall', () => {
   describe('No input', () => {
-    it('should return null if no enpoint is passed', () => {
+    it('should return null if no endpoint is passed', () => {
       expect(ajaxCall()).to.equal(null);
     });
   });
@@ -411,15 +411,15 @@ describe('basicQuery', () => {
       expect(basicQuery(defaultQueryObj)).to.be.a('function');
     });
 
-    it('should return null when the input is an empty object', () => {
+    it('should return an empty string when the input is an empty object', () => {
       const createAPIQuery = basicQuery({});
 
-      expect(createAPIQuery({})).to.equal(null);
+      expect(createAPIQuery({})).to.equal('');
     });
 
-    it('should return null with the default object', () => {
+    it('should return an empty string with the default object', () => {
       const createAPIQuery = basicQuery(defaultQueryObj);
-      expect(createAPIQuery({})).to.equal(null);
+      expect(createAPIQuery({})).to.equal('');
     });
   });
 
@@ -518,7 +518,7 @@ describe('basicQuery', () => {
     it('should clear advanced search params when explicitly told', () => {
       expect(
         createAPIQuery({ clearTitle: true, clearSubject: true, clearContributor: true }),
-      ).to.eql(null);
+      ).to.eql('');
     });
   });
 });
