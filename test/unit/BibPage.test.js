@@ -30,12 +30,7 @@ describe('BibPage', () => {
       '@type': 'nypl:ElectronicLocation',
       label: 'Full text available via HathiTrust',
       url: 'http://hdl.handle.net/2027/nyp.33433076020639',
-    },
-    {
-      '@type': 'nypl:ElectronicLocation',
-      label: 'Request Access to Special Collections Material',
-      url: 'https://specialcollections.nypl.org/aeon/Aeon.dll?Action=10&Form=30&Title=A+bibliographical+checklist+of+American+Negro+poetry+/&Site=SCHRB&CallNumber=Sc+Rare+016.811-S+(Schomburg,+A.+Bibliographical+checklist)&Author=Schomburg,+Arthur+Alfonso,&ItemPlace=New+York+:&ItemPublisher=Charles+F.+Heartman,&Date=1916.&ItemInfo3=https://catalog.nypl.org/record=b22030125&ReferenceNumber=b220301256&Genre=Book-text&Location=Schomburg+Center',
-    },
+    }
   ]
   const context = mockRouterContext();
   describe('Electronic Resources List', () => {
@@ -50,7 +45,7 @@ describe('BibPage', () => {
       <BibPage
         location={{ search: 'search', pathname: '' }}
         bib={bib}
-        dispatch={() => {}}
+        dispatch={() => { }}
         resultSelection={{
           fromUrl: '',
           bibId: '',
@@ -402,7 +397,7 @@ describe('BibPage', () => {
     })
 
     describe('No item, no electronic resources', () => {
-      const noItemsNoEr = { ...bib, items: [], electronicResources: [], numItems: 0 }
+      const noItemsNoEr = { ...bib, items: [], electronicResources: [], numItemsTotal: 0 }
       before(() => {
         component = mountTestRender(
           <BibPage
@@ -417,11 +412,11 @@ describe('BibPage', () => {
           { context, childContextTypes: { router: PropTypes.object }, store: testStore },
         )
       })
-      it(' does not render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(0) });
+      it('does not render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(0) });
     })
     describe('1 item, no electronic resources does render ItemsContainer', () => {
 
-      const oneItemNoER = { ...bib, items: [{ id: '1' }], electronicResources: [] };
+      const oneItemNoER = { ...bib, electronicResources: [], items: [{ id: '123' }], numItemsTotal: 1 };
       before(() => {
         component = mountTestRender(
           <BibPage
@@ -436,12 +431,12 @@ describe('BibPage', () => {
           { context, childContextTypes: { router: PropTypes.object }, store: testStore },
         )
       })
-      it(' does render ItemsContainer', () => {
+      it('does render ItemsContainer', () => {
         expect(component.find('ItemsContainer').length).to.equal(1)
       })
     })
     describe('Multi item, electronic resources', () => {
-      const multiItemsYesER = { ...bib, items: [{ id: '1' }, { id: '2' }, { id: '3' }], electronicResources }
+      const multiItemsYesER = { ...bib, electronicResources }
       before(() => {
         component = mountTestRender(
           <BibPage
@@ -460,7 +455,7 @@ describe('BibPage', () => {
     })
 
     describe('Multi item, no electronic resources does render ItemsContainer', () => {
-      const multiItemsNoER = { ...bib, items: [{ id: '1' }, { id: '2' }, { id: '3' }], electronicResources: [] }
+      const multiItemsNoER = { ...bib, electronicResources: [] }
       before(() => {
         component = mountTestRender(
           <BibPage
@@ -475,7 +470,7 @@ describe('BibPage', () => {
           { context, childContextTypes: { router: PropTypes.object }, store: testStore },
         )
       })
-      it(' does render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(1); })
+      it('does render ItemsContainer', () => { expect(component.find('ItemsContainer').length).to.equal(1); })
     })
   })
 });

@@ -4,6 +4,9 @@
     "nypl:Item",
     "nypl:Resource"
   ],
+  "numElectronicResources": 0,
+  "electronicResources": [],
+  "numItemsTotal": 53,
   "@id": "res:b11254422",
   "carrierType": [
     {
