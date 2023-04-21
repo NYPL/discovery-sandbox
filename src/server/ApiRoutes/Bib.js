@@ -9,20 +9,24 @@ import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
-  const queryForItemPage = typeof itemFrom !== 'undefined' ? `items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
+  const itemRelatedQueries = []
+  if (typeof itemFrom !== 'undefined') itemRelatedQueries.push(`items_size=${itemBatchSize}&items_from=${itemFrom}`)
   let fullQuery;
   if (query.includes('.annotated-marc')) {
     fullQuery = query;
   } else {
-    const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
-    const pageAndItemQuery = queryForItemPage || itemQuery ? `?${queryForItemPage}${itemQuery}&merge_checkin_card_items=true` : ''
-    fullQuery = `${query}${pageAndItemQuery}`
+    if (filterItemsStr.length) itemRelatedQueries.push(`${filterItemsStr}`)
+    if (itemRelatedQueries.length) {
+      itemRelatedQueries.push('merge_checkin_card_items=true')
+    }
+    const itemQuery = itemRelatedQueries.length ? '?' + itemRelatedQueries.join('&') : ''
+    fullQuery = `${query}${itemQuery}`
   }
   return nyplApiClient()
-    .then(client =>
-      client.get(
+    .then(client => {
+      return client.get(
         `/discovery/resources/${fullQuery}`
-      )
+      )}
     );
 };
 
