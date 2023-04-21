@@ -152,7 +152,7 @@ describe('Bib', () => {
     it('with neither itemFrom nor itemFilterStr', async function () {
       const query = 'b12345678'
       await Bib.nyplApiClientCall(query, undefined,)
-      expect(urlRecord).to.equal('/discovery/resources/b12345678')
+      expect(urlRecord).to.equal('/discovery/resources/b12345678?merge_checkin_card_items=true')
     })
   })
 });

@@ -16,11 +16,8 @@ const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
     fullQuery = query;
   } else {
     if (filterItemsStr.length) itemRelatedQueries.push(`${filterItemsStr}`)
-    if (itemRelatedQueries.length) {
-      itemRelatedQueries.push('merge_checkin_card_items=true')
-    }
-    const itemQuery = itemRelatedQueries.length ? '?' + itemRelatedQueries.join('&') : ''
-    fullQuery = `${query}${itemQuery}`
+    itemRelatedQueries.push('merge_checkin_card_items=true')
+    fullQuery = `${query}?${itemRelatedQueries.join('&')}`
   }
   return nyplApiClient()
     .then(client => {
