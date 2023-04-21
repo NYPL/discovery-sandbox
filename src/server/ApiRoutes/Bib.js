@@ -9,13 +9,14 @@ import { isNyplBnumber } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
-  const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
+  const queryForItemPage = typeof itemFrom !== 'undefined' ? `items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
   let fullQuery;
   if (query.includes('.annotated-marc')) {
     fullQuery = query;
   } else {
     const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
-    fullQuery = `${query}${queryForItemPage}${itemQuery}&merge_checkin_card_items=true`
+    const pageAndItemQuery = queryForItemPage || itemQuery ? `?${queryForItemPage}${itemQuery}&merge_checkin_card_items=true` : ''
+    fullQuery = `${query}${pageAndItemQuery}`
   }
   return nyplApiClient()
     .then(client =>
