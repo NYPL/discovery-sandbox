@@ -40,24 +40,28 @@ const ItemFilters = (
   useEffect(() => {
     let timeout;
     setSelectedFieldDisplayStr(parsedFilterSelections());
-    // Once the new items are fetched, focus on the filter UI and the
-    // results, but don't do this if the user requested to view all items
-    // until all the items are fetched. It is annoying if the text keeps
-    // getting focused and the page keeps jumping around.
-    if (showAll && finishedLoadingItems) {
-      resultsRef.current && resultsRef.current.focus();
-    } else {
-      // When filtering, delay the focus slightly because
-      // of the loading animation screen.
-      timeout = setTimeout(() => {
+    // Once the new items are filtered and fetched, focus on the filter UI
+    // and the results, but don't do this if the user requested to view all
+    // items until all the items are fetched. It is annoying if the text
+    // keeps getting focused and the page keeps jumping around.
+    // The easiest way to figure out if a filter or year search was done,
+    // is to check if the `selectedFieldDisplayStr` string is not empty.
+    if (selectedFieldDisplayStr) {
+      if (showAll && finishedLoadingItems) {
         resultsRef.current && resultsRef.current.focus();
-      }, 1000);
+      } else {
+        // When filtering, delay the focus slightly because
+        // of the loading animation screen.
+        timeout = setTimeout(() => {
+          resultsRef.current && resultsRef.current.focus();
+        }, 1200);
+      }
     }
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [parsedFilterSelections, showAll, finishedLoadingItems]);
+  }, [showAll, finishedLoadingItems, selectedFieldDisplayStr, parsedFilterSelections]);
 
   /**
    * When filters are applied or cleared, build new filter query
@@ -180,6 +184,7 @@ const ItemFilters = (
   // If there are filters, display the number of items that match the filters.
   // Otherwise, display the total number of items.
   const resultsItemsNumber = numItemsMatched;
+  const madeFilterOrSearch = selectedFieldDisplayStr.length > 0;
 
   return (
     <Fragment>
@@ -223,8 +228,9 @@ const ItemFilters = (
       <div id="view-all-items" className="item-filter-info" tabIndex="-1" ref={resultsRef}>
         <Heading level="three" size="callout">
           <>
-            {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'} Result
-            {resultsItemsNumber !== 1 ? 's' : null} Found
+            {resultsItemsNumber > 0 ? resultsItemsNumber : 'No'}{' '}
+            {madeFilterOrSearch ? 'Matching' : null} Item
+            {resultsItemsNumber !== 1 ? 's' : null}
           </>
         </Heading>
         {selectedFieldDisplayStr ? (
