@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useState } from 'react';
 
 import { PatronContext } from '../../context/PatronContext';
 import { trackDiscovery } from '../../utils/utils';
+import appConfig from '../../data/appConfig';
 
 /**
  * Renders a simple link to log out the user out from the Catalog.
@@ -12,7 +13,7 @@ const LogoutLink = ({
   baseUrl = '/research/research-catalog',
   delineate = false
 }) => {
-  const logoutLink = "https://login.nypl.org/auth/logout?redirect_uri=";
+  const logoutLink = `${appConfig.logoutUrl}?redirect_uri=`;
   const [backLink, setBackLink] = useState('');
   const { loggedIn } = useContext(PatronContext);
 

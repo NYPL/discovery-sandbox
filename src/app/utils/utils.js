@@ -261,7 +261,7 @@ const basicQuery = (props = {}) => {
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
-    return completeQuery ? `q=${completeQuery}` : null;
+    return completeQuery ? `q=${completeQuery}` : '';
   };
 };
 
@@ -726,6 +726,21 @@ function isNyplBnumber(bnum) {
 }
 
 /**
+ * Given a bnumber, return true if it is an NYPL bnumber and has a 10th character.
+ */
+function hasCheckDigit(bnum = "") {
+  return isNyplBnumber(bnum) && bnum.length === 10;
+}
+
+/**
+ * Given a bnumber, remove check digit (int at 10th position) if present.
+ * Return the original bnumber if greater than or less than 10 characters.
+ */
+function removeCheckDigit(bnum = "") {
+  return hasCheckDigit(bnum) ? bnum.slice(0, -1) : bnum;
+}
+
+/**
  * Given an item, return Aeon url with params added to pre-populate the form
  */
 
@@ -775,6 +790,8 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
+  hasCheckDigit,
+  removeCheckDigit,
   removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,
