@@ -54,6 +54,7 @@ const commonSettings = {
       'process.env': {
         SHEP_API: JSON.stringify(process.env.SHEP_API),
         LOGIN_URL: JSON.stringify(process.env.LOGIN_URL),
+        LOGIN_BASE_URL: JSON.stringify(process.env.LOGIN_BASE_URL),
         LEGACY_BASE_URL: JSON.stringify(process.env.LEGACY_BASE_URL),
         CLOSED_LOCATIONS: JSON.stringify(process.env.CLOSED_LOCATIONS),
         RECAP_CLOSED_LOCATIONS: JSON.stringify(
@@ -235,6 +236,7 @@ if (ENV === 'production') {
           GA_ENV: JSON.stringify(process.env.GA_ENV),
           SHEP_API: process.env.SHEP_API,
           LOGIN_URL: process.env.LOGIN_URL,
+          LOGIN_BASE_URL: process.env.LOGIN_BASE_URL,
           LEGACY_BASE_URL: process.env.LEGACY_BASE_URL,
           CLOSED_LOCATIONS: process.env.CLOSED_LOCATIONS,
           RECAP_CLOSED_LOCATIONS: JSON.stringify(

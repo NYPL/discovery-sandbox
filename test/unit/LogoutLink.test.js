@@ -6,13 +6,14 @@ import { mount } from 'enzyme';
 
 import LogoutLink from './../../src/app/components/LogoutLink/LogoutLink';
 import { PatronProvider } from '../../src/app/context/PatronContext';
+import appConfig from '../../src/app/data/appConfig';
 
 const mountLogoutLink = ({ loggedIn = false, delineate = false }) => mount(
   <PatronProvider patron={{ loggedIn }}>
     <LogoutLink delineate={delineate} />
   </PatronProvider>
 );
-const logoutLink = "https://login.nypl.org/auth/logout?redirect_uri=";
+const logoutLink = `${appConfig.logoutUrl}?redirect_uri=`;
 
 describe('LogoutLink', () => {
   it('does not render if patron is not logged in', () => {

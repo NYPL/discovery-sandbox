@@ -107,5 +107,12 @@ describe('ItemTable', () => {
       component = mount(<ItemTable page='not search results' items={data} />);
       expect(component.find('th').length).to.equal(5)
     })
+
+    it('should have Container column heading if it is an archive collection', () => {
+      component.unmount()
+      component = mount(<ItemTable page='not search results' isArchiveCollection items={data.map((item, i) => ({ volume: `${i}`, ...item }))} />);
+      const header = component.find('thead').at(0);
+      expect(header.find('th').at(1).text()).to.equal('Container');
+    })
   });
 });

@@ -81,6 +81,7 @@ describe('SearchResultsItems', () => {
         items: [],
         bibId: "b1234",
         id: "1234",
+        isArchiveCollection: false,
         searchKeywords: "word1 word2 word3",
         page: "SearchResults"
       })
