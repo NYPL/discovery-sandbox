@@ -261,7 +261,7 @@ const basicQuery = (props = {}) => {
 
     const completeQuery = `${searchKeywordsQuery}${advancedQuery}${filterQuery}${sortQuery}${fieldQuery}${pageQuery}${identifierQuery}`;
 
-    return completeQuery ? `q=${completeQuery}` : null;
+    return completeQuery ? `q=${completeQuery}` : '';
   };
 };
 
@@ -367,28 +367,6 @@ function parseServerSelectedFilters(filters, dateAfter, dateBefore) {
   }
 
   return selectedFilters;
-}
-
-/**
- * getAggregatedElectronicResources(items)
- * Get an aggregated array of electronic items from each item if available.
- * @param {array} items
- * @return {object}
- */
-function getAggregatedElectronicResources(items = []) {
-  if (!items && !items.length) {
-    return [];
-  }
-
-  const electronicResources = [];
-
-  _forEach(items, (item) => {
-    if (item.isElectronicResource) {
-      electronicResources.push(item.electronicResources);
-    }
-  });
-
-  return _flatten(electronicResources);
 }
 
 // TODO: [SCC-2996] Define Resources
@@ -748,22 +726,18 @@ function isNyplBnumber(bnum) {
 }
 
 /**
- * Given a bib, return the electronic resources and the number of physical items
+ * Given a bnumber, return true if it is an NYPL bnumber and has a 10th character.
  */
-function getElectronicResources(bib) {
-  const items = LibraryItem.getItems(bib);
-  const electronicResources = bib.electronicResources || getAggregatedElectronicResources(items)
-  const eResourcesWithoutAeonLinks = removeAeonLinksFromResource(electronicResources, bib.items);
-  // totalPhysicalItems should be numItemsTotal (physical items including checkin card items).
-  // if data is stale, it does not have that property. Fall back on numItems. But!
-  // if there are electronic resources on the bib, we need to decrement numItems. Even though the items array is 
-  // empty in updated api response, numItems still includes the electronic item in the count.
-  const totalPhysicalItems = bib.numItemsTotal || (eResourcesWithoutAeonLinks.length ?
-    bib.numItems - 1 : bib.numItems)
-  const eResourcesTotal = bib.numElectronicResources || eResourcesWithoutAeonLinks.length
-  return {
-    eResources: eResourcesWithoutAeonLinks, totalPhysicalItems, eResourcesTotal
-  }
+function hasCheckDigit(bnum = "") {
+  return isNyplBnumber(bnum) && bnum.length === 10;
+}
+
+/**
+ * Given a bnumber, remove check digit (int at 10th position) if present.
+ * Return the original bnumber if greater than or less than 10 characters.
+ */
+function removeCheckDigit(bnum = "") {
+  return hasCheckDigit(bnum) ? bnum.slice(0, -1) : bnum;
 }
 
 /**
@@ -806,8 +780,6 @@ export {
   basicQuery,
   getReqParams,
   parseServerSelectedFilters,
-  getAggregatedElectronicResources,
-  getElectronicResources,
   getUpdatedFilterValues,
   displayContext,
   truncateStringOnWhitespace,
@@ -818,6 +790,8 @@ export {
   institutionNameByNyplSource,
   addSource,
   isNyplBnumber,
+  hasCheckDigit,
+  removeCheckDigit,
   removeAeonLinksFromResource,
   isAeonLink,
   aeonUrl,

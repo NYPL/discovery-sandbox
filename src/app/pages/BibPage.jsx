@@ -25,9 +25,7 @@ import {
   matchParallels,
 } from '../utils/bibDetailsUtils';
 import {
-  getAggregatedElectronicResources,
-  isNyplBnumber,
-  getElectronicResources
+  isNyplBnumber
 } from '../utils/utils';
 import {
   buildFieldToOptionsMap,
@@ -36,6 +34,7 @@ import {
 import getOwner from '../utils/getOwner';
 import { useViewAllItems } from '../utils/bibPage';
 import { RouterProvider } from '../context/RouterContext';
+import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 
 const ItemsContainer = itemsContainerModule.ItemsContainer;
 
@@ -54,6 +53,13 @@ export const BibPage = (
   if (!bib || parseInt(bib.status, 10) === 404) {
     return <BibNotFound404 context={context} />;
   }
+  // this is a temporary fix to address a data loader async issue.
+  // !bib.items indicates that the bib in state is undefined, which
+  // should mean that we are still waiting on an api response. 
+  // The loading layer is rendered here as a safeguard 
+  // against accessing undefined bib properties before the api response
+  // has loaded.
+  if (!bib.items) return <LoadingLayer loading={true} />
 
   const bibId = bib['@id'] ? bib['@id'].substring(4) : '';
   const itemsAggregations = bib['itemAggregations'] || [];
@@ -62,27 +68,14 @@ export const BibPage = (
   const fieldToOptionsMap = buildFieldToOptionsMap(reducedItemsAggregations)
   const items = LibraryItem.getItems(bib);
 
-  const allElectronicLocatorsWithAeon = bib.electronicResources
-  const { eResources: eResourcesWithoutAeon } = getElectronicResources(bib);
+  const eResources = bib.electronicResources
 
   const hasElectronicResources = bib.electronicResources && bib.electronicResources.length > 0
-  let numPhysicalItems
-  // TODO: This is a temporary fix to handle records that may or may not have
-  // been recently indexed. When the API consistently serves bib.numItemsTotal,
-  // this can be simplified.
-  //
-  // Determine number of physical items:
-  // Newly indexed bibs have .numItemsTotal, which excludes electronic resource items:
-  if (bib.numItemsTotal !== undefined) {
-    numPhysicalItems = bib.numItemsTotal
-  } else if (hasElectronicResources) {
-    // Older bibs do not have .numItemsTotal, so we should use .numItems
-    // Decrement 1 when they have an e-resources item:
-    numPhysicalItems = bib.numItems - 1
-  } else {
-    numPhysicalItems = bib.numItems
-  }
+  const numPhysicalItems = bib.numItemsTotal
   const hasItems = numPhysicalItems > 0
+
+  const isArchiveCollection = Array.isArray(bib.issuance) && bib.issuance.some(issuance => issuance['@id'] === 'urn:biblevel:c');
+  
   const isOnlyElectronicResources = !hasItems && hasElectronicResources
   const hasPhysicalItems = !isOnlyElectronicResources && hasItems
 
@@ -121,12 +114,12 @@ export const BibPage = (
 
         <section style={{ marginTop: '20px' }}>
           <BibDetails
-            electronicResources={allElectronicLocatorsWithAeon}
+            electronicResources={eResources}
             bib={newBibModel}
             fields={topFields}
             features={features}
           />
-          {eResourcesWithoutAeon.length ? <ElectronicResources electronicResources={eResourcesWithoutAeon} id="electronic-resources" /> : null}
+          {eResources.length ? <ElectronicResources electronicResources={eResources} id="electronic-resources" /> : null}
         </section>
 
         {/*
@@ -148,6 +141,7 @@ export const BibPage = (
               shortenItems={location.pathname.indexOf('all') !== -1}
               showAll={showAll}
               finishedLoadingItems={bib.done}
+              isArchiveCollection={isArchiveCollection}
             />
           </section>
           : null

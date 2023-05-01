@@ -199,9 +199,9 @@ describe('ResultsList', () => {
     });
 
     it('should have a total items description', () => {
-      const yearPublished = component.find('.nypl-results-info');
-      expect(yearPublished.length).to.equal(1);
-      expect(yearPublished.text()).to.equal('4 Items');
+      const itemsDescription = component.find('.nypl-results-info');
+      expect(itemsDescription.length).to.equal(1);
+      expect(itemsDescription.text()).to.equal('4 Items');
     });
 
     it('should have a table', () => {

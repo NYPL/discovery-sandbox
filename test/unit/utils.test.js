@@ -26,6 +26,8 @@ import {
   camelToShishKabobCase,
   institutionNameByNyplSource,
   isNyplBnumber,
+  hasCheckDigit,
+  removeCheckDigit
 } from '../../src/app/utils/utils';
 
 /**
@@ -33,7 +35,7 @@ import {
  */
 describe('ajaxCall', () => {
   describe('No input', () => {
-    it('should return null if no enpoint is passed', () => {
+    it('should return null if no endpoint is passed', () => {
       expect(ajaxCall()).to.equal(null);
     });
   });
@@ -131,22 +133,6 @@ describe('getDefaultFilters', () => {
 });
 
 /**
- * getElectronicResources
- */
- describe('getElectronicResources', () => {
-
-   it('should return object with eResources, and count of physical items', () => {
-     const eResources = getElectronicResources(sampleBib);
-     // the sample bib has 1 checkinitem, 1 regular physical item, 1 electronic item, and
-     // 1 aeon link
-     expect(eResources.eResources.length).to.equal(1)
-     expect(eResources.eResources[0].label).to.equal('Full text available via HathiTrust')
-     expect(eResources.totalPhysicalItems).to.equal(1)
-   });
-
- });
-
-/**
  * createAppHistory
  */
 describe('createAppHistory', () => {
@@ -167,30 +153,33 @@ describe('createAppHistory', () => {
  */
 describe('destructureFilters', () => {
 
-  const apiFilters = { '@context':
-   'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
-  '@type': 'itemList',
-  itemListElement:
-   [
-     { '@type': 'nypl:Aggregation',
-       '@id': 'res:subjectLiteral',
-       id: 'subjectLiteral',
-       field: 'subjectLiteral',
-       values: [
-         {
-           count: 130,
-           label: 'Animals -- Fiction.',
-           value: 'Animals -- Fiction.',
-         },
-         {
-           count: 89,
-           label: 'Awards.',
-           value: 'Awards.',
-         },
-       ],
-     },
-   ],
-  totalResults: 665 };
+  const apiFilters = {
+    '@context':
+      'http://discovery-api-qa.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
+    '@type': 'itemList',
+    itemListElement:
+      [
+        {
+          '@type': 'nypl:Aggregation',
+          '@id': 'res:subjectLiteral',
+          id: 'subjectLiteral',
+          field: 'subjectLiteral',
+          values: [
+            {
+              count: 130,
+              label: 'Animals -- Fiction.',
+              value: 'Animals -- Fiction.',
+            },
+            {
+              count: 89,
+              label: 'Awards.',
+              value: 'Awards.',
+            },
+          ],
+        },
+      ],
+    totalResults: 665
+  };
   describe('Default call', () => {
     it('should return an empty object', () => {
       const filters = destructureFilters();
@@ -422,15 +411,15 @@ describe('basicQuery', () => {
       expect(basicQuery(defaultQueryObj)).to.be.a('function');
     });
 
-    it('should return null when the input is an empty object', () => {
+    it('should return an empty string when the input is an empty object', () => {
       const createAPIQuery = basicQuery({});
 
-      expect(createAPIQuery({})).to.equal(null);
+      expect(createAPIQuery({})).to.equal('');
     });
 
-    it('should return null with the default object', () => {
+    it('should return an empty string with the default object', () => {
       const createAPIQuery = basicQuery(defaultQueryObj);
-      expect(createAPIQuery({})).to.equal(null);
+      expect(createAPIQuery({})).to.equal('');
     });
   });
 
@@ -529,7 +518,7 @@ describe('basicQuery', () => {
     it('should clear advanced search params when explicitly told', () => {
       expect(
         createAPIQuery({ clearTitle: true, clearSubject: true, clearContributor: true }),
-      ).to.eql(null);
+      ).to.eql('');
     });
   });
 });
@@ -740,128 +729,6 @@ describe('getReqParams', () => {
   });
 });
 
-/**
- * getAggregatedElectronicResources()
- */
-describe('getAggregatedElectronicResources', () => {
-  describe('No input', () => {
-    it('should return an empty array with no input or an empty array', () => {
-      expect(getAggregatedElectronicResources()).to.eql([]);
-      expect(getAggregatedElectronicResources([])).to.eql([]);
-    });
-  });
-
-  describe('Collected Electronic Resources', () => {
-    it('should return an array with one electronic resource', () => {
-      const mockedItems = [
-        {},
-        {},
-        {
-          isElectronicResource: true,
-          electronicResources: [{
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          }],
-        },
-      ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
-          {
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          },
-        ]);
-    });
-
-    it('should return an array with two electronic resources from the same item', () => {
-      const mockedItems = [
-        {},
-        {},
-        {
-          isElectronicResource: true,
-          electronicResources: [
-            {
-              id: 'someId',
-              title: 'someTitle',
-              url: 'someUrl',
-            },
-            {
-              id: 'someId2',
-              title: 'someTitle2',
-              url: 'someUrl2',
-            },
-          ],
-        },
-      ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
-          {
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          },
-          {
-            id: 'someId2',
-            title: 'someTitle2',
-            url: 'someUrl2',
-          },
-        ]);
-    });
-
-    it('should return an array with three electronic resources, two from one item and' +
-      ' another from another item in the same array', () => {
-      const mockedItems = [
-        {},
-        {
-          isElectronicResource: true,
-          electronicResources: [
-            {
-              id: 'someId',
-              title: 'someTitle',
-              url: 'someUrl',
-            },
-          ],
-        },
-        {
-          isElectronicResource: true,
-          electronicResources: [
-            {
-              id: 'someId2',
-              title: 'someTitle2',
-              url: 'someUrl2',
-            },
-            {
-              id: 'someId3',
-              title: 'someTitle3',
-              url: 'someUrl3',
-            },
-          ],
-        },
-      ];
-      expect(getAggregatedElectronicResources(mockedItems))
-        .to.eql([
-          {
-            id: 'someId',
-            title: 'someTitle',
-            url: 'someUrl',
-          },
-          {
-            id: 'someId2',
-            title: 'someTitle2',
-            url: 'someUrl2',
-          },
-          {
-            id: 'someId3',
-            title: 'someTitle3',
-            url: 'someUrl3',
-          },
-        ]);
-    });
-  });
-});
-
 describe('truncateStringOnWhitespace()', () => {
   it('Should return a short title as-is', () => {
     expect(truncateStringOnWhitespace('Test Title', 25)).to.equal('Test Title');
@@ -935,13 +802,13 @@ describe('extractNoticePreference', () => {
     expect(extractNoticePreference({ '123': 'nonsense' })).to.equal('None');
   });
   it('should return "Email" if "268" field value is "z"', () => {
-    expect(extractNoticePreference({ '268': {'value': 'z'} })).to.equal('Email');
+    expect(extractNoticePreference({ '268': { 'value': 'z' } })).to.equal('Email');
   });
   it('should return "Telephone" if "268" field value is "p"', () => {
-    expect(extractNoticePreference({ '268': {'value': 'p'} })).to.equal('Telephone');
+    expect(extractNoticePreference({ '268': { 'value': 'p' } })).to.equal('Telephone');
   });
   it('should return "None" if "268" field value is "-"', () => {
-    expect(extractNoticePreference({ '268': {'value': '-'} })).to.equal('None');
+    expect(extractNoticePreference({ '268': { 'value': '-' } })).to.equal('None');
   });
 });
 
@@ -997,6 +864,25 @@ describe('isNyplBnumber', () => {
     expect(isNyplBnumber('pb1234')).to.eq(false);
     expect(isNyplBnumber('hb1234')).to.eq(false);
     expect(isNyplBnumber('cb1234')).to.eq(false);
+  });
+});
+
+describe('hasCheckDigit', () => {
+  it('determine if bib id is NYPL bnumber and is 10 characters long', () => {
+    expect(hasCheckDigit('b123456789')).to.eq(true);
+    expect(hasCheckDigit('b12345678')).to.eq(false);
+    expect(hasCheckDigit('b1234567891')).to.eq(false);
+    expect(hasCheckDigit('cb12345678')).to.eq(false);
+  });
+});
+
+describe('removeCheckDigit', () => {
+  it('should remove check digit from bnumber when present', () => {
+    expect(removeCheckDigit('b123456789')).to.eq('b12345678');
+  });
+  it('should return original bnumber when check digit is absent', () => {
+    expect(removeCheckDigit('b12345678')).to.eq('b12345678');
+    expect(removeCheckDigit('b1234567891')).to.eq('b1234567891');
   });
 });
 
