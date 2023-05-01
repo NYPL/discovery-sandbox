@@ -50,6 +50,7 @@ These environment variables control how certain elements on the page render and 
 | `LIB_ANSWERS_EMAIL` | string | "email@email.com" | The email used in the `Feedback` component for the destination field. |
 | `loada11y` | boolean | true, false | Used to turn on the `react-a11y` package for accessibility testing. Only use in development mode. |
 | `LOGIN_URL` | string | "" | The URL to log a user into the NYPL Catalog. The user will be redirected to sign in with their NYPL credentials. This needs a valid value in order to sign in successfully, and it needs the "my-account" value in the `FEATURES` environment variable set. |
+| `LOGIN_BASE_URL` | string | "" | The base URL used to construct the environment-dependent logout link. It will soon be used to construct the login URL, replacing the LOGIN_URL env var. |
 | `NON_RECAP_CLOSED_LOCATIONS` | string | "" | The list of closed locations that are not recap. |
 | `OPEN_LOCATIONS` |  string | "Library of the Performing Arts" | A comma-delimited list of locations. If set to anything other than an empty string, only locations matching one of these strings will be displayed. |
 | `RECAP_CLOSED_LOCATIONS` | string | "" | The list of closed locations that are recap. |

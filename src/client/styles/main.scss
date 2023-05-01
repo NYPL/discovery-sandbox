@@ -1,8 +1,6 @@
 /* Import style rules from NYPL Design System */
 // This imports system-font styles and DatePicker styles.
 @import '~@nypl/design-system-react-components/dist/styles.css';
-// This imports DS breakpoints and mixins.
-@import '~@nypl/design-system-react-components/dist/resources.scss';
 
 /*
 App-specific utilities and defaults
@@ -18,9 +16,7 @@ Import style rules from NYPL React module components
 */
 @import "~@nypl/dgx-header-component/dist/styles/main";
 @import "~@nypl/dgx-react-footer/dist/styles/styles";
-
 @import "components/**/*.scss";
-
 @import "style-v2.scss";
 
 // From older DS version
@@ -243,5 +239,49 @@ a:focus {
 @include media($nypl-breakpoint-small) {
   .research-modal__content {
     padding: var(--nypl-space-s) var(--nypl-space-l);
+  }
+}
+
+// temporary search input element styling
+// TODO: Remove when external input clearing fix is added to design system
+// https://jira.nypl.org/browse/SCC-3423
+.searchbar-input-temp {
+  background-color: var(--nypl-colors-ui-white);
+  border: 1px solid;
+  border-radius: var(--nypl-radii-none);
+  border-color: var(--nypl-colors-gray-200);
+  font-size: var(--nypl-fontSizes-text-caption);
+  padding-top: var(--nypl-space-inset-narrow);
+  padding-bottom: var(--nypl-space-inset-narrow);
+  padding-inline-start: var(--nypl-space-inset-default);
+  padding-inline-end: var(--nypl-space-inset-default);
+  width: 100%;
+  min-width: 0px;
+  outline-offset: 2px;
+  position: relative;
+  appearance: none;
+  transition-property: var(--nypl-transition-property-common);
+  transition-duration: var(--nypl-transition-duration-normal);
+  height: var(--nypl-sizes-10);
+  min-height: 44px;
+
+  @include media($nypl-breakpoint-medium) {
+    min-height: auto;
+  }
+
+  &::placeholder {
+    font-style: normal;
+    color: var(--nypl-colors-ui-gray-dark);
+    font-size: 16px;
+  }
+
+  &::focus,
+  &::hover {
+    border-radius: none;
+    outline-color: "#135772" !important;
+    outline-offset: 0 !important;
+    border-radius: none;
+    outline-style: solid !important;
+    outline-width: 0.25em !important;
   }
 }

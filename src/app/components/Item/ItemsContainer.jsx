@@ -47,7 +47,7 @@ class ItemsContainer extends React.Component {
      * we need to shorten it to the page limit AND
      * not show all
      */
-    const { bibId, holdings, searchKeywords, showAll } = this.props;
+    const { bibId, holdings, searchKeywords, showAll, isArchiveCollection } = this.props;
     const itemsToDisplay =
       items && shortenItems && !showAll
         ? items.slice(0, itemsListPageLimit)
@@ -62,6 +62,7 @@ class ItemsContainer extends React.Component {
         id="bib-item-table"
         searchKeywords={searchKeywords}
         holdings={holdings}
+        isArchiveCollection={isArchiveCollection}
       />
     ) : null;
   }
@@ -195,12 +196,14 @@ ItemsContainer.propTypes = {
   shortenItems: PropTypes.bool,
   showAll: PropTypes.bool,
   finishedLoadingItems: PropTypes.bool,
+  isArchiveCollection: PropTypes.bool,
 };
 
 ItemsContainer.defaultProps = {
   shortenItems: false,
   searchKeywords: '',
-  itemPage: '0'
+  itemPage: '0',
+  isArchiveCollection: false,
 };
 
 ItemsContainer.contextTypes = {
