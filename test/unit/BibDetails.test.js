@@ -498,29 +498,5 @@ describe('BibDetails', () => {
       expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
       expect(ltrComponent.find('li').at(0).prop('dir')).to.not.eql('rtl')
     })
-
-    it('should render the description field as Summary', () => {
-      const mockBibRtl = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u200F\u00E9' }] } }
-      const mockBibLtr = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u00E9' }] } }
-      const rtlComponent = mount(
-        <RouterProvider value={{ push: () => {} }}>
-          {
-            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
-          }
-        </RouterProvider>,
-      );
-      const ltrComponent = mount(
-        <RouterProvider value={{ push: () => {} }}>
-          {
-            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
-          }
-        </RouterProvider>,
-      )
-
-      expect(rtlComponent.find('li').at(0).prop('className')).to.eql('rtl')
-      expect(ltrComponent.find('li').at(0).prop('className')).to.not.eql('rtl')
-      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
-      expect(ltrComponent.find('li').at(0).prop('dir')).to.not.eql('rtl')
-    })
   })
 });
