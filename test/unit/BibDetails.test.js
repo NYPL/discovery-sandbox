@@ -179,6 +179,82 @@ describe('BibDetails', () => {
           lccn['@value'],
         );
       });
+      xit(`should display publication, extent, subjects, shelfMark, and other identifiers [${spec.description}]`, () => {
+        component = mount(
+          <RouterProvider value={{ push: () => {} }}>
+            {React.createElement(BibDetails, { bib: spec.bib, fields })}
+          </RouterProvider>,
+        );
+        const bibDetailsComponent = component.children();
+
+        expect(bibDetailsComponent.type()).to.equal(BibDetails);
+
+        expect(bibDetailsComponent.find('dd')).to.have.lengthOf(8);
+        console.log(
+          'logging dds length',
+          bibDetailsComponent.find('dd').length,
+        );
+        expect(bibDetailsComponent.find('dt')).to.have.lengthOf(8);
+        expect(bibDetailsComponent.find('dd').at(0).text()).to.equal(
+          bibs[0].publicationStatement[0],
+        );
+        expect(bibDetailsComponent.find('dd').at(1).text()).to.equal(
+          bibs[0].extent[0],
+        );
+        // Note with noteType=Bibliography:
+        expect(bibDetailsComponent.find('dd').at(3).text()).to.equal(
+          bibs[0].note[0].prefLabel,
+        );
+        expect(bibDetailsComponent.find('dd').at(4).text()).to.equal(
+          bibs[0].shelfMark[0],
+        );
+        // Isbn:
+        const [isbn, incorrectIsbn] = bibs[0].identifier.filter(
+          (ident) => ident['@type'] === 'bf:Isbn',
+        );
+        expect(
+          bibDetailsComponent.find('dd').at(5).find('li').at(0).text(),
+        ).to.equal(isbn['@value']);
+        // Only check for identityStatus message if serialization supports it (urn: style does not):
+        if (typeof bibs[0].identifier[0] === 'string') {
+          expect(
+            bibDetailsComponent.find('dd').at(5).find('li').at(1).text(),
+          ).to.equal(
+            `${incorrectIsbn['@value']} (${incorrectIsbn.identifierStatus})`,
+          );
+        }
+        // Lccn:
+        const lccn = bibs[0].identifier
+          .filter((ident) => ident['@type'] === 'bf:Lccn')
+          .pop();
+        expect(bibDetailsComponent.find('dd').at(6).text()).to.equal(
+          lccn['@value'],
+        );
+      });
+    });
+  });
+
+  describe('Description field', () => {
+    const fields = [
+      { label: 'Summary', value: 'description' }
+    ];
+    let component;
+
+    it('should display "description" field as Summary', () => {
+      component = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {React.createElement(BibDetails, { bib: bibs[4], fields })}
+        </RouterProvider>,
+      );
+      const bibDetailsComponent = component.children();
+      console.log(bibDetailsComponent.find('dd').length);
+      const description = bibs[4].description[0];
+      expect(bibDetailsComponent.find('dt').at(0).text()).to.equal(
+        "Summary",
+      );
+      expect(bibDetailsComponent.find('dd').at(0).text()).to.equal(
+        description,
+      );
     });
   });
 
@@ -452,6 +528,30 @@ describe('BibDetails', () => {
     })
 
     it('should handle rtl text in parallel notes', () => {
+      const mockBibRtl = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u200F\u00E9' }] } }
+      const mockBibLtr = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u00E9' }] } }
+      const rtlComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibRtl, fields: mockFields, features: ['parallels'] })
+          }
+        </RouterProvider>,
+      );
+      const ltrComponent = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {
+            React.createElement(BibDetails, { bib: mockBibLtr, fields: mockFields, features: ['parallels'] })
+          }
+        </RouterProvider>,
+      )
+
+      expect(rtlComponent.find('li').at(0).prop('className')).to.eql('rtl')
+      expect(ltrComponent.find('li').at(0).prop('className')).to.not.eql('rtl')
+      expect(rtlComponent.find('li').at(0).prop('dir')).to.eql('rtl')
+      expect(ltrComponent.find('li').at(0).prop('dir')).to.not.eql('rtl')
+    })
+
+    it('should render the description field as Summary', () => {
       const mockBibRtl = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u200F\u00E9' }] } }
       const mockBibLtr = { notesGroupedByNoteType: { fakeNote: [{ prefLabel: '\u00E9' }] } }
       const rtlComponent = mount(
