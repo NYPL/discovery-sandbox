@@ -318,6 +318,20 @@ We have CI/CD configured through travis for the following branches:
 
 We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
 
+### Production Ready Checklist
+
+Before deploying DFE to Production, consider these questions:
+
+- **Passed QA?**: Require verbal sign-off by relevant testers. This may be some combination of QA Engineers and Engineers. Should generally involve two people.
+- **Are all dependencies deployed?**: Does the new feature depend on other services that should be updated first?
+- **Are there config changes?**: If the feature depends on new config and the deploment action will not, on it's own, update deployed config, consider applying config update before deployment if possible.
+
+After deploying DFE to Production, run this set of checks to verify the deployment:
+
+ - Do a light regression test of basic functionality (e.g. Homepage, Search, Filter, View bib, Log in/out)
+ - Test the specific feature introduced by the deployment
+ - Manually invoke Chris's integration tests
+
 ## Feedback Form
 
 The `Feedback` component in `src/app/components/Feedback/Feedback.jsx` can help us collect the feedback from patrons, send it to the Google Form, and finally, present it with [the Google Spreadsheet](https://docs.google.com/spreadsheets/d/1jD8EnC0uoPuo118jUF3of9MNgvrXTv1Jww67ZVJCSHs/edit#gid=536144761).

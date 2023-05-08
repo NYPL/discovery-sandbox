@@ -144,8 +144,8 @@ describe('ItemFilters', () => {
       expect(itemFilterInfo.find('span').length).to.equal(1);
       expect(component.find('.item-filter-info').find('span').text()).to.equal("Filtered by format: 'Text'");
     });
-    it('should display "5 Results Found"', () => {
-      expect(component.find('h3').text()).to.equal('5 Results Found');
+    it('should display "5 Matching Items"', () => {
+      expect(component.find('h3').text()).to.equal('5 Matching Items');
     });
   });
   // multiple filters will be an array in the router context
@@ -180,8 +180,8 @@ describe('ItemFilters', () => {
       expect(itemFilterInfo.find('span').length).to.equal(1);
       expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'Text', 'PRINT'");
     });
-    it('should display "1 Result Found"', () => {
-      expect(component.find('h3').text()).to.equal('1 Result Found');
+    it('should display "1 Matching Item"', () => {
+      expect(component.find('h3').text()).to.equal('1 Matching Item');
     });
   });
 
@@ -219,8 +219,8 @@ describe('ItemFilters', () => {
       expect(itemFilterInfo.find('span').length).to.equal(1);
       expect(itemFilterInfo.find('span').text()).to.equal("Filtered by format: 'PRINT', status: 'Available'");
     });
-    it('should display "0 Results Found"', () => {
-      expect(component.find('h3').text()).to.equal('No Results Found');
+    it('should display "No Matching Items"', () => {
+      expect(component.find('h3').text()).to.equal('No Matching Items');
     });
   });
 
