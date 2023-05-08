@@ -195,7 +195,6 @@ describe('BibDetails', () => {
         </RouterProvider>,
       );
       const bibDetailsComponent = component.children();
-      console.log(bibDetailsComponent.find('dd').length);
       const description = bibs[4].description[0];
       expect(bibDetailsComponent.find('dt').at(0).text()).to.equal(
         "Summary",
