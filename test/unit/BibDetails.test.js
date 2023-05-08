@@ -182,6 +182,29 @@ describe('BibDetails', () => {
     });
   });
 
+  describe('Description field', () => {
+    const fields = [
+      { label: 'Summary', value: 'description' }
+    ];
+    let component;
+
+    it('should display "description" field as Summary', () => {
+      component = mount(
+        <RouterProvider value={{ push: () => {} }}>
+          {React.createElement(BibDetails, { bib: bibs[4], fields })}
+        </RouterProvider>,
+      );
+      const bibDetailsComponent = component.children();
+      const description = bibs[4].description[0];
+      expect(bibDetailsComponent.find('dt').at(0).text()).to.equal(
+        "Summary",
+      );
+      expect(bibDetailsComponent.find('dd').at(0).text()).to.equal(
+        description,
+      );
+    });
+  });
+
   describe('Subject headings', () => {
     const fields = [
       { label: 'Publication', value: 'publicationStatement' },
