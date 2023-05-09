@@ -68,6 +68,23 @@ describe('bibDetailsUtils', () => {
     });
   });
 
+  describe('definitionItem empty href', () => {
+    const value = {
+      label: 'ItemLabel',
+      content: '',
+      source: { itemSource: 'nypl' },
+    };
+
+    const item = definitionItem(value);
+
+
+    it('should not render a link when label is provded without content', () => {
+      const dsLink = item.props.children[0];
+      expect(dsLink).to.equal('ItemLabel');
+    });
+
+  });
+
   describe('annotatedMarcDetails', () => {
     it('should map fields in annotated marc to term,definition pairs, where term points to field label and definition points to list of definition items populated from field values', () => {
       const mockBib = {
