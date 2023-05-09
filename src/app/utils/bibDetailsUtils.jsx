@@ -57,11 +57,12 @@ const allFields = {
 };
 
 const definitionItem = (value, index = 0) => {
-  const link = (
+  // try to render a link if href is set, if not default to label
+  const link = value.content ? (
     <DSLink href={value.content}>
       {value.label}
     </DSLink>
-  );
+  ) : value.label;
 
   return (
     <div key={index}>
