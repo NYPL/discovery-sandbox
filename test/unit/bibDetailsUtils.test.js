@@ -81,7 +81,6 @@ describe('bibDetailsUtils', () => {
       const dsLink = item.props.children[0];
       expect(dsLink).to.equal('ItemLabel');
     });
-
   });
 
   describe('annotatedMarcDetails', () => {
