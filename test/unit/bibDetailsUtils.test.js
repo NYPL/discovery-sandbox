@@ -77,7 +77,7 @@ describe('bibDetailsUtils', () => {
 
     const item = definitionItem(value);
 
-    it('should not render a link when label is provded without content', () => {
+    it('should not render a link when label is provided without content', () => {
       const dsLink = item.props.children[0];
       expect(dsLink).to.equal('ItemLabel');
     });
