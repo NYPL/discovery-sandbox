@@ -68,7 +68,7 @@ describe('bibDetailsUtils', () => {
     });
   });
 
-  describe('definitionItem empty href', () => {
+  describe('definitionItem with label and blank content', () => {
     const value = {
       label: 'ItemLabel',
       content: '',
