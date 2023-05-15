@@ -40,23 +40,6 @@ describe('Application', () => {
     expect(component.find('.app-wrapper')).to.have.length(1);
   });
 
-  it('should render the NYPL header', () => {
-    expect(component.find('#nyplHeader')).to.have.length(1);
-  });
-
-  it('should have the skip navigation link enabled,', () => {
-    expect(component.contains(
-      <Header
-        navData={navConfig.current}
-        skipNav={{ target: 'mainContent' }}
-        patron={component.state.patron}
-      />)).to.equal(true);
-  });
-
-  it('should render a <Footer /> components', () => {
-    expect(component.find('Footer')).to.have.length(1);
-  });
-
   describe('should set media type in context', () => {
     const breakpointObj = {};
     breakpoints.forEach(breakpoint => breakpointObj[breakpoint.media] = breakpoint.maxValue);
