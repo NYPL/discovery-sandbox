@@ -31,6 +31,7 @@ const allFields = {
     { label: 'Found In', value: 'partOf' },
     { label: 'Publication Date', value: 'serialPublicationDates' },
     { label: 'Description', value: 'extent' },
+    { label: 'Summary', value: 'description' },
     { label: 'Donor/Sponsor', value: 'donor' },
     { label: 'Series Statement', value: 'seriesStatement' },
     { label: 'Uniform Title', value: 'uniformTitle' },
@@ -56,11 +57,12 @@ const allFields = {
 };
 
 const definitionItem = (value, index = 0) => {
-  const link = (
+  // try to render a link if href is set, if not default to label
+  const link = value.content ? (
     <DSLink href={value.content}>
       {value.label}
     </DSLink>
-  );
+  ) : value.label;
 
   return (
     <div key={index}>

@@ -8,6 +8,7 @@ const bibs = [
     creatorLiteral: ['De Grazia, Margreta.'],
     dateStartYear: 1991,
     dateString: ['1991'],
+    description: [''],
     dimensions: ['23 cm.'],
     extent: ['xi, 244 p., [8] p. of plates : ill. ;'],
     idIsbn: ['0198117787'],
@@ -1547,6 +1548,255 @@ const bibs = [
     uri: 'b21147020',
     suppressed: false,
   },
+  //##### bib with description #####
+  {
+    '@context': 'http://discovery-api-production.us-east-1.elasticbeanstalk.com/api/v0.1/discovery/context_all.jsonld',
+    '@type': [
+      'nypl:Item',
+      'nypl:Resource'
+    ],
+    '@id': 'res:b10049806',
+    'carrierType': [
+      {
+        '@id': 'carriertypes:nc',
+        'prefLabel': 'volume'
+      }
+    ],
+    'contributorLiteral': [
+      'Hurty-Peck & Company.'
+    ],
+    'createdString': [
+      '1971'
+    ],
+    'createdYear': 1971,
+    'creatorLiteral': [
+      'Noling, A. W.,'
+    ],
+    'dateStartYear': 1971,
+    'dateString': [
+      '1971'
+    ],
+    'description': [
+      'Bibliography of literature about drinks and drinking, primarily English-language titles in the Hurty-Peck Library of Beverage Literature. Over 5000 citations are alphabetically arranged by author. Includes topical subject list, short-title list, list of libraries with beverage collections.'
+    ],
+    'dimensions': [
+      '23 cm'
+    ],
+    'electronicResources': [],
+    'extent': [
+      '865 pages ;'
+    ],
+    'idIsbn': [
+      '9780810803527',
+      '0810803526'
+    ],
+    'idLccn': [
+      '   70142238'
+    ],
+    'identifier': [
+      {
+        '@type': 'bf:ShelfMark',
+        '@value': 'JFD 96-18728'
+      },
+      {
+        '@type': 'nypl:Bnumber',
+        '@value': '10049806'
+      },
+      {
+        '@type': 'bf:Isbn',
+        '@value': '9780810803527'
+      },
+      {
+        '@type': 'bf:Isbn',
+        '@value': '0810803526'
+      },
+      {
+        '@type': 'bf:Lccn',
+        '@value': '   70142238'
+      },
+      {
+        '@type': 'bf:Identifier',
+        '@value': '(OCoLC)265488'
+      },
+      {
+        '@type': 'bf:Identifier',
+        '@value': '(OCoLC)38231458 (OCoLC)122693667 (OCoLC)216575974 (OCoLC)247734956 (OCoLC)977272068'
+      }
+    ],
+    'issuance': [
+      {
+        '@id': 'urn:biblevel:m',
+        'prefLabel': 'monograph/item'
+      }
+    ],
+    'itemAggregations': [
+      {
+        '@type': 'nypl:Aggregation',
+        '@id': 'res:location',
+        'id': 'location',
+        'field': 'location',
+        'values': [
+          {
+            'value': 'loc:mal82',
+            'count': 1,
+            'label': 'Schwarzman Building - Main Reading Room 315'
+          }
+        ]
+      },
+      {
+        '@type': 'nypl:Aggregation',
+        '@id': 'res:format',
+        'id': 'format',
+        'field': 'format',
+        'values': []
+      },
+      {
+        '@type': 'nypl:Aggregation',
+        '@id': 'res:status',
+        'id': 'status',
+        'field': 'status',
+        'values': [
+          {
+            'value': 'status:a',
+            'count': 1,
+            'label': 'Available'
+          }
+        ]
+      }
+    ],
+    'items': [
+      {
+        '@id': 'res:i12872246',
+        'accessMessage': [
+          {
+            '@id': 'accessMessage:1',
+            'prefLabel': 'Use in library'
+          }
+        ],
+        'catalogItemType': [
+          {
+            '@id': 'catalogItemType:55',
+            'prefLabel': 'book, limited circ, MaRLI'
+          }
+        ],
+        'eddRequestable': true,
+        'holdingLocation': [
+          {
+            '@id': 'loc:mal82',
+            'prefLabel': 'Schwarzman Building - Main Reading Room 315'
+          }
+        ],
+        'idBarcode': [
+          '33433038947275'
+        ],
+        'identifier': [
+          {
+            '@type': 'bf:ShelfMark',
+            '@value': 'JFD 96-18728'
+          },
+          {
+            '@type': 'bf:Barcode',
+            '@value': '33433038947275'
+          }
+        ],
+        'owner': [
+          {
+            '@id': 'orgs:1101',
+            'prefLabel': 'General Research Division'
+          }
+        ],
+        'physRequestable': false,
+        'physicalLocation': [
+          'JFD 96-18728'
+        ],
+        'requestable': [
+          true
+        ],
+        'shelfMark': [
+          'JFD 96-18728'
+        ],
+        'specRequestable': false,
+        'status': [
+          {
+            '@id': 'status:a',
+            'prefLabel': 'Available'
+          }
+        ],
+        'uri': 'i12872246',
+        'idNyplSourceId': {
+          '@type': 'SierraNypl',
+          '@value': '12872246'
+        }
+      }
+    ],
+    'language': [
+      {
+        '@id': 'lang:eng',
+        'prefLabel': 'English'
+      }
+    ],
+    'lccClassification': [
+      'Z5776.B4 N63'
+    ],
+    'materialType': [
+      {
+        '@id': 'resourcetypes:txt',
+        'prefLabel': 'Text'
+      }
+    ],
+    'mediaType': [
+      {
+        '@id': 'mediatypes:n',
+        'prefLabel': 'unmediated'
+      }
+    ],
+    'note': [
+      {
+        'noteType': 'Note',
+        '@type': 'bf:Note',
+        'prefLabel': 'Includes holdings of the Hurty-Peck Library of Beverage Literature, now the A.W. Noling Hurty-Peck Collection of Beverage Literature in the University of California, Davis, Library.'
+      }
+    ],
+    'numAvailable': 1,
+    'numElectronicResources': 0,
+    'numItems': 1,
+    'numItemsMatched': 1,
+    'numItemsTotal': 1,
+    'nyplSource': [
+      'sierra-nypl'
+    ],
+    'placeOfPublication': [
+      'Metuchen, N.J.,'
+    ],
+    'publicationStatement': [
+      'Metuchen, N.J., Scarecrow Press, 1971.'
+    ],
+    'publisherLiteral': [
+      'Scarecrow Press,'
+    ],
+    'shelfMark': [
+      'JFD 96-18728'
+    ],
+    'subjectLiteral': [
+      'Beverages -- Bibliography.',
+      'Hurty-Peck & Company -- Library -- Catalogs.',
+      'Noling, A. W. -- Library -- Catalogs.'
+    ],
+    'title': [
+      'Beverage literature : a bibliography'
+    ],
+    'titleDisplay': [
+      'Beverage literature : a bibliography / compiled by A.W. Nolan.'
+    ],
+    'type': [
+      'nypl:Item'
+    ],
+    'updatedAt': 1636077649346,
+    'uri': "b10049806",
+    'suppressed': false,
+    'hasItemVolumes': false,
+    'hasItemDates': false
+  }
 ];
 
 export default bibs;
