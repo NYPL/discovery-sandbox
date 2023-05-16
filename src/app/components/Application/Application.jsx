@@ -7,6 +7,7 @@ import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
 import DataLoader from '../DataLoader/DataLoader';
+import appConfig from '../../data/appConfig';
 import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
 import { PatronProvider } from '../../context/PatronContext';
