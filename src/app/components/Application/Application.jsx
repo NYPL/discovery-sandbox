@@ -7,7 +7,6 @@ import { union as _union } from 'underscore';
 
 import Feedback from '../Feedback/Feedback';
 import DataLoader from '../DataLoader/DataLoader';
-import appConfig from '../../data/appConfig';
 import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
 import { PatronProvider } from '../../context/PatronContext';
@@ -84,8 +83,6 @@ export class Application extends React.Component {
         <FeedbackBoxProvider>
           <MediaContext.Provider value={this.state.media}>
             <div className="app-wrapper">
-              <div id="nypl-header" />
-              <script type="module" src={`${appConfig.nyplHeaderUrl}/header.min.js?containerId=nypl-header`} async></script> 
               <DataLoader
                 location={this.context.router.location}
                 query={this.context.router.location.query}
@@ -93,8 +90,6 @@ export class Application extends React.Component {
               >
                 {React.cloneElement(this.props.children)}
               </DataLoader>
-              <div id="nypl-footer" />
-              <script type="module" src={`${appConfig.nyplHeaderUrl}/footer.min.js?containerId=nypl-footer`} async></script> 
               <Feedback />
             </div>
           </MediaContext.Provider>
