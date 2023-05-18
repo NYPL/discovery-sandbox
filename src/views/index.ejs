@@ -21,7 +21,17 @@
     <meta name="twitter:site" content="@nypl">
     <meta name="twitter:creator" content="@nypl">
     <meta name="twitter:image" content="">
+    <script src="<%- adobeAnalyticsEmbedCode %>" async></script>
 
+    <script>
+      // First define the global variable for the entire data layer array
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      // Then push in the variables required in the Initial Data Layer Definition
+      window.adobeDataLayer.push({
+        page_name: "Home",
+        site_section: "Content"
+      });
+    </script>
 
 <% if (isProduction) { %>
     <!-- Minified Styles -->

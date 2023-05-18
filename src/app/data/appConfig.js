@@ -82,6 +82,7 @@ const appConfig = {
   itemBatchSize: process.env.ITEM_BATCH_SIZE || 100,
   webpacBaseUrl: process.env.WEBPAC_BASE_URL,
   shepBibsLimit: process.env.SHEP_BIBS_LIMIT || 50,
+  adobeAnalyticsEmbedCode: process.env.ADOBE_ANALYTICS_EMBED_CODE || ''
 };
 
 export default appConfig;
