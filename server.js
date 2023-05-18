@@ -26,7 +26,7 @@ const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
-const ADOBE_ANALYTICS_EMBED_CODE = appConfig.adobeAnalyticsEmbedCode;
+const LAUNCH_EMBED_URL = appConfig.launchEmbedUrl;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 const app = express();
@@ -111,7 +111,7 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
-          adobeAnalyticsEmbedCode: ADOBE_ANALYTICS_EMBED_CODE
+          launchEmbedUrl: LAUNCH_EMBED_URL
         });
       } else {
         res.status(404).redirect(`${appConfig.baseUrl}/`);
