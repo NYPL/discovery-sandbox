@@ -41,9 +41,23 @@ function getAccountPage(res, req) {
  *  they're not injected into the html sent to the client (lest they generate a
  *  bunch of erroneous 404s or worse.
  */
-function preprocessAccountHtml(html) {
+function removeLinkAndScriptTags(html) {
   html = html.replace(/<link [^>]+\/>/g, '')
   html = html.replace(/<script type="text\/javascript" src=[^>]+>\s*<\/script>/g, '')
+  return html
+}
+/**
+ * Swap actual status labels for something more patron-friendly
+ */
+function swapStatusLabels(html) {
+  html = html.replace(/<td class="patFuncStatus"> AVAILABLE <\/td>/g, '<td class="patFuncStatus"> REQUEST PLACED </td>')
+  html = html.replace(/<td class="patFuncStatus"> READY SOON <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
+  return html
+}
+
+function preprocessAccountHtml(html) {
+  html = removeLinkAndScriptTags(html)
+  html = swapStatusLabels(html)
   return html
 }
 
@@ -111,10 +125,10 @@ function postToAccountPage(req, res) {
   axios.post(
     `${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
     reqBodyString, {
-      headers: {
-        Cookie: req.headers.cookie,
-      },
-    })
+    headers: {
+      Cookie: req.headers.cookie,
+    },
+  })
     .then(resp => res.json(resp.data))
     .catch(resp => res.json({ error: resp }));
 }
@@ -124,9 +138,11 @@ function logError(req) {
 }
 
 export default {
+  removeLinkAndScriptTags,
   preprocessAccountHtml,
   fetchAccountPage,
   postToAccountPage,
   getHomeLibrary,
   logError,
+  swapStatusLabels,
 };
