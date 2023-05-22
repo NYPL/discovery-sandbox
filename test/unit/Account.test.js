@@ -150,7 +150,7 @@ describe('`fetchAccountPage`', () => {
   });
 });
 
-describe('preprocessAccountHtml', () => {
+describe('removeLinkAndScriptTags', () => {
   it('removes <link> and <script> tags from 5.1 markup (1)', () => {
     const html = fs.readFileSync('./test/fixtures/sierra-5.1-patron-5035845-webpac-holds-markup.html', 'utf8');
     let dom = jsdom(html);
@@ -160,7 +160,7 @@ describe('preprocessAccountHtml', () => {
     // and 5 remote <script> tags
     expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
 
-    dom = jsdom(Account.preprocessAccountHtml(html))
+    dom = jsdom(Account.removeLinkAndScriptTags(html))
 
     // It now has no <link> or remote <script> tags:
     expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
@@ -177,7 +177,7 @@ describe('preprocessAccountHtml', () => {
     // and 5 remote <script> tags
     expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
 
-    dom = jsdom(Account.preprocessAccountHtml(html))
+    dom = jsdom(Account.removeLinkAndScriptTags(html))
 
     // It now has no <link> or remote <script> tags:
     expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
@@ -194,11 +194,27 @@ describe('preprocessAccountHtml', () => {
     // And 5.3 markup has remote 5 script tags
     expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
 
-    dom = jsdom(Account.preprocessAccountHtml(html))
+    dom = jsdom(Account.removeLinkAndScriptTags(html))
 
     // It now has no <link> or remote <script> tags:
     expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
     // Ensure other critical parts of document remain
     expect(dom.querySelectorAll('.patFuncBibTitle a')).to.have.lengthOf(13);
   });
+
+  describe('swapStatusLabels', () => {
+    let html = fs.readFileSync('./test/fixtures/account-markup.html', 'utf8')
+    html = Account.swapStatusLabels(html)
+    it('does not remove AVAILABLE from title element', () => {
+      expect(html).to.include('class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] AVAILABLE')
+    })
+    it('replaces AVAILABLE in multiple status cells', () => {
+      expect(html).to.include('<td class="patFuncStatus"> REQUEST PLACED </td>')
+      expect(html).to.not.include('<td class="patFuncStatus"> AVAILABLE </td>')
+    })
+    it('replaces READY SOON in status cell', () => {
+      expect(html).to.include('READY FOR PICKUP')
+      expect(html).to.not.include('READY SOON')
+    })
+  })
 });
