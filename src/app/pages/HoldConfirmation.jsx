@@ -355,9 +355,8 @@ export class HoldConfirmation extends React.Component {
           </p>
           <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
-            Please log in to your
-            <DSLink href="https://www.nypl.org/research/research-catalog/account">patron account</DSLink>
-            to check for updates. The item will be listed as "Ready for pickup" under your holds tab when
+            Please log in to your <DSLink href="https://www.nypl.org/research/research-catalog/account">patron account</DSLink> to 
+            check for updates. The item will be listed as "Ready for pickup" under your holds tab when
             it is available. You will receive an email confirmation after your item has arrived.
           </p>
           <p>
@@ -375,9 +374,9 @@ export class HoldConfirmation extends React.Component {
             books for up to fourteen days, so you can request materials up to two weeks in advance.
           </p>
           <p>
-            If you would like to cancel your request, or if you have questions, please
-            <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink>
-            or call 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>).
+            If you would like to cancel your request, or if you have questions, 
+            please <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink> or 
+            call 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>).
           </p>
 
           {this.renderBackToClassicLink()}
