@@ -365,13 +365,13 @@ export class HoldConfirmation extends React.Component {
             ready about an hour after opening on the next business day.
           </p>
           <p>
-            Off-site materials requested before 2:30 PM will be delivered the following business day.
-            Off-site materials requested after 2:30 PM are usually ready in two business days, not
-            including Saturdays.
+            Off-site materials requested before 2:30 pm are usually ready for pickup about an hour after 
+            opening the next day (check <DSLink href="https://nypl.org/">nypl.org</DSLink> for library 
+            hours). Off-site materials requested after 2:30 pm Mon–Thu are usually ready in two days; materials 
+            requested after 2:30pm Fri–Sun are ready on Tuesday. Some materials are not delivered on Saturdays.
           </p>
           <p>
-            Check <DSLink href="https://nypl.org/">nypl.org</DSLink> for library hours. We will hold
-            books for up to fourteen days, so you can request materials up to two weeks in advance.
+            We will hold books for up to fourteen days, so you can request materials up to two weeks in advance.
           </p>
           <p>
             If you would like to cancel your request, or if you have questions, 
