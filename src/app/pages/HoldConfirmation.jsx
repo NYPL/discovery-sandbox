@@ -355,19 +355,27 @@ export class HoldConfirmation extends React.Component {
           </p>
           <h3 id="physical-delivery">Physical Delivery</h3>
           <p>
-            Please log into your library account to check for updates. The item will be
-            listed as “Ready for Pickup” under your Holds tab when it is available. You
-            will also receive an email confirmation after your item has arrived.
+            Please log in to your <DSLink href="https://www.nypl.org/research/research-catalog/account">patron account</DSLink> to 
+            check for updates. The item will be listed as "Ready for pickup" under your holds tab when
+            it is available. You will receive an email confirmation after your item has arrived.
           </p>
           <p>
-            For off-site materials, requests made before 2:30 PM will be delivered the
-            following business day. Requests made after 2:30 PM on Fridays or over the
-            weekend will be delivered the following Tuesday. We will hold books for up
-            to seven days, so you can request materials up to a week in advance.
+            On-site materials requested up to an hour before closing are usually ready for pickup within
+            an hour. On-site materials requested within an hour of closing or outside business hours are
+            ready about an hour after opening on the next business day.
           </p>
           <p>
-            If you would like to cancel your request, or if you have questions,
-            please <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink> or
+            Off-site materials requested before 2:30 pm are usually ready for pickup about an hour after 
+            opening the next day (check <DSLink href="https://nypl.org/">nypl.org</DSLink> for library 
+            hours). Off-site materials requested after 2:30 pm Mon–Thu are usually ready in two days; materials 
+            requested after 2:30pm Fri–Sun are ready on Tuesday. Some materials are not delivered on Saturdays.
+          </p>
+          <p>
+            We will hold books for up to fourteen days, so you can request materials up to two weeks in advance.
+          </p>
+          <p>
+            If you would like to cancel your request, or if you have questions, 
+            please <DSLink href="https://gethelp.nypl.org/customer/portal/emails/new">email us</DSLink> or 
             call 917-ASK-NYPL (<DSLink href="tel:19172756975">917-275-6975</DSLink>).
           </p>
 
