@@ -787,6 +787,7 @@ function aeonUrl(item) {
 
 export {
   trackDiscovery,
+  trackVirtualPageView,
   ajaxCall,
   getSortQuery,
   createAppHistory,
