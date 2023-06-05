@@ -201,6 +201,24 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
 /**
+ * Tracks a virtual page view to Adobe Analytics on page navigation.
+ */
+const trackVirtualPageView = (pageName = '', siteSection = '') => {
+  const adobeDataLayer = window.adobeDataLayer || [];
+
+  adobeDataLayer.push({
+    page_name: null,
+    site_section: null
+  });
+
+  adobeDataLayer.push({
+    event: "virtual_page_view",
+    page_name: pageName,
+    site_section: siteSection
+  });
+}
+
+/**
  * basicQuery
  * A curry function that will take in the application's props and return a function that will
  * overwrite whatever values it needs to overwrite to create the needed API query.
