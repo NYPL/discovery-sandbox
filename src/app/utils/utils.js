@@ -239,7 +239,7 @@ const adobeAnalyticsRouteToPageName = (route) => {
 const trackVirtualPageView = (pathname = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
-
+  console.log("Virtual Page View Tracked", adobeAnalyticsRouteToPageName(route));
   adobeDataLayer.push({
     page_name: null,
     site_section: null
