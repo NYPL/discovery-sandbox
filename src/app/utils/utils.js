@@ -239,8 +239,7 @@ const adobeAnalyticsRouteToPageName = (route) => {
 const trackVirtualPageView = (pathname = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
-  console.log('tracked route', route);
-  console.log('tracked page title', adobeAnalyticsRouteToPageName(route));
+
   adobeDataLayer.push({
     page_name: null,
     site_section: null
