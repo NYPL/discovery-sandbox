@@ -229,7 +229,7 @@ const adobeAnalyticsRouteToPageName = (route) => {
     case route.match(/^\/?(\?.+)?$/)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOME;
     default:
-      return 'Unknown Route'
+      return `UNREGISTERED ROUTE: ${route}`
   }
 }
 
