@@ -97,7 +97,7 @@ export const BibPage = (
   const mainHeading = [bib.parallelTitle, bib.title, [' ']].reduce((acc, el) => acc || (el && el.length && el[0]), null);
 
   const searchParams = new URLSearchParams(location.search)
-  console.log('context', context);
+
   return (
     <RouterProvider value={context}>
       <SccContainer

@@ -13,7 +13,7 @@ import {
   sortBy as _sortBy,
 } from 'underscore';
 import appConfig from '../data/appConfig';
-import { noticePreferenceMapping } from '../data/constants';
+import { noticePreferenceMapping, ADOBE_ANALYTICS_SITE_SECTION, ADOBE_ANALYTICS_PAGE_NAMES } from '../data/constants';
 import LibraryItem from './item';
 
 const { features } = appConfig;
@@ -200,21 +200,55 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
+const adobeAnalyticsRouteToPageName = (route) => {
+  switch(route) {
+    case route.match(/\/search/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
+    case route.match(/\/search\/advanced/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+    case route.match(/\/bib/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.BIB_PAGE;
+    case route.match(/\/hold\/request/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
+    case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ELECTRONIC_DELIVERY;
+    case route.match(/\/hold\/confirmation/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_CONFIRMATION;
+    case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADING_SHOW_PAGE;
+    case route.match(/\/subject_headings/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS_INDEX_PAGE;
+    case route.match(/\/accountError/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
+    case route.match(/\/account/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_PAGE;
+    case route.match(/\/404\/redirect/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT_404;
+    case route.match(/\/404/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404;
+    case route.match(/^\/?(\?.+)?$/)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOME;
+    default:
+      return 'Unknown Route'
+  }
+}
+
 /**
  * Tracks a virtual page view to Adobe Analytics on page navigation.
  */
-const trackVirtualPageView = (pageName = '', siteSection = '') => {
+const trackVirtualPageView = (pathname = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
-
+  const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
+  console.log('tracked route', route);
+  console.log('tracked page title', adobeAnalyticsRouteToPageName(route));
   adobeDataLayer.push({
     page_name: null,
     site_section: null
   });
-
   adobeDataLayer.push({
     event: "virtual_page_view",
-    page_name: pageName,
-    site_section: siteSection
+    page_name: adobeAnalyticsRouteToPageName(route),
+    site_section: ADOBE_ANALYTICS_SITE_SECTION
   });
 }
 

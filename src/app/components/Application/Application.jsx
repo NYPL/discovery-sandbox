@@ -14,6 +14,7 @@ import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
 import { PatronProvider } from '../../context/PatronContext';
 import { FeedbackBoxProvider } from '../../context/FeedbackContext';
+import { trackVirtualPageView} from '../../utils/utils';
 
 export const MediaContext = React.createContext('desktop');
 
@@ -58,6 +59,14 @@ export class Application extends React.Component {
         }
       });
     }
+
+    // Listen for router changes and track virtual page views in Adobe Analytics
+    router.listen(() => {
+      const {
+        pathname,
+      } = router?.location;
+      trackVirtualPageView(pathname)
+    });
   }
 
   onWindowResize () {
