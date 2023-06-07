@@ -62,7 +62,7 @@ export class Application extends React.Component {
     }
 
     // Listen for router changes and track virtual page views in Adobe Analytics
-    if (router.listen) {
+    if (router?.listen) {
       router.listen(() => {
         const {
           pathname,
