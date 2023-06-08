@@ -243,6 +243,11 @@ const trackVirtualPageView = (pathname = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
   console.log("Virtual Page View Tracked", adobeAnalyticsRouteToPageName(route));
+
+  /**
+   * We must first clear the page name and site section before pushing new values
+   * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
+   */
   adobeDataLayer.push({
     page_name: null,
     site_section: null
