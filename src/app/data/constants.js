@@ -32,16 +32,17 @@ const ADOBE_ANALYTICS_SITE_SECTION = 'Research Catalog';
 const ADOBE_ANALYTICS_PAGE_NAMES = {
   ADVANCED_SEARCH: 'Advanced Search',
   SEARCH_RESULTS: 'Search Results',
-  BIB_PAGE: 'Bib Page',
+  DETAILS_ALL_ITEMS: 'Details/All Items',
+  DETAILS: 'Details',
   HOLD_REQUEST: 'Hold Request',
-  ELECTRONIC_DELIVERY: 'Electronic Delivery',
-  HOLD_CONFIRMATION: 'Hold Confirmation',
-  SUBJECT_HEADING_SHOW_PAGE: 'Subject Heading Show Page',
-  SUBJECT_HEADINGS_INDEX_PAGE: 'Subject Headings Index Page',
-  ACCOUNT_ERROR: 'Account Error',
-  ACCOUNT_PAGE: 'Account Page',
-  REDIRECT_404: 'Redirect 404',
-  NOT_FOUND_404: 'Not Found 404',
+  EDD_REQUEST: 'EDD Request',
+  HOLD_CONFIRMATION: 'Hold Request/Confirmation',
+  HEADING: 'Heading',
+  SUBJECT_HEADINGS: 'Subject Headings',
+  ACCOUNT_ERROR: 'Account/Error',
+  ACCOUNT: 'Account',
+  REDIRECT: 'Redirect',
+  NOT_FOUND_404: '404',
   HOME: 'Home'
 };
 

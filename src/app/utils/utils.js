@@ -200,30 +200,32 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
-const adobeAnalyticsRouteToPageName = (route) => {
+const adobeAnalyticsRouteToPageName = (route = '') => {
   switch(route) {
     case route.match(/\/search/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+    case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS;
     case route.match(/\/bib/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.BIB_PAGE;
+      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
     case route.match(/\/hold\/request/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.ELECTRONIC_DELIVERY;
+      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;
     case route.match(/\/hold\/confirmation/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_CONFIRMATION;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADING_SHOW_PAGE;
+      return ADOBE_ANALYTICS_PAGE_NAMES.HEADING;
     case route.match(/\/subject_headings/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS_INDEX_PAGE;
+      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS;
     case route.match(/\/accountError/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
     case route.match(/\/account/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_PAGE;
+      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT;
     case route.match(/\/404\/redirect/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT_404;
+      return ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT;
     case route.match(/\/404/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404;
     case route.match(/^\/?(\?.+)?$/)?.input:
