@@ -212,7 +212,7 @@ const adobeAnalyticsRouteToPageName = (route = '') => {
     case route.match(/\/bib/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;
+      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;env
     case route.match(/\/hold\/request/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/confirmation/i)?.input:

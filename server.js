@@ -101,6 +101,7 @@ app.get('/*', (req, res) => {
       } else if (renderProps) {
         store.dispatch(updateLoadingStatus(false));
         const title = DocumentTitle.rewind();
+        
         res.status(res.statusCode || 200).render('index', {
           application: initializeReduxReact(renderProps, store),
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
