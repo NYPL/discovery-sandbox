@@ -200,20 +200,21 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
 
+// Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '') => {
   switch(route) {
-    case route.match(/\/search/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+    case route.match(/\/search/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS;
     case route.match(/\/bib/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
-    case route.match(/\/hold\/request/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;
+    case route.match(/\/hold\/request/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/confirmation/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_CONFIRMATION;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
@@ -822,6 +823,7 @@ function aeonUrl(item) {
 
 export {
   trackDiscovery,
+  adobeAnalyticsRouteToPageName,
   trackVirtualPageView,
   ajaxCall,
   getSortQuery,
