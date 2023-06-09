@@ -22,38 +22,15 @@ export const getPickupTimeEstimate = (fulfillmentId, deliveryLocation, fromDate 
 	const fulfillment = fulfillments[fulfillmentId]
 	// Convert duration to seconds:
 	const durationSeconds = toSeconds(parseDuration(fulfillment.estimatedTime))
-	// Create date offset by duration:
-	let estimatedTime = new Date(fromDate + durationSeconds * 1000)
 
 	// Adjust duration based on opening hours:
 	let adjustedTime = _expectedAvailableDay(estimatedTime)
 	// Use fulfillment linked location if no deliveryLocation specified:
 	deliveryLocation = deliveryLocation || fulfillment.location
 
-	// if (deliveryLocation && (
-	// 	adjustedTime = _expectedAvailableDay(deliveryLocation, estimatedTime)
-	// ) {
-	// 	estimatedTime = adjustedTime
-	// 	// Consider returning this?
-	// 	adjustment = {
-	// 		reason: 'hour',
-	// 		hours: _operatingHours(deliveryLocation)
-	// 	}
-	// }
-
-	// 	// Create human-readable estimate rounded to nearest 5mins:
-	// 	let mins = durationSeconds / 60
-	// 	mins = mins - mins % 5
-	// 	const approximateDurationString = mins > 24 * 60 ?
-	//    '1 day' :
-	// mins > 60 ?
-	//      '1 + hour' :
-	// `${mins} minutes`
-
-	// return {
-	// 	estimatedTime,
-	// 	approximateDurationString
-	// }
+	const availableDay = _expectedAvailableDay(deliveryLocation, fromDate, durationSeconds * 1000)
+	//if(availableDay.today) return fromDate + duration
+	// else return starttime + opening buffer
 }
 
 // Delivery location should be sc, ma, or my (2 letter codes for each research branch)
