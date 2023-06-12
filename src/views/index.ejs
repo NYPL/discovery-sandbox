@@ -22,6 +22,17 @@
     <meta name="twitter:creator" content="@nypl">
     <meta name="twitter:image" content="">
 
+    <script>
+      // First define the global variable for the entire data layer array
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      // Then push in the variables required in the Initial Data Layer Definition
+      window.adobeDataLayer.push({
+        page_name: "Research Catalog",
+        site_section: "Content"
+      });
+    </script>
+
+    <script src="<%- launchEmbedUrl %>" async></script>
 
 <% if (isProduction) { %>
     <!-- Minified Styles -->
