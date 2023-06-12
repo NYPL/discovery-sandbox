@@ -82,6 +82,7 @@ const appConfig = {
   itemBatchSize: process.env.ITEM_BATCH_SIZE || 100,
   webpacBaseUrl: process.env.WEBPAC_BASE_URL,
   shepBibsLimit: process.env.SHEP_BIBS_LIMIT || 50,
+  nyplHeaderUrl: process.env.NYPL_HEADER_URL || 'https://qa-ds-header.nypl.org',
   launchEmbedUrl: process.env.LAUNCH_EMBED_URL || ''
 };
 

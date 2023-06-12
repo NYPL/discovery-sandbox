@@ -1,8 +1,6 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, navConfig } from '@nypl/dgx-header-component';
-import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { union as _union } from 'underscore';
@@ -97,11 +95,6 @@ export class Application extends React.Component {
         <FeedbackBoxProvider>
           <MediaContext.Provider value={this.state.media}>
             <div className="app-wrapper">
-              <Header
-                navData={navConfig.current}
-                patron={this.props.patron}
-                skipNav={{ target: 'mainContent' }}
-              />
               <DataLoader
                 location={this.context.router.location}
                 query={this.context.router.location.query}
@@ -109,7 +102,6 @@ export class Application extends React.Component {
               >
                 {React.cloneElement(this.props.children)}
               </DataLoader>
-              <Footer />
               <Feedback />
             </div>
           </MediaContext.Provider>
