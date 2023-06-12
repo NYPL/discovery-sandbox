@@ -190,6 +190,7 @@ const BibDetails = (props) => {
       }
       console.log('field', field);
       console.log('fieldValue', fieldValue)
+      console.log('bibValues', bibValues)
       console.log('_isArray(bibValues)', _isArray(bibValues));
 
       // skip absent fields
