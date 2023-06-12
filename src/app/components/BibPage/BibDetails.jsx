@@ -335,7 +335,7 @@ const BibDetails = (props) => {
   if (_isEmpty(props.fields) || !_isArray(props.fields)) {
     return null;
   }
-
+  console.log('props', props);
   const bibDetails = getDisplayFields(props.bib, props.fields);
   const data = combineBibDetailsData(bibDetails, props.additionalData || []);
 
