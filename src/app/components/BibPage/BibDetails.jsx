@@ -181,6 +181,7 @@ const BibDetails = (props) => {
 
       if (fieldValue === 'subjectLiteral') {
         bibValues = bib.updatedSubjectLiteral;
+        console.log('bibValues', bibValues);
       }
 
       if (fieldValue === 'identifier') {
@@ -188,6 +189,7 @@ const BibDetails = (props) => {
           bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
       }
 
+      console.log('_isArray(bibValues)', _isArray(bibValues));
       // skip absent fields
       if (bibValues && _isArray(bibValues) && bibValues.length > 0) {
         const definition = getDefinition(
@@ -243,7 +245,7 @@ const BibDetails = (props) => {
         });
       }
     }); // End of the forEach loop
-
+    console.log('fieldsToRender', fieldsToRender);
     return fieldsToRender;
   };
 
