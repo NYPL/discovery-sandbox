@@ -228,7 +228,7 @@ export class HoldRequest extends React.Component {
         : '';
     const itemId = params && params.itemId ? params.itemId : '';
     const selectedItem = bib && itemId ? LibraryItem.getItem(bib, itemId) : {};
-    const selectedItemAvailable = selectedItem
+    const selectedItemAvailable = selectedItem && selectedItem.available
       // Note: The .eddRequestability check should be removed with separate
       // request buttons rollout (i.e. when this page shows only physical,
       // non-edd delivery options):
