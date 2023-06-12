@@ -190,6 +190,7 @@ const BibDetails = (props) => {
       }
 
       console.log('_isArray(bibValues)', _isArray(bibValues));
+      
       // skip absent fields
       if (bibValues && _isArray(bibValues) && bibValues.length > 0) {
         const definition = getDefinition(
