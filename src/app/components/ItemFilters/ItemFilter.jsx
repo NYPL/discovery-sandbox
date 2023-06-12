@@ -11,7 +11,7 @@ import { getLabelsForValues, isOptionSelected } from './itemFilterUtils';
 const updateOptions = options =>
   options.map(option => {
     return {
-    label: option.label,
+      label: option.label,
       value: option.value
     }
   });
@@ -45,6 +45,7 @@ const ItemFilter = ({
    * the `setSelectedFields` function.
    */
   const selectFilter = (option) => {
+    console.log({ option })
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
       const prevSelection = prevSelectedFields[field];
@@ -164,25 +165,25 @@ const ItemFilter = ({
           </fieldset>
           {
             !mobile ?
-            (
-              <div className="item-filter-buttons">
-                <Button
-                  buttonType="link"
-                  onClick={() => clear()}
+              (
+                <div className="item-filter-buttons">
+                  <Button
+                    buttonType="link"
+                    onClick={() => clear()}
                     isDisabled={!selectedFields[field].length}
-                  id="clear-filter-button"
-                >
-                  Clear
-                </Button>
-                <Button
-                  onClick={() => submitFilterSelections()}
-                  isDisabled={!selectionMade}
-                  id="apply-filter-button"
-                >
-                  Apply
-                </Button>
-              </div>
-            ) : null
+                    id="clear-filter-button"
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    onClick={() => submitFilterSelections()}
+                    isDisabled={!selectionMade}
+                    id="apply-filter-button"
+                  >
+                    Apply
+                  </Button>
+                </div>
+              ) : null
           }
         </div>
       ) : null}
