@@ -188,9 +188,10 @@ const BibDetails = (props) => {
         bibValues =
           bib.updatedIdentifiers && bib.updatedIdentifiers[fieldLabel];
       }
-
+      console.log('field', field);
+      console.log('fieldValue', fieldValue)
       console.log('_isArray(bibValues)', _isArray(bibValues));
-      
+
       // skip absent fields
       if (bibValues && _isArray(bibValues) && bibValues.length > 0) {
         const definition = getDefinition(
