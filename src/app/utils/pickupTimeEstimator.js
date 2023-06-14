@@ -4,72 +4,142 @@ const fulfillments = nyplCoreObjects('by-fulfillment')
 import nyplApiClient from '../../server/routes/nyplApiClient'
 
 
-const OPENING_BUFFER = 1 * 60 * 60 * 1000
-const REQUEST_CUTOFF_TIME = 2 * 60 * 60 * 1000
+const OPENING_BUFFER = 1 * (60 * 60 * 1000)
+const REQUEST_CUTOFF_BUFFER = 2 * (60 * 60 * 1000)
+const MONTHS = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
 
-// is fromDate after endtime - request_cutoff+time ? next_day + buffer
-// else
-// is fromDate + duration greater than startTime and less than endTime, return fromDate + duration
-// else
-
-// otherwise return next starttime + buffer
-// return the next time that this book will probably be ready
-
-
-
-export const getPickupTimeEstimate = (fulfillmentId, deliveryLocation, fromDate = new Date()) => {
+export const getPickupTimeEstimate = async (fulfillmentId, deliveryLocation, fromDate) => {
+	let activeHoldRequest
+	if (!fromDate) {
+		activeHoldRequest = false
+		fromDate = new Date()
+	}
+	// maybe check for allowed fulfillment id's... ie that they arent lpa or schomburg
 	// Look up item’s linked fulfillment entity in NYPL-Core:
 	const fulfillment = fulfillments[fulfillmentId]
+	if (!fulfillment) return null
 	// Convert duration to seconds:
-	const durationSeconds = toSeconds(parseDuration(fulfillment.estimatedTime))
+	const duration = toSeconds(parseDuration(fulfillment.estimatedTime))
 
-	// Adjust duration based on opening hours:
-	let adjustedTime = _expectedAvailableDay(estimatedTime)
 	// Use fulfillment linked location if no deliveryLocation specified:
 	deliveryLocation = deliveryLocation || fulfillment.location
 
-	const availableDay = _expectedAvailableDay(deliveryLocation, fromDate, durationSeconds * 1000)
+	const availableDay = await _expectedAvailableDay(deliveryLocation, fromDate, duration * 1000)
 
-	//if(availableDay.today) return fromDate + duration
-	// else return starttime + opening buffer
+	return _buildEstimationString(availableDay, activeHoldRequest, fulfillment.estimatedTime)
 }
 
-export const _buildEstimationString = (day) => {
-
+// expects a day object: {available (string), estimatedDeliveryTime (Date object), day (string)}, a boolean, and a duration in seconds. Returns delivery estimation string
+export const _buildEstimationString = (availableDay, activeHoldRequest, duration) => {
+	let string
+	const time = _buildTimeString(availableDay.estimatedDeliveryTime)
+	const earliest = time
+	const window = _calculateWindow(duration)
+	const estTime = availableDay.estimatedDeliveryTime
+	const date = MONTHS[estTime.getMonth()] + ' ' + estTime.getDate()
+	switch (availableDay.available) {
+		case 'today':
+			string = activeHoldRequest ?
+				`at approximately ${time} TODAY` :
+				`in approximately ${window} TODAY`
+			break;
+		case 'tomorrow':
+			string = `by approximately ${earliest} TOMORROW`
+			break;
+		case 'two or more days':
+			string = `by approximately ${earliest} ${availableDay.day} ${date}`
+			break;
+	}
+	return string
 }
 
-// Delivery location should be sc, ma, or my (2 letter codes for each research branch)
+export const _calculateWindow = (duration) => {
+	const { minutes, hours } = parseDuration(duration)
+	let str = ''
+	let { hours: roundedHours, minutes: roundedMinutes } = _roundToQuarterHour(hours, minutes)
+	const plural = (n) => n === 1 ? '' : 's'
+	if (roundedHours !== 0) str += `${roundedHours} hour${plural(roundedHours)}`
+	if (roundedHours !== 0 && roundedMinutes !== 0) str += ' '
+	if (minutes !== 0) str += `${roundedMinutes} minutes`
+	return str
+}
+
+export const _roundToQuarterHour = (hours, minutes) => {
+	if (minutes < 60 && minutes > 45) {
+		hours++
+		minutes = 0
+	}
+	if (minutes % 15 !== 0) {
+		minutes += 15 - (minutes % 15)
+	}
+	return { hours, minutes }
+}
+
+// expects a timestamp (integer), returns a string
+export const _buildTimeString = (estimatedDeliveryTime) => {
+	let minutes = estimatedDeliveryTime.getMinutes()
+	let hours = estimatedDeliveryTime.getHours()
+	// round up to the nearest quarter hour, with special accounting for the 
+	// last quarter before the hour, because the hour needs to increment
+	let { hours: roundedHours, minutes: roundedMinutes } = _roundToQuarterHour(hours, minutes)
+
+	if (roundedMinutes < 10) roundedMinutes = `0${roundedMinutes}`
+	const amOrPm = roundedHours > 11 ? 'pm' : 'am'
+	roundedHours = roundedHours % 12 === 0 ? 12 : roundedHours % 12
+	return `${roundedHours}:${roundedMinutes} ${amOrPm}`
+}
+
+// Delivery location should be sc, ma, or my (2 letter codes for each research branch). Request time is a Date object
 export const _expectedAvailableDay = async (deliveryLocation, requestTime, duration) => {
 	const locationHours = await _operatingHours(deliveryLocation)
 	let available
-	let today = locationHours[0].startTime.getDate()
+	let today = new Date(locationHours[0].startTime).getDay()
+	let provisionalDeliveryTime
 	const hours = locationHours.find((day, i) => {
+		// convert everything into ms:
 		const { endTime } = day
 		const endTimeInMs = Date.parse(endTime)
-		const estimatedDeliveryTimeMs = Date.parse(requestTime) + duration
+		provisionalDeliveryTime = Date.parse(requestTime) + duration
 		const requestTimeMs = Date.parse(requestTime)
-		const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_TIME
+		const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_BUFFER
+		//
+
 		// if request was made after request cutoff time, today is not your day
 		if (requestTimeMs > finalRequestTimeMs) return false
-		// return true when estimated delivery time is before the 
-		// end of the current day day
-		if (estimatedDeliveryTimeMs < endTimeInMs) {
+		// if estimated delivery time is before the end of the current day, current
+		// day is the day.
+		if (provisionalDeliveryTime < endTimeInMs) {
 			// determine if that is today, tomorrow, or two days from now.
-			const nextBusinessDay = new Date(estimatedDeliveryTimeMs).getDate()
-			available = _calculateNextBusinessDay(today, nextBusinessDay, i)
+			const nextBusinessDay = new Date(provisionalDeliveryTime).getDay()
+			available = _determineNextBusinessDay(today, nextBusinessDay, i)
 			return true
 		}
 	})
-	return { ...hours, available }
+
+	return {
+		available,
+		estimatedDeliveryTime: _calculateDeliveryTime(available, provisionalDeliveryTime, hours.startTime),
+		day: hours.day
+	}
 }
 
-export const _calculateNextBusinessDay = (today, nextBusinessDay, i) => {
+// If it can be delivered today, the provisional estimation still serves.
+// Otherwise, estimated delivery time is the startTime plus the amount
+// of time the branch needs to get their ducks in a row.
+export const _calculateDeliveryTime = (dayAvailable, provisionalDeliveryTime, startTime) => {
+	if (dayAvailable === 'today') return new Date(provisionalDeliveryTime)
+	else {
+		return new Date(Date.parse(startTime) + OPENING_BUFFER)
+	}
+}
+
+export const _determineNextBusinessDay = (today, nextBusinessDay, i) => {
 	if (i === 0) return 'today'
-	// today is tuesday and delivery day is wednesday
+	// today and nextBusinessDay are one day apart and today is not Saturday
 	if (nextBusinessDay - today === 1) return 'tomorrow'
 	// today is saturday and delivery day is sunday
 	if (today === 6 && nextBusinessDay === 0) return 'tomorrow'
-	// today is monday and delivery day is more than one day away
+	// next business day is not tomorrow
 	else return 'two or more days'
 	// TO DO: what happens if the library is closed for a week?
 }
