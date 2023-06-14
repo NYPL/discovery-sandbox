@@ -151,7 +151,7 @@ class SubjectHeadingShow extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <div className="nypl-column-full">
         {
           label &&
           <BibsList
@@ -183,7 +183,7 @@ class SubjectHeadingShow extends React.Component {
             : null
           }
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
