@@ -151,7 +151,7 @@ class SubjectHeadingShow extends React.Component {
     }
 
     return (
-      <React.Fragment>
+      <div style={{display: 'flex'}}>
         {
           label &&
           <BibsList
@@ -183,7 +183,7 @@ class SubjectHeadingShow extends React.Component {
             : null
           }
         </div>
-      </React.Fragment>
+      </div>
     );
   }
 }
