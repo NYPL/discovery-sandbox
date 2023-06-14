@@ -45,7 +45,6 @@ const ItemFilter = ({
    * the `setSelectedFields` function.
    */
   const selectFilter = (option) => {
-    console.log({ option })
     setSelectedFields((prevSelectedFields) => {
       const updatedSelectedFields = { ...prevSelectedFields };
       const prevSelection = prevSelectedFields[field];
