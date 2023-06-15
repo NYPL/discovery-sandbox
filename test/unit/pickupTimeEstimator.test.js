@@ -7,6 +7,7 @@ import { _buildTimeString, _calculateDeliveryTime, _determineNextBusinessDay, _e
 
 describe('pickupTimeEstimator', () => {
 	before(() => {
+		process.env.TZ = 'us/Eastern'
 		stub(NyplApiClient.prototype, 'get').callsFake((path) => {
 			if (path.includes('sc')) {
 				return Promise.resolve({
