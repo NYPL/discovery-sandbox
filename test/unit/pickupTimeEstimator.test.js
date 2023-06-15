@@ -5,9 +5,9 @@ import NyplApiClient from '@nypl/nypl-data-api-client';
 
 import { _buildTimeString, _calculateDeliveryTime, _determineNextBusinessDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow } from '../../src/app/utils/pickupTimeEstimator'
 
-describe('pickupTimeEstimator', () => {
+describe.only('pickupTimeEstimator', () => {
 	before(() => {
-		process.env.TZ = 'us/Eastern'
+		process.env.TZ = 'America/New_York'
 		stub(NyplApiClient.prototype, 'get').callsFake((path) => {
 			if (path.includes('sc')) {
 				return Promise.resolve({
