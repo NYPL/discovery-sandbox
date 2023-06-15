@@ -50,6 +50,9 @@ describe.only('pickupTimeEstimator', () => {
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T16:00:00+00:00')).to.equal('in approximately 45 minutes TODAY')
 		})
 		it('request made after request cutoff time, library is closed tomorrow', async () => {
+			console.log(
+				'timezone', process.env.TZ
+			)
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-03T22:00:00+00:00')).to.equal('by approximately 11:00 am Monday Jun. 5')
 		})
 	})
