@@ -7,7 +7,6 @@ import { _buildTimeString, _calculateDeliveryTime, _determineNextBusinessDay, _e
 
 describe.only('pickupTimeEstimator', () => {
 	before(() => {
-		process.env.TZ = 'America/New_York'
 		stub(NyplApiClient.prototype, 'get').callsFake((path) => {
 			if (path.includes('sc')) {
 				return Promise.resolve({
@@ -50,9 +49,7 @@ describe.only('pickupTimeEstimator', () => {
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T16:00:00+00:00')).to.equal('in approximately 45 minutes TODAY')
 		})
 		it('request made after request cutoff time, library is closed tomorrow', async () => {
-			console.log(
-				'timezone', process.env.TZ
-			)
+			console.log('timezone', (new Date()).getTimezoneOffset())
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-03T22:00:00+00:00')).to.equal('by approximately 11:00 am Monday Jun. 5')
 		})
 	})
