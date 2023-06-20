@@ -12,6 +12,7 @@ import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
 import { PatronProvider } from '../../context/PatronContext';
 import { FeedbackBoxProvider } from '../../context/FeedbackContext';
+import { trackVirtualPageView} from '../../utils/utils';
 
 export const MediaContext = React.createContext('desktop');
 
@@ -54,6 +55,16 @@ export class Application extends React.Component {
             query: Object.assign(query, { features: this.state.urlEnabledFeatures }),
           });
         }
+      });
+    }
+
+    // Listen for router changes and track virtual page views in Adobe Analytics
+    if (router?.listen) {
+      router.listen(() => {
+        const {
+          pathname,
+        } = router?.location;
+        trackVirtualPageView(pathname)
       });
     }
   }

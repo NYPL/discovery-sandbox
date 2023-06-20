@@ -13,7 +13,7 @@ import {
   sortBy as _sortBy,
 } from 'underscore';
 import appConfig from '../data/appConfig';
-import { noticePreferenceMapping } from '../data/constants';
+import { noticePreferenceMapping, ADOBE_ANALYTICS_SITE_SECTION, ADOBE_ANALYTICS_PAGE_NAMES } from '../data/constants';
 import LibraryItem from './item';
 
 const { features } = appConfig;
@@ -199,6 +199,65 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
  * @param {string} label The GA label.
  */
 const trackDiscovery = gaUtils.trackEvent('Discovery');
+
+// Maps routes to the appropriate page name for Adobe Analytics.
+const adobeAnalyticsRouteToPageName = (route = '') => {
+  switch(route) {
+    case route.match(/\/search\/advanced/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+    case route.match(/\/search/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
+    case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS;
+    case route.match(/\/bib/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
+    case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;env
+    case route.match(/\/hold\/request/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
+    case route.match(/\/hold\/confirmation/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_CONFIRMATION;
+    case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HEADING;
+    case route.match(/\/subject_headings/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS;
+    case route.match(/\/accountError/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
+    case route.match(/\/account/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT;
+    case route.match(/\/404\/redirect/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT;
+    case route.match(/\/404/i)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404;
+    case route.match(/^\/?(\?.+)?$/)?.input:
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOME;
+    default:
+      return `UNREGISTERED ROUTE: ${route}`
+  }
+}
+
+/**
+ * Tracks a virtual page view to Adobe Analytics on page navigation.
+ */
+const trackVirtualPageView = (pathname = '') => {
+  const adobeDataLayer = window.adobeDataLayer || [];
+  const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
+  console.log("Virtual Page View Tracked", adobeAnalyticsRouteToPageName(route));
+
+  /**
+   * We must first clear the page name and site section before pushing new values
+   * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
+   */
+  adobeDataLayer.push({
+    page_name: null,
+    site_section: null
+  });
+  adobeDataLayer.push({
+    event: "virtual_page_view",
+    page_name: adobeAnalyticsRouteToPageName(route),
+    site_section: ADOBE_ANALYTICS_SITE_SECTION
+  });
+}
 
 /**
  * basicQuery
@@ -769,6 +828,8 @@ function aeonUrl(item) {
 
 export {
   trackDiscovery,
+  adobeAnalyticsRouteToPageName,
+  trackVirtualPageView,
   ajaxCall,
   getSortQuery,
   createAppHistory,
