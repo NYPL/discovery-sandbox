@@ -434,10 +434,11 @@ describe('HoldRequest', () => {
           />, {
             attachTo: document.body,
             store: makeTestStore({
-              patron: { id: 1 },
+              patron: { id: 1, loggedIn: true },
               bib,
               isEddRequestable: true,
               deliveryLocations,
+              loading: false,
             }),
           });
       });
@@ -471,4 +472,121 @@ describe('HoldRequest', () => {
       expect(component.find('Notification').text()).to.include('Some info for our patrons');
     });
   });
+
+  describe('checking availability', () => {
+    describe('unavailable item', () => {
+      let component;
+      const unavailableItem = JSON.parse(JSON.stringify(mockedItem))
+      unavailableItem[0].status[0].prefLabel = 'Unavailable'
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: unavailableItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        appConfig.openLocations = ['Schwarzman'];
+        component = mountTestRender(
+          <WrappedHoldRequest
+          params={{ itemId: 'i10000003' }}
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1, loggedIn: true },
+              bib,
+              isEddRequestable: true,
+              deliveryLocations,
+              loading: false,
+            }),
+          });
+        });
+
+      after(() => {
+        component.unmount()
+      })
+
+      it('should display notice for unavailable bib', () => {
+        const text = component.find('h2').at(0).text()
+        expect(text).to.equal('This item cannot be requested at this time. Please try again later or contact 917-ASK-NYPL (917-275-6975).')
+        expect(true)
+      })
+    })
+
+    describe('available item', () => {
+      let component;
+      const availableItem = JSON.parse(JSON.stringify(mockedItem))
+      const bib = {
+        title: ['Harry Potter'],
+        '@id': 'res:b17688688',
+        items: availableItem,
+      };
+
+      const deliveryLocations = [
+        {
+          '@id': 'loc:myr',
+          address: '40 Lincoln Center Plaza',
+          prefLabel: 'Performing Arts Research Collections',
+          shortName: 'Library for the Performing Arts',
+        },
+        {
+          '@id': 'loc:sc',
+          prefLabel: 'Schomburg Center',
+          address: '515 Malcolm X Boulevard',
+          shortName: 'Schomburg Center',
+        },
+        {
+          '@id': 'loc:mala',
+          prefLabel: 'Schwarzman Building - Allen Scholar Room',
+          address: '476 Fifth Avenue (42nd St and Fifth Ave)',
+          shortName: 'Schwarzman Building',
+        },
+      ];
+
+      before(() => {
+        appConfig.openLocations = ['Schwarzman'];
+        component = mountTestRender(
+          <WrappedHoldRequest
+          params={{ itemId: 'i10000003' }}
+          />, {
+            attachTo: document.body,
+            store: makeTestStore({
+              patron: { id: 1, loggedIn: true },
+              bib,
+              isEddRequestable: true,
+              deliveryLocations,
+              loading: false,
+            }),
+          });
+        });
+
+      after(() => {
+        component.unmount()
+      })
+
+      it('should display form for available bib', () => {
+        expect(component.find('form').length).to.equal(1)
+      })
+    })
+  })
 });

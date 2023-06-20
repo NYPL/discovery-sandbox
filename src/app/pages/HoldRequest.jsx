@@ -234,6 +234,7 @@ export class HoldRequest extends React.Component {
       // non-edd delivery options):
       ? selectedItem.physRequestable || selectedItem.eddRequestable
       : false;
+
     const bibLink =
       bibId && title ? (
         <h2>
