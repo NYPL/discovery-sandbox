@@ -64,6 +64,8 @@ export const _calculateWindow = (duration) => {
 	return str
 }
 
+// round up to the nearest quarter hour, with special accounting for the 
+// last quarter before the hour, because the hour needs to increment
 export const _roundToQuarterHour = (hours, minutes) => {
 	if (minutes < 60 && minutes > 45) {
 		hours++
@@ -79,8 +81,6 @@ export const _roundToQuarterHour = (hours, minutes) => {
 export const _buildTimeString = (estimatedDeliveryTime) => {
 	let minutes = estimatedDeliveryTime.getMinutes()
 	let hours = estimatedDeliveryTime.getHours()
-	// round up to the nearest quarter hour, with special accounting for the 
-	// last quarter before the hour, because the hour needs to increment
 	let { hours: roundedHours, minutes: roundedMinutes } = _roundToQuarterHour(hours, minutes)
 
 	if (roundedMinutes < 10) roundedMinutes = `0${roundedMinutes}`
@@ -97,21 +97,22 @@ export const _expectedAvailableDay = async (deliveryLocation, requestTime, durat
 	let provisionalDeliveryTime
 	const hours = locationHours.find((day, i) => {
 		// convert everything into ms:
-		const { endTime } = day
+		const { endTime, startTime } = day
 		const endTimeInMs = Date.parse(endTime)
-		provisionalDeliveryTime = Date.parse(requestTime) + duration
+		// have to add opening buffer and or duration
+		const startTimeInMs = Date.parse(startTime) + OPENING_BUFFER
 		const requestTimeMs = Date.parse(requestTime)
+		provisionalDeliveryTime = requestTimeMs + duration
 		const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_BUFFER
-		//
-
 		// if request was made after request cutoff time, today is not your day
 		if (requestTimeMs > finalRequestTimeMs) return false
 		// if estimated delivery time is before the end of the current day, current
 		// day is the day.
 		if (provisionalDeliveryTime < endTimeInMs) {
+			const nextDeliverableTime = provisionalDeliveryTime > startTimeInMs ? provisionalDeliveryTime : startTimeInMs
 			// determine if that is today, tomorrow, or two days from now.
-			const nextBusinessDay = new Date(provisionalDeliveryTime).getDay()
-			available = _determineNextBusinessDay(today, nextBusinessDay, i)
+			const nextDeliverableday = new Date(nextDeliverableTime).getDay()
+			available = _determineNextDeliverableDay(today, nextDeliverableday)
 			return true
 		}
 	})
@@ -133,12 +134,15 @@ export const _calculateDeliveryTime = (dayAvailable, provisionalDeliveryTime, st
 	}
 }
 
-export const _determineNextBusinessDay = (today, nextBusinessDay, i) => {
-	if (i === 0) return 'today'
-	// today and nextBusinessDay are one day apart and today is not Saturday
-	if (nextBusinessDay - today === 1) return 'tomorrow'
+// today and nextDeliverableDay are both numbers that correspond to days of the week,
+// according to Date.getDay(). today is today, ie the day the code is running.
+// nextDeliverableDay is the calculated next day an item can be delivered.
+export const _determineNextDeliverableDay = (today, nextDeliverableday) => {
+	if (nextDeliverableday === today) return 'today'
+	// today and nextDeliverableday are one day apart and today is not Saturday
+	if (nextDeliverableday - today === 1) return 'tomorrow'
 	// today is saturday and delivery day is sunday
-	if (today === 6 && nextBusinessDay === 0) return 'tomorrow'
+	if (today === 6 && nextDeliverableday === 0) return 'tomorrow'
 	// next business day is not tomorrow
 	else return 'two or more days'
 	// TO DO: what happens if the library is closed for a week?

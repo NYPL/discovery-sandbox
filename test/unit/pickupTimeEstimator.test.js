@@ -3,7 +3,7 @@ import { expect } from 'chai'
 
 import NyplApiClient from '@nypl/nypl-data-api-client';
 
-import { _buildTimeString, _calculateDeliveryTime, _determineNextBusinessDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow } from '../../src/app/utils/pickupTimeEstimator'
+import { _buildTimeString, _calculateDeliveryTime, _determineNextDeliverableDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow } from '../../src/app/utils/pickupTimeEstimator'
 
 describe.only('pickupTimeEstimator', () => {
 	before(() => {
@@ -19,7 +19,7 @@ describe.only('pickupTimeEstimator', () => {
 								},
 								{
 									day: 'Friday', startTime: '2023-06-02T14:00:00+00:00',
-									endTime: '2023-06-02T23:00:00+00:00', nextBusinessDay: true
+									endTime: '2023-06-02T23:00:00+00:00', nextDeliverableDay: true
 								},
 								{
 									day: 'Saturday', startTime: '2023-06-03T14:00:00+00:00',
@@ -48,8 +48,10 @@ describe.only('pickupTimeEstimator', () => {
 		it('in approximately 45 minutes TODAY', async () => {
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T16:00:00+00:00')).to.equal('in approximately 45 minutes TODAY')
 		})
+		it('by approximately OPENING TOMORROW', async () => {
+			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T22:00:00+00:00')).to.equal('by approximately 11:00 am TOMORROW')
+		})
 		it('request made after request cutoff time, library is closed tomorrow', async () => {
-			console.log('timezone', (new Date()).getTimezoneOffset(), process.env.TZ)
 			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-03T22:00:00+00:00')).to.equal('by approximately 11:00 am Monday Jun. 5')
 		})
 	})
@@ -66,7 +68,7 @@ describe.only('pickupTimeEstimator', () => {
 				day: 'Friday',
 				startTime: '2023-06-02T14:00:00+00:00',
 				endTime: '2023-06-02T23:00:00+00:00',
-				nextBusinessDay: true
+				nextDeliverableDay: true
 			},
 			{
 				day: 'Saturday',
@@ -127,21 +129,21 @@ describe.only('pickupTimeEstimator', () => {
 			expect(availableDay.day).to.equal('Thursday')
 		})
 	})
-	describe('_determineNextBusinessDay', () => {
+	describe('_determineNextDeliverableDay', () => {
 		it('today is tuesday and delivery day is wednesday', () => {
-			expect(_determineNextBusinessDay(2, 3)).to.equal('tomorrow')
+			expect(_determineNextDeliverableDay(2, 3)).to.equal('tomorrow')
 		})
 		it('today is saturday and delivery day is sunday', () => {
-			expect(_determineNextBusinessDay(0, 1)).to.equal('tomorrow')
+			expect(_determineNextDeliverableDay(0, 1)).to.equal('tomorrow')
 		})
 		it('index is 0', () => {
 			// the today and estimated times don't matter in this case, because we only
 			// execute this function after we've determined that the current day,
 			// that is, the day at index i, is the estimated delivery day.
-			expect(_determineNextBusinessDay(100, 90, 0)).to.equal('today')
+			expect(_determineNextDeliverableDay(0, 0)).to.equal('today')
 		})
 		it('today is monday and delivery day is wednesday', () => {
-			expect(_determineNextBusinessDay(1, 3)).to.equal('two or more days')
+			expect(_determineNextDeliverableDay(1, 3)).to.equal('two or more days')
 		})
 	})
 	describe('_buildTimeString', () => {
