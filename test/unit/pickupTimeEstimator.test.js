@@ -134,13 +134,10 @@ describe.only('pickupTimeEstimator', () => {
 			expect(_determineNextDeliverableDay(2, 3)).to.equal('tomorrow')
 		})
 		it('today is saturday and delivery day is sunday', () => {
-			expect(_determineNextDeliverableDay(0, 1)).to.equal('tomorrow')
+			expect(_determineNextDeliverableDay(6, 0)).to.equal('tomorrow')
 		})
-		it('index is 0', () => {
-			// the today and estimated times don't matter in this case, because we only
-			// execute this function after we've determined that the current day,
-			// that is, the day at index i, is the estimated delivery day.
-			expect(_determineNextDeliverableDay(0, 0)).to.equal('today')
+		it('today is deliverable day', () => {
+			expect(_determineNextDeliverableDay(2, 2)).to.equal('today')
 		})
 		it('today is monday and delivery day is wednesday', () => {
 			expect(_determineNextDeliverableDay(1, 3)).to.equal('two or more days')
