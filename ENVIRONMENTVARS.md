@@ -33,6 +33,7 @@ These variables are used to configure server settings and application-wide setti
 | `NODE_ENV` | string | `development`, `test`, `production` | The environment in which the application is running. When running `npm test`, the value is `test`. When running locally, the default is `development` but it should be `production` for the "production" build and server. |
 | `REDIRECT_FROM_BASE_URL` | string | "/research/collections/shared-collection-catalog" | The old base URL of the app. If a user goes to the old URL, the server redirects the user. |
 | `WEBPAC_BASE_URL` | string | "" | The base URL for the webpac catalog. |
+| `TZ` | string | "America/New_york" | May be set to "America/New_York" to ensure pickup time estimates are calculated using the correct offset from GMT (accounting for Daylight Savings). May not be necessary on laptops/servers already configured to use an equivalent timezone. (If in doubt, check via `date`.). <br /><br />The `TZ` var is special in that it may not work if set dynamically in application code due to the indirect relationship of the env var and the underlying time system. It should work consistently when set outside the application (i.e. by the process that creates the Node process). For example `TZ=America/New_York node -e 'console.log((new Date()).getTimezoneOffset())'` should consistently report the correct minute offset for the time of year (240 in EDT, 300 in EST). |
 
 ## Application Variables
 

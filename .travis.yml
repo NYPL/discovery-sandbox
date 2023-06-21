@@ -2,6 +2,7 @@ language: node_js
 node_js:
 - 10.17.0
 before_install:
+- # We need to set TZ outside the Node process. See ./ENVIRONMENTVARS.md
 - export TZ=America/New_York
 install: npm rebuild node-sass && npm install
 before_script: npm run dist
