@@ -1,8 +1,6 @@
 language: node_js
 node_js:
 - 10.17.0
-before_install:
-- export TZ=us/Eastern
 install: npm rebuild node-sass && npm install
 before_script: npm run dist
 script: npm test
