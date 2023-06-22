@@ -97,15 +97,12 @@ export const _expectedAvailableDay = async (deliveryLocation, requestTime, durat
 	let available
 	let today = new Date(locationHours[0].startTime).getDay()
 	let provisionalDeliveryTime
-	const hours = locationHours.find((day, i) => {
+
+	const hours = locationHours.find((day) => {
 		// convert everything into ms:
-		const { endTime, startTime } = day
-		const endTimeInMs = Date.parse(endTime)
-		// have to add opening buffer and or duration
-		const startTimeInMs = Date.parse(startTime) + OPENING_BUFFER
-		const requestTimeMs = Date.parse(requestTime)
+		const { endTimeInMs, startTimeInMs, requestTimeMs, finalRequestTimeMs } = convertTimesToMs(day.startTime, day.endTime, requestTime, duration)
 		provisionalDeliveryTime = requestTimeMs + duration
-		const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_BUFFER
+
 		// if request was made after request cutoff time, today is not your day
 		if (requestTimeMs > finalRequestTimeMs) return false
 		// if estimated delivery time is before the end of the current day, current
@@ -124,6 +121,15 @@ export const _expectedAvailableDay = async (deliveryLocation, requestTime, durat
 		estimatedDeliveryTime: _calculateDeliveryTime(available, provisionalDeliveryTime, hours.startTime),
 		day: hours.day
 	}
+}
+
+const convertTimesToMs = (startTime, endTime, requestTime, duration) => {
+	const endTimeInMs = Date.parse(endTime)
+	// have to add opening buffer and or duration
+	const startTimeInMs = Date.parse(startTime) + OPENING_BUFFER
+	const requestTimeMs = Date.parse(requestTime)
+	const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_BUFFER
+	return { endTimeInMs, startTimeInMs, requestTimeMs, finalRequestTimeMs }
 }
 
 // If it can be delivered today, the provisional estimation still serves.

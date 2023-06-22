@@ -52,6 +52,7 @@ describe('pickupTimeEstimator', () => {
 			else return Promise.resolve({})
 		})
 		afterEach(() => { clientStub.resetHistory() })
+		after(() => clientStub.restore())
 	})
 
 	describe('getPickupTimeEstimate', () => {
