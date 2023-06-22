@@ -112,9 +112,16 @@ describe('Bib', () => {
   });
   describe('nyplApiClientCall', () => {
     let apiClientStub
+    let urlRecord
     before(() => {
-      apiClientStub = stub(NyplApiClient.prototype, 'get').returns({ bib: { id: '123' } })
+      apiClientStub = stub(NyplApiClient.prototype, 'get').callsFake((url) => {
+        urlRecord = url
+        return { bib: { id: '123' } }
+      })
     });
+    afterEach(() => {
+      urlRecord = null
+    })
     after(() => {
       apiClientStub.restore();
     });
@@ -123,12 +130,29 @@ describe('Bib', () => {
       Bib.nyplApiClientCall(query)
       expect(apiClientStub.calledWith(`/discovery/resources/${query}`))
     })
-    it('regular bib call', () => {
+    it('regular bib call', async function () {
       const query = 'b12345678'
       const itemFrom = 3
       const itemFilterStr = 'items_location=loc:123'
-      Bib.nyplApiClientCall(query, itemFrom,)
-      expect(apiClientStub.calledWith(`/discovery/resources/${query}${itemFilterStr}&merge_checkin_card_items=true`))
+      await Bib.nyplApiClientCall(query, itemFrom, itemFilterStr)
+      expect(urlRecord).to.equal('/discovery/resources/b12345678?items_size=20&items_from=3&items_location=loc:123&merge_checkin_card_items=true')
+    })
+    it('with no itemFrom', async function () {
+      const query = 'b12345678'
+      const itemFilterStr = 'items_location=loc:123'
+      await Bib.nyplApiClientCall(query, undefined, itemFilterStr)
+      expect(urlRecord).to.equal('/discovery/resources/b12345678?items_location=loc:123&merge_checkin_card_items=true')
+    })
+    it('with no itemFilterStr', async function () {
+      const query = 'b12345678'
+      const itemFrom = 3
+      await Bib.nyplApiClientCall(query, itemFrom,)
+      expect(urlRecord).to.equal('/discovery/resources/b12345678?items_size=20&items_from=3&merge_checkin_card_items=true')
+    })
+    it('with neither itemFrom nor itemFilterStr', async function () {
+      const query = 'b12345678'
+      await Bib.nyplApiClientCall(query, undefined,)
+      expect(urlRecord).to.equal('/discovery/resources/b12345678?merge_checkin_card_items=true')
     })
   })
 });

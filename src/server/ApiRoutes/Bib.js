@@ -9,19 +9,21 @@ import { isNyplBnumber, hasCheckDigit, removeCheckDigit } from '../../app/utils/
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
-  const queryForItemPage = typeof itemFrom !== 'undefined' ? `?items_size=${itemBatchSize}&items_from=${itemFrom}` : '';
+  const itemRelatedQueries = []
+  if (typeof itemFrom !== 'undefined') itemRelatedQueries.push(`items_size=${itemBatchSize}&items_from=${itemFrom}`)
   let fullQuery;
   if (query.includes('.annotated-marc')) {
     fullQuery = query;
   } else {
-    const itemQuery = (filterItemsStr.length ? `&${filterItemsStr}` : '');
-    fullQuery = `${query}${queryForItemPage}${itemQuery}&merge_checkin_card_items=true`
+    if (filterItemsStr.length) itemRelatedQueries.push(`${filterItemsStr}`)
+    itemRelatedQueries.push('merge_checkin_card_items=true')
+    fullQuery = `${query}?${itemRelatedQueries.join('&')}`
   }
   return nyplApiClient()
-    .then(client =>
-      client.get(
+    .then(client => {
+      return client.get(
         `/discovery/resources/${fullQuery}`
-      )
+      )}
     );
 };
 

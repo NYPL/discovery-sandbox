@@ -327,7 +327,7 @@ export class HoldRequest extends React.Component {
           pageTitle="Item Request"
         >
           <Notification notificationType="holdRequestNotification" />
-          <div className="row">
+          <div className="row nypl-column-full">
             <div className="nypl-column-three-quarters">
               <div className="nypl-request-item-summary">
                 <div className="item">
