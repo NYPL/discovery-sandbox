@@ -8,6 +8,8 @@ const OPENING_BUFFER = 1 * (60 * 60 * 1000)
 const REQUEST_CUTOFF_BUFFER = 2 * (60 * 60 * 1000)
 const MONTHS = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
 
+const cache = { updatedAt: null }
+
 export const getPickupTimeEstimate = async (fulfillmentId, deliveryLocation, fromDate) => {
 	let activeHoldRequest
 	if (!fromDate) {
@@ -150,9 +152,23 @@ export const _determineNextDeliverableDay = (today, nextDeliverableday) => {
 
 export const _operatingHours = async (deliveryLocation) => {
 	const client = await nyplApiClient()
-	const resp = await client.get(`/locations?location_codes=${deliveryLocation}&fields=hours`)
-	if (!resp || !resp[deliveryLocation] || !resp[deliveryLocation][0] || !resp[deliveryLocation][0].hours) {
+	let hours
+	// if cache is less than one hour old, it is still valid
+	if (cache.hours && Date.now() - cache.updatedAt < 60 * 60 * 1000) {
+		hours = await cache.hours
+	}
+	else {
+		cache.hours = client.get(`/locations?location_codes=${deliveryLocation}&fields=hours`)
+		cache.updatedAt = Date.now()
+		hours = await cache.hours
+	}
+	if (!hours || !hours[deliveryLocation] || !hours[deliveryLocation][0] || !hours[deliveryLocation][0].hours) {
 		return []
 	}
-	return resp[deliveryLocation][0].hours
+	return hours[deliveryLocation][0].hours
+}
+
+export const _resetCacheForTesting = (time = null) => {
+	cache.updatedAt = time
+	cache.hours = undefined
 }

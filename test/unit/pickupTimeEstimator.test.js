@@ -1,47 +1,57 @@
-import { stub } from 'sinon'
+import sinon, { stub } from 'sinon'
 import { expect } from 'chai'
 
 import NyplApiClient from '@nypl/nypl-data-api-client';
 
-import { _buildTimeString, _calculateDeliveryTime, _determineNextDeliverableDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow } from '../../src/app/utils/pickupTimeEstimator'
+import { _buildTimeString, _calculateDeliveryTime, _determineNextDeliverableDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow, _resetCacheForTesting } from '../../src/app/utils/pickupTimeEstimator'
 
-describe.only('pickupTimeEstimator', () => {
+describe('pickupTimeEstimator', () => {
+	let clientStub
+	const hoursArray = [{
+		day: 'Thursday',
+		startTime: '2023-06-01T14:00:00+00:00',
+		endTime: '2023-06-01T23:00:00+00:00',
+		today: true
+	},
+	{
+		day: 'Friday',
+		startTime: '2023-06-02T14:00:00+00:00',
+		endTime: '2023-06-02T23:00:00+00:00',
+		nextDeliverableDay: true
+	},
+	{
+		day: 'Saturday',
+		startTime: '2023-06-03T14:00:00+00:00',
+		endTime: '2023-06-03T23:00:00+00:00'
+	},
+	{
+		day: 'Monday',
+		startTime: '2023-06-05T14:00:00+00:00',
+		endTime: '2023-06-05T23:00:00+00:00'
+	},
+	{
+		day: 'Tuesday',
+		startTime: '2023-06-06T14:00:00+00:00',
+		endTime: '2023-06-06T20:00:00+00:00'
+	},
+	{
+		day: 'Wednesday',
+		startTime: '2023-06-07T14:00:00+00:00',
+		endTime: '2023-06-07T20:00:00+00:00'
+	}]
 	before(() => {
-		stub(NyplApiClient.prototype, 'get').callsFake((path) => {
+		clientStub = stub(NyplApiClient.prototype, 'get').callsFake((path) => {
 			if (path.includes('sc')) {
 				return Promise.resolve({
 					sc:
 						[{
-							label: null, hours:
-								[{
-									day: 'Thursday', startTime: '2023-06-01T14:00:00+00:00',
-									endTime: '2023-06-01T23:00:00+00:00', today: true
-								},
-								{
-									day: 'Friday', startTime: '2023-06-02T14:00:00+00:00',
-									endTime: '2023-06-02T23:00:00+00:00', nextDeliverableDay: true
-								},
-								{
-									day: 'Saturday', startTime: '2023-06-03T14:00:00+00:00',
-									endTime: '2023-06-03T23:00:00+00:00'
-								},
-								{
-									day: 'Monday', startTime: '2023-06-05T14:00:00+00:00',
-									endTime: '2023-06-05T23:00:00+00:00'
-								},
-								{
-									day: 'Tuesday', startTime: '2023-06-06T14:00:00+00:00',
-									endTime: '2023-06-06T20:00:00+00:00'
-								},
-								{
-									day: 'Wednesday', startTime: '2023-06-07T14:00:00+00:00',
-									endTime: '2023-06-07T20:00:00+00:00'
-								}]
+							label: null, hours: hoursArray
 						}]
 				})
 			}
 			else return Promise.resolve({})
 		})
+		afterEach(() => { clientStub.resetHistory() })
 	})
 
 	describe('getPickupTimeEstimate', () => {
@@ -57,42 +67,26 @@ describe.only('pickupTimeEstimator', () => {
 	})
 
 	describe('_operatingHours', () => {
+		afterEach(() => _resetCacheForTesting())
 		it('should return hours array', async () => {
-			expect(await _operatingHours('sc')).to.deep.equal([{
-				day: 'Thursday',
-				startTime: '2023-06-01T14:00:00+00:00',
-				endTime: '2023-06-01T23:00:00+00:00',
-				today: true
-			},
-			{
-				day: 'Friday',
-				startTime: '2023-06-02T14:00:00+00:00',
-				endTime: '2023-06-02T23:00:00+00:00',
-				nextDeliverableDay: true
-			},
-			{
-				day: 'Saturday',
-				startTime: '2023-06-03T14:00:00+00:00',
-				endTime: '2023-06-03T23:00:00+00:00'
-			},
-			{
-				day: 'Monday',
-				startTime: '2023-06-05T14:00:00+00:00',
-				endTime: '2023-06-05T23:00:00+00:00'
-			},
-			{
-				day: 'Tuesday',
-				startTime: '2023-06-06T14:00:00+00:00',
-				endTime: '2023-06-06T20:00:00+00:00'
-			},
-			{
-				day: 'Wednesday',
-				startTime: '2023-06-07T14:00:00+00:00',
-				endTime: '2023-06-07T20:00:00+00:00'
-			}])
+			expect(await _operatingHours('sc')).to.deep.equal(hoursArray)
 		})
 		it('should return an empty array if response is mangled', async () => {
 			expect(await _operatingHours('xx')).to.deep.equal([])
+		})
+		it('should only make one get request for successive calls', async () => {
+			await _operatingHours('sc')
+			await _operatingHours('sc')
+			const hours = await _operatingHours('sc')
+			expect(sinon.assert.calledOnce(clientStub))
+			expect(hours).to.deep.equal(hoursArray)
+		})
+		it('should fetch new hours if it is expired', async () => {
+			// set cache with expired time
+			_resetCacheForTesting(1687449047066)
+			await _operatingHours('sc')
+			await _operatingHours('sc')
+			expect(sinon.assert.calledOnce(clientStub))
 		})
 	})
 
