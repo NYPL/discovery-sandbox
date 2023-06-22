@@ -10,7 +10,6 @@ import { ADOBE_ANALYTICS_PAGE_NAMES } from '../../src/app/data/constants';
 import {
   ajaxCall,
   getDefaultFilters,
-  createAppHistory,
   destructureFilters,
   getSortQuery,
   getIdentifierQuery,
@@ -131,22 +130,6 @@ describe('getDefaultFilters', () => {
       creatorLiteral: [],
       contributorLiteral: [],
     });
-  });
-});
-
-/**
- * createAppHistory
- */
-describe('createAppHistory', () => {
-  // Don't think this is working too well.
-  // TODO: find a better way to test this function:
-  it('should create a server-side history', () => {
-    const useQueriesSpy = sinon.spy(useQueries);
-
-    createAppHistory();
-    setTimeout(() => {
-      expect(useQueriesSpy.callCount).to.equal(1);
-    }, 0);
   });
 });
 
