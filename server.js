@@ -26,6 +26,7 @@ const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
 const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
+const NYPL_HEADER_URL = appConfig.nyplHeaderUrl;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 const app = express();
@@ -107,9 +108,11 @@ app.get('/*', (req, res) => {
           appTitle: title,
           favicon: appConfig.favIconPath,
           webpackPort: WEBPACK_DEV_PORT,
+          nyplHeaderUrl: NYPL_HEADER_URL,
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
+          launchEmbedUrl: appConfig.launchEmbedUrl
         });
       } else {
         res.status(404).redirect(`${appConfig.baseUrl}/`);

@@ -22,6 +22,16 @@
     <meta name="twitter:creator" content="@nypl">
     <meta name="twitter:image" content="">
 
+    <script>
+      // First define the global variable for the entire data layer array
+      window.adobeDataLayer = window.adobeDataLayer || [];
+      // Then push in the variables required in the Initial Data Layer Definition
+      window.adobeDataLayer.push({
+        disable_page_view: true
+      });
+    </script>
+
+    <script src="<%- launchEmbedUrl %>" async></script>
 
 <% if (isProduction) { %>
     <!-- Minified Styles -->
@@ -30,7 +40,11 @@
 
   </head>
   <body>
+    <div id="nypl-header"></div>
+    <script type="module" src="<%- nyplHeaderUrl %>/header.min.js?containerId=nypl-header" async></script> 
     <div id="app"><%- application %></div>
+    <div id="nypl-footer"></div>
+    <script type="module" src="<%- nyplHeaderUrl %>/footer.min.js?containerId=nypl-footer" async></script> 
     <script>
       // WARNING: See the following for security issues around embedding JSON in HTML:
       // http://redux.js.org/recipes/ServerRendering.html#security-considerations

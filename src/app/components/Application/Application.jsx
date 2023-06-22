@@ -1,8 +1,6 @@
 /* global window */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Header, navConfig } from '@nypl/dgx-header-component';
-import Footer from '@nypl/dgx-react-footer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { union as _union } from 'underscore';
@@ -14,6 +12,7 @@ import { updateFeatures } from '../../actions/Actions';
 import { breakpoints } from '../../data/constants';
 import { PatronProvider } from '../../context/PatronContext';
 import { FeedbackBoxProvider } from '../../context/FeedbackContext';
+import { trackVirtualPageView} from '../../utils/utils';
 
 export const MediaContext = React.createContext('desktop');
 
@@ -58,6 +57,16 @@ export class Application extends React.Component {
         }
       });
     }
+
+    // Listen for router changes and track virtual page views in Adobe Analytics
+    if (router?.listen) {
+      router.listen(() => {
+        const {
+          pathname,
+        } = router?.location;
+        trackVirtualPageView(pathname)
+      });
+    }
   }
 
   onWindowResize () {
@@ -86,11 +95,6 @@ export class Application extends React.Component {
         <FeedbackBoxProvider>
           <MediaContext.Provider value={this.state.media}>
             <div className="app-wrapper">
-              <Header
-                navData={navConfig.current}
-                patron={this.props.patron}
-                skipNav={{ target: 'mainContent' }}
-              />
               <DataLoader
                 location={this.context.router.location}
                 query={this.context.router.location.query}
@@ -98,7 +102,6 @@ export class Application extends React.Component {
               >
                 {React.cloneElement(this.props.children)}
               </DataLoader>
-              <Footer />
               <Feedback />
             </div>
           </MediaContext.Provider>
