@@ -16,6 +16,7 @@ import './styles/main.scss';
 import './assets/drbb_promo.png';
 
 import routes from '../app/routes/routes';
+import { trackVirtualPageView } from '../app/utils/utils';
 
 if (loadA11y) {
   a11y(React, { ReactDOM, includeSrcNode: true });
@@ -43,4 +44,5 @@ window.onload = () => {
     appElement,
   );
   gaUtils.trackPageview(window.location.pathname);
+  trackVirtualPageView(window.location.pathname);
 };

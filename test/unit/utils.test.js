@@ -5,6 +5,7 @@ import axios from 'axios';
 import sinon from 'sinon';
 import { useQueries } from 'history';
 import sampleBib from '../fixtures/electronicAndPhysicalItemsBib';
+import { ADOBE_ANALYTICS_PAGE_NAMES } from '../../src/app/data/constants';
 
 import {
   ajaxCall,
@@ -27,7 +28,8 @@ import {
   institutionNameByNyplSource,
   isNyplBnumber,
   hasCheckDigit,
-  removeCheckDigit
+  removeCheckDigit,
+  adobeAnalyticsRouteToPageName
 } from '../../src/app/utils/utils';
 
 /**
@@ -894,5 +896,27 @@ describe('getIdentifierQuery', () => {
       oclc: '34567',
       lccn: '45678',
     })).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
+  });
+});
+
+describe('adobeAnalyticsRouteToPageName', () => {
+  it('should return the appropriate page name for a given route', () => {
+    expect(adobeAnalyticsRouteToPageName('/')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
+    expect(adobeAnalyticsRouteToPageName('')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
+    expect(adobeAnalyticsRouteToPageName('/search')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
+    expect(adobeAnalyticsRouteToPageName('/search?q=test')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
+    expect(adobeAnalyticsRouteToPageName('/search/advanced')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH);
+    expect(adobeAnalyticsRouteToPageName('/bib')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678/all')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678/edd')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings/a1da66e2-5e8d-4186-8403-5d43365a631e?label=D%27Adda%20family')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HEADING);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS);
+    expect(adobeAnalyticsRouteToPageName('/account')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
+    expect(adobeAnalyticsRouteToPageName('/account/holds')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
+    expect(adobeAnalyticsRouteToPageName('/accountError')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR);
+    expect(adobeAnalyticsRouteToPageName('/404/redirect')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT);
+    expect(adobeAnalyticsRouteToPageName('/404')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404);
   });
 });
