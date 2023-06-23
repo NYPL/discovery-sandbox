@@ -43,18 +43,6 @@ const ajaxCall = (
 const getDefaultFilters = () => _extend({}, appConfig.defaultFilters);
 
 /**
- * createAppHistory
- * Create a history in the browser or server that coincides with react-router.
- */
-const createAppHistory = () => {
-  if (typeof window !== 'undefined') {
-    return useQueries(createHistory)();
-  }
-
-  return useQueries(createMemoryHistory)();
-};
-
-/**
  * destructureFilters
  * Get filters directly from the URL and parse and combine them into selected filter values.
  * @param {object} filters Filters in the url.
@@ -202,7 +190,7 @@ const trackDiscovery = gaUtils.trackEvent('Discovery');
 
 // Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '') => {
-  switch(route) {
+  switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
     case route.match(/\/search/i)?.input:
@@ -212,7 +200,7 @@ const adobeAnalyticsRouteToPageName = (route = '') => {
     case route.match(/\/bib/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;env
+      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST; env
     case route.match(/\/hold\/request/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/confirmation/i)?.input:
@@ -831,7 +819,6 @@ export {
   trackVirtualPageView,
   ajaxCall,
   getSortQuery,
-  createAppHistory,
   getFieldParam,
   getFilterParam,
   destructureFilters,
