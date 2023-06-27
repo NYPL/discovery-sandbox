@@ -28,7 +28,8 @@ import {
   isNyplBnumber,
   hasCheckDigit,
   removeCheckDigit,
-  adobeAnalyticsRouteToPageName
+  adobeAnalyticsRouteToPageName,
+  standardizeBibId
 } from '../../src/app/utils/utils';
 
 /**
@@ -133,6 +134,27 @@ describe('getDefaultFilters', () => {
   });
 });
 
+describe.only('standardizeBib', () => {
+  it('doesn\'t mess with kosher id', () => {
+    expect(standardizeBibId('b12345678')).to.equal('b12345678')
+    expect(standardizeBibId('hb123456789123456789')).to.equal('hb123456789123456789')
+  })
+  it('removes check digit', () => {
+    expect(standardizeBibId('b12345678x')).to.equal('b12345678')
+    expect(standardizeBibId('b12345678X')).to.equal('b12345678')
+    expect(standardizeBibId('b123456781')).to.equal('b12345678')
+  })
+  it('lower cases everything', () => {
+    expect(standardizeBibId('B12345678')).to.equal('b12345678')
+    expect(standardizeBibId('CB1234567')).to.equal('cb1234567')
+    expect(standardizeBibId('Hb123456789123456789')).to.equal('hb123456789123456789')
+    expect(standardizeBibId('PB1234567812345678')).to.equal('pb1234567812345678')
+  })
+  it('returns undefined if a non bibid value is provided', () => {
+    expect(standardizeBibId('b1234567899')).to.equal('b1234567899')
+    expect(standardizeBibId('i am not a bib id hb123')).to.equal('i am not a bib id hb123')
+  })
+})
 /**
  * destructureFilters
  */
