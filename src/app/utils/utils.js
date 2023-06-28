@@ -817,9 +817,9 @@ function aeonUrl(item) {
 function standardizeBibId(bibId) {
   // nypl bib ids could have a 9th digit, a check digit which can be 0-9 or x.
   const nypl = bibId.match(/^([bB])(\d{8})[\dxX]?$/)
-  const princeton = bibId.match(/^([pP][bB])(\d{16})$/)
+  const princeton = bibId.match(/^([pP][bB])(\d{6,16})$/)
   const columbia = bibId.match(/^([cC][bB])(\d{6,9})$/)
-  const harvard = bibId.match(/^([hH][bB])(\d{18})$/)
+  const harvard = bibId.match(/^([hH][bB])(\d{6,18})$/)
   const matches = [nypl, princeton, columbia, harvard]
     .find((match) => match?.length === 3)
   if (matches) {

@@ -148,6 +148,7 @@ describe.only('standardizeBib', () => {
     expect(standardizeBibId('B12345678')).to.equal('b12345678')
     expect(standardizeBibId('CB1234567')).to.equal('cb1234567')
     expect(standardizeBibId('Hb123456789123456789')).to.equal('hb123456789123456789')
+    expect(standardizeBibId('PB1234567')).to.equal('pb1234567')
     expect(standardizeBibId('PB1234567812345678')).to.equal('pb1234567812345678')
   })
   it('returns value provided if input does not match bib id regexes', () => {
