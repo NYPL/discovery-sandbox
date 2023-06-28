@@ -150,7 +150,7 @@ describe.only('standardizeBib', () => {
     expect(standardizeBibId('Hb123456789123456789')).to.equal('hb123456789123456789')
     expect(standardizeBibId('PB1234567812345678')).to.equal('pb1234567812345678')
   })
-  it('returns undefined if a non bibid value is provided', () => {
+  it('returns value provided if input does not match bib id regexes', () => {
     expect(standardizeBibId('b1234567899')).to.equal('b1234567899')
     expect(standardizeBibId('i am not a bib id hb123')).to.equal('i am not a bib id hb123')
   })

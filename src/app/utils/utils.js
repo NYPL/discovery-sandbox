@@ -815,6 +815,7 @@ function aeonUrl(item) {
 
 // transform bib id to have lower case prefix (b, hb, cb, pb) and trim check digit
 function standardizeBibId(bibId) {
+  // nypl bib ids could have a 9th digit, a check digit which can be 0-9 or x.
   const nypl = bibId.match(/^([bB])(\d{8})[\dxX]?$/)
   const princeton = bibId.match(/^([pP][bB])(\d{16})$/)
   const columbia = bibId.match(/^([cC][bB])(\d{6,9})$/)
