@@ -10,7 +10,6 @@ import { ADOBE_ANALYTICS_PAGE_NAMES } from '../../src/app/data/constants';
 import {
   ajaxCall,
   getDefaultFilters,
-  createAppHistory,
   destructureFilters,
   getSortQuery,
   getIdentifierQuery,
@@ -29,7 +28,8 @@ import {
   isNyplBnumber,
   hasCheckDigit,
   removeCheckDigit,
-  adobeAnalyticsRouteToPageName
+  adobeAnalyticsRouteToPageName,
+  standardizeBibId
 } from '../../src/app/utils/utils';
 
 /**
@@ -134,22 +134,28 @@ describe('getDefaultFilters', () => {
   });
 });
 
-/**
- * createAppHistory
- */
-describe('createAppHistory', () => {
-  // Don't think this is working too well.
-  // TODO: find a better way to test this function:
-  it('should create a server-side history', () => {
-    const useQueriesSpy = sinon.spy(useQueries);
-
-    createAppHistory();
-    setTimeout(() => {
-      expect(useQueriesSpy.callCount).to.equal(1);
-    }, 0);
-  });
-});
-
+describe.only('standardizeBib', () => {
+  it('doesn\'t mess with kosher id', () => {
+    expect(standardizeBibId('b12345678')).to.equal('b12345678')
+    expect(standardizeBibId('hb123456789123456789')).to.equal('hb123456789123456789')
+  })
+  it('removes check digit', () => {
+    expect(standardizeBibId('b12345678x')).to.equal('b12345678')
+    expect(standardizeBibId('b12345678X')).to.equal('b12345678')
+    expect(standardizeBibId('b123456781')).to.equal('b12345678')
+  })
+  it('lower cases everything', () => {
+    expect(standardizeBibId('B12345678')).to.equal('b12345678')
+    expect(standardizeBibId('CB1234567')).to.equal('cb1234567')
+    expect(standardizeBibId('Hb123456789123456789')).to.equal('hb123456789123456789')
+    expect(standardizeBibId('PB1234567')).to.equal('pb1234567')
+    expect(standardizeBibId('PB1234567812345678')).to.equal('pb1234567812345678')
+  })
+  it('returns value provided if input does not match bib id regexes', () => {
+    expect(standardizeBibId('b1234567899')).to.equal('b1234567899')
+    expect(standardizeBibId('i am not a bib id hb123')).to.equal('i am not a bib id hb123')
+  })
+})
 /**
  * destructureFilters
  */

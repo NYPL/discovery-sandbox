@@ -5,7 +5,7 @@ import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { itemBatchSize } from '../../app/data/constants';
-import { isNyplBnumber, hasCheckDigit, removeCheckDigit } from '../../app/utils/utils';
+import { isNyplBnumber, standardizeBibId } from '../../app/utils/utils';
 import { appendDimensionsToExtent } from '../../app/utils/appendDimensionsToExtent';
 
 const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
@@ -23,7 +23,8 @@ const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
     .then(client => {
       return client.get(
         `/discovery/resources/${fullQuery}`
-      )}
+      )
+    }
     );
 };
 
@@ -117,10 +118,11 @@ const addLocationUrls = (bib) => {
     .catch((err) => { console.log('catching nypl client ', err); });
 };
 
-function fetchBib (bibId, cb, errorcb, reqOptions, res) {
+function fetchBib(bibId, cb, errorcb, reqOptions, res) {
   // Redirect if bibId has a Check Digit
-  if (hasCheckDigit(bibId)) { res.redirect(`${appConfig.baseUrl}/bib/${removeCheckDigit(bibId)}`); }
-  
+  const standardBibId = standardizeBibId(bibId)
+  if (standardBibId !== bibId) { res.redirect(`${appConfig.baseUrl}/bib/${standardBibId}`); }
+
   const options = Object.assign({
     fetchSubjectHeadingData: true,
     features: [],
@@ -191,7 +193,7 @@ function fetchBib (bibId, cb, errorcb, reqOptions, res) {
     }); /* end axios call */
 }
 
-function bibSearch (req, res, resolve) {
+function bibSearch(req, res, resolve) {
   const bibId = req.params.bibId;
   const query = req.query;
   const { features, item_page = 1, items_from } = req.query;

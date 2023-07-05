@@ -7,6 +7,7 @@ import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
+  standardizeBibId
 } from '../../app/utils/utils';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
@@ -38,6 +39,10 @@ const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
 };
 
 function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
+  if (field === 'standard_number') {
+    searchKeywords = standardizeBibId(searchKeywords)
+  }
+
   const encodedQueryString = createAPIQuery({
     searchKeywords,
     contributor,
@@ -136,7 +141,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
               item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
               item.locationUrl = item.holdingLocation[0].url
             }
-            if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
+            if (item.location) item.locationUrl = findUrl({ code: item.holdingLocationCode }, resp);
           });
         });
         return results;
