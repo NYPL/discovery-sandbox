@@ -19,7 +19,7 @@ const nyplApiClientCall = (query, itemFrom, filterItemsStr = "") => {
     itemRelatedQueries.push('merge_checkin_card_items=true')
     fullQuery = `${query}?${itemRelatedQueries.join('&')}`
   }
-  return nyplApiClient()
+  return nyplApiClient({ apiName: 'discovery' })
     .then(client => {
       return client.get(
         `/discovery/resources/${fullQuery}`

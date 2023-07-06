@@ -37,7 +37,7 @@ const clientSecret = process.env.clientSecret || process.env.PLATFORM_API_CLIENT
 const keys = [clientId, clientSecret];
 const CACHE = { clients: [] };
 
-function nyplApiClient(options = { apiName: 'discovery' }) {
+function nyplApiClient(options = { apiName: 'platform' }) {
   const { apiName } = options;
   if (CACHE.clients[apiName]) {
     return Promise.resolve(CACHE.clients[apiName]);
