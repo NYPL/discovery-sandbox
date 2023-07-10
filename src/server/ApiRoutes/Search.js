@@ -17,9 +17,7 @@ import ResearchNow from './ResearchNow';
 import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
 import {
-  addHoldingDefinition,
-  fetchLocationUrls,
-  findUrl,
+  addHoldingDefinition
 } from './Bib';
 
 const createAPIQuery = basicQuery({
@@ -129,23 +127,7 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
           });
         }
       });
-      const codes = Array.from(locationCodes).join(',');
-      return fetchLocationUrls(codes).then((resp) => {
-        itemListElement.forEach((resultObj) => {
-          const { result } = resultObj;
-          const items = result.items;
-          if (!items) return results;
-          items.slice(0, itemTableLimit).forEach((item) => {
-            if (!item) return;
-            if (item.holdingLocation) {
-              item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
-              item.locationUrl = item.holdingLocation[0].url
-            }
-            if (item.location) item.locationUrl = findUrl({ code: item.holdingLocationCode }, resp);
-          });
-        });
-        return results;
-      })
+      return Promise.resolve(results)
         .then(processedResults => cb(
           aggregations,
           processedResults,
