@@ -18,7 +18,7 @@ import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
 import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
-import { institutionNameByNyplSource, trackDiscovery } from '../utils/utils';
+import { institutionNameByNyplSource } from '../utils/utils';
 
 class ElectronicDelivery extends React.Component {
   constructor(props) {
@@ -155,7 +155,6 @@ class ElectronicDelivery extends React.Component {
 
     // This is to remove the error box on the top of the page on a successfull submission.
     this.setState({ raiseError: null });
-    trackDiscovery(`Submit Request EDD${partnerEvent}`, `${title} - ${itemId}`);
 
     const formData = new FormData(document.getElementById('place-edd-hold-form'));
     axios.post(
@@ -185,7 +184,6 @@ class ElectronicDelivery extends React.Component {
    */
   raiseError(error) {
     this.setState({ raiseError: error });
-    trackDiscovery('Error', 'EDD');
   }
 
   render() {
@@ -218,7 +216,6 @@ class ElectronicDelivery extends React.Component {
             <DSLink>
               <Link
                 to={`${appConfig.baseUrl}/bib/${bibId}`}
-                onClick={() => trackDiscovery('EDD - Bib', title)}
               >
                 {title}
               </Link>

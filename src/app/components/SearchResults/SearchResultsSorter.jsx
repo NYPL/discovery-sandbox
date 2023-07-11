@@ -1,10 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-
-import {
-  trackDiscovery,
-} from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
 const sortingOpts = [
@@ -58,7 +54,6 @@ export class SearchResultsSorter extends React.Component {
   sortResultsBy(sortBy) {
     // const apiQuery = this.props.createAPIQuery({ sortBy, page: this.props.page });
     const apiQuery = this.props.createAPIQuery({ sortBy });
-    trackDiscovery('Sort by', sortBy);
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 

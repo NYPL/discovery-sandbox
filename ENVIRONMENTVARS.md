@@ -28,7 +28,6 @@ These variables are used to configure server settings and application-wide setti
 | `BASE_URL` | string | `/research/research-catalog` | The base URL for the application. |
 | `BUNDLE_ANALYZER` | boolean | true, false | Whether or not to run the `webpack-visualizer-plugin` plugin in webpack. |
 | `DISPLAY_TITLE` | string | "Research Catalog" | The title of the application displayed throughout the UI. |
-| `GA_ENV` | string | `development`, `production` | Used to decide what Google Analytics code should be used. |
 | `LEGACY_BASE_URL` | string | "" | The base url for the legacy catalog. |
 | `NODE_ENV` | string | `development`, `test`, `production` | The environment in which the application is running. When running `npm test`, the value is `test`. When running locally, the default is `development` but it should be `production` for the "production" build and server. |
 | `REDIRECT_FROM_BASE_URL` | string | "/research/collections/shared-collection-catalog" | The old base URL of the app. If a user goes to the old URL, the server redirects the user. |

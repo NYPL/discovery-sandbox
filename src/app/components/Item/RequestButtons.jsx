@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router';
 import {
-  trackDiscovery,
   aeonUrl,
 } from '../../utils/utils';
 import { MediaContext } from '../Application/Application';
@@ -17,11 +16,9 @@ const RequestButtons = ({item, bibId, searchKeywords, appConfig, page}) => {
   const isAeon = item.aeonUrl && features.includes('aeon-links')
 
   const getItemRecord = (e) => {
-    let gaLabel = 'Item Holding';
     if (page === 'SearchResults') gaLabel = 'Search Results';
     if (page === 'BibPage') gaLabel = 'Item Details';
     if (page === 'SubjectHeadingShowPage') gaLabel = 'Subject Heading Details';
-    trackDiscovery('Item Request', gaLabel);
   }
 
   const physRequestButton = () => {

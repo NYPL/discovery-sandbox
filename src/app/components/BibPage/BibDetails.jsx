@@ -18,7 +18,6 @@ import {
   stringDirection,
 } from '../../utils/bibDetailsUtils';
 import { RouterContext } from '../../context/RouterContext';
-import { trackDiscovery } from '../../utils/utils';
 
 const BibDetails = (props) => {
   const { router } = React.useContext(RouterContext);
@@ -140,12 +139,6 @@ const BibDetails = (props) => {
       return (
         <DSLink
           href={bibValue.url}
-          onClick={() =>
-            trackDiscovery(
-              'Bib fields',
-              `${fieldLabel} - ${bibValue.prefLabel}`,
-            )
-          }
           dir={stringDirection(linkText, useParallels)}
         >
           {linkText}
@@ -301,8 +294,6 @@ const BibDetails = (props) => {
   }) => {
     const onClick = (event) => {
       event.preventDefault();
-
-      trackDiscovery('Bib fields', `${analyticsLabel} - ${analyticsValue}`);
       router.push(`${appConfig.baseUrl}/search?${query}`);
     };
 

@@ -13,9 +13,6 @@ import { connect } from 'react-redux';
 
 import appConfig from '../data/appConfig';
 import SccContainer from '../components/SccContainer/SccContainer';
-import {
-  trackDiscovery,
-} from '../utils/utils';
 
 export class HoldConfirmation extends React.Component {
   componentDidMount() {
@@ -106,8 +103,6 @@ export class HoldConfirmation extends React.Component {
    */
   backToHome(event) {
     event.preventDefault();
-
-    trackDiscovery('Discovery Search', 'New Search');
     this.context.router.push(`${appConfig.baseUrl}/`);
   }
 
@@ -119,8 +114,6 @@ export class HoldConfirmation extends React.Component {
    */
   goToSearchResults(event) {
     event.preventDefault();
-
-    trackDiscovery('Discovery Search', 'Existing Search');
     this.context.router.push(`${appConfig.baseUrl}/search?q=${this.props.searchKeywords}`);
   }
 
@@ -238,15 +231,11 @@ export class HoldConfirmation extends React.Component {
       <span id="go-back-catalog">
         <DSLink
           href={this.props.location.query.fromUrl}
-          onClick={() => trackDiscovery('Catalog Link', 'Existing Search')}
         >
           Go back to your search results
         </DSLink>
         {' '}or{' '}
-        <DSLink
-          href="https://catalog.nypl.org/search"
-          onClick={() => trackDiscovery('Catalog Link', 'New Search')}
-        >
+        <DSLink href="https://catalog.nypl.org/search">
           start a new search
         </DSLink>.
       </span>
@@ -384,11 +373,6 @@ export class HoldConfirmation extends React.Component {
           {this.renderStartOverLink()}
         </div>
       );
-    }
-
-    // If running client-side, generate GA event
-    if ((typeof window !== 'undefined') && errorStatus && errorMessage) {
-      trackDiscovery('Error', 'Hold Confirmation');
     }
 
     return (
