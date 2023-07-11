@@ -229,9 +229,7 @@ export class HoldConfirmation extends React.Component {
 
     return (
       <span id="go-back-catalog">
-        <DSLink
-          href={this.props.location.query.fromUrl}
-        >
+        <DSLink href={this.props.location.query.fromUrl}>
           Go back to your search results
         </DSLink>
         {' '}or{' '}

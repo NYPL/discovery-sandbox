@@ -214,9 +214,7 @@ class ElectronicDelivery extends React.Component {
         <div className="nypl-request-item-summary">
           <h2>
             <DSLink>
-              <Link
-                to={`${appConfig.baseUrl}/bib/${bibId}`}
-              >
+              <Link to={`${appConfig.baseUrl}/bib/${bibId}`}>
                 {title}
               </Link>
             </DSLink>
