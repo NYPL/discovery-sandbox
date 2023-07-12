@@ -134,7 +134,7 @@ describe('getDefaultFilters', () => {
   });
 });
 
-describe.only('standardizeBib', () => {
+describe('standardizeBib', () => {
   it('doesn\'t mess with kosher id', () => {
     expect(standardizeBibId('b12345678')).to.equal('b12345678')
     expect(standardizeBibId('hb123456789123456789')).to.equal('hb123456789123456789')

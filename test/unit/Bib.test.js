@@ -54,62 +54,6 @@ describe('Bib', () => {
     ],
   };
 
-  describe('addLocationUrls', () => {
-    before(() => {
-      stub(NyplApiClient.prototype, 'get').callsFake(() => Promise.resolve(
-        JSON.parse(
-          fs.readFileSync(
-            './test/fixtures/locations-service-mm.json', 'utf8'))));
-    });
-    after(() => {
-      NyplApiClient.prototype.get.restore();
-    });
-    it('should add location URLs', () => {
-      Bib.addLocationUrls(mockBib).then((resp) => {
-        expect(resp.holdings).to.deep.equal([
-          {
-            location: [{
-              label: 'Mid-Manhattan',
-              code: 'mm',
-              url: 'http://www.nypl.org/locations/mid-manhattan-library',
-            }],
-            format: 'Text',
-            checkInBoxes: [
-              {
-                position: 1,
-                status: 'available',
-                coverage: '1000',
-                shelfMark: 'abcd',
-              },
-              {
-                position: 3,
-                status: 'available',
-                coverage: '1001',
-                shelfMark: 'efgh',
-              },
-            ],
-          },
-          {
-            format: 'AV',
-            checkInBoxes: [
-              {
-                position: 2,
-                status: 'available',
-                coverage: '1002',
-                shelfMark: 'ijkl',
-              },
-              {
-                position: 4,
-                status: 'Expected',
-                coverage: '1003',
-                shelfMark: 'mnop',
-              },
-            ],
-          },
-        ]);
-      });
-    });
-  });
   describe('nyplApiClientCall', () => {
     let apiClientStub
     let urlRecord

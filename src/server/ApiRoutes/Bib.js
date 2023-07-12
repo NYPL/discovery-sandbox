@@ -62,62 +62,6 @@ export const addHoldingDefinition = (holding) => {
     .filter(data => data.definition);
 };
 
-export const findUrl = (location, urls) => {
-  const matches = urls[location.code] || [];
-  const longestMatch = matches.reduce(
-    (acc, el) => (el.code.length > acc.code.length ? el : acc), matches[0]);
-  if (!longestMatch || !longestMatch.url) return undefined;
-  return longestMatch.url;
-};
-
-export const fetchLocationUrls = codes => nyplApiClient()
-  .then(client => client.get(`/locations?location_codes=${codes}`));
-
-const addLocationUrls = (bib) => {
-  const { holdings } = bib;
-  const holdingCodes = holdings ?
-    holdings
-      .map(holding => (holding.location || []).map(location => location.code))
-      .reduce((acc, el) => acc.concat(el), [])
-    : [];
-
-  const itemCodes = bib.items ?
-    bib.items.map(item =>
-      (item.holdingLocation || []).map(location => location['@id'] || location.code),
-    ).reduce((acc, el) => acc.concat(el), [])
-    : [];
-
-  const codes = holdingCodes.concat(itemCodes).join(',');
-  // get locations data by codes
-  return fetchLocationUrls(codes)
-    .then((resp) => {
-      // add location urls for holdings
-      if (Array.isArray(bib.holdings)) {
-        bib.holdings.forEach((holding) => {
-          if (holding.location) {
-            holding.location.forEach((location) => {
-              location.url = findUrl(location, resp);
-            });
-          };
-        });
-      }
-      // add item location urls;
-      if (Array.isArray(bib.items)) {
-        bib.items.forEach((item) => {
-          if (item.holdingLocation) {
-            item.holdingLocation.forEach((holdingLocation) => {
-              if (holdingLocation['@id']) {
-                holdingLocation.url = findUrl({ code: holdingLocation['@id'] }, resp);
-              }
-            });
-          }
-        });
-      }
-      return bib;
-    })
-    .catch((err) => { console.log('catching nypl client ', err); });
-};
-
 function fetchBib(bibId, cb, errorcb, reqOptions, res) {
   // Redirect if bibId has a Check Digit
   const standardBibId = standardizeBibId(bibId)
@@ -165,8 +109,7 @@ function fetchBib(bibId, cb, errorcb, reqOptions, res) {
       return Object.assign({ status }, bib);
     })
     .then((bib) => {
-      appendDimensionsToExtent(bib)
-      return addLocationUrls(bib)
+      return appendDimensionsToExtent(bib)
     })
     .then((bib) => {
       if (bib.holdings) {
@@ -225,6 +168,5 @@ export default {
   bibSearch,
   fetchBib,
   nyplApiClientCall,
-  addLocationUrls,
   appendDimensionsToExtent,
 };
