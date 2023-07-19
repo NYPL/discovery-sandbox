@@ -356,23 +356,16 @@ As one of the NYPL's services, we want to monitor its condition and receive nece
 
 ## Adding Locations
 
-When new Sierra locations (especially Sierra locations that are "delivery locations") are added to [NYPL-Core](https://github.com/NYPL/nypl-core), those locations will need to be added to this app. The complete set of steps for adding a location [is a documented LSP Workflow](https://github.com/NYPL/lsp_workflows/blob/5242526be2ad483c3945b94c3660f523bfdbc6bb/workflows/add_scsb_location.md#add-entries-to-nypl-core).
+This app relates Sierra location codes (e.g. `myv`, `mab`) to location details (hours, address) by:
+ - Determines research location "slug" via `./src/app/utils/locations.js`
+ - Looks up address and hours in `./locations.js`, a static copy of select Refinery data
 
-In this repo, two local JSONs are critical to adding locations:
+You should not need change these files unless:
 
-- `./locations.js`: A JSON mapping major hub names (e.g. "schwarzman", "sibl") to data about them (e.g. "full-name", "address")
-- `./data/locationCodes.js`: A JSON mapping _all_ Sierra location codes to their `delivery_location` and relevant hub name (referencing the keys in `./locations.js`). (Note that Sierra locations that act only as _delivery locations_ must be entered in this hash and cite themselves as `delivery_location`).
-
-These files must be kept up to date with newly added locations to ensure that the hold-request page presents delivery locations with correct labels and building addresses. For example, when Scholar rooms 217 and 223 were added to SASB, entries like the following needed to be added to `./locationCodes.js`:
-
-```
-  "mal17": {
-    "delivery_location": "mal17",
-    "location": "schwarzman"
-  },
-```
-
-Less frequently, when an NYPL location address changes, we should change the corresponding entry in `./locations.js`.
+1. Research center hours/location/name change:
+   - Update center properties in `./locations.js`
+2. Sierra location id prefixes change (e.g. `my*` becomes `lp*`). This should be rare, but happened Jul 2023 when LPA `my*` Sierra locations where replaced with `lp*` and `pa*` locations.
+   - You may need to update `./src/app/utils/locations.js` to ensure the new Sierra location code prefixes resolve to the proper slug.
 
 ## Business Continuity
 
