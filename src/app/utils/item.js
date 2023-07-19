@@ -1,6 +1,6 @@
 import { findWhere as _findWhere, isEmpty as _isEmpty } from 'underscore';
-import LocationCodes from '../data/locationCodes';
 import { camelToShishKabobCase } from './utils';
+import { locationSlugForLocation } from './locations';
 
 // Map local identifier names to their @type and urn: indicators:
 const itemIdentifierTypeMappings = {
@@ -313,15 +313,9 @@ function LibraryItem() {
    * @return {string}
    */
   this.getLocationHoldUrl = (location) => {
-    const holdingLocationId =
-      location && location['@id'] ? location['@id'].substring(4) : '';
+    const shortLocation = locationSlugForLocation(location) || 'schwarzman';
+
     let url = '';
-    let shortLocation = 'schwarzman';
-
-    if (holdingLocationId in LocationCodes) {
-      shortLocation = LocationCodes[holdingLocationId].location;
-    }
-
     switch (shortLocation) {
       case 'schwarzman':
         url =

@@ -1,11 +1,10 @@
 import {
   extend as _extend,
-  mapObject as _mapObject,
   omit as _omit,
 } from 'underscore';
 
 import appConfig from '../../app/data/appConfig';
-import locationCodes from '../../app/data/locationCodes';
+import { locationSlugForLocation } from '../../app/utils/locations';
 import locationDetails from '../../../locations';
 import User from './User';
 import Bib from './Bib';
@@ -75,33 +74,24 @@ function postHoldAPI(
     .catch(errorCb);
 }
 
+
 /**
  * mapLocationDetails(locations)
- * The function extracts the details of the delivery locations from the location.js and
- * locationCodes.js based on the location ID we get from deliveryLocationsByBarcode API.
+ * The function attaches `.address` and `.shortName` properties to the array of locations
  *
  * @param {array} locations
  * @return {array}
  */
 function mapLocationDetails(locations) {
-  locations.map((loc) => {
-    _mapObject(locationCodes, (c) => {
-      if (loc['@id'].replace('loc:', '') === c.delivery_location) {
-        const locationDetailsItem = locationDetails[c.location];
+  return locations.map((loc) => {
+    const slug = locationSlugForLocation(loc);
+    if (slug && locationDetails[slug]) {
+      const details = locationDetails[slug];
 
-        loc.address = (locationDetailsItem) ?
-          locationDetailsItem.address.address1 : null;
-        loc.shortName = (locationDetailsItem) ?
-          locationDetailsItem['short-name'] : null;
-
-        return true;
-      }
-
-      return false;
-    });
+      loc.address = details.address.address1;
+      loc.shortName = details['short-name'];
+    }
   });
-
-  return locations;
 }
 
 /**
