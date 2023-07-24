@@ -82,9 +82,14 @@ const BibDetails = (props) => {
             fieldLabel,
           );
 
-          const direction = (liInner.props && liInner.props.dir) ? liInner.props.dir : null;
+          const direction =
+            liInner.props && liInner.props.dir ? liInner.props.dir : null;
           const listElement = (
-            <li key={`filter${fieldValue}-${index}`} dir={direction} className={direction}>
+            <li
+              key={`filter${fieldValue}-${index}`}
+              dir={direction}
+              className={direction}
+            >
               {liInner}
             </li>
           );
@@ -129,13 +134,11 @@ const BibDetails = (props) => {
       return searchRouterLink({
         query: url,
         label: bibValue,
-        analyticsLabel: fieldLabel,
-        analyticsValue: bibValue,
       });
     }
 
     if (fieldSelfLinkable) {
-      const linkText = bibValue.prefLabel || bibValue.label || bibValue.url
+      const linkText = bibValue.prefLabel || bibValue.label || bibValue.url;
       return (
         <DSLink
           href={bibValue.url}
@@ -146,7 +149,9 @@ const BibDetails = (props) => {
       );
     }
 
-    return <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>;
+    return (
+      <span dir={stringDirection(bibValue, useParallels)}>{bibValue}</span>
+    );
   };
 
   /**
@@ -211,16 +216,14 @@ const BibDetails = (props) => {
       }
 
       // For each group of notes, add them to the definition list individually.
-      if (
-        fieldLabel === 'Notes' &&
-        !_isEmpty(bib.notesGroupedByNoteType)
-      ) {
+      if (fieldLabel === 'Notes' && !_isEmpty(bib.notesGroupedByNoteType)) {
         const notesGroupedByNoteType = props.bib.notesGroupedByNoteType;
         Object.keys(notesGroupedByNoteType).forEach((noteType) => {
           const notesList = (
             <ul>
               {notesGroupedByNoteType[noteType].map((note, index) => (
-                <li key={index}
+                <li
+                  key={index}
                   dir={stringDirection(note.prefLabel, useParallels)}
                   className={stringDirection(note.prefLabel, useParallels)}
                 >
@@ -261,8 +264,6 @@ const BibDetails = (props) => {
       const subjectHeadingLink = searchRouterLink({
         query: urlWithFilterQuery,
         label: heading,
-        analyticsLabel: fieldLabel,
-        analyticsValue: urlArray[index],
       });
 
       returnArray.push(subjectHeadingLink);
@@ -282,16 +283,9 @@ const BibDetails = (props) => {
    *
    * @param {string} query - the search query to add in the URL
    * @param {string} label - the visible label for the anchor element
-   * @param {string} analyticsLabel - label text used for Google Analytics
-   * @param {string} analyticsValue - value text used for Google Analytics
    * @returns React-router `Link` component.
    */
-  const searchRouterLink = ({
-    query,
-    label,
-    analyticsLabel,
-    analyticsValue,
-  }) => {
+  const searchRouterLink = ({ query, label }) => {
     const onClick = (event) => {
       event.preventDefault();
       router.push(`${appConfig.baseUrl}/search?${query}`);
