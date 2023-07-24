@@ -2,8 +2,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { trackDiscovery } from '../../utils/utils';
-
 class Tabbed extends React.Component {
   constructor(props) {
     super(props);
@@ -38,10 +36,6 @@ class Tabbed extends React.Component {
 
   // switches tabs by updating state and href
   switchTab(newTabIndex) {
-    if (newTabIndex !== this.state.tabNumber) {
-      const tabChoices = ['Availability Tab1', 'Details Tab2', 'Full Description Tab3'];
-      trackDiscovery('BibPage Tabs Switch', tabChoices[newTabIndex - 1]);
-    }
     this.setState({ tabNumber: newTabIndex.toString() });
     const newTab = this.links[newTabIndex];
     window.location.replace(`${window.location.href.split('#')[0]}#tab${newTabIndex}`);

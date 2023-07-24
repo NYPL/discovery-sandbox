@@ -6,7 +6,6 @@ import ResultsList from '../ResultsList/ResultsList';
 import Pagination from '../Pagination/Pagination';
 import DrbbContainer from '../Drbb/DrbbContainer';
 import {
-  trackDiscovery,
   displayContext,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
@@ -26,8 +25,6 @@ const SearchResultsContainer = (props) => {
 
   const updatePage = (nextPage, pageType) => {
     const apiQuery = createAPIQuery({ page: nextPage });
-
-    trackDiscovery('Pagination - Search Results', `${pageType} - page ${nextPage}`);
     props.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   };
 

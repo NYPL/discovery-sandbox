@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 
 import {
   standardizeBibId,
-  trackDiscovery,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 import {
@@ -78,14 +77,7 @@ function Search(props) {
   function submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-
     const userSearchKeywords = keywords.trim();
-
-    // Track the submitted keyword search.
-    trackDiscovery('Search', userSearchKeywords);
-    if (selectField) {
-      trackDiscovery('Search', `Field - ${selectField}`);
-    }
 
     let searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 

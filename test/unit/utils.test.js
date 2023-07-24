@@ -375,21 +375,6 @@ describe('getFieldParam', () => {
 });
 
 /**
- * trackDiscovery()
- */
-// describe('trackDiscovery', () => {
-//   it('should make a call to gaUtils', () => {
-//     const trackEventSpy = sinon.spy(gaUtils, 'trackEvent');
-//
-//     trackDiscovery('action', 'label');
-//
-//     expect(trackEventSpy.callCount).to.equal(1);
-//
-//     trackEventSpy.restore();
-//   });
-// });
-
-/**
  * basicQuery()
  */
 describe('basicQuery', () => {
