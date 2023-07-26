@@ -6,7 +6,6 @@ import { DSProvider } from '@nypl/design-system-react-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
-import { config, gaUtils } from 'dgx-react-ga';
 import a11y from 'react-a11y';
 import { Provider } from 'react-redux';
 import useScroll from 'react-router-scroll/lib/useScroll';
@@ -23,12 +22,6 @@ if (loadA11y) {
 }
 
 window.onload = () => {
-  if (!window.ga) {
-    const isProd = process.env.GA_ENV === 'development' ? false : process.env.NODE_ENV === 'production';
-    const gaOpts = { debug: !isProd, titleCase: false };
-
-    gaUtils.initialize(config.google.code(isProd), gaOpts);
-  }
   const appElement = global.document.getElementById('app');
   ReactDOM.render(
     <DSProvider>
@@ -43,6 +36,5 @@ window.onload = () => {
     </DSProvider>,
     appElement,
   );
-  gaUtils.trackPageview(window.location.pathname);
   trackVirtualPageView(window.location.pathname);
 };

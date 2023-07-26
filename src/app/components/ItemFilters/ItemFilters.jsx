@@ -2,7 +2,6 @@ import { Button, Heading, Text } from '@nypl/design-system-react-components';
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useState, useRef, useCallback } from 'react';
 
-import { trackDiscovery } from '../../utils/utils';
 import { getLabelsForValues, initialLocations } from './itemFilterUtils';
 import { MediaContext } from '../Application/Application';
 import ItemFilter from './ItemFilter';
@@ -100,14 +99,8 @@ const ItemFilters = (
     // reset `selectFilters` to `initialFilters` any time `openFilter` changes
     setSelectedFields(initialFilters);
     if (filterType === openFilter) {
-      trackDiscovery('Search Filters', `Close Filter - ${filterType}`);
       setOpenFilter('none');
     } else {
-      if (filterType === 'none')
-        trackDiscovery('Search Filters', `Close Filter - ${openFilter}`);
-      else {
-        trackDiscovery('Search Filters', `Open Filter - ${openFilter}`);
-      }
       setOpenFilter(filterType);
     }
   };
@@ -166,10 +159,6 @@ const ItemFilters = (
         search: '',
       },
     });
-    trackDiscovery(
-      'Search Filters',
-      `Apply Filter - ${JSON.stringify(selectedFields)}`,
-    );
     router.push(href);
   };
 
