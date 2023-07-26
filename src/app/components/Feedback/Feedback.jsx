@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react'
 import axios from 'axios'
 
 import { FeedbackBoxContext } from '../../context/FeedbackContext'
-import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig'
 
 /**
@@ -14,12 +13,10 @@ const Feedback = () => {
   const { FeedbackBox, isOpen, onClose, onOpen, itemMetadata, setItemMetadata } = useContext(FeedbackBoxContext)
   const closeAndResetItemMetadata = () => {
     if (itemMetadata) setItemMetadata(null)
-    trackDiscovery('Feedback', 'Close');
     onClose();
     setScreen('form');
   }
   const submitFeedback = async (metadataAndComment) => {
-    trackDiscovery('Feedback', 'Submit')
     try {
       const res = await axios.post(`${appConfig.baseUrl}/api/feedback`,
         { fields: metadataAndComment })

@@ -9,9 +9,6 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 
 import LibraryItem from '../../utils/item';
-import {
-  trackDiscovery
-} from '../../utils/utils';
 import SearchResultsItems from '../Item/SearchResultsItems';
 import appConfig from '../../data/appConfig';
 import { searchResultItemsListLimit as itemTableLimit } from '../../data/constants';
@@ -118,7 +115,6 @@ const ResultsList = ({
                   fromUrl: `${pathname}${search}`,
                   bibId,
                 });
-                trackDiscovery('Bib', bibTitle);
               }
             }
               to={bibUrl}

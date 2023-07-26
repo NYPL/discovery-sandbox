@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { gaUtils } from 'dgx-react-ga';
 import { createHistory, createMemoryHistory, useQueries } from 'history';
 import {
   chain as _chain,
@@ -178,15 +177,6 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
   Object.entries(identifierNumbers)
     .map(([key, value]) => (value ? `&${key}=${value}` : ''))
     .join('');
-
-/**
- * Tracks Google Analytics (GA) events. `.trackEvent` returns a function with
- * 'Discovery' set as the GA Category. `trackDiscovery` will then log the defined
- * actions and labels under the 'Discovery' category.
- * @param {string} action The GA action.
- * @param {string} label The GA label.
- */
-const trackDiscovery = gaUtils.trackEvent('Discovery');
 
 // Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '') => {
@@ -832,7 +822,6 @@ function standardizeBibId(bibId) {
 
 export {
   standardizeBibId,
-  trackDiscovery,
   adobeAnalyticsRouteToPageName,
   trackVirtualPageView,
   ajaxCall,

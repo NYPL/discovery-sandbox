@@ -14,11 +14,24 @@ const appConfig = {
   webpackDevServerPort: 3000,
   environment: process.env.APP_ENV || 'production',
   api: {
-    discovery: {
+    platform: {
       development:
         process.env.PLATFORM_API_BASE_URL ||
         'https://qa-platform.nypl.org/api/v0.1',
       production:
+        process.env.PLATFORM_API_BASE_URL ||
+        'https://platform.nypl.org/api/v0.1',
+    },
+    // The 'discovery' base URL should use DISCOVERY_API_BASE_URL if set,
+    // falling back on PLATFORM_API_BASE_URL if set,
+    // and finally falling back on a sensible default.
+    discovery: {
+      development:
+        process.env.DISCOVERY_API_BASE_URL ||
+        process.env.PLATFORM_API_BASE_URL ||
+        'https://qa-platform.nypl.org/api/v0.1',
+      production:
+        process.env.DISCOVERY_API_BASE_URL ||
         process.env.PLATFORM_API_BASE_URL ||
         'https://platform.nypl.org/api/v0.1',
     },

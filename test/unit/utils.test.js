@@ -134,7 +134,7 @@ describe('getDefaultFilters', () => {
   });
 });
 
-describe.only('standardizeBib', () => {
+describe('standardizeBib', () => {
   it('doesn\'t mess with kosher id', () => {
     expect(standardizeBibId('b12345678')).to.equal('b12345678')
     expect(standardizeBibId('hb123456789123456789')).to.equal('hb123456789123456789')
@@ -373,21 +373,6 @@ describe('getFieldParam', () => {
     });
   });
 });
-
-/**
- * trackDiscovery()
- */
-// describe('trackDiscovery', () => {
-//   it('should make a call to gaUtils', () => {
-//     const trackEventSpy = sinon.spy(gaUtils, 'trackEvent');
-//
-//     trackDiscovery('action', 'label');
-//
-//     expect(trackEventSpy.callCount).to.equal(1);
-//
-//     trackEventSpy.restore();
-//   });
-// });
 
 /**
  * basicQuery()

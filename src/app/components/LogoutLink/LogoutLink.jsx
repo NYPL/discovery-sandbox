@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { useContext, useEffect, useState } from 'react';
 
 import { PatronContext } from '../../context/PatronContext';
-import { trackDiscovery } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 
 /**
@@ -36,7 +35,6 @@ const LogoutLink = ({
     <>
       {delineate ? <>&nbsp;|&nbsp;</> : null}
       <DSLink
-        onClick={() => trackDiscovery("Click", "Log Out")}
         href={`${logoutLink}${backLink}`}
         sx={{
           color: 'ui.white', textDecoration: 'none',
