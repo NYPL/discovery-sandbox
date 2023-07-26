@@ -91,6 +91,7 @@ function mapLocationDetails(locations) {
       loc.address = details.address.address1;
       loc.shortName = details['short-name'];
     }
+    return loc
   });
 }
 
