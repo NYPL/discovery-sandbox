@@ -8,7 +8,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
     <div className="account-settings__heading-3">
       <Heading level="three" text="Personal Information" />
       <Link
-        href={`${legacyBaseUrl}/patroninfo/${patron.id}/items`}
+        href={`${legacyBaseUrl}/patroninfo/${patron.id}/modpinfo`}
         className="edit-link settings"
         target="_blank"
       >
