@@ -29,7 +29,7 @@ function getAccountPage(res, req) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
 
-  return axios.get(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`, {
+  return axios.get(`${appConfig.webpacBaseUrl}/patroninfo/${patronId}/${content}`, {
     headers: {
       Cookie: req.headers.cookie,
     },
@@ -123,7 +123,7 @@ function postToAccountPage(req, res) {
   const content = req.params.content || 'items';
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
   axios.post(
-    `${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/${patronId}/${content}`,
+    `${appConfig.webpacBaseUrl}/patroninfo/${patronId}/${content}`,
     reqBodyString, {
     headers: {
       Cookie: req.headers.cookie,

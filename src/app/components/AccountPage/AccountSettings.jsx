@@ -8,7 +8,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
     <div className="account-settings__heading-3">
       <Heading level="three" text="Personal Information" />
       <Link
-        href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/modpinfo`}
+        href={`${legacyBaseUrl}/patroninfo/${patron.id}/items`}
         className="edit-link settings"
         target="_blank"
       >
@@ -32,7 +32,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => (
         <dt>Pin/Password</dt>
         <dd><span>&middot;&middot;&middot;&middot;</span></dd>
         <Link
-          href={`${legacyBaseUrl}/patroninfo*eng~Sdefault/${patron.id}/newpin`}
+          href={`${legacyBaseUrl}/patroninfo/${patron.id}/newpin`}
           className="edit-link"
           target='_blank'
         >
