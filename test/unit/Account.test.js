@@ -216,5 +216,9 @@ describe('removeLinkAndScriptTags', () => {
       expect(html).to.include('READY FOR PICKUP')
       expect(html).to.not.include('READY SOON')
     })
+    it('replaces Check shelving cart in status cell', () => {
+      expect(html).to.include('READY FOR PICKUP')
+      expect(html).to.not.include('Check shelving cart')
+    })
   })
 });

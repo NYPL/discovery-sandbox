@@ -10,7 +10,7 @@ const nyplApiClientGet = endpoint => (
     .then(client => client.get(endpoint, { cache: false }))
 );
 
-function getHomeLibrary(code) {
+function getHomeLibrary (code) {
   return nyplApiClientGet(`/locations?location_codes=${code}`)
     .then((resp) => {
       if (!resp || !resp[code] || !resp[code][0] || !resp[code][0].label) return { code };
@@ -25,7 +25,7 @@ function getHomeLibrary(code) {
     });
 }
 
-function getAccountPage(res, req) {
+function getAccountPage (res, req) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
 
@@ -41,7 +41,7 @@ function getAccountPage(res, req) {
  *  they're not injected into the html sent to the client (lest they generate a
  *  bunch of erroneous 404s or worse.
  */
-function removeLinkAndScriptTags(html) {
+function removeLinkAndScriptTags (html) {
   html = html.replace(/<link [^>]+\/>/g, '')
   html = html.replace(/<script type="text\/javascript" src=[^>]+>\s*<\/script>/g, '')
   return html
@@ -49,19 +49,20 @@ function removeLinkAndScriptTags(html) {
 /**
  * Swap actual status labels for something more patron-friendly
  */
-function swapStatusLabels(html) {
+function swapStatusLabels (html) {
   html = html.replace(/<td class="patFuncStatus"> AVAILABLE <\/td>/g, '<td class="patFuncStatus"> REQUEST PLACED </td>')
   html = html.replace(/<td class="patFuncStatus"> READY SOON <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
+  html = html.replace(/<td class="patFuncStatus"> Check shelving cart <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
   return html
 }
 
-function preprocessAccountHtml(html) {
+function preprocessAccountHtml (html) {
   html = removeLinkAndScriptTags(html)
   html = swapStatusLabels(html)
   return html
 }
 
-function fetchAccountPage(req, res, resolve) {
+function fetchAccountPage (req, res, resolve) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) {
@@ -115,7 +116,7 @@ function fetchAccountPage(req, res, resolve) {
     });
 }
 
-function postToAccountPage(req, res) {
+function postToAccountPage (req, res) {
   const requireUser = User.requireUser(req, res);
   const { redirect } = requireUser;
   if (redirect) res.json({ redirect });
@@ -133,7 +134,7 @@ function postToAccountPage(req, res) {
     .catch(resp => res.json({ error: resp }));
 }
 
-function logError(req) {
+function logError (req) {
   logger.error('Account Error', req.url.replace(/\w+:\/\//g, ''));
 }
 
