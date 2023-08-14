@@ -218,3 +218,11 @@ describe('removeLinkAndScriptTags', () => {
     })
   })
 });
+
+describe.only('sandbox', () => {
+  it('returnOnlyTable', () => {
+    const html = fs.readFileSync('./test/fixtures/account-markup-2023-08-14.html', 'utf8');
+    console.log(Account.returnOnlyTable(html))
+    expect(true)
+  })
+})

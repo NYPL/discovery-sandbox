@@ -4,6 +4,26 @@ import axios from 'axios';
 import appConfig from '../data/appConfig';
 import { CLOSED_LOCATION_REGEX } from '../data/constants';
 
+/**
+ * Swap actual status labels for something more patron-friendly
+ */
+function swapStatusLabels (html) {
+  html = html.replace(/<td class="patFuncStatus"> AVAILABLE <\/td>/g, '<td class="patFuncStatus"> REQUEST PLACED </td>')
+  html = html.replace(/<td class="patFuncStatus"> READY SOON <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
+  return html
+}
+
+function returnOnlyTable (html) {
+  const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
+  return table[0]
+}
+
+export const preprocessAccountHtml = (html) => {
+  html = returnOnlyTable(html)
+  html = swapStatusLabels(html)
+  return html
+}
+
 export const isClosed = optionInnerText => optionInnerText && !!optionInnerText.match(CLOSED_LOCATION_REGEX);
 
 export const makeRequest = (
@@ -25,7 +45,7 @@ export const makeRequest = (
         return { redirect: true };
       }
       if (data.error) console.error(data.error);
-      return updateAccountHtml(data);
+      return updateAccountHtml(preprocessAccountHtml(data));
     })
     .catch(res => console.error('ERROR', res))
     .finally(() => setIsLoading(false));
