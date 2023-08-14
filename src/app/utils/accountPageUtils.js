@@ -7,7 +7,7 @@ import { CLOSED_LOCATION_REGEX } from '../data/constants';
 /**
  * Swap actual status labels for something more patron-friendly
  */
-function swapStatusLabels (html) {
+export const swapStatusLabels = (html) => {
   html = html.replace(/<td class="patFuncStatus"> AVAILABLE <\/td>/g, '<td class="patFuncStatus"> REQUEST PLACED </td>')
   html = html.replace(/<td class="patFuncStatus"> READY SOON <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
   return html

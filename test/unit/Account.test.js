@@ -136,7 +136,7 @@ describe('`fetchAccountPage`', () => {
       Account.fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
 
       expect(axiosGet.calledOnce).to.equal(true);
-      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`);
+      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/patroninfo/6677666/holds`);
     });
   });
 
@@ -145,84 +145,7 @@ describe('`fetchAccountPage`', () => {
       Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
       expect(axiosGet.called).to.equal(true);
-      expect(axiosGet.secondCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`);
+      expect(axiosGet.secondCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/patroninfo/6677666/items`);
     });
   });
 });
-
-describe('removeLinkAndScriptTags', () => {
-  it('removes <link> and <script> tags from 5.1 markup (1)', () => {
-    const html = fs.readFileSync('./test/fixtures/sierra-5.1-patron-5035845-webpac-holds-markup.html', 'utf8');
-    let dom = jsdom(html);
-
-    // At the start, we expect it to have 2 <link> tags
-    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
-    // and 5 remote <script> tags
-    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
-
-    dom = jsdom(Account.removeLinkAndScriptTags(html))
-
-    // It now has no <link> or remote <script> tags:
-    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
-    // Ensure other critical parts of document remain
-    expect(dom.querySelectorAll('.patFuncTitle a')).to.have.lengthOf(4);
-  });
-
-  it('removes <link> and <script> tags from 5.1 markup (2)', () => {
-    const html = fs.readFileSync('./test/fixtures/sierra-5.1-patron-sb-webpac-holds-markup.html', 'utf8');
-    let dom = jsdom(html);
-
-    // At the start, we expect it to have 2 <link> tags
-    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
-    // and 5 remote <script> tags
-    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
-
-    dom = jsdom(Account.removeLinkAndScriptTags(html))
-
-    // It now has no <link> or remote <script> tags:
-    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
-    // Ensure other critical parts of document remain
-    expect(dom.querySelectorAll('.patFuncTitle a')).to.have.lengthOf(1);
-  });
-
-  it('removes <link> and <script> tags from 5.3 markup (1)', () => {
-    const html = fs.readFileSync('./test/fixtures/sierra-5.3-patron-5427701-webpac-holds-markup.html', 'utf8');
-    let dom = jsdom(html);
-
-    // At the start, we expect it to have 2 <link> tags
-    expect(dom.querySelectorAll('link')).to.have.lengthOf(2);
-    // And 5.3 markup has remote 5 script tags
-    expect(dom.querySelectorAll('script[src]')).to.have.lengthOf(5);
-
-    dom = jsdom(Account.removeLinkAndScriptTags(html))
-
-    // It now has no <link> or remote <script> tags:
-    expect(dom.querySelectorAll('link,script[src]')).to.have.lengthOf(0);
-    // Ensure other critical parts of document remain
-    expect(dom.querySelectorAll('.patFuncBibTitle a')).to.have.lengthOf(13);
-  });
-
-  describe('swapStatusLabels', () => {
-    let html = fs.readFileSync('./test/fixtures/account-markup.html', 'utf8')
-    html = Account.swapStatusLabels(html)
-    it('does not remove AVAILABLE from title element', () => {
-      expect(html).to.include('class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] AVAILABLE')
-    })
-    it('replaces AVAILABLE in multiple status cells', () => {
-      expect(html).to.include('<td class="patFuncStatus"> REQUEST PLACED </td>')
-      expect(html).to.not.include('<td class="patFuncStatus"> AVAILABLE </td>')
-    })
-    it('replaces READY SOON in status cell', () => {
-      expect(html).to.include('READY FOR PICKUP')
-      expect(html).to.not.include('READY SOON')
-    })
-  })
-});
-
-describe.only('sandbox', () => {
-  it('returnOnlyTable', () => {
-    const html = fs.readFileSync('./test/fixtures/account-markup-2023-08-14.html', 'utf8');
-    console.log(Account.returnOnlyTable(html))
-    expect(true)
-  })
-})

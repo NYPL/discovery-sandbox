@@ -3,8 +3,30 @@ import { expect } from 'chai';
 import { jsdom } from 'jsdom';
 import fs from 'fs';
 
-import { isClosed, convertEncoreUrl, formatPatronExpirationDate, manipulateAccountPage } from './../../src/app/utils/accountPageUtils';
+import {
+  isClosed,
+  convertEncoreUrl,
+  formatPatronExpirationDate,
+  manipulateAccountPage,
+  swapStatusLabels
+} from './../../src/app/utils/accountPageUtils';
 import appConfig from './../../src/app/data/appConfig';
+
+describe('swapStatusLabels', () => {
+  let html = fs.readFileSync('./test/fixtures/account-markup.html', 'utf8')
+  html = swapStatusLabels(html)
+  it('does not remove AVAILABLE from title element', () => {
+    expect(html).to.include('class="patFuncTitleMain">[HD] [Standard NYPL restrictions apply] AVAILABLE')
+  })
+  it('replaces AVAILABLE in multiple status cells', () => {
+    expect(html).to.include('<td class="patFuncStatus"> REQUEST PLACED </td>')
+    expect(html).to.not.include('<td class="patFuncStatus"> AVAILABLE </td>')
+  })
+  it('replaces READY SOON in status cell', () => {
+    expect(html).to.include('READY FOR PICKUP')
+    expect(html).to.not.include('READY SOON')
+  })
+})
 
 describe('`isClosed`', () => {
   it('should return true for string with "CLOSED"', () => {
