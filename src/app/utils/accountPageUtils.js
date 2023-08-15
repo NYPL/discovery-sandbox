@@ -87,7 +87,7 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
 export const convertEncoreUrl = (encoreUrl) => {
   const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
   if (!bibId) return encoreUrl;
-  return `${appConfig.baseUrl} /bib/${bibId} `;
+  return `${appConfig.baseUrl}/bib/${bibId} `;
 }
 
 /**
