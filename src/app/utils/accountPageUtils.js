@@ -13,6 +13,12 @@ export const swapStatusLabels = (html) => {
   return html
 }
 
+
+// Out of the html returned from webpac, we are only interested in the item table.
+// A Sierra upgrade in August 2023 added a ton more html to the response. 
+// I opted to take a very coarse approach and just extract the html we actually
+// want to display. We are not currently displaying the "Renew All" button any
+// more due to a change in the webpac response's script tags. 
 function returnOnlyTable (html) {
   // for some reason the patFuncTitle div comes back with variable amounts of spaces
   // apparently dependent on the text inside of it.
