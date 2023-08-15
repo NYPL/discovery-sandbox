@@ -52,7 +52,7 @@ export const makeRequest = (
   contentType,
   setIsLoading,
 ) => {
-  const url = `${appConfig.baseUrl} /api/account / ${contentType} `;
+  const url = `${appConfig.baseUrl}/api/account /${contentType}`;
   setIsLoading(true);
 
   return axios.post(url, body)
