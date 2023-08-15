@@ -34,7 +34,6 @@ function returnOnlyTable (html) {
 
 export const preprocessAccountHtml = (html) => {
   try {
-    console.log(html)
     html = returnOnlyTable(html)
     html = swapStatusLabels(html)
     return html
