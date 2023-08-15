@@ -5,13 +5,14 @@ import { Heading, Link } from '@nypl/design-system-react-components';
 import appConfig from '../../data/appConfig';
 
 const AccountSettings = ({ patron, legacyBaseUrl }) => {
-  const patronInfoUrlParam = 'patroninfo' + appConfig.sierraUpgradeAugust2023 ? '' : '*eng~Sdefault'
+  const patronInfoUrlParam = appConfig.sierraUpgradeAugust2023 ? '' : '*eng~Sdefault'
+  const accountSettingsUrl = `${legacyBaseUrl}/patroninfo${patronInfoUrlParam}/${patron.id}/`
   return (
     <div className="account-settings">
       <div className="account-settings__heading-3">
         <Heading level="three" text="Personal Information" />
         <Link
-          href={`${legacyBaseUrl}/${patronInfoUrlParam}/${patron.id}/modpinfo`}
+          href={accountSettingsUrl + `modpinfo`}
           className="edit-link settings"
           target="_blank"
         >
@@ -35,7 +36,7 @@ const AccountSettings = ({ patron, legacyBaseUrl }) => {
           <dt>Pin/Password</dt>
           <dd><span>&middot;&middot;&middot;&middot;</span></dd>
           <Link
-            href={`${legacyBaseUrl}/${patronInfoUrlParam}/${patron.id}/newpin`}
+            href={accountSettingsUrl + `newpin`}
             className="edit-link"
             target='_blank'
           >
