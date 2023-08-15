@@ -32,7 +32,6 @@ function getAccountPage (res, req) {
   const urlPathParams = appConfig.sierraUpgradeAugust2023 ?
     `/patroninfo/${patronId}/${content}` :
     `/dp/patroninfo*eng~Sdefault/${patronId}/${content}`
-  console.log({ urlPathParams, SIERRA_UPGRADE_AUG_2023: appConfig.sierraUpgradeAugust2023 })
   return axios.get(appConfig.webpacBaseUrl + urlPathParams, {
     headers: {
       Cookie: req.headers.cookie,
@@ -78,7 +77,6 @@ function fetchAccountPage (req, res, resolve) {
 
   getAccountPage(res, req)
     .then((resp) => {
-      console.log({ resp })
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
       if (resp.request && resp.request.path && resp.request.path.includes('/login?')) {

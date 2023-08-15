@@ -15,7 +15,8 @@ export const swapStatusLabels = (html) => {
 
 
 // Out of the html returned from webpac, we are only interested in the item table.
-// A Sierra upgrade in August 2023 added a ton more html to the response. 
+// A Sierra upgrade in August 2023 added a ton more html to the response,
+// Webpac response includes script tags and links 
 // I opted to take a very coarse approach and just extract the html we actually
 // want to display. We are not currently displaying the "Renew All" button any
 // more due to a change in the webpac response's script tags. 
@@ -33,6 +34,7 @@ function returnOnlyTable (html) {
 
 export const preprocessAccountHtml = (html) => {
   try {
+    console.log(html)
     html = returnOnlyTable(html)
     html = swapStatusLabels(html)
     return html
@@ -58,7 +60,7 @@ export const makeRequest = (
   contentType,
   setIsLoading,
 ) => {
-  const url = `${appConfig.baseUrl}/api/account /${contentType}`;
+  const url = `${appConfig.baseUrl}/api/account/${contentType}`;
   setIsLoading(true);
 
   return axios.post(url, body)
@@ -66,7 +68,7 @@ export const makeRequest = (
       const { data } = res;
       if (data.redirect) {
         const fullUrl = encodeURIComponent(window.location.href);
-        window.location.replace(`${appConfig.loginUrl}?redirect_uri = ${fullUrl} `);
+        window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
         return { redirect: true };
       }
       if (data.error) console.error(data.error);
