@@ -14,8 +14,15 @@ export const swapStatusLabels = (html) => {
 }
 
 function returnOnlyTable (html) {
+  // for some reason the patFuncTitle div comes back with variable amounts of spaces
+  // apparently dependent on the text inside of it. 
+  const hasTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
   const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
-  return table[0]
+  if (hasTitle) {
+    return hasTitle[0]
+  } else if (table) {
+    return table[0]
+  } else return 'Server error. Please something something'
 }
 
 export const preprocessAccountHtml = (html) => {
