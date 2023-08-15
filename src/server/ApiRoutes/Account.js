@@ -29,8 +29,11 @@ function getHomeLibrary (code) {
 function getAccountPage (res, req) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
-
-  return axios.get(`${appConfig.webpacBaseUrl}/patroninfo/${patronId}/${content}`, {
+  const urlPathParams = appConfig.sierraUpgradeAugust2023 ?
+    `/patroninfo/${patronId}/${content}` :
+    `/dp/patroninfo*eng~Sdefault/${patronId}/${content}`
+  console.log({ urlPathParams, SIERRA_UPGRADE_AUG_2023: appConfig.sierraUpgradeAugust2023 })
+  return axios.get(appConfig.webpacBaseUrl + urlPathParams, {
     headers: {
       Cookie: req.headers.cookie,
     },
@@ -75,9 +78,10 @@ function fetchAccountPage (req, res, resolve) {
 
   getAccountPage(res, req)
     .then((resp) => {
+      console.log({ resp })
       // If Header thinks patron is logged in,
       // but patron is not actually logged in, the case below is hit
-      if (resp.request && resp.request.path.includes('/login?')) {
+      if (resp.request && resp.request.path && resp.request.path.includes('/login?')) {
         // need to implement
         console.log('Encountered login redirect while fetching account page');
         throw new Error('detected state mismatch, throwing error');
@@ -98,8 +102,11 @@ function postToAccountPage (req, res) {
   const patronId = req.patronTokenResponse.decodedPatron.sub;
   const content = req.params.content || 'items';
   const reqBodyString = Object.keys(req.body).map(key => `${key}=${req.body[key]}`).join('&');
+  const urlPathParams = appConfig.sierraUpgradeAugust2023 ?
+    `/patroninfo/${patronId}/${content}` :
+    `/dp/patroninfo*eng~Sdefault/${patronId}/${content}`
   axios.post(
-    `${appConfig.webpacBaseUrl}/patroninfo/${patronId}/${content}`,
+    appConfig.webpacBaseUrl + urlPathParams,
     reqBodyString, {
     headers: {
       Cookie: req.headers.cookie,

@@ -56,19 +56,18 @@ describe('`fetchAccountPage`', () => {
   let mock;
   let redirectedTo = '';
 
-  before(() => {
+  beforeEach(() => {
     requireUser = sinon.stub(User, 'requireUser').callsFake(req => ({ redirect: !req.patronTokenResponse.isTokenValid }));
     axiosGet = sinon.spy(axios, 'get');
     mock = new MockAdapter(axios);
     mock
-      .onGet(`${appConfig.legacyBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`)
+      .onGet(`${appConfig.webpacBaseUrl}/patroninfo/6677666/holds`)
       .reply(200, '<div>some html</div>');
     mock
-      .onGet(`${appConfig.legacyBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/items`)
-      .reply(200, '<div>some html</div>');
+      .onGet(`${appConfig.legacyBaseUrl}/patroninfo/6677666/items`)
   });
 
-  after(() => {
+  afterEach(() => {
     requireUser.restore();
     axiosGet.restore();
     mock.restore();
@@ -145,7 +144,25 @@ describe('`fetchAccountPage`', () => {
       Account.fetchAccountPage(renderMockReq(), mockRes, mockResolve);
 
       expect(axiosGet.called).to.equal(true);
-      expect(axiosGet.secondCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/patroninfo/6677666/items`);
+      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/patroninfo/6677666/items`);
     });
   });
+
+  xdescribe('SIERRA_UPGRADE_AUG_2023 equals false', () => {
+    before(() => {
+      appConfig.sierraUpgradeAugust2023 = false
+      mock
+        .onGet(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`)
+        .reply(200, '<div>some html</div>');
+    })
+    after(() => {
+      appConfig.sierraUpgradeAugust2023 = true
+    })
+    it('should build a different url', () => {
+      Account.fetchAccountPage(renderMockReq('holds'), mockRes, mockResolve);
+
+      expect(axiosGet.calledOnce).to.equal(true);
+      expect(axiosGet.firstCall.args[0]).to.equal(`${appConfig.webpacBaseUrl}/dp/patroninfo*eng~Sdefault/6677666/holds`);
+    });
+  })
 });

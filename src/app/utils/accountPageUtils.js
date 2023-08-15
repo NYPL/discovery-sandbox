@@ -15,15 +15,14 @@ export const swapStatusLabels = (html) => {
 
 function returnOnlyTable (html) {
   // for some reason the patFuncTitle div comes back with variable amounts of spaces
-  // apparently dependent on the text inside of it. 
-  // const hasTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
-  // const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
-  // if (hasTitle) {
-  //   return hasTitle[0]
-  // } else if (table) {
-  //   return table[0]
-  // } else throw new Error('Webpac html is not formatted as expected')
-  throw new Error('Webpac html is not formatted as expected')
+  // apparently dependent on the text inside of it.
+  const hasTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
+  const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
+  if (hasTitle) {
+    return hasTitle[0]
+  } else if (table) {
+    return table[0]
+  } else throw new Error('Webpac html is not formatted as expected')
 }
 
 export const preprocessAccountHtml = (html) => {
@@ -32,12 +31,15 @@ export const preprocessAccountHtml = (html) => {
     html = swapStatusLabels(html)
     return html
   } catch (e) {
-    console.error(e)
-    return '<div> Unable to load your account information. ' +
-      'Please try again after a few minutes. ' +
-      'You can also view your account in our <a href="' +
-      process.env.CIRCULATING_CATALOG +
-      '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+    if (e.message.includes('Webpac html')) {
+      console.error(e)
+      return '<div> Unable to load your account information. ' +
+        'Please try again after a few minutes. ' +
+        'You can also view your account in our <a href="' +
+        appConfig.circulatingCatalog +
+        '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+    }
+    else throw e
   }
 }
 
@@ -87,7 +89,7 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
 export const convertEncoreUrl = (encoreUrl) => {
   const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
   if (!bibId) return encoreUrl;
-  return `${appConfig.baseUrl}/bib/${bibId} `;
+  return `${appConfig.baseUrl}/bib/${bibId}`;
 }
 
 /**
