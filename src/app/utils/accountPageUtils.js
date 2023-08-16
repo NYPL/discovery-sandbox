@@ -23,13 +23,17 @@ export const swapStatusLabels = (html) => {
 function returnOnlyTable (html) {
   // for some reason the patFuncTitle div comes back with variable amounts of spaces
   // apparently dependent on the text inside of it.
-  const hasTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
+  const hasTitleAndTable = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
   const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
-  if (hasTitle) {
-    return hasTitle[0]
+  const onlyTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<\/div>/)
+  if (hasTitleAndTable) {
+    return hasTitleAndTable[0]
   } else if (table) {
     return table[0]
-  } else throw new Error('Webpac html is not formatted as expected')
+  } else if (onlyTitle) {
+    return (onlyTitle[0])
+  }
+  else throw new Error('Webpac html is not formatted as expected')
 }
 
 export const defaultHtml = '<div> Unable to load your account information. ' +
@@ -46,6 +50,7 @@ export const preprocessAccountHtml = (html) => {
   } catch (e) {
     if (e.message.includes('Webpac html')) {
       console.error(e)
+      console.log({ html })
       return defaultHtml
     }
     else throw e
