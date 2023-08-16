@@ -49,7 +49,6 @@ export const preprocessAccountHtml = (html) => {
   } catch (e) {
     if (e.message.includes('Webpac html')) {
       console.error(e)
-      console.log({ html })
       return defaultHtml
     }
     else throw e
