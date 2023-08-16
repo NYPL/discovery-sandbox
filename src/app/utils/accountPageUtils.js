@@ -32,6 +32,12 @@ function returnOnlyTable (html) {
   } else throw new Error('Webpac html is not formatted as expected')
 }
 
+export const defaultHtml = '<div> Unable to load your account information. ' +
+  'Please try again after a few minutes. ' +
+  'You can also view your account in our <a href="' +
+  appConfig.circulatingCatalog +
+  '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+
 export const preprocessAccountHtml = (html) => {
   try {
     html = returnOnlyTable(html)
@@ -40,11 +46,7 @@ export const preprocessAccountHtml = (html) => {
   } catch (e) {
     if (e.message.includes('Webpac html')) {
       console.error(e)
-      return '<div> Unable to load your account information. ' +
-        'Please try again after a few minutes. ' +
-        'You can also view your account in our <a href="' +
-        appConfig.circulatingCatalog +
-        '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+      return defaultHtml
     }
     else throw e
   }
@@ -71,9 +73,16 @@ export const makeRequest = (
         return { redirect: true };
       }
       if (data.error) console.error(data.error);
-      return updateAccountHtml(preprocessAccountHtml(data));
+      const processedHtml = preprocessAccountHtml(data)
+      console.log(processedHtml)
+      return updateAccountHtml(processedHtml);
     })
-    .catch(res => console.error('ERROR', res))
+    .catch(res => {
+      console.error('ERROR', res.message)
+      if (res.status === 503) {
+        return defaultHtml
+      }
+    })
     .finally(() => setIsLoading(false));
 };
 

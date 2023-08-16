@@ -4,7 +4,7 @@ import nyplApiClient from '../routes/nyplApiClient';
 import User from './User';
 import logger from '../../../logger';
 import appConfig from '../../app/data/appConfig';
-import { preprocessAccountHtml } from '../../app/utils/accountPageUtils';
+import { defaultHtml, preprocessAccountHtml } from '../../app/utils/accountPageUtils';
 
 const nyplApiClientGet = endpoint => (
   nyplApiClient()
@@ -89,7 +89,7 @@ function fetchAccountPage (req, res, resolve) {
     })
     .catch((resp) => {
       console.error('Account page response error: ', resp);
-      resolve({ accountHtml: { error: resp } });
+      resolve({ accountHtml: defaultHtml });
     });
 }
 
