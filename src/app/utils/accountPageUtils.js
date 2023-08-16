@@ -23,15 +23,14 @@ export const swapStatusLabels = (html) => {
 function returnOnlyTable (html) {
   // for some reason the patFuncTitle div comes back with variable amounts of spaces
   // apparently dependent on the text inside of it.
-  const hasTitleAndTable = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<table border="0" class="patFunc">([\s\S]*?)<\/table>/gm)
   const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
-  const onlyTitle = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<\/div>/)
-  if (hasTitleAndTable) {
-    return hasTitleAndTable[0]
+  const title = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<\/div>/)
+  if (title && table) {
+    return title[0] + table[0]
   } else if (table) {
     return table[0]
-  } else if (onlyTitle) {
-    return (onlyTitle[0])
+  } else if (title) {
+    return (title[0])
   }
   else throw new Error('Webpac html is not formatted as expected')
 }
