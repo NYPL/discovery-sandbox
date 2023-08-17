@@ -5,7 +5,7 @@ import fs from 'fs';
 
 import {
   isClosed,
-  convertEncoreUrl,
+  convertBibUrl,
   formatPatronExpirationDate,
   manipulateAccountPage,
   swapStatusLabels
@@ -43,14 +43,31 @@ describe('`isClosed`', () => {
   });
 });
 
-describe('`convertEncoreUrl`', () => {
+describe('`convertBibUrl`, before sierra upgrade', () => {
+  before(() => {
+    appConfig.sierraUpgradeAugust2023 = false
+  })
   it('should convert a conventionally structured Encore item URL to `discovery-front-end` URL', () => {
-    expect(convertEncoreUrl('https://browse.nypl.org/iii/encore/record/C__Rb21771946?lang=eng&suite=def')).to.equal(`${appConfig.baseUrl}/bib/b21771946`);
+    expect(convertBibUrl('https://browse.nypl.org/iii/encore/record/C__Rb21771946?lang=eng&suite=def')).to.equal(`${appConfig.baseUrl}/bib/b21771946`);
   });
 
   it('should return passed URL if it does not follow convention of Encore item URL', () => {
     const malformedUrl = 'https://browse.nypl.org/iii/encore/record/somethingisnotright';
-    expect(convertEncoreUrl(malformedUrl)).to.equal(malformedUrl);
+    expect(convertBibUrl(malformedUrl)).to.equal(malformedUrl);
+  });
+});
+
+describe('`convertBibUrl`, after sierra upgrade', () => {
+  before(() => {
+    appConfig.sierraUpgradeAugust2023 = true
+  })
+  it('should convert a conventionally structured Encore item URL to `discovery-front-end` URL', () => {
+    expect(convertBibUrl('https://browse.nypl.org/iii/encore/record=b21771946~S1')).to.equal(`${appConfig.baseUrl}/bib/b21771946`);
+  });
+
+  it('should return passed URL if it does not follow convention of Encore item URL', () => {
+    const malformedUrl = 'https://browse.nypl.org/iii/encore/record/somethingisnotright';
+    expect(convertBibUrl(malformedUrl)).to.equal(malformedUrl);
   });
 });
 

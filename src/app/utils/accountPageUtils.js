@@ -45,7 +45,6 @@ export const preprocessAccountHtml = (html) => {
   try {
     html = returnOnlyTable(html)
     html = swapStatusLabels(html)
-    console.log({ html })
     return html
   } catch (e) {
     if (e.message.includes('Webpac html')) {
@@ -107,11 +106,8 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
 
 export const convertBibUrl = (url) => {
   let bibId
-  console.log(process.env)
-  console.log({ url, sierra: appConfig.sierraUpgradeAugust2023 })
   if (appConfig.sierraUpgradeAugust2023) {
     bibId = url.match(/record=(b\d*)~S1/) && url.match(/record=(b\d*)~S1/)[1]
-    console.log({ match: url.match(/record=(b\d*)~S1/) })
   } else {
     bibId = url.match(/C__R(b\d*)/) && url.match(/C__R(b\d*)/)[1];
   }
