@@ -1,5 +1,6 @@
 require('rootpath')();
 require('@babel/register');
 
-require('dotenv').config({ path: 'updated-qa.env' });
+console.log('S0S')
+require('dotenv').config({ path: '.env' });
 module.exports = require('./server');

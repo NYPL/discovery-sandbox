@@ -45,6 +45,7 @@ export const preprocessAccountHtml = (html) => {
   try {
     html = returnOnlyTable(html)
     html = swapStatusLabels(html)
+    console.log({ html })
     return html
   } catch (e) {
     if (e.message.includes('Webpac html')) {
@@ -77,7 +78,6 @@ export const makeRequest = (
       }
       if (data.error) console.error(data.error);
       const processedHtml = preprocessAccountHtml(data)
-      console.log(processedHtml)
       return updateAccountHtml(processedHtml);
     })
     .catch(res => {
@@ -105,9 +105,17 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
   }
 };
 
-export const convertEncoreUrl = (encoreUrl) => {
-  const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
-  if (!bibId) return encoreUrl;
+export const convertBibUrl = (url) => {
+  let bibId
+  console.log(process.env)
+  console.log({ url, sierra: appConfig.sierraUpgradeAugust2023 })
+  if (appConfig.sierraUpgradeAugust2023) {
+    bibId = url.match(/record=(b\d*)~S1/) && url.match(/record=(b\d*)~S1/)[1]
+    console.log({ match: url.match(/record=(b\d*)~S1/) })
+  } else {
+    bibId = url.match(/C__R(b\d*)/) && url.match(/C__R(b\d*)/)[1];
+  }
+  if (!bibId) return url;
   return `${appConfig.baseUrl}/bib/${bibId}`;
 }
 
@@ -213,7 +221,7 @@ export const manipulateAccountPage = (
           });
         } else {
           titleTd.querySelectorAll('a').forEach(link => {
-            link.href = convertEncoreUrl(link.href);
+            link.href = convertBibUrl(link.href);
           });
         }
       });

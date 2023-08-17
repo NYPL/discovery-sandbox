@@ -97,7 +97,7 @@ const appConfig = {
   shepBibsLimit: process.env.SHEP_BIBS_LIMIT || 50,
   nyplHeaderUrl: process.env.NYPL_HEADER_URL || 'https://qa-ds-header.nypl.org',
   launchEmbedUrl: process.env.LAUNCH_EMBED_URL || '',
-  sierraUpgradeAugust2023: process.env.SIERRA_UPGRADE_AUG_2023 || false
+  sierraUpgradeAugust2023: process.env.SIERRA_UPGRADE_AUG_2023 === 'true'
 };
 
 export default appConfig;
