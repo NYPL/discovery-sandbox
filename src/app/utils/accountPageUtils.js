@@ -106,11 +106,8 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
 
 export const convertBibUrl = (url) => {
   let bibId
-  if (appConfig.sierraUpgradeAugust2023) {
-    bibId = url.match(/record=(b\d*)~S1/) && url.match(/record=(b\d*)~S1/)[1]
-  } else {
-    bibId = url.match(/C__R(b\d*)/) && url.match(/C__R(b\d*)/)[1];
-  }
+  bibId = url.match(/record=(b\d*)~S1/) && url.match(/record=(b\d*)~S1/)[1]
+  if (!bibId) bibId = url.match(/C__R(b\d*)/) && url.match(/C__R(b\d*)/)[1];
   if (!bibId) return url;
   return `${appConfig.baseUrl}/bib/${bibId}`;
 }
