@@ -4,6 +4,57 @@ import axios from 'axios';
 import appConfig from '../data/appConfig';
 import { CLOSED_LOCATION_REGEX } from '../data/constants';
 
+/**
+ * Swap actual status labels for something more patron-friendly
+ */
+export const swapStatusLabels = (html) => {
+  html = html.replace(/<td class="patFuncStatus"> AVAILABLE <\/td>/g, '<td class="patFuncStatus"> REQUEST PLACED </td>')
+  html = html.replace(/<td class="patFuncStatus"> READY SOON <\/td>/g, '<td class="patFuncStatus"> READY FOR PICKUP </td>')
+  return html
+}
+
+
+// Out of the html returned from webpac, we are only interested in the item table.
+// A Sierra upgrade in August 2023 added a ton more html to the response,
+// Webpac response includes script tags and links 
+// I opted to take a very coarse approach and just extract the html we actually
+// want to display. We are not currently displaying the "Renew All" button any
+// more due to a change in the webpac response's script tags. 
+function returnOnlyTable (html) {
+  // for some reason the patFuncTitle div comes back with variable amounts of spaces
+  // apparently dependent on the text inside of it.
+  const table = html.match(/<table border="0" class="patFunc">([\s\S]*?)<\/table>/)
+  const title = html.match(/<div([\s].*)class="patFuncTitle">([\s\S]*?)<\/div>/)
+  if (title && table) {
+    return title[0] + table[0]
+  } else if (table) {
+    return table[0]
+  } else if (title) {
+    return (title[0])
+  }
+  else throw new Error('Webpac html is not formatted as expected')
+}
+
+export const defaultHtml = '<div> Unable to load your account information. ' +
+  'Please try again after a few minutes. ' +
+  'You can also view your account in our <a href="' +
+  appConfig.circulatingCatalog +
+  '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+
+export const preprocessAccountHtml = (html) => {
+  try {
+    html = returnOnlyTable(html)
+    html = swapStatusLabels(html)
+    return html
+  } catch (e) {
+    if (e.message.includes('Webpac html')) {
+      console.error(e)
+      return defaultHtml
+    }
+    else throw e
+  }
+}
+
 export const isClosed = optionInnerText => optionInnerText && !!optionInnerText.match(CLOSED_LOCATION_REGEX);
 
 export const makeRequest = (
@@ -25,9 +76,15 @@ export const makeRequest = (
         return { redirect: true };
       }
       if (data.error) console.error(data.error);
-      return updateAccountHtml(data);
+      const processedHtml = preprocessAccountHtml(data)
+      return updateAccountHtml(processedHtml);
     })
-    .catch(res => console.error('ERROR', res))
+    .catch(res => {
+      console.error('ERROR', res.message)
+      if (res.status === 503) {
+        return defaultHtml
+      }
+    })
     .finally(() => setIsLoading(false));
 };
 
@@ -47,9 +104,14 @@ export const buildReqBody = (content, itemObj, locationData = {}) => {
   }
 };
 
-export const convertEncoreUrl = (encoreUrl) => {
-  const bibId = encoreUrl.match(/C__R(b\d*)/) && encoreUrl.match(/C__R(b\d*)/)[1];
-  if (!bibId) return encoreUrl;
+export const convertBibUrl = (url) => {
+  let bibId
+  if (appConfig.sierraUpgradeAugust2023) {
+    bibId = url.match(/record=(b\d*)~S1/) && url.match(/record=(b\d*)~S1/)[1]
+  } else {
+    bibId = url.match(/C__R(b\d*)/) && url.match(/C__R(b\d*)/)[1];
+  }
+  if (!bibId) return url;
   return `${appConfig.baseUrl}/bib/${bibId}`;
 }
 
@@ -109,12 +171,12 @@ export const manipulateAccountPage = (
       // change th that originally says '{x} ITEMS CHECKED OUT'
       if (th.textContent.includes('checked')) {
         const length = items.length;
-        th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
+        th.textContent = `Checkouts - ${length || 'No'} item${length !== 1 ? 's' : ''} `;
       }
 
       if (th.textContent.includes('holds')) {
         const length = items.length;
-        th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''}`;
+        th.textContent = `Holds - ${length || 'No'} item${length !== 1 ? 's' : ''} `;
       }
     });
 
@@ -128,7 +190,7 @@ export const manipulateAccountPage = (
           let locationValue;
           locationSelect.querySelectorAll('option').forEach((option) => {
             // hide closed locations
-            if (option.selected) locationValue = `${option.value.trim()}+++`;
+            if (option.selected) locationValue = `${option.value.trim()} +++ `;
             else if (isClosed(option.innerText)) option.remove();
           });
           locationData[locationProp] = locationValue;
@@ -155,7 +217,7 @@ export const manipulateAccountPage = (
           });
         } else {
           titleTd.querySelectorAll('a').forEach(link => {
-            link.href = convertEncoreUrl(link.href);
+            link.href = convertBibUrl(link.href);
           });
         }
       });
@@ -266,7 +328,7 @@ export const manipulateAccountPage = (
 
     const overduesTh = accountPageContent.querySelectorAll('th');
     if (overduesTh && overduesTh.length) {
-      overduesTh[0].textContent = `Fine/Fee - ${patFuncFinesEntries || 'No'} item${patFuncFinesEntries === 1 ? '' : 's'}`;
+      overduesTh[0].textContent = `Fine / Fee - ${patFuncFinesEntries || 'No'} item${patFuncFinesEntries === 1 ? '' : 's'} `;
     }
   }
 
