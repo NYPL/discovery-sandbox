@@ -3,6 +3,7 @@ import axios from 'axios'
 
 import { FeedbackBoxContext } from '../../context/FeedbackContext'
 import appConfig from '../../data/appConfig'
+import { trackStandardEvent } from '../../utils/utils';
 
 /**
  * Component that wraps the DS Feedback box. Can be opened by clicking the button rendered
@@ -18,6 +19,7 @@ const Feedback = () => {
   }
   const submitFeedback = async (metadataAndComment) => {
     try {
+      trackStandardEvent('Submit Feedback')
       const res = await axios.post(`${appConfig.baseUrl}/api/feedback`,
         { fields: metadataAndComment })
       if (res.data.error) {

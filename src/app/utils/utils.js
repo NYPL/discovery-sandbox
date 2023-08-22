@@ -237,6 +237,31 @@ const trackVirtualPageView = (pathname = '') => {
 }
 
 /**
+ * Tracks a standard user event to Adobe Analytics.
+ */
+const trackStandardEvent = (eventName = '', eventData = {}) => {
+  const adobeDataLayer = window.adobeDataLayer || [];
+
+  /**
+   * We must first clear the event before pushing new values
+   * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494689/Standard+Events+NYPL
+   */
+  console.log("event sent")
+  console.log(eventName)
+  adobeDataLayer.push({
+    event_data: null,
+  });
+
+  adobeDataLayer.push({
+    event: 'send_event',
+    event_data: {
+      name: eventName,
+      ...eventData
+    }
+  });
+}
+
+/**
  * basicQuery
  * A curry function that will take in the application's props and return a function that will
  * overwrite whatever values it needs to overwrite to create the needed API query.
@@ -824,6 +849,7 @@ export {
   standardizeBibId,
   adobeAnalyticsRouteToPageName,
   trackVirtualPageView,
+  trackStandardEvent,
   ajaxCall,
   getSortQuery,
   getFieldParam,
