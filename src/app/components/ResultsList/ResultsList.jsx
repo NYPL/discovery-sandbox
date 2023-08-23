@@ -66,6 +66,8 @@ const ResultsList = ({
     pathname,
     search,
   } = router.location;
+  console.log(pathname)
+  console.log(search)
 
   const includeDrbb = features.includes('drb-integration');
 
@@ -177,6 +179,7 @@ const ResultsList = ({
     );
   };
 
+  console.log(results)
   const resultsElm = results.map((bib, i) => generateBibLi(bib, i));
   return (
     <ul
