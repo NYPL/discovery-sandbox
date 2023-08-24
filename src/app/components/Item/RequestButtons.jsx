@@ -6,6 +6,8 @@ import { MediaContext } from '../Application/Application';
 const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
   const media = React.useContext(MediaContext);
 
+  const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
+
   const {
     closedLocations,
     recapClosedLocations,
@@ -26,6 +28,7 @@ const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
       <Link
         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}?searchKeywords=${searchKeywords}`}
         tabIndex='0'
+        onClick={ifAvailableHandler(e => getItemRecord(e, bibId, item.id), item.available)}
         aria-disabled={!item.available}
         className={
           item.available ? 'avail-request-button' : 'unavail-request-button'
@@ -45,6 +48,7 @@ const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
       <Link
         to={`${appConfig.baseUrl}/hold/request/${bibId}-${item.id}/edd?searchKeywords=${searchKeywords}`}
         tabIndex='0'
+        onClick={ifAvailableHandler(e => getItemRecord(e, bibId, item.id), item.available)}
         aria-disabled={!item.available}
         className={
           item.available ? 'avail-request-button' : 'unavail-request-button'
@@ -63,6 +67,7 @@ const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
       <a
         href={aeonUrl(item)}
         tabIndex='0'
+        onClick={ifAvailableHandler(() => { return null }, item.available)}
         aria-disabled={!item.available}
         className={`aeonRequestButton ${
           item.available ? 'avail-request-button' : 'unavail-request-button'
