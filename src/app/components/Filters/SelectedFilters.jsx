@@ -16,9 +16,6 @@ import {
 } from 'underscore';
 
 import appConfig from '../../data/appConfig';
-import {
-  trackDiscovery,
-} from '../../utils/utils';
 
 class SelectedFilters extends React.Component {
   constructor(props) {
@@ -54,16 +51,12 @@ class SelectedFilters extends React.Component {
     }
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters });
-    trackDiscovery('Filters - Selected list', `Remove - ${filter.field} ${filter.label}`);
 
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 
   clearFilters() {
     const apiQuery = this.props.createAPIQuery({ selectedFilters: {} });
-
-    trackDiscovery('Filters - Selected list', 'Clear Filters');
-
     this.context.router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
 

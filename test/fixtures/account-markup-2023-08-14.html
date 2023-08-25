@@ -1,0 +1,406 @@
+<!-- Rel 2007 "Skyline" Example Set -->
+
+<html dir="LTR">
+
+<head>
+	<title>New York Public Library - TEST SERVER / All Locations</title>
+	<base target="_self" />
+	<link rel="stylesheet" type="text/css" href="/scripts/ProStyles.css" />
+	<link rel="stylesheet" type="text/css" href="/screens/styles.css" />
+	<link rel="shortcut icon" type="ximage/icon" href="/screens/favicon.ico" />
+	<script type="text/javascript" src="/scripts/common.js">
+	</script>
+	<script type="text/javascript" src="/scripts/webbridge.js">
+	</script>
+	<script type="text/javascript" src="/scripts/elcontent.js">
+	</script>
+
+	<script type="text/javascript" src="/screens/bibdisplay.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+</head>
+
+<body bgcolor="#FFFFFF">
+	<!-- begin toplogo_loggedin.html file -->
+	<!-- updated 2015 09 01  AGB -->
+	<!-- updated 2014 08 25 HM -->
+	<!-- updated 2023 06 13 ES -->
+
+	<script type="text/javascript" src="/screens/jquery-1.3.2.js"></script>
+	<script type="text/javascript" src="/screens/nypl_org.js"></script>
+	<script type="text/javascript" src="/screens/nypl_patview.js"></script>
+	<script src="//cdn.optimizely.com/js/284748925.js"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1420324-3"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag () { dataLayer.push(arguments); }
+		gtag('js', new Date());
+
+		gtag('config', 'UA-1420324-3');
+	</script>
+	<!-- Initial Data Layer Definition -->
+	<script>
+		var documentTitle = document.title;
+		if (document.title.indexOf("|") !== -1) {
+			documentTitle = document.title.substring(0, document.title.indexOf(" |"));
+		}
+		// First define the global variable for the entire data layer array
+		window.adobeDataLayer = window.adobeDataLayer || [];
+		// Then push in the variables required in the Initial Data Layer Definition
+		window.adobeDataLayer.push({
+			page_name: "Legacy Catalog " + documentTitle,
+			site_section: "Legacy Catalog"
+		});
+	</script>
+	<!-- Tag Manager Library Script -->
+	<script src="https://assets.adobedtm.com/1a9376472d37/8519dfce636d/launch-bf8436264b01-development.min.js"
+		async></script>
+
+
+
+	<a href="#content" id="contentJumpLink"><img src="/screens/transparent.gif" width="1" height="1" border="0"
+			alt="Skip to content" /></a>
+	<div id="header">
+
+		<!--RESEARCH OFFSITE REQUEST ALERT-->
+		<!--<div id="alert">Please note that offsite requests are being processed and fulfilled normally. If you don't see a confirmation page, there is no need to re-enter your request. We are working on restoring the confirmation notice and appreciate your patience</div>-->
+		<!--RESEARCH REQUEST ALERT-->
+
+		<!--SITE MAINTENANCE ALERT-->
+		<!--<div id="alert">The NYPL catalog will be unavailable beginning Thursday, July 3rd at 11:00 p.m. (EST) for scheduled system maintenance.</div>-->
+		<!--END SITE MAINTENANCE ALERT-->
+
+		<!--HOLIDAY CLOSING ALERT-->
+		<!--<div id="alert">The Stephen A. Schwarzman Building will be CLOSED on Monday, November 3 for the Library's annual Library Lions fund-raising event. Offsite materials will be available for pick-up beginning November 4th.</div>-->
+		<!--END HOLIDAY CLOSING ALERT-->
+
+		<!--SEVERE WEATHER ALERT-->
+		<!--<div id="alert">Due to severe weather, delivery of off-site requests will be delayed. Email notifications will be sent to confirm materials are ready for use.</div>-->
+		<!--END SEVERE WEATHER ALERT-->
+
+
+		<!-- ADVOCACY DIV  ABOVE TOP NAV -->
+		<!--<a href="https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_fy14_budget_web&s_src=FRS13MY_QIBN">
+      <div style="background: url(/screens/advocacy2014.jpg) top left no-repeat;
+           width: 960px; height: 105px;margin: 0; padding: 0; position: relative; display: block;">
+  </div></a>-->
+		<!--END ADVOCACY DIV ABOVE TOP NAV -->
+
+		<div id="Header-Placeholder">
+			<style>
+				#Header-Placeholder {
+					min-height: 70px;
+				}
+
+				@media screen and (min-width: 1024px) {
+					#Header-Placeholder {
+						min-height: 230px;
+					}
+				}
+			</style>
+			<div id="nypl-header"></div>
+			<script type="module" src="https://qa-ds-header.nypl.org/header.min.js?containerId=nypl-header" async></script>
+		</div>
+	</div>
+	<!-- BIBLIOCOMMONS DIV -->
+	<!--<div id="advocacy_banner">
+<img id="advocacy" width="960" height="81" name="advocacy" usemap="#Map" 
+src="/screens/bibliocom_banner.gif" />
+<map name="Map" id="Map">
+<area shape="rect" coords="0,0,714,100" href="http://nypl.bibliocommons.com/" target="_blank" />
+<area shape="rect" coords="710,22,956,54" href="http://nypl.bibliocommons.com/" target="_blank" />
+</map>
+</div>-->
+	<!--END BIBLIOCOMMONS DIV -->
+
+	<!-- ADVOCACY DIV  BELOW TOP NAV-->
+	<!--<a href="https://secure3.convio.net/nypl/site/SPageServer?pagename=donation_fy14_budget_web&s_src=FRS13MY_QIBN">
+<div style="background: url(/screens/advocacy2014.jpg) top left no-repeat;
+        width: 960px; height: 105px;margin: 0; padding: 0; position: relative; display: block;">
+</div></a>-->
+	<!--END ADVOCACY DIV BELOW TOP NAV -->
+
+	<!-- ** END HEADER ** -->
+	<div id="bodywrap"> <!-- sets body width to 960px in IE6 -->
+
+		<div class="clear"> <!-- content div -->
+			<div class="leftNavDiv"><!-- left nav -->
+
+				<h2>My Account</h2>
+
+
+				<ul class="leftCol">
+					<li>
+						<a href="/patroninfo/top">My Profile</a>
+					</li>
+					<li>
+						<a href="/patroninfo/top/items">My Checked Out Items</a>
+					</li>
+					<li>
+						<a href="/patroninfo/top/holds">My Holds</a>
+					</li>
+					<li>
+						<a href="/patroninfo/top/getpsearches">My Saved Searches</a>
+					</li>
+					<li>
+						<a href="/patroninfo/top/mylists">My Lists</a>
+					</li>
+					<li><strong>
+							<a href="/logout~S1?">Log Out</a>
+							<!--this is customized <screens/toplogo_loggedin.html>-->
+						</strong>
+					</li>
+				</ul>
+
+				<h2>Search</h2>
+				<ul class="leftCol">
+					<li><a href="/search">Start Over</a></li>
+					<li><a href="/search/Y">By Keyword</a></li>
+					<li><a href="/search/a">By Author</a></li>
+					<li><a href="/search/t">By Title</a></li>
+					<li><a href="/search/s">By Journal Title</a></li>
+					<li><a href="/search/d">By Subject</a></li>
+					<li><a href="/search/h">By Genre</a></li>
+					<li><a href="/search/i">By ISBN</a></li>
+					<li><a href="/search/c">By Call number</a></li>
+					<!--<li><a href="/search/e">By Dewey call number</a></li>
+<li><a href="/search/j">By Billings call number</a></li>-->
+					<li><a href="/search/X">Advanced search</a></li>
+					<!--
+<li><a href="/search/q">Author and Title</a></li>
+<li><a href="/search/g">Government documents</a></li>
+<li><a href="/programs">Program Search</a></li>
+-->
+				</ul>
+
+
+				<h2>My Library</h2>
+				<ul class="leftCol">
+					<li>
+						<a href="http://www.nypl.org/help/borrowing-materials/account-classic" target="new">Help</a>
+					</li>
+					<li>
+						<a href="http://www.nypl.org/ask-nypl" target="new">Comments</a>
+					</li>
+					<li>
+						<a href="http://www.nypl.org/collections/nypl-recommendations/recommend-book" target="new">Recommend an Item
+							for Purchase</a>
+					</li>
+					<!--<li><a href="/acquire">Suggest a purchase</a></li>
+<li><a href="/suggest">Leave feedback</a></li>
+<li><a href="/selfreg">Apply for a Library Card</a></li>
+</ul>
+
+
+<h2>Help</h2>
+<ul class="leftCol">
+<li><a href="/screens/help_catalog_faqs.html">Catalog FAQs</a></li>
+<li><a href="/screens/help_index.html">My Account Help</a></li>
+<li><a href="/screens/help_index3.html">Search Tips</a></li>
+<li><a href="/screens/help_prefsearch.html">Saved Searches</a></li>
+<li><a href="/screens/help_renew.html">Renewals</a></li>
+<li><a href="/screens/help_index2.html">Searching</a></li>
+<li><a href="/screens/help_googlebooks_about.html">Google Books</a></li>
+<li><a href="/screens/help_legacy_catalogs.html">What's Not in the Catalog?</a></li>-->
+				</ul>
+
+			</div><!-- end left nav -->
+			<div id="rightSideCont"><!-- right container -->
+				<a name="content"></a>
+				<!-- end toplogo_loggedin.html -->
+
+				<span class="loggedInMessage">You are logged into New York Public Library - TEST SERVER / All Locations as BIRD,
+					BERNARD</span><br />
+				<script type="text/JavaScript">
+<!-- Hide the JS
+startTimeout(1800000, "http://catalog.nypl.org/");
+// -->
+</script>
+				<div id="TimeoutPopup" tabindex="0" class="modal" onkeypress="refreshSession(event)">
+					<div class="modal-content">
+						Your session will expire automatically in <span id=TimeoutSeconds>0</span> seconds.<br>
+						<br>
+						<button id="CancelTimeout" onclick="refreshSession()">Continue session</button>
+						<button id="DoTimeout" onclick="endSession()">End session now</button>
+					</div>
+				</div>
+				<noscript>
+					<meta http-equiv="Refresh" content="1800;URL=http://catalog.nypl.org/" />
+				</noscript>
+				<br />
+				<!--this is customized <screens/patronview_web.html>-->
+
+				<h1>My Account</h1>
+
+				<table class="patMyAccount">
+					<tr>
+
+						<td class="patLeftCol">
+							<strong>BIRD, BERNARD</strong><br />
+							23333080894825<br />
+							Expiration Date:11-03-2025<br />
+						</td>
+
+						<td class="patRightCol">
+							<p><a href="/patroninfo/0/modpinfo" target="_new">Change account information</a>
+								<br />telephone, email, preferred pickup location, and notice preference
+							</p>
+							<p><a href="/patroninfo/0/newpin" target="_new">Change PIN/ Password</a></p>
+						</td>
+
+					</tr>
+				</table>
+
+				<ul class="patFuncTabs">
+				</ul>
+
+				<div class="patFuncArea">
+					<form name="checkout_form" method="POST" id="checkout_form"
+						onsubmit="return (typeof submitted == 'undefined') ? (submitted = true) : !submitted"><input type="HIDDEN"
+							id="checkoutpagecmd" />
+
+						<a href="#" onClick="return submitCheckout( 'sortByCheckoutDate', 'bycheckoutdate' )"><img
+								src="/screens/pat_sortbychkout.gif" border="0" class="button" alt="Sort By Checkout Date"
+								title="Sort By Checkout Date" alt="SORT BY DATE CHECKED OUT" border="0" /></a>
+						<input type="HIDDEN" name="currentsortorder" value="current_duedate" />
+						<a href="#" onClick="return submitCheckout( 'requestRenewAll', 'requestRenewAll' )"><img
+								src="/screens/pat_renewall.gif" class="button" border="0" alt="Renew All" title="Renew All"
+								alt="RENEW ALL" border="0" /></a>
+						<a href="#" onClick="return submitCheckout( 'requestRenewSome', 'requestRenewSome' )"><img
+								src="/screens/pat_renewmark.gif" border="0" class="button" alt="Renew Marked" title="Renew Marked"
+								alt="RENEW SELECTED ITEMS" border="0" /></a>
+						</nobr>
+						<div class="patFuncTitle">
+							<span id="id_pftitle_items_count">1 ITEM CHECKED OUT
+							</span>
+						</div>
+
+						<table border="0" class="patFunc">
+							<tr class="patFuncHeaders">
+								<th scope="col" class="patFuncHeaders"> RENEW </th>
+								<th scope="col" class="patFuncHeaders"> TITLE </th>
+								<th scope="col" class="patFuncHeaders"> BARCODE </th>
+								<th scope="col" class="patFuncHeaders"> STATUS </th>
+								<th scope="col" class="patFuncHeaders"> CALL NUMBER </th>
+							<tr class="patFuncEntry">
+								<td class="patFuncMark"><span tabindex="-1" id="id_pfmark_canceli39480490x11"
+										class="visually-hidden">Renew</span><input type="checkbox" name="name_pfmark_canceli39480490x11"
+										aria-labelledby="id_pfmark_canceli39480490x11 id_pfbibtitle_titlei39480490x11" value="i39480490" />
+								<th scope="row" class="patFuncBibTitle"><a id="id_pfbibtitle_titlei39480490x11"
+										href="/record=b22812637~S1"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] ...
+											YOU WOULDN'T KNOW ME FROM ADAM&#59; [RECAP]</span></a>
+									<br />
+
+								</th>
+								<td class="patFuncBarcode"> 32101097162877 </td>
+								<td class="patFuncStatus"> DUE 01-05-24
+								</td>
+								<td class="patFuncCallNo"> No Call Number </td>
+							</tr>
+						</table>
+
+						<a href="#" onClick="return submitCheckout( 'sortByCheckoutDate', 'bycheckoutdate' )"><img
+								src="/screens/pat_sortbychkout.gif" border="0" class="button" alt="Sort By Checkout Date"
+								title="Sort By Checkout Date" alt="SORT BY DATE CHECKED OUT" border="0" /></a>
+						<input type="HIDDEN" name="currentsortorder" value="current_duedate" />
+						<a href="#" onClick="return submitCheckout( 'requestRenewAll', 'requestRenewAll' )"><img
+								src="/screens/pat_renewall.gif" class="button" border="0" alt="Renew All" title="Renew All"
+								alt="RENEW ALL" border="0" /></a>
+						<a href="#" onClick="return submitCheckout( 'requestRenewSome', 'requestRenewSome' )"><img
+								src="/screens/pat_renewmark.gif" border="0" class="button" alt="Renew Marked" title="Renew Marked"
+								alt="RENEW SELECTED ITEMS" border="0" /></a>
+						</nobr>
+					</form>
+					<script type="text/JavaScript"> var patronInfoNav = {menuItemHolds:"13 requests (holds).", menuItemChkout:"1 Item currently checked out", menuItemFines:" in unpaid fines and bills", menuItemBookings:"0 items booked for future use", menuItemIllreqs:"0 Interlibrary loan request"};
+for (var prop in patronInfoNav) {
+    var element = document.getElementById([prop]);
+    if( !!element )
+        element.innerText = patronInfoNav[prop];
+}
+</script>
+				</div>
+
+				<!--<p><!--{patfeeds}--><!--</p>-->
+
+				<!--<!--{botlogo}-->
+
+</body>
+
+</html>
+
+
+<ul class="patFuncTabs">
+</ul>
+
+<div class="patFuncArea">
+	<form name="checkout_form" method="POST" id="checkout_form"
+		onsubmit="return (typeof submitted == 'undefined') ? (submitted = true) : !submitted"><input type="HIDDEN"
+			id="checkoutpagecmd" />
+
+		<a href="#" onClick="return submitCheckout( 'sortByCheckoutDate', 'bycheckoutdate' )"><img
+				src="/screens/pat_sortbychkout.gif" border="0" class="button" alt="Sort By Checkout Date"
+				title="Sort By Checkout Date" alt="SORT BY DATE CHECKED OUT" border="0" /></a>
+		<input type="HIDDEN" name="currentsortorder" value="current_duedate" />
+		<a href="#" onClick="return submitCheckout( 'requestRenewAll', 'requestRenewAll' )"><img
+				src="/screens/pat_renewall.gif" class="button" border="0" alt="Renew All" title="Renew All" alt="RENEW ALL"
+				border="0" /></a>
+		<a href="#" onClick="return submitCheckout( 'requestRenewSome', 'requestRenewSome' )"><img
+				src="/screens/pat_renewmark.gif" border="0" class="button" alt="Renew Marked" title="Renew Marked"
+				alt="RENEW SELECTED ITEMS" border="0" /></a>
+		</nobr>
+		<div class="patFuncTitle">
+			<span id="id_pftitle_items_count">1 ITEM CHECKED OUT
+			</span>
+		</div>
+
+		<table border="0" class="patFunc">
+			<tr class="patFuncHeaders">
+				<th scope="col" class="patFuncHeaders"> RENEW </th>
+				<th scope="col" class="patFuncHeaders"> TITLE </th>
+				<th scope="col" class="patFuncHeaders"> BARCODE </th>
+				<th scope="col" class="patFuncHeaders"> STATUS </th>
+				<th scope="col" class="patFuncHeaders"> CALL NUMBER </th>
+			<tr class="patFuncEntry">
+				<td class="patFuncMark"><span tabindex="-1" id="id_pfmark_canceli39480490x11"
+						class="visually-hidden">Renew</span><input type="checkbox" name="name_pfmark_canceli39480490x11"
+						aria-labelledby="id_pfmark_canceli39480490x11 id_pfbibtitle_titlei39480490x11" value="i39480490" />
+				<th scope="row" class="patFuncBibTitle"><a id="id_pfbibtitle_titlei39480490x11"
+						href="/record=b22812637~S1"><span class="patFuncTitleMain">[Standard NYPL restrictions apply] ... YOU
+							WOULDN'T KNOW ME FROM ADAM&#59; [RECAP]</span></a>
+					<br />
+
+				</th>
+				<td class="patFuncBarcode"> 32101097162877 </td>
+				<td class="patFuncStatus"> DUE 01-05-24
+				</td>
+				<td class="patFuncCallNo"> No Call Number </td>
+			</tr>
+		</table>
+
+		<a href="#" onClick="return submitCheckout( 'sortByCheckoutDate', 'bycheckoutdate' )"><img
+				src="/screens/pat_sortbychkout.gif" border="0" class="button" alt="Sort By Checkout Date"
+				title="Sort By Checkout Date" alt="SORT BY DATE CHECKED OUT" border="0" /></a>
+		<input type="HIDDEN" name="currentsortorder" value="current_duedate" />
+		<a href="#" onClick="return submitCheckout( 'requestRenewAll', 'requestRenewAll' )"><img
+				src="/screens/pat_renewall.gif" class="button" border="0" alt="Renew All" title="Renew All" alt="RENEW ALL"
+				border="0" /></a>
+		<a href="#" onClick="return submitCheckout( 'requestRenewSome', 'requestRenewSome' )"><img
+				src="/screens/pat_renewmark.gif" border="0" class="button" alt="Renew Marked" title="Renew Marked"
+				alt="RENEW SELECTED ITEMS" border="0" /></a>
+		</nobr>
+	</form>
+	<script type="text/JavaScript"> var patronInfoNav = {menuItemHolds:"13 requests (holds).", menuItemChkout:"1 Item currently checked out", menuItemFines:" in unpaid fines and bills", menuItemBookings:"0 items booked for future use", menuItemIllreqs:"0 Interlibrary loan request"};
+for (var prop in patronInfoNav) {
+    var element = document.getElementById([prop]);
+    if( !!element )
+        element.innerText = patronInfoNav[prop];
+}
+</script>
+</div>
+
+<!--<p><!--{patfeeds}--><!--</p>-->
+
+<!--<!--{botlogo}-->
+
+</body>
+
+</html>

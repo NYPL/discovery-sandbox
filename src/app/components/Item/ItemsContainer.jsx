@@ -9,7 +9,6 @@ import appConfig from '../../data/appConfig';
 import {
   bibPageItemsListLimit as itemsListPageLimit,
 } from '../../data/constants';
-import { trackDiscovery } from '../../utils/utils';
 import Pagination from '../Pagination/Pagination';
 import ItemFilters from '../ItemFilters/ItemFilters';
 import ItemTable from './ItemTable';
@@ -75,7 +74,6 @@ class ItemsContainer extends React.Component {
    */
   updatePage(page, type) {
     this.setState({ page });
-    trackDiscovery('Pagination', `${type} - page ${page}`);
     this.context.router.push({
       pathname: `${appConfig.baseUrl}/bib/${this.props.bibId}`,
       query: {
@@ -90,7 +88,6 @@ class ItemsContainer extends React.Component {
    * @description Display all items on the page.
    */
   showAll() {
-    trackDiscovery('View All Items', `Click - ${this.props.bibId}`);
     if (this.query && this.query.item_page) {
       delete this.query.item_page;
     }
@@ -167,9 +164,6 @@ class ItemsContainer extends React.Component {
                 <Link
                   to={`${appConfig.baseUrl}/bib/${bibId}/all`}
                   className="view-all-items"
-                  onClick={() =>
-                    trackDiscovery('View All Items', `Click - ${bibId}`)
-                  }
                 >
                   View All Items
                 </Link>
