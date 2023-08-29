@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router';
 
 import {
-  trackDiscovery,
+  standardizeBibId,
 } from '../../utils/utils';
 import appConfig from '../../data/appConfig';
 import {
@@ -16,7 +16,7 @@ import {
 /**
  * The main container for the top Search section.
  */
-function Search (props) {
+function Search(props) {
   const {
     field,
     searchKeywords,
@@ -77,20 +77,17 @@ function Search (props) {
   function submitSearchRequest(e) {
     e.preventDefault();
     // Store the data that the user entered
-
     const userSearchKeywords = keywords.trim();
 
-    // Track the submitted keyword search.
-    trackDiscovery('Search', userSearchKeywords);
-    if (selectField) {
-      trackDiscovery('Search', `Field - ${selectField}`);
-    }
-
-    const searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
+    let searchKeywords = userSearchKeywords === '*' ? '' : userSearchKeywords;
 
     if (selectField === 'subject') {
       router.push(`${appConfig.baseUrl}/subject_headings?filter=${keywords.charAt(0).toUpperCase() + keywords.slice(1)}`);
       return;
+    }
+
+    if (selectField === 'standard_number') {
+      searchKeywords = standardizeBibId(searchKeywords)
     }
 
     const apiQuery = createAPIQuery({
@@ -107,7 +104,7 @@ function Search (props) {
 
     router.push(`${appConfig.baseUrl}/search?${apiQuery}`);
   }
-  
+
   /* 
     Temporary input element override until the Design System's TextInput
     allows for external clearing via value prop.
@@ -148,12 +145,12 @@ function Search (props) {
           labelText: 'Select a category',
           name: 'search_scope',
           optionsData: [
-            { text:"All fields", value: "all" },
-            { text:"Title", value: "title" },
-            { text:"Journal Title", value: "journal_title" },
-            { text:"Author/Contributor", value: "contributor" },
-            { text:"Standard Numbers", value: "standard_number" },
-            { text:"Subject", value: "subject" },
+            { text: "All fields", value: "all" },
+            { text: "Title", value: "title" },
+            { text: "Journal Title", value: "journal_title" },
+            { text: "Author/Contributor", value: "contributor" },
+            { text: "Standard Numbers", value: "standard_number" },
+            { text: "Subject", value: "subject" },
           ],
           onChange: onFieldChange,
           value: selectField

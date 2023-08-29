@@ -15,9 +15,6 @@ import {
   union as _union,
 } from 'underscore';
 
-import {
-  trackDiscovery,
-} from '../../utils/utils';
 import appConfig from '@appConfig';
 
 import FieldsetDate from '../Filters/FieldsetDate';
@@ -121,7 +118,6 @@ export class FilterPopup extends React.Component {
     };
     if (filter.selected) {
       clickedFilters[filterId].push(filter);
-      trackDiscovery('Filters - Select', `${filterId} - ${filter.label}`);
     } else {
       clickedFilters[filterId] =
         _reject(
@@ -133,7 +129,6 @@ export class FilterPopup extends React.Component {
           selectedFilters[filterId],
           selectedFilter => selectedFilter.value === filter.value,
         );
-      trackDiscovery('Filters - Deselect', `${filterId} - ${filter.label}`);
     }
 
     this.setState({ provisionalSelectedFilters: clickedFilters });
@@ -232,10 +227,6 @@ export class FilterPopup extends React.Component {
       provisionalSelectedFilters,
     } = this.state;
 
-    if (position) {
-      trackDiscovery(`Filters - ${position}`, 'Apply Filters');
-    }
-
     const { dateAfter, dateBefore } = selectedFilters;
     const filtersToApply = {
       materialType: _union(provisionalSelectedFilters.materialType, selectedFilters.materialType),
@@ -247,13 +238,6 @@ export class FilterPopup extends React.Component {
     };
 
     const apiQuery = this.props.createAPIQuery({ selectedFilters: filtersToApply });
-
-    if (dateAfter) {
-      trackDiscovery('Filters - Date', `After - ${dateAfter}`);
-    }
-    if (dateBefore) {
-      trackDiscovery('Filters - Date', `Before - ${dateBefore}`);
-    }
 
     this.closeForm(e);
 
@@ -268,7 +252,6 @@ export class FilterPopup extends React.Component {
   clearFilters(e, position) {
     e.persist();
 
-    trackDiscovery(`Filters - ${position}`, 'Clear Filters');
     const resetFilters = {
       materialType: [],
       language: [],
@@ -288,7 +271,6 @@ export class FilterPopup extends React.Component {
 
   openForm() {
     if (!this.state.showForm) {
-      trackDiscovery('Filters', 'Open Dropdown');
       this.setState({ showForm: true });
       this.props.updateDropdownState(true);
 
@@ -302,10 +284,6 @@ export class FilterPopup extends React.Component {
 
   closeForm(e, position = '') {
     e.preventDefault();
-
-    if (position) {
-      trackDiscovery(`Filters - ${position}`, 'Close Dropdown');
-    }
 
     this.setState({
       showForm: false,

@@ -112,6 +112,7 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
+          launchEmbedUrl: appConfig.launchEmbedUrl
         });
       } else {
         res.status(404).redirect(`${appConfig.baseUrl}/`);

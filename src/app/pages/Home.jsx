@@ -9,12 +9,7 @@ import PropTypes from 'prop-types';
 import Search from '../components/Search/Search';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
-import appConfig from '../data/appConfig';
-
-import {
-  basicQuery,
-  trackDiscovery,
-} from '../utils/utils';
+import { basicQuery } from '../utils/utils';
 
 const Home = (props, context) => (
   <SccContainer
@@ -53,7 +48,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <Link href="/research/collections" onClick={() => trackDiscovery('Research Links', 'Collections')}>Collections</Link>
+            <Link href="/research/collections">Collections</Link>
           </Heading>
           <p>Discover our world-renowned research collections, featuring more than 46
             million items.
@@ -67,7 +62,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <Link href="/locations/map?libraries=research" onClick={() => trackDiscovery('Research Links', 'Locations')}>Locations</Link>
+            <Link href="/locations/map?libraries=research">Locations</Link>
           </Heading>
           <p>Access items, one-on-one reference help, and dedicated research study rooms.</p>
         </div>
@@ -79,7 +74,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <Link href="/about/divisions" onClick={() => trackDiscovery('Research Links', 'Divisions')}>Divisions</Link>
+            <Link href="/about/divisions">Divisions</Link>
           </Heading>
           <p>Learn about the subject and media specializations of our research divisions.</p>
         </div>
@@ -91,7 +86,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <Link href="/research/support" onClick={() => trackDiscovery('Research Links', 'Support')}>Support</Link>
+            <Link href="/research/support">Support</Link>
           </Heading>
           <p>
             Plan your in-person research visit and discover resources for scholars and
@@ -106,7 +101,7 @@ const Home = (props, context) => (
         </div>
         <div className="nypl-column-three-quarters image-column-three-quarters">
           <Heading level="four">
-            <Link href="/research/services" onClick={() => trackDiscovery('Research Links', 'Services')}>Services</Link>
+            <Link href="/research/services">Services</Link>
           </Heading>
           <p>
             Explore services for online and remote researchers,

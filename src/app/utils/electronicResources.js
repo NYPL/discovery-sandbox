@@ -12,12 +12,6 @@ const generateElectronicResourceLinksList = (electronicResources) => {
     <Link
       href={href}
       target='_blank'
-      onClick={() =>
-        trackDiscovery(
-          'Bib fields',
-          `Electronic Resource - ${label} - ${href}`,
-        )
-      }
       rel='noreferrer'
     >
       {label || prefLabel || href}

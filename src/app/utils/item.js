@@ -1,5 +1,4 @@
 import { findWhere as _findWhere, isEmpty as _isEmpty } from 'underscore';
-import LocationCodes from '../data/locationCodes';
 import { camelToShishKabobCase } from './utils';
 
 // Map local identifier names to their @type and urn: indicators:
@@ -236,11 +235,6 @@ function LibraryItem() {
         item.formatLiteral[0]
         : materialTypePrefLabel;
 
-    if (availability === 'available') {
-      // For all items that we want to send to the Hold Request Form.
-      url = this.getLocationHoldUrl(holdingLocation);
-    }
-
     return {
       physRequestable: item.physRequestable,
       eddRequestable: item.eddRequestable,
@@ -304,53 +298,6 @@ function LibraryItem() {
     const finalItems = bibItems.map((item) => this.mapItem(item, bib));
 
     return finalItems;
-  };
-
-  /**
-   * getLocationHoldUrl(location)
-   * Maps each item's location to the Hold Request Form link and returns it.
-   * @param {object} location
-   * @return {string}
-   */
-  this.getLocationHoldUrl = (location) => {
-    const holdingLocationId =
-      location && location['@id'] ? location['@id'].substring(4) : '';
-    let url = '';
-    let shortLocation = 'schwarzman';
-
-    if (holdingLocationId in LocationCodes) {
-      shortLocation = LocationCodes[holdingLocationId].location;
-    }
-
-    switch (shortLocation) {
-      case 'schwarzman':
-        url =
-          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
-          '13777&type=1&language=1';
-        break;
-      case 'lpa':
-        url =
-          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
-          '13252&type=1&language=1';
-        break;
-      case 'schomburg':
-        url =
-          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
-          '13810&type=1&language=1';
-        break;
-      case 'sibl':
-        url =
-          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
-          '13809&type=1&language=1';
-        break;
-      default:
-        url =
-          'http://www.questionpoint.org/crs/servlet/org.oclc.admin.BuildForm?&institution=' +
-          '13777&type=1&language=1';
-        break;
-    }
-
-    return url;
   };
 
   /**

@@ -71,6 +71,7 @@ const commonSettings = {
         WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
         FEATURES: JSON.stringify(process.env.FEATURES),
         SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
+        SIERRA_UPGRADE_AUG_2023: JSON.stringify(process.env.SIERRA_UPGRADE_AUG_2023)
       },
     }),
     // new BundleAnalyzerPlugin({
@@ -233,7 +234,6 @@ if (ENV === 'production') {
       new webpack.DefinePlugin({
         'process.env': {
           NODE_ENV: JSON.stringify('production'),
-          GA_ENV: JSON.stringify(process.env.GA_ENV),
           SHEP_API: process.env.SHEP_API,
           LOGIN_URL: process.env.LOGIN_URL,
           LOGIN_BASE_URL: process.env.LOGIN_BASE_URL,
@@ -249,6 +249,7 @@ if (ENV === 'production') {
           ITEM_BATCH_SIZE: JSON.stringify(process.env.ITEM_BATCH_SIZE),
           CIRCULATING_CATALOG: JSON.stringify(process.env.CIRCULATING_CATALOG),
           WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
+          SIERRA_UPGRADE_AUG_2023: JSON.stringify(process.env.SIERRA_UPGRADE_AUG_2023)
         },
       }),
     ],

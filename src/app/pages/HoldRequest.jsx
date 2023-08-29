@@ -17,7 +17,6 @@ import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import appConfig from '../data/appConfig';
 import LibraryItem from '../utils/item';
 import {
-  trackDiscovery,
   institutionNameByNyplSource,
 } from '../utils/utils';
 import { updateLoadingStatus } from '../actions/Actions';
@@ -65,7 +64,6 @@ export class HoldRequest extends React.Component {
   }
 
   onRadioSelect(e, i) {
-    trackDiscovery('Delivery Location', e.target.value);
     this.setState({
       delivery: e.target.value,
       checkedLocNum: i,
@@ -83,8 +81,6 @@ export class HoldRequest extends React.Component {
     const searchKeywordsQueryPhysical = searchKeywordsQuery ? `&${searchKeywordsQuery}` : '';
     const fromUrlQuery = this.props.location.query && this.props.location.query.fromUrl ?
       `&fromUrl=${encodeURIComponent(this.props.location.query.fromUrl)}` : '';
-    const partnerEvent = itemSource !== 'sierra-nypl' ?
-      ` - Partner item - ${institutionNameByNyplSource(itemSource)}` : '';
     let path = `${appConfig.baseUrl}/hold/confirmation/${bibId}-${itemId}`;
 
     if (this.state.delivery === 'edd') {
@@ -95,7 +91,6 @@ export class HoldRequest extends React.Component {
       return;
     }
 
-    trackDiscovery(`Submit Request${partnerEvent}`, `${title} - ${itemId}`);
     const formData = new FormData(document.getElementById('place-hold-form'));
     this.props.updateLoadingStatus(true);
     axios.post(
@@ -241,7 +236,6 @@ export class HoldRequest extends React.Component {
           <Link
             id='item-link'
             to={`${appConfig.baseUrl}/bib/${bibId}`}
-            onClick={() => trackDiscovery('Hold Request - Bib', title)}
           >
             {title}
           </Link>
@@ -328,7 +322,7 @@ export class HoldRequest extends React.Component {
           pageTitle="Item Request"
         >
           <Notification notificationType="holdRequestNotification" />
-          <div className="row">
+          <div className="row nypl-column-full">
             <div className="nypl-column-three-quarters">
               <div className="nypl-request-item-summary">
                 <div className="item">

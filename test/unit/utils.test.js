@@ -5,11 +5,11 @@ import axios from 'axios';
 import sinon from 'sinon';
 import { useQueries } from 'history';
 import sampleBib from '../fixtures/electronicAndPhysicalItemsBib';
+import { ADOBE_ANALYTICS_PAGE_NAMES } from '../../src/app/data/constants';
 
 import {
   ajaxCall,
   getDefaultFilters,
-  createAppHistory,
   destructureFilters,
   getSortQuery,
   getIdentifierQuery,
@@ -27,7 +27,9 @@ import {
   institutionNameByNyplSource,
   isNyplBnumber,
   hasCheckDigit,
-  removeCheckDigit
+  removeCheckDigit,
+  adobeAnalyticsRouteToPageName,
+  standardizeBibId
 } from '../../src/app/utils/utils';
 
 /**
@@ -132,22 +134,28 @@ describe('getDefaultFilters', () => {
   });
 });
 
-/**
- * createAppHistory
- */
-describe('createAppHistory', () => {
-  // Don't think this is working too well.
-  // TODO: find a better way to test this function:
-  it('should create a server-side history', () => {
-    const useQueriesSpy = sinon.spy(useQueries);
-
-    createAppHistory();
-    setTimeout(() => {
-      expect(useQueriesSpy.callCount).to.equal(1);
-    }, 0);
-  });
-});
-
+describe('standardizeBib', () => {
+  it('doesn\'t mess with kosher id', () => {
+    expect(standardizeBibId('b12345678')).to.equal('b12345678')
+    expect(standardizeBibId('hb123456789123456789')).to.equal('hb123456789123456789')
+  })
+  it('removes check digit', () => {
+    expect(standardizeBibId('b12345678x')).to.equal('b12345678')
+    expect(standardizeBibId('b12345678X')).to.equal('b12345678')
+    expect(standardizeBibId('b123456781')).to.equal('b12345678')
+  })
+  it('lower cases everything', () => {
+    expect(standardizeBibId('B12345678')).to.equal('b12345678')
+    expect(standardizeBibId('CB1234567')).to.equal('cb1234567')
+    expect(standardizeBibId('Hb123456789123456789')).to.equal('hb123456789123456789')
+    expect(standardizeBibId('PB1234567')).to.equal('pb1234567')
+    expect(standardizeBibId('PB1234567812345678')).to.equal('pb1234567812345678')
+  })
+  it('returns value provided if input does not match bib id regexes', () => {
+    expect(standardizeBibId('b1234567899')).to.equal('b1234567899')
+    expect(standardizeBibId('i am not a bib id hb123')).to.equal('i am not a bib id hb123')
+  })
+})
 /**
  * destructureFilters
  */
@@ -365,21 +373,6 @@ describe('getFieldParam', () => {
     });
   });
 });
-
-/**
- * trackDiscovery()
- */
-// describe('trackDiscovery', () => {
-//   it('should make a call to gaUtils', () => {
-//     const trackEventSpy = sinon.spy(gaUtils, 'trackEvent');
-//
-//     trackDiscovery('action', 'label');
-//
-//     expect(trackEventSpy.callCount).to.equal(1);
-//
-//     trackEventSpy.restore();
-//   });
-// });
 
 /**
  * basicQuery()
@@ -894,5 +887,27 @@ describe('getIdentifierQuery', () => {
       oclc: '34567',
       lccn: '45678',
     })).to.equal('&issn=1234&isbn=23456&oclc=34567&lccn=45678');
+  });
+});
+
+describe('adobeAnalyticsRouteToPageName', () => {
+  it('should return the appropriate page name for a given route', () => {
+    expect(adobeAnalyticsRouteToPageName('/')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
+    expect(adobeAnalyticsRouteToPageName('')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
+    expect(adobeAnalyticsRouteToPageName('/search')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
+    expect(adobeAnalyticsRouteToPageName('/search?q=test')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
+    expect(adobeAnalyticsRouteToPageName('/search/advanced')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH);
+    expect(adobeAnalyticsRouteToPageName('/bib')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678/all')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678/edd')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings/a1da66e2-5e8d-4186-8403-5d43365a631e?label=D%27Adda%20family')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HEADING);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS);
+    expect(adobeAnalyticsRouteToPageName('/account')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
+    expect(adobeAnalyticsRouteToPageName('/account/holds')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
+    expect(adobeAnalyticsRouteToPageName('/accountError')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR);
+    expect(adobeAnalyticsRouteToPageName('/404/redirect')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT);
+    expect(adobeAnalyticsRouteToPageName('/404')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404);
   });
 });

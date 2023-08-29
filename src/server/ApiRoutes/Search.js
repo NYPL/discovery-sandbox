@@ -7,6 +7,7 @@ import {
   getReqParams,
   basicQuery,
   parseServerSelectedFilters,
+  standardizeBibId
 } from '../../app/utils/utils';
 import extractFeatures from '../../app/utils/extractFeatures';
 import { buildQueryDataFromForm } from '../../app/utils/advancedSearchUtils';
@@ -16,9 +17,7 @@ import ResearchNow from './ResearchNow';
 import createSelectedFiltersHash from '../../app/utils/createSelectedFiltersHash';
 import { searchResultItemsListLimit as itemTableLimit } from '../../app/data/constants';
 import {
-  addHoldingDefinition,
-  fetchLocationUrls,
-  findUrl,
+  addHoldingDefinition
 } from './Bib';
 
 const createAPIQuery = basicQuery({
@@ -31,13 +30,17 @@ const createAPIQuery = basicQuery({
 
 const nyplApiClientCall = (query, urlEnabledFeatures = []) => {
   const requestOptions = appConfig.features.includes('on-site-edd') || urlEnabledFeatures.includes('on-site-edd') ? { headers: { 'X-Features': 'on-site-edd' } } : {};
-  return nyplApiClient()
+  return nyplApiClient({ apiName: 'discovery' })
     .then(client =>
       client.get(`/discovery/resources${query}`, requestOptions),
     );
 };
 
 function fetchResults(searchKeywords = '', contributor, title, subject, page, sortBy, order, field, filters, identifierNumbers, expressRes, cb, errorcb, features) {
+  if (field === 'standard_number') {
+    searchKeywords = standardizeBibId(searchKeywords)
+  }
+
   const encodedQueryString = createAPIQuery({
     searchKeywords,
     contributor,
@@ -93,63 +96,11 @@ function fetchResults(searchKeywords = '', contributor, title, subject, page, so
         const bnumber = results.itemListElement[0].result.uri;
         return expressRes.redirect(`${appConfig.baseUrl}/bib/${bnumber}`);
       }
-      const locationCodes = new Set();
-      const { itemListElement } = results;
-      if (!itemListElement) {
-        return cb(
-          aggregations,
-          results,
-          page,
-          drbbResults);
-      }
-      itemListElement.forEach((resultObj) => {
-        const { result } = resultObj;
-        const { holdings } = resultObj.result;
-        if (!result.items && !result.holdings) return;
-        if (holdings) {
-          holdings.slice(0, itemTableLimit).forEach((holding) => {
-            addHoldingDefinition(holding);
-            if (holding.location) locationCodes.add(holding.location[0].code);
-          });
-          if (holdings.length < itemTableLimit) {
-            result.items.slice(0, itemTableLimit - holdings.length).forEach((item) => {
-              if (item.holdingLocation) item.holdingLocation.forEach((holdingLocation) => {
-                locationCodes.add(holdingLocation['@id']);
-              });
-            });
-          }
-        } else if (result.items) {
-          result.items.slice(0, itemTableLimit).forEach((item) => {
-            if (item.holdingLocation) locationCodes.add(item.holdingLocation[0]['@id']);
-          });
-        }
-      });
-      const codes = Array.from(locationCodes).join(',');
-      return fetchLocationUrls(codes).then((resp) => {
-        itemListElement.forEach((resultObj) => {
-          const { result } = resultObj;
-          const items = result.items;
-          if (!items) return results;
-          items.slice(0, itemTableLimit).forEach((item) => {
-            if (!item) return;
-            if (item.holdingLocation) {
-              item.holdingLocation[0].url = findUrl({ code: item.holdingLocation[0]['@id'] }, resp);
-              item.locationUrl = item.holdingLocation[0].url
-            }
-            if (item.location) item.locationUrl = findUrl({code: item.holdingLocationCode }, resp);
-          });
-        });
-        return results;
-      })
-        .then(processedResults => cb(
-          aggregations,
-          processedResults,
-          page,
-          drbbResults))
-        .catch((error) => {
-          logger.error('Error making server search call in search function', error);
-          errorcb(error);
-        });
+      return cb(
+        aggregations,
+        results,
+        page,
+        drbbResults);
     })
     .catch(console.error);
 }
