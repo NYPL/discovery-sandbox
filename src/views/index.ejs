@@ -33,10 +33,22 @@
 
     <script src="<%- launchEmbedUrl %>" async></script>
 
-<% if (isProduction) { %>
-    <!-- Minified Styles -->
-    <link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
-<% } %>
+    <% if (isProduction) { %>
+    	<!-- Minified Styles -->
+    	<link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
+    <% } %>
+
+    <!--min height on header container to avoid jump on page load-->
+    <style>
+      #Header-Placeholder {
+        min-height: 70px;
+      }
+      @media screen and (min-width: 1024px) {
+        #Header-Placeholder {
+          min-height: 230px;
+        }
+      }
+    </style>
 
   </head>
   <body>
