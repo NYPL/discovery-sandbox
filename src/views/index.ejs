@@ -52,8 +52,10 @@
 
   </head>
   <body>
-    <div id="nypl-header"></div>
-    <script type="module" src="<%- nyplHeaderUrl %>/header.min.js?containerId=nypl-header" async></script> 
+    <div id="Header-Placeholder">
+      <div id="nypl-header"></div>
+      <script type="module" src="<%- nyplHeaderUrl %>/header.min.js?containerId=nypl-header" async></script>
+    </div>
     <div id="app"><%- application %></div>
     <div id="nypl-footer"></div>
     <script type="module" src="<%- nyplHeaderUrl %>/footer.min.js?containerId=nypl-footer" async></script> 
