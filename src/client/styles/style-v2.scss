@@ -1,19 +1,6 @@
 // discovery-item.v2.html
 // item info / the full item record
 
-// min height on header container to avoid jump on page load
-#nypl-header {
-  min-height: 60px;
-
-  @include media($nypl-breakpoint-medium) {
-    min-height: 160px;
-  }
-
-  @include media($nypl-breakpoint-large) {
-    min-height: 205px;
-  }
-}
-
 .nypl-item-details {
 
   &__heading {
