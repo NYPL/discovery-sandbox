@@ -74,7 +74,7 @@ class ElectronicDelivery extends React.Component {
     const selectedItem = (bib && itemId) ? LibraryItem.getItem(bib, itemId) : {};
     const itemSource = (selectedItem && selectedItem.itemSource) ? selectedItem.itemSource : null;
     return {
-      eddRequestable: selectedItem && selectedItem.eddRequestable,
+      eddRequestable: selectedItem && selectedItem.available && selectedItem.eddRequestable,
       title,
       bibId,
       itemId,
