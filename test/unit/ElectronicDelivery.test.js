@@ -241,6 +241,41 @@ describe('ElectronicDeliveryForm', () => {
         ).to.equal(true);
       });
     });
+
+    it('should render the error message when the item is not available', () => {
+      const unavailableItem = JSON.parse(JSON.stringify(mockedItem[0]))
+      unavailableItem.status[0].prefLabel = 'Unavailable'
+
+      const bib = {
+        'title': ['Harry Potter'],
+        '@id': 'res:b17688688',
+        'items': [{ ...unavailableItem, eddRequestable: true }],
+      };
+
+      const store = makeTestStore({
+        bib,
+      });
+
+      component = mountTestRender(
+        <ElectronicDelivery params={{ bibId: 'bibId', itemId: 'i10000003' }} />,
+        { store },
+      );
+
+      const message = component.find('h2');
+      setImmediate(() => {
+        expect(message.find('h2')).to.have.length(1);
+        expect(
+          message.contains(
+            <h2 className='nypl-request-form-title'>
+              Delivery options for this item are currently unavailable. Please
+              try again later or contact 917-ASK-NYPL (
+              <a href='tel:917-275-6975'>917-275-6975</a>).
+            </h2>,
+          ),
+        ).to.equal(true);
+      });
+    });
+
     it('should render the edd form when the item is eddRequestable', () => {
       const bib = {
         'title': ['Harry Potter'],

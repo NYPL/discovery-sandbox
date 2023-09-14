@@ -33,15 +33,29 @@
 
     <script src="<%- launchEmbedUrl %>" async></script>
 
-<% if (isProduction) { %>
-    <!-- Minified Styles -->
-    <link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
-<% } %>
+    <% if (isProduction) { %>
+    	<!-- Minified Styles -->
+    	<link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
+    <% } %>
+
+    <!--min height on header container to avoid jump on page load-->
+    <style>
+      #Header-Placeholder {
+        min-height: 62px;
+      }
+      @media screen and (min-width: 832px) {
+        #Header-Placeholder {
+          min-height: 130px;
+        }
+      }
+    </style>
 
   </head>
   <body>
-    <div id="nypl-header"></div>
-    <script type="module" src="<%- nyplHeaderUrl %>/header.min.js?containerId=nypl-header" async></script> 
+    <div id="Header-Placeholder">
+      <div id="nypl-header"></div>
+      <script type="module" src="<%- nyplHeaderUrl %>/header.min.js?containerId=nypl-header" async></script>
+    </div>
     <div id="app"><%- application %></div>
     <div id="nypl-footer"></div>
     <script type="module" src="<%- nyplHeaderUrl %>/footer.min.js?containerId=nypl-footer" async></script> 
