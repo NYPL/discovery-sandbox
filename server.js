@@ -92,6 +92,7 @@ app.get('/research/research-catalog/__request_debug', (req, res) => {
     {
       baseUrl: req.baseUrl,
       'get(host)': req.get('host'),
+      headers: req.headers,
       hostname: req.hostname,
       originalUrl: req.originalUrl,
       path: req.path,
