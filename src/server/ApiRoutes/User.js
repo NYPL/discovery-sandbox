@@ -7,17 +7,7 @@ function requireUser(req, res) {
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
     const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api/`), `${appConfig.baseUrl}/`)
-
-    let protocol = req.protocol
-    let host = req.get('host')
-
-    // Override production LB request host and proto:
-    if (/^discovery\.nypl\.org/.test(host)) {
-      host = 'www.nypl.org'
-      protocol = 'https'
-    }
-
-    const fullUrl = encodeURIComponent(`${protocol}://${host}${originalUrl}`);
+    const fullUrl = encodeURIComponent(`${req.protocol}://${req.get('host')}${originalUrl}`);
     redirect = `${appConfig.loginUrl}?redirect_uri=${fullUrl}`;
     if (!req.originalUrl.includes('/api/')) {
       res.redirect(redirect);
