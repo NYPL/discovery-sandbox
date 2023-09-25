@@ -87,7 +87,7 @@ app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
 // Special debugging route - for investigating LB/proxy issues:
-app.get('/research/research-requests/__request_debug', (req, res) => {
+app.get('/research/research-catalog/__request_debug', (req, res) => {
   res.json(
     {
       baseUrl: req.baseUrl,
