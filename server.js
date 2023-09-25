@@ -86,6 +86,21 @@ nyplApiClient();
 app.use('/*', initializePatronTokenAuth, getPatronData);
 app.use('/', apiRoutes);
 
+// Special debugging route - for investigating LB/proxy issues:
+app.get('/research/research-catalog/__request_debug', (req, res) => {
+  res.json(
+    {
+      baseUrl: req.baseUrl,
+      'get(host)': req.get('host'),
+      headers: req.headers,
+      hostname: req.hostname,
+      originalUrl: req.originalUrl,
+      path: req.path,
+      protocol: req.protocol
+    }
+  )
+});
+
 app.get('/*', (req, res) => {
   const appRoutes =
     req.url.indexOf(appConfig.baseUrl) !== -1 ? routes.client : routes.server;
