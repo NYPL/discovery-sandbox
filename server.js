@@ -49,7 +49,9 @@ app.set('port', process.env.PORT || appConfig.port || 3001);
 // by the trusted proxy (Imperva). This is essential for building a valid login
 // redirect_uri
 // See https://expressjs.com/en/4x/api.html#trust.proxy.options.table
-app.set('trust proxy', 'uniquelocal')
+const trustProxy = process.env.TRUST_PROXY || true
+app.set('trust proxy', trustProxy)
+logger.info(`Using Express 'trust proxy' setting '${trustProxy}'`)
 
 app.use(cookieParser());
 // to support JSON-encoded bodies
