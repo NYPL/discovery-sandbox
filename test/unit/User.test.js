@@ -18,7 +18,7 @@ let mockPatronTokenResponse = {
   errorCode: null,
 };
 const renderMockReq = data => ({
-  get: n => n,
+  hostname: 'host',
   protocol: 'http',
   originalUrl: '/hold/request/b11995345-i14211097',
   patronTokenResponse: data,
