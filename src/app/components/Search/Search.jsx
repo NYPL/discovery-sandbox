@@ -157,7 +157,7 @@ function Search(props) {
         }}
         textInputElement={inputElement}
       />
-      <div id="advanced-search-link-container">
+      <div id="advanced-search-link-container" className="nypl-row">
         <DSLink>
           <Link to={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</Link>
         </DSLink>

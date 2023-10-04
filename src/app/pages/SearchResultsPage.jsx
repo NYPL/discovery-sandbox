@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import FilterPopup from '../components/FilterPopup/FilterPopup';
 import SelectedFilters from '../components/Filters/SelectedFilters';
+import EDSLink from '../components/EDSLink/EDSLink';
 import Notification from '../components/Notification/Notification';
 import ResultsCount from '../components/ResultsCount/ResultsCount';
 import SccContainer from '../components/SccContainer/SccContainer';
@@ -83,6 +84,7 @@ const SearchResults = (props, context) => {
             raisedErrors={dateFilterErrors}
             updateDropdownState={toggleDropdown}
           />
+          <EDSLink />
         </div>
       </div>
       <Notification notificationType="searchResultsNotification" />
