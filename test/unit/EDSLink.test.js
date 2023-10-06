@@ -16,7 +16,7 @@ describe('EDSLink', () => {
 
   it('should have the right text', () => {
     const html = component.html();
-    expect(html).to.include('<strong>New!</strong> Try our <strong>Article Search</strong> to discover online journals, books, and more from home');
+    expect(html).to.include('<span>New!</span> Try our <strong>Article Search</strong> to discover online journals, books, and more from home');
   });
 
   it('should have a link with the correct text and href', () => {
