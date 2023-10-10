@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 
 
 import Search from '../components/Search/Search';
+import EDSLink from '../components/EDSLink/EDSLink';
 import Notification from '../components/Notification/Notification';
 import SccContainer from '../components/SccContainer/SccContainer';
 import { basicQuery } from '../utils/utils';
@@ -22,6 +23,7 @@ const Home = (props, context) => (
           createAPIQuery={basicQuery(props)}
           router={context.router}
         />
+        <EDSLink />
       </div>
     </div>
 
