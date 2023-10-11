@@ -180,15 +180,16 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
 
 // Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
+  const bnumber = route.includes('/bib') ? route.split('/')[2] : ""
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
     case route.match(/\/search/i)?.input:
       return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[|?${queryParams}]`;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.BIB;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]|all`;
     case route.match(/\/bib/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.BIB;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]`;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;
     case route.match(/\/hold\/request/i)?.input:
