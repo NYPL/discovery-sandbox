@@ -29,6 +29,8 @@ const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|
 // String used to namespace Research Catalog events in Adobe Analytics
 const ADOBE_ANALYTICS_SITE_SECTION = 'Research Catalog';
 
+const ADOBE_ANALYTICS_RC_PREFIX = 'rc|';
+
 const ADOBE_ANALYTICS_PAGE_NAMES = {
   HOME: 'home',
   ADVANCED_SEARCH: 'advanced-search',
@@ -36,8 +38,8 @@ const ADOBE_ANALYTICS_PAGE_NAMES = {
   BIB: 'bib',
   SHEP: 'shep',
   ACCOUNT: 'account',
-  REQUEST_HOLD: 'request|hold',
-  REQUEST_EDD: 'request|edd',
+  HOLD_REQUEST: 'request|hold',
+  EDD_REQUEST: 'request|edd',
   ACCOUNT_ERROR: 'error|account',
   REDIRECT: 'error|redirect',
   NOT_FOUND_404: 'error|404',
@@ -51,5 +53,6 @@ export {
   CLOSED_LOCATION_REGEX,
   itemBatchSize,
   ADOBE_ANALYTICS_SITE_SECTION,
-  ADOBE_ANALYTICS_PAGE_NAMES
+  ADOBE_ANALYTICS_PAGE_NAMES,
+  ADOBE_ANALYTICS_RC_PREFIX
 };

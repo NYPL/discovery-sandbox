@@ -12,7 +12,7 @@ import {
   sortBy as _sortBy,
 } from 'underscore';
 import appConfig from '../data/appConfig';
-import { noticePreferenceMapping, ADOBE_ANALYTICS_SITE_SECTION, ADOBE_ANALYTICS_PAGE_NAMES } from '../data/constants';
+import { noticePreferenceMapping, ADOBE_ANALYTICS_SITE_SECTION, ADOBE_ANALYTICS_PAGE_NAMES, ADOBE_ANALYTICS_RC_PREFIX } from '../data/constants';
 import LibraryItem from './item';
 
 const { features } = appConfig;
@@ -179,26 +179,26 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
     .join('');
 
 // Maps routes to the appropriate page name for Adobe Analytics.
-const adobeAnalyticsRouteToPageName = (route = '') => {
+const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
     case route.match(/\/search/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[|?${queryParams}]`;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS;
+      return ADOBE_ANALYTICS_PAGE_NAMES.BIB;
     case route.match(/\/bib/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.DETAILS;
+      return ADOBE_ANALYTICS_PAGE_NAMES.BIB;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST; env
+      return ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST;
     case route.match(/\/hold\/request/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/hold\/confirmation/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_CONFIRMATION;
+      return ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.HEADING;
+      return ADOBE_ANALYTICS_PAGE_NAMES.SHEP;
     case route.match(/\/subject_headings/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS;
+      return ADOBE_ANALYTICS_PAGE_NAMES.SHEP;
     case route.match(/\/accountError/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
     case route.match(/\/account/i)?.input:
@@ -217,10 +217,10 @@ const adobeAnalyticsRouteToPageName = (route = '') => {
 /**
  * Tracks a virtual page view to Adobe Analytics on page navigation.
  */
-const trackVirtualPageView = (pathname = '') => {
+const trackVirtualPageView = (pathname = '', queryParams = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
-
+  console.log(ADOBE_ANALYTICS_RC_PREFIX + adobeAnalyticsRouteToPageName(route, queryParams))
   /**
    * We must first clear the page name and site section before pushing new values
    * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
@@ -231,7 +231,7 @@ const trackVirtualPageView = (pathname = '') => {
   });
   adobeDataLayer.push({
     event: "virtual_page_view",
-    page_name: adobeAnalyticsRouteToPageName(route),
+    page_name: ADOBE_ANALYTICS_RC_PREFIX + adobeAnalyticsRouteToPageName(route, queryParams),
     site_section: ADOBE_ANALYTICS_SITE_SECTION
   });
 }
