@@ -179,15 +179,22 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
     .join('');
 
 // Maps routes to the appropriate page name for Adobe Analytics.
-const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
+const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
+  // parse additional route attributes
+  const queryString = queryParams.length ? `|?${queryParams}` : ""
+
   const bnumber = route.includes('/bib') ? route.split('/')[2] : ""
+
   const holdItem = route.includes('/hold') ? route.split("/")[3] : ""
   const holdBibAndItem = holdItem.length && holdItem.split("-")
+
+  const uuid = route.includes('/subject_headings') ? route.split("/")[2] : ""
+
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
     case route.match(/\/search/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[|?${queryParams}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[${queryString}]`;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
       return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]|all`;
     case route.match(/\/bib/i)?.input:
@@ -199,9 +206,9 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
     case route.match(/\/hold\/confirmation/i)?.input:
       return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem[1]}]|confirmation`;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SHEP;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}|[${uuid}]`;
     case route.match(/\/subject_headings/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.SHEP;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}|[${queryString}]`;
     case route.match(/\/accountError/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
     case route.match(/\/account/i)?.input:
