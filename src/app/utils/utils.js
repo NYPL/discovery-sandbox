@@ -181,7 +181,8 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
 // Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
   const bnumber = route.includes('/bib') ? route.split('/')[2] : ""
-  const bibAndItemId = bnumber.includes("-") ? bnumber.split("-") : []
+  const holdItem = route.includes('/hold') ? route.split("/")[3] : ""
+  const holdBibAndItem = holdItem.length && holdItem.split("-")
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
@@ -192,11 +193,11 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '') => {
     case route.match(/\/bib/i)?.input:
       return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]`;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}|[${bibAndItemId[0]}]|[${bibAndItemId[1]}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem  [1]}]`;
     case route.match(/\/hold\/request/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${bibAndItemId[0]}]|[${bibAndItemId[1]}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem[1]}]`;
     case route.match(/\/hold\/confirmation/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${bibAndItemId[0]}]|[${bibAndItemId[1]}]|confirmation`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem[1]}]|confirmation`;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.SHEP;
     case route.match(/\/subject_headings/i)?.input:
