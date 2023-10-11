@@ -24,7 +24,6 @@ if (loadA11y) {
 window.onload = () => {
   const url = window.location.toString();
   const queryParams = url.slice(url.indexOf("?") + 1)
-  console.log(queryParams)
   const appElement = global.document.getElementById('app');
   ReactDOM.render(
     <DSProvider>
