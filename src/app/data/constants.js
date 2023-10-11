@@ -30,20 +30,17 @@ const CLOSED_LOCATION_REGEX = /\(CLOSED\)|STAFF ONLY|SCHWARZMAN|Performing Arts|
 const ADOBE_ANALYTICS_SITE_SECTION = 'Research Catalog';
 
 const ADOBE_ANALYTICS_PAGE_NAMES = {
-  ADVANCED_SEARCH: 'Advanced Search',
-  SEARCH_RESULTS: 'Search Results',
-  DETAILS_ALL_ITEMS: 'Details/All Items',
-  DETAILS: 'Details',
-  HOLD_REQUEST: 'Hold Request',
-  EDD_REQUEST: 'EDD Request',
-  HOLD_CONFIRMATION: 'Hold Request/Confirmation',
-  HEADING: 'Heading',
-  SUBJECT_HEADINGS: 'Subject Headings',
-  ACCOUNT_ERROR: 'Account/Error',
-  ACCOUNT: 'Account',
-  REDIRECT: 'Redirect',
-  NOT_FOUND_404: '404',
-  HOME: 'Home'
+  HOME: 'home',
+  ADVANCED_SEARCH: 'advanced-search',
+  SEARCH_RESULTS: 'search-results',
+  BIB: 'bib',
+  SHEP: 'shep',
+  ACCOUNT: 'account',
+  REQUEST_HOLD: 'request|hold',
+  REQUEST_EDD: 'request|edd',
+  ACCOUNT_ERROR: 'error|account',
+  REDIRECT: 'error|redirect',
+  NOT_FOUND_404: 'error|404',
 };
 
 export {
