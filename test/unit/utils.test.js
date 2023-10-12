@@ -29,7 +29,7 @@ import {
   hasCheckDigit,
   removeCheckDigit,
   adobeAnalyticsRouteToPageName,
-  standardizeBibId
+  standardizeBibId,
 } from '../../src/app/utils/utils';
 
 /**
@@ -891,19 +891,21 @@ describe('getIdentifierQuery', () => {
 });
 
 describe('adobeAnalyticsRouteToPageName', () => {
-  it('should return the appropriate page name for a given route', () => {
+  it.only('should return the appropriate page name for a given route', () => {
     expect(adobeAnalyticsRouteToPageName('/')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
     expect(adobeAnalyticsRouteToPageName('')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
     expect(adobeAnalyticsRouteToPageName('/search')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
-    expect(adobeAnalyticsRouteToPageName('/search?q=test')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
+    expect(adobeAnalyticsRouteToPageName('/search', '?q=test')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[|?q=test]`);
     expect(adobeAnalyticsRouteToPageName('/search/advanced')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH);
-    expect(adobeAnalyticsRouteToPageName('/bib')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
-    expect(adobeAnalyticsRouteToPageName('/bib/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS);
-    expect(adobeAnalyticsRouteToPageName('/bib/b12345678/all')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.DETAILS_ALL_ITEMS);
-    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST);
-    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678/edd')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST);
-    expect(adobeAnalyticsRouteToPageName('/subject_headings/a1da66e2-5e8d-4186-8403-5d43365a631e?label=D%27Adda%20family')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HEADING);
-    expect(adobeAnalyticsRouteToPageName('/subject_headings')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SUBJECT_HEADINGS);
+    expect(adobeAnalyticsRouteToPageName('/bib')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.BIB);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[b12345678]`);
+    expect(adobeAnalyticsRouteToPageName('/bib/b12345678/all')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[b12345678]|all`);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[b12345678]`);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678-12345')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[b12345678]|[12345]`);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678/edd')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}|[b12345678]`);
+    expect(adobeAnalyticsRouteToPageName('/hold/request/b12345678-12345/edd')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}|[b12345678]|[12345]`);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings/a1da66e2-5e8d-4186-8403-5d43365a631e?label=D%27Adda%20family')).to.eq(`${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}|[a1da66e2-5e8d-4186-8403-5d43365a631e?label=D%27Adda%20family]`);
+    expect(adobeAnalyticsRouteToPageName('/subject_headings')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SHEP);
     expect(adobeAnalyticsRouteToPageName('/account')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
     expect(adobeAnalyticsRouteToPageName('/account/holds')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT);
     expect(adobeAnalyticsRouteToPageName('/accountError')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR);

@@ -178,35 +178,54 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
     .map(([key, value]) => (value ? `&${key}=${value}` : ''))
     .join('');
 
+/**
+ * adobeAnalyticsQueryString
+ * Utility function that builds a query string as expected by the Adobe Analytics dashboard
+ * @param {string} param value of param to be passed into the query string field.
+ */
+const adobeAnalyticsQueryString = (param = "") => {
+  return param.length ? `[|${param}]` : "";
+}
+
+/**
+ * adobeAnalyticsParam
+ * Utility function that builds a param string as expected by the Adobe Analytics dashboard
+ * @param {string} param value of param to be passed into the param string field.
+ */
+const adobeAnalyticsParam = (param = "") => {
+  return param.length ? `|[${param}]` : "";
+}
+
 // Maps routes to the appropriate page name for Adobe Analytics.
 const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
   // parse additional route attributes
-  const bnumber = route.includes('/bib') ? route.split('/')[2] : ""
+  let bnumber = route.includes('/bib') ? route.split('/')[2] : "";
+  bnumber = bnumber && standardizeBibId(bnumber);
 
-  const holdItem = route.includes('/hold') ? route.split("/")[3] : ""
-  const holdBibAndItem = holdItem.length && holdItem.split("-")
+  const holdItem = route.includes('/hold') ? route.split("/")[3] : "";
+  const holdBibAndItem = holdItem && holdItem.length && holdItem.split("-");
 
-  const uuid = route.includes('/subject_headings') ? route.split("/")[2] : ""
+  const uuid = route.includes('/subject_headings') ? route.split("/")[2] : "";
 
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
     case route.match(/\/search/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}[|${queryParams}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}${adobeAnalyticsQueryString(queryParams)}`;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]|all`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}|all`;
     case route.match(/\/bib/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}|[${bnumber}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}`;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem  [1]}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
     case route.match(/\/hold\/request/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem[1]}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
     case route.match(/\/hold\/confirmation/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}|[${holdBibAndItem[0]}]|[${holdBibAndItem[1]}]|confirmation`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}|confirmation`;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}|[${uuid}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(uuid)}`;
     case route.match(/\/subject_headings/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}|[|${queryParams}]`;
+      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsQueryString(queryParams)}`;
     case route.match(/\/accountError/i)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
     case route.match(/\/account/i)?.input:
@@ -218,7 +237,7 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
     case route.match(/^\/?(\?.+)?$/)?.input:
       return ADOBE_ANALYTICS_PAGE_NAMES.HOME;
     default:
-      return `UNREGISTERED ROUTE: ${route}`
+      return `UNREGISTERED ROUTE: ${route}`;
   }
 }
 
@@ -228,7 +247,6 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
 const trackVirtualPageView = (pathname = '', queryParams = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
-  console.log(ADOBE_ANALYTICS_RC_PREFIX + adobeAnalyticsRouteToPageName(route, queryParams))
   /**
    * We must first clear the page name and site section before pushing new values
    * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
