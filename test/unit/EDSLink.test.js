@@ -17,6 +17,7 @@ describe('EDSLink', () => {
   it('should have the right text', () => {
     const html = component.html();
     expect(html).to.include('<span>New!</span> Try our');
+    expect(html).to.include('<strong>Article Search</strong>');
     expect(html).to.include('to discover online journals, books, and more from home with your library card.')
   });
 
