@@ -207,38 +207,56 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
 
   const uuid = route.includes('/subject_headings') ? route.split("/")[2] : "";
 
+  let pageName = "";
   switch (route) {
     case route.match(/\/search\/advanced/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
+      break;
     case route.match(/\/search/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}${adobeAnalyticsQueryString(queryParams)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}${adobeAnalyticsQueryString(queryParams)}`;
+      break;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}|all`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}|all`;
+      break;
     case route.match(/\/bib/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}`;
+      break;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      break;
     case route.match(/\/hold\/request/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      break;
     case route.match(/\/hold\/confirmation/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}|confirmation`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}|confirmation`;
+      break;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(uuid)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(uuid)}`;
+      break;
     case route.match(/\/subject_headings/i)?.input:
-      return `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsQueryString(queryParams)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsQueryString(queryParams)}`;
+      break;
     case route.match(/\/accountError/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
+      break;
     case route.match(/\/account/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT;
+      break;
     case route.match(/\/404\/redirect/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.REDIRECT;
+      break;
     case route.match(/\/404/i)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.NOT_FOUND_404;
+      break;
     case route.match(/^\/?(\?.+)?$/)?.input:
-      return ADOBE_ANALYTICS_PAGE_NAMES.HOME;
+      pageName = ADOBE_ANALYTICS_PAGE_NAMES.HOME;
+      break;
     default:
-      return `UNREGISTERED ROUTE: ${route}`;
+      pageName = `UNREGISTERED ROUTE: ${route}`;
+      break;
   }
+
+  return ADOBE_ANALYTICS_RC_PREFIX + pageName;
 }
 
 /**
@@ -247,7 +265,7 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
 const trackVirtualPageView = (pathname = '', queryParams = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
-  console.log(ADOBE_ANALYTICS_RC_PREFIX + adobeAnalyticsRouteToPageName(route, queryParams));
+  console.log(adobeAnalyticsRouteToPageName(route, queryParams));
   /**
    * We must first clear the page name and site section before pushing new values
    * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
