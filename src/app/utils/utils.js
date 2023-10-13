@@ -202,8 +202,10 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
   let bnumber = route.includes('/bib') ? route.split('/')[2] : "";
   bnumber = bnumber && standardizeBibId(bnumber);
 
-  const holdItem = route.includes('/hold') ? route.split("/")[3] : "";
-  const holdBibAndItem = holdItem && holdItem.length && holdItem.split("-");
+  const holdId = route.includes('/hold') ? route.split("/")[3] : "";
+  const holdBibAndItem = holdId && holdId.length && holdId.split("-");
+  const holdBib = holdBibAndItem && holdBibAndItem[0];
+  const holdItem = holdBibAndItem && holdBibAndItem[1];
 
   const uuid = route.includes('/subject_headings') ? route.split("/")[2] : "";
 
@@ -222,13 +224,13 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
       pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}`;
       break;
     case route.match(/\/hold\/request(\/[^\/]*)\/edd/i)?.input:
-      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.EDD_REQUEST}${adobeAnalyticsParam(holdBib)}${adobeAnalyticsParam(holdItem)}`;
       break;
     case route.match(/\/hold\/request/i)?.input:
-      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBib)}${adobeAnalyticsParam(holdItem)}`;
       break;
     case route.match(/\/hold\/confirmation/i)?.input:
-      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBibAndItem[0])}${adobeAnalyticsParam(holdBibAndItem[1])}|confirmation`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.HOLD_REQUEST}${adobeAnalyticsParam(holdBib)}${adobeAnalyticsParam(holdItem)}|confirmation`;
       break;
     case route.match(/\/subject_headings(\/[^\/]*)/i)?.input:
       pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(uuid)}`;
