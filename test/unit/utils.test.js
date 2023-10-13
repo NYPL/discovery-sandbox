@@ -891,7 +891,7 @@ describe('getIdentifierQuery', () => {
 });
 
 describe('adobeAnalyticsRouteToPageName', () => {
-  it.only('should return the appropriate page name for a given route', () => {
+  it('should return the appropriate page name for a given route', () => {
     expect(adobeAnalyticsRouteToPageName('/')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
     expect(adobeAnalyticsRouteToPageName('')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.HOME);
     expect(adobeAnalyticsRouteToPageName('/search')).to.eq(ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS);
