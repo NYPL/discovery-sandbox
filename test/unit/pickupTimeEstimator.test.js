@@ -428,17 +428,17 @@ describe('pickupTimeEstimator', () => {
       expect(estimator._makeFriendly('2023-06-02T14:30:00.000Z')).to.equal('tomorrow (6/2) by 10:30am')
     })
 
-    it.only('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
+    it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
       expect(estimator._makeFriendly('2023-06-01T15:05:00.000Z')).to.equal('today by approximately 11:15am')
     })
 
-    it.only('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
+    it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
       nowTimestamp = '2023-06-01T15:10:00.000Z'
       expect(estimator._makeFriendly('2023-06-01T15:10:00.000Z', { useTodayByTime: true })).to.equal('today by 11:15am')
     })
 
-    it.only('renders specific time when showTime is enabled', () => {
+    it('renders specific time when showTime is enabled', () => {
       nowTimestamp = '2023-06-01T14:10:00.000Z'
       expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z', { useTodayByTime: true })).to.equal('today by 10:30am')
       // Without the use-today-by-time flag, the default is to use "approximately":
@@ -670,7 +670,7 @@ describe('pickupTimeEstimator', () => {
     })
 
     describe('active hold requests', () => {
-      it.only('should render approximate pickup time as it draws near', async () => {
+      it('should render approximate pickup time as it draws near', async () => {
         const item = {
           holdingLocation: [{ id: 'ma' }],
           physFulfillment: 'fulfillment:sasb-onsite',
