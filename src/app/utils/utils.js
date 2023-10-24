@@ -178,14 +178,6 @@ const getIdentifierQuery = (identifierNumbers = {}) =>
     .map(([key, value]) => (value ? `&${key}=${value}` : ''))
     .join('');
 
-/**
- * adobeAnalyticsQueryString
- * Utility function that builds a query string as expected by the Adobe Analytics dashboard
- * @param {string} param value of param to be passed into the query string field.
- */
-const adobeAnalyticsQueryString = (param = "") => {
-  return param.length ? `[|${param}]` : "";
-}
 
 /**
  * adobeAnalyticsParam
@@ -193,7 +185,7 @@ const adobeAnalyticsQueryString = (param = "") => {
  * @param {string} param value of param to be passed into the param string field.
  */
 const adobeAnalyticsParam = (param = "") => {
-  return param.length ? `|[${param}]` : "";
+  return param.length ? `|${param}` : "";
 }
 
 // Maps routes to the appropriate page name for Adobe Analytics.
@@ -215,7 +207,7 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
       pageName = ADOBE_ANALYTICS_PAGE_NAMES.ADVANCED_SEARCH;
       break;
     case route.match(/\/search/i)?.input:
-      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}${adobeAnalyticsQueryString(queryParams)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SEARCH_RESULTS}${adobeAnalyticsParam(queryParams)}`;
       break;
     case route.match(/\/bib(\/[^\/]*)\/all/i)?.input:
       pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.BIB}${adobeAnalyticsParam(bnumber)}|all`;
@@ -236,7 +228,7 @@ const adobeAnalyticsRouteToPageName = (route = '', queryParams = '')=> {
       pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(uuid)}`;
       break;
     case route.match(/\/subject_headings/i)?.input:
-      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsQueryString(queryParams)}`;
+      pageName = `${ADOBE_ANALYTICS_PAGE_NAMES.SHEP}${adobeAnalyticsParam(queryParams)}`;
       break;
     case route.match(/\/accountError/i)?.input:
       pageName = ADOBE_ANALYTICS_PAGE_NAMES.ACCOUNT_ERROR;
