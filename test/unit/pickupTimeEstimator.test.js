@@ -8,6 +8,7 @@ import estimator from '../../src/app/utils/pickupTimeEstimator'
 import nyplCoreObjects from '@nypl/nypl-core-objects'
 
 let nowTimestamp
+let tzNote = ''
 
 describe('pickupTimeEstimator', () => {
   let clientStub
@@ -127,6 +128,10 @@ describe('pickupTimeEstimator', () => {
     })
 
     sinon.stub(estimator, '_now').callsFake(() => nowTimestamp)
+
+    // When running tests with TZ set to anything other than ET, let's expect
+    // all statements about time of day to end in "ET":
+    tzNote = process.env.TZ && process.env.TZ !== 'America/New_York' ? ' ET' : ''
   })
 
   afterEach(() => {
@@ -151,21 +156,21 @@ describe('pickupTimeEstimator', () => {
     ]
 
     it('returns today\'s hours when called during business hours', async () => {
-      nowTimestamp = '2023-06-01T10:00:00'
+      nowTimestamp = '2023-06-01T10:00:00-04:00'
       expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
-      nowTimestamp = '2023-06-01T10:31:00'
+      nowTimestamp = '2023-06-01T10:31:00-04:00'
       expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
       // At 6:59pm, techinically the next avail hours are still today:
-      nowTimestamp = '2023-06-01T18:59:00'
+      nowTimestamp = '2023-06-01T18:59:00-04:00'
       expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
     })
 
     it('returns tomorrow\'s hours when called after business hours', async () => {
       // At 7pm, next avail hours are tomorrow:
-      nowTimestamp = '2023-06-01T19:00:00'
+      nowTimestamp = '2023-06-01T19:00:00-04:00'
       expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[1])
       // At 9pm, next avail hours are tomorrow:
-      nowTimestamp = '2023-06-01T21:00:00'
+      nowTimestamp = '2023-06-01T21:00:00-04:00'
       expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[1])
     })
   })
@@ -173,9 +178,9 @@ describe('pickupTimeEstimator', () => {
   describe('_getNextServiceHours', () => {
     // Each of these times is strictly within the service-hours for Thursday:
     ; [
-      '2023-06-01T10:30:00',
-      '2023-06-01T12:00:00',
-      '2023-06-01T17:59:59'
+      '2023-06-01T10:30:00-04:00',
+      '2023-06-01T12:00:00-04:00',
+      '2023-06-01T17:59:59-04:00'
     ].forEach(async (timestamp) => {
       it(`should return today\'s hours when called mid-service-hours (${timestamp})`, async () => {
         nowTimestamp = timestamp
@@ -318,8 +323,8 @@ describe('pickupTimeEstimator', () => {
     it('should set hours and minutes', () => {
       // This is the zulu representation of 230 eastern:
       const local230 = '2023-06-07T18:30:00.000Z'
-      // No tz; assume Eastern:
-      expect(estimator._setHoursMinutes('2023-06-07T18:00:00', 14, 30)).to.equal(local230)
+      // Eastern:
+      expect(estimator._setHoursMinutes('2023-06-07T18:00:00-04:00', 14, 30)).to.equal(local230)
       // Zulu time; return Eastern:
       expect(estimator._setHoursMinutes('2023-06-07T22:00:00+00:00', 14, 30)).to.equal(local230)
     })
@@ -327,9 +332,9 @@ describe('pickupTimeEstimator', () => {
 
   describe('_addMinutes', () => {
     it('should add 30 mins', () => {
-      // No tz; assume Eastern:
-      expect(estimator._addMinutes('2023-06-07T14:00:00', 30)).to.equal('2023-06-07T18:30:00.000Z')
-      // Zulu time; return Eastern:
+      // Eastern time
+      expect(estimator._addMinutes('2023-06-07T14:00:00-04:00', 30)).to.equal('2023-06-07T18:30:00.000Z')
+      // Zulu time
       expect(estimator._addMinutes('2023-06-07T14:00:00+00:00', 30)).to.equal('2023-06-07T14:30:00.000Z')
     })
 
@@ -419,49 +424,58 @@ describe('pickupTimeEstimator', () => {
 
     it('renders 1h+ as specific time', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
-      expect(estimator._makeFriendly('2023-06-01T17:30:00.000Z')).to.equal('today by 1:30pm')
-      expect(estimator._makeFriendly('2023-06-01T15:30:00.000Z')).to.equal('today by 11:30am')
+      expect(estimator._makeFriendly('2023-06-01T17:30:00.000Z')).to.equal(`today by 1:30pm${tzNote}`)
+      expect(estimator._makeFriendly('2023-06-01T15:30:00.000Z')).to.equal(`today by 11:30am${tzNote}`)
     })
 
     it('renders dates happening tomorrow as "tomorrow"', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
-      expect(estimator._makeFriendly('2023-06-02T14:30:00.000Z')).to.equal('tomorrow (6/2) by 10:30am')
+      expect(estimator._makeFriendly('2023-06-02T14:30:00.000Z')).to.equal(`tomorrow (6/2) by 10:30am${tzNote}`)
     })
 
     it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
-      expect(estimator._makeFriendly('2023-06-01T15:05:00.000Z')).to.equal('today by approximately 11:15am')
+      expect(estimator._makeFriendly('2023-06-01T15:05:00.000Z')).to.equal(`today by approximately 11:15am${tzNote}`)
     })
 
     it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
       nowTimestamp = '2023-06-01T15:10:00.000Z'
-      expect(estimator._makeFriendly('2023-06-01T15:10:00.000Z', { useTodayByTime: true })).to.equal('today by 11:15am')
+      expect(estimator._makeFriendly('2023-06-01T15:10:00.000Z', { useTodayByTime: true })).to.equal(`today by 11:15am${tzNote}`)
     })
 
     it('renders specific time when showTime is enabled', () => {
       nowTimestamp = '2023-06-01T14:10:00.000Z'
-      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z', { useTodayByTime: true })).to.equal('today by 10:30am')
+      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z', { useTodayByTime: true })).to.equal(`today by 10:30am${tzNote}`)
       // Without the use-today-by-time flag, the default is to use "approximately":
-      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z')).to.equal('today by approximately 10:30am')
+      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z')).to.equal(`today by approximately 10:30am${tzNote}`)
     })
   })
 
-  describe('_buildTimeString', () => {
-    it('time is on the quarter hour', () => {
-      const estimatedDeliveryTime = new Date('2023-06-01T16:00:30.000')
-      expect(estimator._buildTimeString(estimatedDeliveryTime)).to.equal('4pm')
-      expect(estimator._buildTimeString(estimatedDeliveryTime, { hideMinutesOnTheHour: false })).to.equal('4:00pm')
+  describe('_formatDateAndTime', () => {
+    it('should format date and time', () => {
+      nowTimestamp = '2023-06-01T14:10:00.000Z'
+      expect(estimator._formatDateAndTime(new Date('2023-06-01T14:30:00.000Z'))).to.deep.equal({
+        time: `10:30am${tzNote}`,
+        date: '6/1',
+        dayOfWeek: 'Thursday'
+      })
+      expect(estimator._formatDateAndTime(new Date('2023-06-02T22:12:34.000Z'))).to.deep.equal({
+        time: `6:12pm${tzNote}`,
+        date: '6/2',
+        dayOfWeek: 'Friday'
+      })
+    })
+  })
+
+  describe('_roundToQuarterHour', () => {
+    it('should return same date if already rounded', () => {
+      expect(estimator._roundToQuarterHour(new Date('2023-06-01T14:30:00.000Z')).toISOString())
+        .to.equal('2023-06-01T14:30:00.000Z')
     })
 
-    it('time is one minute after the quarter hour', () => {
-      const estimatedDeliveryTime = new Date('2023-06-01T16:01:30.000')
-      expect(estimator._buildTimeString(estimatedDeliveryTime)).to.equal('4:15pm')
-    })
-
-    it('time is one minute before the quarter hour', () => {
-      const estimatedDeliveryTime = new Date('2023-06-01T16:59:30.000')
-      expect(estimator._buildTimeString(estimatedDeliveryTime)).to.equal('5pm')
-      expect(estimator._buildTimeString(estimatedDeliveryTime, { hideMinutesOnTheHour: false })).to.equal('5:00pm')
+    it('should round date to next quarter hour', () => {
+      expect(estimator._roundToQuarterHour(new Date('2023-06-01T14:31:00.000Z')).toISOString())
+        .to.equal('2023-06-01T14:45:00.000Z')
     })
   })
 
@@ -618,7 +632,7 @@ describe('pickupTimeEstimator', () => {
         // No Sunday service, so it gets bumped to Monday:
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
           time: '2023-06-05T14:30:00.000Z',
-          estimate: 'Monday (6/5) by 10:30am'
+          estimate: `Monday (6/5) by 10:30am${tzNote}`
         })
       })
 
@@ -631,13 +645,13 @@ describe('pickupTimeEstimator', () => {
         // 9am:
         nowTimestamp = '2023-06-01T13:00:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
-          estimate: 'today by 10:30am',
+          estimate: `today by 10:30am${tzNote}`,
           time: '2023-06-01T14:30:00.000Z'
         })
         // 10am:
         nowTimestamp = '2023-06-01T14:00:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
-          estimate: 'today by 10:30am',
+          estimate: `today by 10:30am${tzNote}`,
           time: '2023-06-01T14:30:00.000Z'
         })
       })
@@ -652,19 +666,19 @@ describe('pickupTimeEstimator', () => {
         nowTimestamp = '2023-06-01T22:00:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
           time: '2023-06-02T14:30:00.000Z',
-          estimate: 'tomorrow (6/2) by 10:30am'
+          estimate: `tomorrow (6/2) by 10:30am${tzNote}`
         })
         // Before opening:
         nowTimestamp = '2023-06-01T13:59:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
           time: '2023-06-01T14:30:00.000Z',
-          estimate: 'today by 10:30am'
+          estimate: `today by 10:30am${tzNote}`
         })
         // At opening:
         nowTimestamp = '2023-06-01T14:00:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
           time: '2023-06-01T14:30:00.000Z',
-          estimate: 'today by 10:30am'
+          estimate: `today by 10:30am${tzNote}`
         })
       })
     })
@@ -681,14 +695,14 @@ describe('pickupTimeEstimator', () => {
         // Without an active hold request, the estimate is:
         expect(await estimator.getPickupTimeEstimate(item, 'ma')).to.deep.equal({
           time: '2023-06-01T14:30:00.000Z',
-          estimate: 'today by 10:30am'
+          estimate: `today by 10:30am${tzNote}`
         })
         // At 10:00am I consider placing a hold request:
         nowTimestamp = '2023-06-01T14:00:00.000Z'
         // Without an active hold request, the estimate is:
         expect(await estimator.getPickupTimeEstimate(item, 'ma')).to.deep.equal({
           time: '2023-06-01T14:30:00.000Z',
-          estimate: 'today by 10:30am'
+          estimate: `today by 10:30am${tzNote}`
         })
         // At 10:05 I place a hold request:
         nowTimestamp = '2023-06-01T14:05:00.000Z'
@@ -703,25 +717,25 @@ describe('pickupTimeEstimator', () => {
         nowTimestamp = '2023-06-01T14:06:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
           time: '2023-06-01T14:50:00.000Z',
-          estimate: 'today by approximately 11am'
+          estimate: `today by approximately 11:00am${tzNote}`
         })
         // 20 min later...
         nowTimestamp = '2023-06-01T14:06:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
           time: '2023-06-01T14:50:00.000Z',
-          estimate: 'today by approximately 11am'
+          estimate: `today by approximately 11:00am${tzNote}`
         })
         // 45 min later...
         nowTimestamp = '2023-06-01T14:50:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
           time: '2023-06-01T14:50:00.000Z',
-          estimate: 'today by approximately 11am'
+          estimate: `today by approximately 11:00am${tzNote}`
         })
         // 45 min later...
         nowTimestamp = '2023-06-01T14:51:00.000Z'
         expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
           time: '2023-06-01T14:50:00.000Z',
-          estimate: 'today by approximately 11am'
+          estimate: `today by approximately 11:00am${tzNote}`
         })
       })
     })
@@ -743,11 +757,13 @@ describe('pickupTimeEstimator', () => {
       })
 
       it('by approximately OPENING TOMORROW', async () => {
-        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-01T22:00:00+00:00')).estimate).to.equal('tomorrow (6/2) by 10:30am')
+        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-01T22:00:00+00:00')).estimate)
+          .to.equal(`tomorrow (6/2) by 10:30am${tzNote}`)
       })
 
       it('request made after request cutoff time, library is closed tomorrow', async () => {
-        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-03T22:00:00+00:00')).estimate).to.equal('Monday (6/5) by 10:30am')
+        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-03T22:00:00+00:00')).estimate)
+          .to.equal(`Monday (6/5) by 10:30am${tzNote}`)
       })
     })
   })

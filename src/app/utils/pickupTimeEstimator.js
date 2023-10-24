@@ -66,7 +66,7 @@ estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp
     arrivalAtHoldshelf = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf)
   }
 
-  console.log(`Rationale for request from ${originLocationId} to ${deliveryLocationId}:`, rationale)
+  // console.log(`Rationale for request from ${originLocationId} to ${deliveryLocationId}:`, rationale)
 
   // Return the specific `time` and a human readable `estimate` string
   return {
@@ -141,11 +141,10 @@ estimator._makeFriendly = (time, options = {}) => {
 
   const { days, hours, minutes } = estimator._dateDifference(time)
 
-  const date = new Date(time)
+  let date = new Date(time)
+  date = estimator._roundToQuarterHour(date)
 
-  const formattedTime = estimator._buildTimeString(date)
-  const formattedDate = `${date.getMonth() + 1}/${date.getDate()}`
-  const dayOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][date.getDay()]
+  const { time: formattedTime, date: formattedDate, dayOfWeek } = estimator._formatDateAndTime(date)
 
   // One or more days:
   if (days && days === 1) {
@@ -166,6 +165,37 @@ estimator._makeFriendly = (time, options = {}) => {
     return 'in an hour'
   } else {
     return `today by approximately ${formattedTime}`
+  }
+}
+
+/**
+ *  Given a Date object, returns a plainobject with:
+ *   - date {string} A string representation of the date (e.g. '10/1')
+ *   - time {string} A string representation of the time of day (e.g. '10:30am')
+ *   - dayOfWeek {string} The day of the week (e.g. 'Wednesday')
+ */
+estimator._formatDateAndTime = (date) => {
+  const formatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    weekday: 'long',
+    day: 'numeric',
+    month: 'numeric',
+    timeZone: 'America/New_York'
+  }
+  const values = Intl.DateTimeFormat('en', formatOptions)
+    .formatToParts(date)
+    .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
+
+  values.dayPeriod = values.dayPeriod && values.dayPeriod.toLowerCase()
+
+  const showTimezone = estimator._nyOffset() !== (new Date()).getTimezoneOffset() / 60
+  const timezoneSuffix = showTimezone ? ' ET' : ''
+
+  return {
+    date: `${values.month}/${values.day}`,
+    time: `${values.hour}:${values.minute}${values.dayPeriod}${timezoneSuffix}`,
+    dayOfWeek: values.weekday
   }
 }
 
@@ -243,7 +273,6 @@ estimator._getNextServiceHours = async (locationId, afterTimestamp = estimator._
  *  now or is tomorrow)
  */
 estimator._findNextAvailableHours = (hours, afterTimestamp = estimator._now()) => {
-  // console.log(`_findNextAvailableHours(..., ${afterTimestamp}`)
   return hours
     // Only consider hours that have not passed (in practice, all hours
     // considered will be current or future, but let's be sure)
@@ -261,7 +290,6 @@ estimator._findNextAvailableHours = (hours, afterTimestamp = estimator._now()) =
  */
 estimator._serviceHours = async (locationId) => {
   const hours = await estimator._operatingHours(locationId)
-  // console.log('Got service hours: ', hours)
 
   return hours
     .map((hours) => {
@@ -303,30 +331,31 @@ estimator._addMinutes = (dateString, minutes) => {
   return date.toISOString()
 }
 
+estimator._nyOffset = () => {
+  // TODO: This should be driven by server time
+  return 4
+}
+
 /**
  *  Given a 8601 timestamp string and a specific time of day (represented as
  *  integer hours and minutes), sets the time of the timestamp and together and
  *  returns the result as a timestamp string
  */
 estimator._setHoursMinutes = (timestamp, hours, minutes = 0) => {
+  hours = hours + estimator._nyOffset()
   const date = new Date(timestamp)
-  date.setHours(hours, minutes)
+  date.setUTCHours(hours, minutes)
   return date.toISOString()
 }
 
 /**
- *  Given hours and minutes integer values, returns new values after rounding
- *  the minutes up to the nearest quarter hour.
+ *  Given a Date object, returns a new Date object rounded to the next quarter hour
  */
-estimator._roundToQuarterHour = (hours, minutes) => {
-  if (minutes < 60 && minutes > 45) {
-    hours++
-    minutes = 0
-  }
-  if (minutes % 15 !== 0) {
-    minutes += 15 - (minutes % 15)
-  }
-  return { hours, minutes }
+estimator._roundToQuarterHour = (date) => {
+  const roundTo = 15
+  const minutesToAdd = (60 + roundTo - date.getMinutes()) % roundTo
+
+  return new Date(date.getTime() + minutesToAdd * 60_000)
 }
 
 /**
