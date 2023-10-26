@@ -187,6 +187,9 @@ estimator._formatDateAndTime = (date) => {
     .formatToParts(date)
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
 
+  // In Node 10, this one comes through all lowercase:
+  values.dayPeriod = values.dayperiod || values.dayPeriod || ''
+
   values.dayPeriod = values.dayPeriod && values.dayPeriod.toLowerCase()
 
   const showTimezone = estimator._nyOffset() !== (new Date()).getTimezoneOffset() / 60
@@ -356,31 +359,6 @@ estimator._roundToQuarterHour = (date) => {
   const minutesToAdd = (60 + roundTo - date.getMinutes()) % roundTo
 
   return new Date(date.getTime() + minutesToAdd * 60_000)
-}
-
-/**
- *  Given a Date, returns a string representation of the time of day rounded
- *  to the nearest minute increment (default 15)
- */
-estimator._buildTimeString = (date, options = {}) => {
-  options = Object.assign({
-    // Return "7pm" instead of "7:00pm"?
-    hideMinutesOnTheHour: true
-  }, options)
-
-  let minutes = date.getMinutes()
-  let hours = date.getHours()
-  let { hours: roundedHours, minutes: roundedMinutes } = estimator._roundToQuarterHour(hours, minutes)
-
-  const amOrPm = roundedHours > 11 ? 'pm' : 'am'
-  roundedHours = roundedHours % 12 === 0 ? 12 : roundedHours % 12
-
-  if (roundedMinutes === 0 && options.hideMinutesOnTheHour) {
-    return `${roundedHours}${amOrPm}`
-  } else {
-    const minutesPad = roundedMinutes < 10 ? '0' : ''
-    return `${roundedHours}:${minutesPad}${roundedMinutes}${amOrPm}`
-  }
 }
 
 /**
