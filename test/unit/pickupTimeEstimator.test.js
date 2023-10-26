@@ -132,6 +132,7 @@ describe('pickupTimeEstimator', () => {
     // When running tests with TZ set to anything other than ET, let's expect
     // all statements about time of day to end in "ET":
     tzNote = (process.env.TZ && process.env.TZ !== 'America/New_York') ? ' ET' : ''
+    console.log(`Set tzNote to '${tzNote}'`)
   })
 
   afterEach(() => {
