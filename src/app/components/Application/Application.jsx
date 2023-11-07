@@ -63,8 +63,9 @@ export class Application extends React.Component {
       router.listen(() => {
         const {
           pathname,
+          search
         } = router?.location;
-        trackVirtualPageView(pathname)
+        trackVirtualPageView(pathname, search)
       });
     }
   }
