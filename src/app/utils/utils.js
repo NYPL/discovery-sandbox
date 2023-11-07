@@ -260,6 +260,7 @@ const trackVirtualPageView = (pathname = '', queryParams = '') => {
   const adobeDataLayer = window.adobeDataLayer || [];
   const route = pathname.toLowerCase().replace(appConfig.baseUrl, '');
   console.log(adobeAnalyticsRouteToPageName(route, queryParams))
+  console.log("QA Latest")
   /**
    * We must first clear the page name and site section before pushing new values
    * https://blastwiki.atlassian.net/wiki/spaces/NYPL/pages/7898713056053494306/Virtual+Page+View+NYPL
