@@ -627,7 +627,7 @@ describe('pickupTimeEstimator', () => {
           holdingLocation: [{ id: 'rc' }],
           physFulfillment: 'fulfillment:hd-offsite'
         }
-        // 14:30am:
+        // 14:30 EDT:
         nowTimestamp = '2023-06-01T18:30:00.000Z'
         // No Sunday service, so it gets bumped to Monday:
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
