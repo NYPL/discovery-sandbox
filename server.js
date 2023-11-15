@@ -20,6 +20,7 @@ import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
 import initializeReduxReact from './src';
+import { nyTimezoneOffsets } from './src/app/utils/nyTImezoneOffsets';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
@@ -135,7 +136,8 @@ app.get('/*', (req, res) => {
           path: req.url,
           isProduction,
           baseUrl: appConfig.baseUrl,
-          launchEmbedUrl: appConfig.launchEmbedUrl
+          launchEmbedUrl: appConfig.launchEmbedUrl,
+          nyOffsets: nyTimezoneOffsets()
         });
       } else {
         res.status(404).redirect(`${appConfig.baseUrl}/`);
