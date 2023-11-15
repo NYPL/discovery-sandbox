@@ -20,7 +20,7 @@ import configureStore from './src/app/stores/configureStore';
 import initialState from './src/app/stores/InitialState';
 import { updateLoadingStatus } from './src/app/actions/Actions';
 import initializeReduxReact from './src';
-import { nyTimezoneOffsets } from './src/app/utils/nyTImezoneOffsets';
+import { nyTimezoneOffsets } from './src/app/utils/nyTimezoneOffsets';
 
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
