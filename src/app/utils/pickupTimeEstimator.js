@@ -122,6 +122,76 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
 }
 
 /**
+ * Given a location id and a timestamp string, returns an object with:
+ * hasSpecialDeliverySchedule: a Boolean which is true if the location matches a
+ * location with a special delivery schedule
+ * adjustedSpecialScheduleTime: a timestamp string, representing the future delivery time for
+ * the given known delivery schedule
+ */
+estimator._adjustToSpecialSchedule = (locationId, time) => {
+  let hasSpecialDeliverySchedule = false
+  let adjustedSpecialScheduleTime = new Date(time)
+  let secondFloorScholarRooms = ['mal17', 'mala', 'malc', 'maln', 'malw']
+  let mapRooms = ['mapp8', 'mapp9', 'map08']
+  let firstHour
+  let getNextHour
+  let lastHour
+
+  if (secondFloorScholarRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    firstHour = 10
+    lastHour = 4
+    getNextHour = hour => 2*(parseInt(hour/2 + 1))
+  }
+
+  if (mapRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    firstHour = 11
+    lastHour = 3
+    getNextHour = hour => 2*(parseInt(hour/2 + 0.5)) + 1
+  }
+
+  if (hasSpecialDeliverySchedule) {
+    adjustedSpecialScheduleTime.setMilliseconds(
+      adjustedSpecialScheduleTime.getMilliseconds() - 1
+    )
+
+    let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
+    adjustedSpecialScheduleTime.setHours(nextHour)
+    adjustedSpecialScheduleTime.setMinutes(0)
+    adjustedSpecialScheduleTime.setSeconds(0)
+    adjustedSpecialScheduleTime.setMilliseconds(0)
+
+    if (adjustedSpecialScheduleTime.getHours() < firstHour) {
+      adjustedSpecialScheduleTime.setHours(firstHour)
+    }
+
+    if (adjustedSpecialScheduleTime.getHours() > lastHour) {
+      adjustedSpecialScheduleTime.setDate(
+        adjustedSpecialScheduleTime.getDate() + 1
+      )
+      adjustedSpecialScheduleTime.setHours(firstHour)
+    }
+
+    let day = adjustedSpecialScheduleTime.getDay()
+    if (day === 0 || day === 6) {
+      let daysToIncrement = (8 - day) % 7
+      adjustedSpecialScheduleTime.setDate(
+        adjustedSpecialScheduleTime.getDate() + daysToIncrement
+      )
+      adjustedSpecialScheduleTime.setHours(firstHour)
+    }
+  }
+
+  adjustedSpecialScheduleTime = adjustedSpecialScheduleTime.toISOString()
+
+  return {
+    hasSpecialDeliverySchedule,
+    adjustedSpecialScheduleTime
+  }
+}
+
+/**
  *  Given a timestamp string (ISO8601 format), returns a phrase like
  *   - "in an hour" - if time is about an hour away
  *   - "today by 10:45am" - if time is today and gte 1h
@@ -151,7 +221,7 @@ estimator._makeFriendly = (time, options = {}) => {
     return `tomorrow (${formattedDate}) by ${formattedTime}`
   } else if (days) {
     return `${dayOfWeek} (${formattedDate}) by ${formattedTime}`
-  } 
+  }
   // Use exacting language? (for fixed special schedules)
   if (options.useTodayAtTime) {
     return `today ${formattedTime}`
@@ -241,7 +311,7 @@ estimator._isAtOrBeforeServiceHours = async (locationId, time = estimator._now()
 }
 
 /**
- *  Given a location, 
+ *  Given a location,
  */
 estimator._getServiceTime = async (locationId, afterTimestamp = estimator._now()) => {
   const holdServiceHours = await estimator._getNextServiceHours(locationId, afterTimestamp)

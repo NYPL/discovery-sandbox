@@ -10,7 +10,7 @@ import nyplCoreObjects from '@nypl/nypl-core-objects'
 let nowTimestamp
 let tzNote = ''
 
-describe('pickupTimeEstimator', () => {
+describe.only('pickupTimeEstimator', () => {
   let clientStub
   const hoursArray = {
     sc: [
@@ -48,6 +48,40 @@ describe('pickupTimeEstimator', () => {
       }
     ],
     ma: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00+00:00',
+        endTime: '2023-06-01T23:00:00+00:00',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00+00:00',
+        endTime: '2023-06-02T23:00:00+00:00',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Saturday',
+        startTime: '2023-06-03T14:00:00+00:00',
+        endTime: '2023-06-03T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00+00:00',
+        endTime: '2023-06-05T23:00:00+00:00'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00+00:00',
+        endTime: '2023-06-06T20:00:00+00:00'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00+00:00',
+        endTime: '2023-06-07T20:00:00+00:00'
+      }
+    ],
+    mapp8: [
       {
         day: 'Thursday',
         startTime: '2023-06-01T14:00:00+00:00',
@@ -517,7 +551,7 @@ describe('pickupTimeEstimator', () => {
       nowTimestamp = '2023-06-01T15:00:00.000Z'
       expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T15:15:00.000Z')
     })
-     
+
     it('should return a pickup time estimate of 45mins for requests placed on-site at MA during business hours', async () => {
       // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
       const item = {
@@ -765,6 +799,53 @@ describe('pickupTimeEstimator', () => {
         expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-03T22:00:00+00:00')).estimate)
           .to.equal(`Monday (6/5) by 10:30am${tzNote}`)
       })
+
+      it('incorporates special schedule adjustments', async () => {
+        expect((await estimator.getPickupTimeEstimate(item, 'mapp8', '2023-06-03T22:00:00+00:00')).estimate)
+          .to.equal(`Monday (6/5) by 11:00am${tzNote}`)
+      })
     })
+
+    // describe('_adjustToSpecialSchedule', () => {
+    //   let cases = [
+    //     {
+    //       locations: ['mal17', 'mala', 'malc', 'maln', 'malw'],
+    //       timeCases: {
+    //         // sunday
+    //         // sunday 22
+    //         // sunday 23
+    //         // monday 00
+    //         // monday 8
+    //         // monday 9
+    //         // monday 9:30
+    //         // monday 10
+    //         // monday 10:30
+    //         // monday 11
+    //         // monday 11:30
+    //         // monday 12
+    //         // monday 12:30
+    //         // monday 1
+    //         // monday 1:30
+    //         // monday
+    //
+    //       }
+    //     },
+    //     {
+    //       locations: ['mapp8', 'mapp9', 'map08'],
+    //       timeCases: {
+    //
+    //       }
+    //     }
+    //   ]
+    //
+    //   cases.forEach((case) => {
+    //     case.locations.ForEach((location) => {
+    //       Object.entries(timeCases).forEach(([time, expectedTime]) => {
+    //         expect(estimator._adjustToSpecialSchedule(location, time))
+    //         .to.equal(expectedTime)
+    //       })
+    //     })
+    //   })
+    // })
   })
 })
