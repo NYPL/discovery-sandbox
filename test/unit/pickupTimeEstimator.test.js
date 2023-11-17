@@ -152,7 +152,7 @@ describe.only('pickupTimeEstimator', () => {
     clientStub = stub(NyplApiClient.prototype, 'get').callsFake((path) => {
       // Read location_code from query string:
       const locationCode = querystring.parse(path.split('?').pop()).location_codes
-      if (['sc', 'ma', 'rc'].includes(locationCode)) {
+      if (['sc', 'ma', 'rc', 'mapp8'].includes(locationCode)) {
         return Promise.resolve({
           // Return relevant fixture:
           [locationCode]: [{ label: null, hours: hoursArray[locationCode] }]
@@ -458,7 +458,6 @@ describe.only('pickupTimeEstimator', () => {
 
     it('renders 1h+ as specific time', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
-      console.log('tzNote: ', typeof tzNote, tzNote, estimator._makeFriendly('2023-06-01T17:30:00.000Z'))
       expect(estimator._makeFriendly('2023-06-01T17:30:00.000Z')).to.equal(`today by 1:30pm${tzNote}`)
       expect(estimator._makeFriendly('2023-06-01T15:30:00.000Z')).to.equal(`today by 11:30am${tzNote}`)
     })
@@ -801,52 +800,175 @@ describe.only('pickupTimeEstimator', () => {
           .to.equal(`Monday (6/5) by 10:30am${tzNote}`)
       })
 
-      it('incorporates special schedule adjustments', async () => {
+      it('correctly adjusts to special locations', async () => {
         expect((await estimator.getPickupTimeEstimate(item, 'mapp8', '2023-06-03T22:00:00+00:00')).estimate)
-          .to.equal(`Monday (6/5) by 11:00am${tzNote}`)
+        .to.equal(`Monday (6/5) by 11:00am${tzNote}`)
       })
+
     })
 
-    // describe('_adjustToSpecialSchedule', () => {
-    //   let cases = [
-    //     {
-    //       locations: ['mal17', 'mala', 'malc', 'maln', 'malw'],
-    //       timeCases: {
-    //         // sunday
-    //         // sunday 22
-    //         // sunday 23
-    //         // monday 00
-    //         // monday 8
-    //         // monday 9
-    //         // monday 9:30
-    //         // monday 10
-    //         // monday 10:30
-    //         // monday 11
-    //         // monday 11:30
-    //         // monday 12
-    //         // monday 12:30
-    //         // monday 1
-    //         // monday 1:30
-    //         // monday
-    //
-    //       }
-    //     },
-    //     {
-    //       locations: ['mapp8', 'mapp9', 'map08'],
-    //       timeCases: {
-    //
-    //       }
-    //     }
-    //   ]
-    //
-    //   cases.forEach((case) => {
-    //     case.locations.ForEach((location) => {
-    //       Object.entries(timeCases).forEach(([time, expectedTime]) => {
-    //         expect(estimator._adjustToSpecialSchedule(location, time))
-    //         .to.equal(expectedTime)
-    //       })
-    //     })
-    //   })
-    // })
+    describe('_adjustToSpecialSchedule', () => {
+
+      it('updates correctly on Saturday', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-03T22:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Sunday at even times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-04T22:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Sunday at odd times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-04T23:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Monday before opening at even times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T08:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Monday before opening at odd times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T09:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Monday just before opening ', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T14:59:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Monday at opening ', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T15:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T15:00:00.000Z')
+      })
+
+      it('updates correctly on Monday just after opening ', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T15:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T17:00:00.000Z')
+      })
+
+      it('updates correctly at even times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T16:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T17:00:00.000Z')
+      })
+
+      it('updates correctly just before closing', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T18:59:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T19:00:00.000Z')
+      })
+
+      it('updates correctly at closing', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T19:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T19:00:00.000Z')
+      })
+
+      it('updates correctly after closing', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T19:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T15:00:00.000Z')
+      })
+
+      it('updates correctly late at night at even times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T22:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T15:00:00.000Z')
+      })
+
+      it('updates correctly late at night at odd times', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-05T23:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T15:00:00.000Z')
+      })
+
+      it('updates correctly early in the morning', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-06T00:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T15:00:00.000Z')
+      })
+
+      it('updates correctly Friday just after closing', async () => {
+        expect((estimator._adjustToSpecialSchedule('mapp8', '2023-06-09T19:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-12T15:00:00.000Z')
+      })
+
+      it('updates correctly on Saturday for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-03T22:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Sunday at even times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-04T22:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Sunday at odd times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-04T23:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Monday before opening at even times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T08:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Monday before opening at odd times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T09:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Monday just before opening for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T13:59:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Monday at opening for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T14:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T14:00:00.000Z')
+      })
+
+      it('updates correctly on Monday just after opening for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T14:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T16:00:00.000Z')
+      })
+
+      it('updates correctly at even times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T16:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T16:00:00.000Z')
+      })
+
+      it('updates correctly just before closing for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T19:59:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T20:00:00.000Z')
+      })
+
+      it('updates correctly at closing for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T20:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-05T20:00:00.000Z')
+      })
+
+      it('updates correctly after closing for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T20:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T14:00:00.000Z')
+      })
+
+      it('updates correctly late at night at even times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T22:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T14:00:00.000Z')
+      })
+
+      it('updates correctly late at night at odd times for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-05T23:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T14:00:00.000Z')
+      })
+
+      it('updates correctly early in the morning for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-06T00:00:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-06T14:00:00.000Z')
+      })
+
+      it('updates correctly Friday just after closing for scholar rooms', async () => {
+        expect((estimator._adjustToSpecialSchedule('mala', '2023-06-09T20:01:00+00:00')).arrivalAtHoldshelf)
+        .to.equal('2023-06-12T14:00:00.000Z')
+      })
+
+    })
   })
 })

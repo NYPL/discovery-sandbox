@@ -61,11 +61,8 @@ estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp
   rationale.push({ time: arrivalAtHoldshelf, activity: 'onsite travel time' })
 
   // Adjust to special delivery schedules for special rooms:
-  const hasSpecialDeliverySchedule = estimator._hasSpecialDeliverySchedule(deliveryLocationId)
-  if (hasSpecialDeliverySchedule) {
-    arrivalAtHoldshelf = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf)
-  }
-
+  let hasSpecialDeliverySchedule
+  ({ arrivalAtHoldshelf, hasSpecialDeliverySchedule } = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf))
   // console.log(`Rationale for request from ${originLocationId} to ${deliveryLocationId}:`, rationale)
 
   // Return the specific `time` and a human readable `estimate` string
@@ -97,30 +94,6 @@ estimator._addOnsiteTravelDuration = async (serviceTime, locationId) => {
   return estimator._addDuration(serviceTime, onsiteTravelDuration)
 }
 
-
-/**
- *  Returns true if the named location has a special delivery schedule (e.g. is
- *  a scholar room)
- *
- *  TODO: Implement
- */
-estimator._hasSpecialDeliverySchedule = (locationId) => {
-  // Return true if locationId matches room known to have a specific delivery schedule
-  return false
-}
-
-/**
- *  Given a location id and a timestamp string, returns a new timestamp string
- *  representing the future delivery time for the location given the known
- *  delivery schedule.
- *
- *  TODO: Implement
- */
-estimator._adjustToSpecialSchedule = (locationId, time) => {
-  // Update time to next delivery schedule after given time
-  return time
-}
-
 /**
  * Given a location id and a timestamp string, returns an object with:
  * hasSpecialDeliverySchedule: a Boolean which is true if the location matches a
@@ -140,14 +113,15 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
   if (secondFloorScholarRooms.includes(locationId)) {
     hasSpecialDeliverySchedule = true
     firstHour = 10
-    lastHour = 4
+    lastHour = 16
     getNextHour = hour => 2*(parseInt(hour/2 + 1))
   }
 
   if (mapRooms.includes(locationId)) {
+    console.log('isMapRoom')
     hasSpecialDeliverySchedule = true
     firstHour = 11
-    lastHour = 3
+    lastHour = 15
     getNextHour = hour => 2*(parseInt(hour/2 + 0.5)) + 1
   }
 
@@ -157,37 +131,44 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     )
 
     let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
+    console.log('setting hours ', adjustedSpecialScheduleTime.getHours(), 'to ', nextHour)
     adjustedSpecialScheduleTime.setHours(nextHour)
+    console.log('just set hour: ', adjustedSpecialScheduleTime.getHours())
     adjustedSpecialScheduleTime.setMinutes(0)
     adjustedSpecialScheduleTime.setSeconds(0)
     adjustedSpecialScheduleTime.setMilliseconds(0)
 
     if (adjustedSpecialScheduleTime.getHours() < firstHour) {
+      console.log('setting to first hour')
       adjustedSpecialScheduleTime.setHours(firstHour)
     }
 
     if (adjustedSpecialScheduleTime.getHours() > lastHour) {
+      console.log('setting for last hour ', adjustedSpecialScheduleTime)
       adjustedSpecialScheduleTime.setDate(
         adjustedSpecialScheduleTime.getDate() + 1
       )
       adjustedSpecialScheduleTime.setHours(firstHour)
+      console.log('set for last hour ', adjustedSpecialScheduleTime)
     }
 
     let day = adjustedSpecialScheduleTime.getDay()
     if (day === 0 || day === 6) {
+      console.log('incrementing day ', adjustedSpecialScheduleTime)
       let daysToIncrement = (8 - day) % 7
       adjustedSpecialScheduleTime.setDate(
         adjustedSpecialScheduleTime.getDate() + daysToIncrement
       )
       adjustedSpecialScheduleTime.setHours(firstHour)
+      console.log('incremented day ', adjustedSpecialScheduleTime)
     }
   }
 
-  adjustedSpecialScheduleTime = adjustedSpecialScheduleTime.toISOString()
+  let arrivalAtHoldshelf = adjustedSpecialScheduleTime.toISOString()
 
   return {
     hasSpecialDeliverySchedule,
-    adjustedSpecialScheduleTime
+    arrivalAtHoldshelf
   }
 }
 
@@ -259,7 +240,7 @@ estimator._formatDateAndTime = (date) => {
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
 
   values.dayPeriod = values.dayperiod && values.dayperiod.toLowerCase()
-  
+
   const showTimezone = estimator._nyOffset() !== (new Date()).getTimezoneOffset() / 60
   const timezoneSuffix = showTimezone ? ' ET' : ''
 
