@@ -118,7 +118,6 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
   }
 
   if (mapRooms.includes(locationId)) {
-    console.log('isMapRoom')
     hasSpecialDeliverySchedule = true
     firstHour = 11
     lastHour = 15
@@ -131,9 +130,7 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     )
 
     let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
-    console.log('setting hours ', adjustedSpecialScheduleTime.getHours(), 'to ', nextHour)
     adjustedSpecialScheduleTime.setHours(nextHour)
-    console.log('just set hour: ', adjustedSpecialScheduleTime.getHours())
     adjustedSpecialScheduleTime.setMinutes(0)
     adjustedSpecialScheduleTime.setSeconds(0)
     adjustedSpecialScheduleTime.setMilliseconds(0)
