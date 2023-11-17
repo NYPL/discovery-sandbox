@@ -458,6 +458,7 @@ describe.only('pickupTimeEstimator', () => {
 
     it('renders 1h+ as specific time', () => {
       nowTimestamp = '2023-06-01T14:30:00.000Z'
+      console.log('tzNote: ', typeof tzNote, tzNote, estimator._makeFriendly('2023-06-01T17:30:00.000Z'))
       expect(estimator._makeFriendly('2023-06-01T17:30:00.000Z')).to.equal(`today by 1:30pm${tzNote}`)
       expect(estimator._makeFriendly('2023-06-01T15:30:00.000Z')).to.equal(`today by 11:30am${tzNote}`)
     })

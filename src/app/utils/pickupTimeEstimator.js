@@ -253,12 +253,13 @@ estimator._formatDateAndTime = (date) => {
     month: 'numeric',
     timeZone: 'America/New_York'
   }
+
   const values = Intl.DateTimeFormat('en', formatOptions)
     .formatToParts(date)
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
 
-  values.dayPeriod = values.dayPeriod && values.dayPeriod.toLowerCase()
-
+  values.dayPeriod = values.dayperiod && values.dayperiod.toLowerCase()
+  
   const showTimezone = estimator._nyOffset() !== (new Date()).getTimezoneOffset() / 60
   const timezoneSuffix = showTimezone ? ' ET' : ''
 
@@ -403,7 +404,7 @@ estimator._addMinutes = (dateString, minutes) => {
 
 estimator._nyOffset = () => {
   // TODO: This should be driven by server time
-  return 4
+  return 5
 }
 
 /**
