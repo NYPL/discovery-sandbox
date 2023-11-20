@@ -146,28 +146,23 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     adjustedSpecialScheduleTime.setMilliseconds(0)
 
     if (adjustedSpecialScheduleTime.getHours() < firstHour) {
-      console.log('setting to first hour')
       adjustedSpecialScheduleTime.setHours(firstHour)
     }
 
     if (adjustedSpecialScheduleTime.getHours() > lastHour) {
-      console.log('setting for last hour ', adjustedSpecialScheduleTime)
       adjustedSpecialScheduleTime.setDate(
         adjustedSpecialScheduleTime.getDate() + 1
       )
       adjustedSpecialScheduleTime.setHours(firstHour)
-      console.log('set for last hour ', adjustedSpecialScheduleTime)
     }
 
     let day = adjustedSpecialScheduleTime.getDay()
     if (day === 0 || day === 6) {
-      console.log('incrementing day ', adjustedSpecialScheduleTime)
       let daysToIncrement = (8 - day) % 7
       adjustedSpecialScheduleTime.setDate(
         adjustedSpecialScheduleTime.getDate() + daysToIncrement
       )
       adjustedSpecialScheduleTime.setHours(firstHour)
-      console.log('incremented day ', adjustedSpecialScheduleTime)
     }
   }
 

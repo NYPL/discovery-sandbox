@@ -10,7 +10,7 @@ import nyplCoreObjects from '@nypl/nypl-core-objects'
 let nowTimestamp
 let tzNote = ''
 
-describe.only('pickupTimeEstimator', () => {
+describe('pickupTimeEstimator', () => {
   let clientStub
   const hoursArray = {
     sc: [
