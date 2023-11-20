@@ -165,7 +165,7 @@ describe.only('pickupTimeEstimator', () => {
 
     // When running tests with TZ set to anything other than ET, let's expect
     // all statements about time of day to end in "ET":
-    tzNote = process.env.TZ && process.env.TZ !== 'America/New_York' ? ' ET' : ''
+    tzNote = (process.env.TZ && process.env.TZ !== 'America/New_York') ? ' ET' : ''
   })
 
   afterEach(() => {
@@ -661,7 +661,7 @@ describe.only('pickupTimeEstimator', () => {
           holdingLocation: [{ id: 'rc' }],
           physFulfillment: 'fulfillment:hd-offsite'
         }
-        // 14:30am:
+        // 14:30 EDT:
         nowTimestamp = '2023-06-01T18:30:00.000Z'
         // No Sunday service, so it gets bumped to Monday:
         expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({

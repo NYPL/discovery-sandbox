@@ -43,10 +43,7 @@ estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp
 
     rationale.push({ time: originServiceTime, activity: 'origin service time' })
 
-    // Calculate travel time as the fulfillment duration as the stated duration
-    // (e.g. PT2D, PT1D) minus 12H (artificially reduced to translate the colloquial
-    // "T2D" into the more accurate "T1D12H")
-    const offsiteTravelDuration = toSeconds(parseDuration(fulfillment.estimatedTime)) / 60 - 12 * 60
+    const offsiteTravelDuration = estimator._parseOffsiteTravelDuration(fulfillment.estimatedTime)
     arrivalAtDestination = estimator._addMinutes(originServiceTime, offsiteTravelDuration)
 
     rationale.push({ time: arrivalAtDestination, activity: 'travel to destination' })
@@ -75,6 +72,19 @@ estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp
       }
     )
   }
+}
+
+/**
+ *  Given an ISO8601 Duration {string} representing the an offsite fulfillment
+ *  turnaround, returns {int} number of minutes it should represent (for the
+ *  purpose of estimating arrival)
+ */
+estimator._parseOffsiteTravelDuration = (duration) => {
+  const statedDurationMinutes = toSeconds(parseDuration(duration)) / 60
+  // Calculate travel time as the stated duration (e.g. PT2D, PT1D) minus 12H
+  // (artificially reduced to translate the colloquial "T2D" into the more
+  // accurate "T1D12H")
+  return statedDurationMinutes - 12 * 60
 }
 
 /**
@@ -236,9 +246,13 @@ estimator._formatDateAndTime = (date) => {
     .formatToParts(date)
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
 
-  values.dayPeriod = values.dayperiod && values.dayperiod.toLowerCase()
 
-  const showTimezone = estimator._nyOffset() !== (new Date()).getTimezoneOffset() / 60
+  // In Node 10, this one comes through all lowercase:
+  values.dayPeriod = values.dayperiod || values.dayPeriod || ''
+
+  values.dayPeriod = values.dayPeriod && values.dayPeriod.toLowerCase()
+
+  const showTimezone = estimator._nyOffset() !== (new Date(estimator._now())).getTimezoneOffset() / 60
   const timezoneSuffix = showTimezone ? ' ET' : ''
 
   return {
@@ -380,9 +394,27 @@ estimator._addMinutes = (dateString, minutes) => {
   return date.toISOString()
 }
 
-estimator._nyOffset = () => {
-  // TODO: This should be driven by server time
-  return 5
+
+/**
+ *  Return the current hours offset for NY (either 4 or 5)
+ *
+ *  This accepts an optiona timestamp so that we can calculate the
+ *  NY offset for both now and some date in the future (important for
+ *  calculating estimates just before/after Daylight Savings days)
+ */
+estimator._nyOffset = (timestamp = estimator._now()) => {
+  // TODO: This should be driven by server time, i.e.:
+  //
+  // Assume we build a nyOffsets var on the server representing the next week
+  // of offsets and make it available as:
+  //   window.nyOffsets = { '2023-01-01': 5, '2023-01-02': 5, ...}
+  // Then this function can determine the NY offset for the requested
+  // timestamp via:
+  //   const day = timestamp.split('T').shift()
+  //   const offset = window && window.nyOffsets ? window.nyOffsets[day] : new Date(timestamp).getTimezoneOffset() / 60
+
+  const offset = new Date(timestamp).getTimezoneOffset() / 60
+  return offset
 }
 
 /**
@@ -391,7 +423,7 @@ estimator._nyOffset = () => {
  *  returns the result as a timestamp string
  */
 estimator._setHoursMinutes = (timestamp, hours, minutes = 0) => {
-  hours = hours + estimator._nyOffset()
+  hours = hours + estimator._nyOffset(timestamp)
   const date = new Date(timestamp)
   date.setUTCHours(hours, minutes)
   return date.toISOString()
@@ -405,31 +437,6 @@ estimator._roundToQuarterHour = (date) => {
   const minutesToAdd = (60 + roundTo - date.getMinutes()) % roundTo
 
   return new Date(date.getTime() + minutesToAdd * 60_000)
-}
-
-/**
- *  Given a Date, returns a string representation of the time of day rounded
- *  to the nearest minute increment (default 15)
- */
-estimator._buildTimeString = (date, options = {}) => {
-  options = Object.assign({
-    // Return "7pm" instead of "7:00pm"?
-    hideMinutesOnTheHour: true
-  }, options)
-
-  let minutes = date.getMinutes()
-  let hours = date.getHours()
-  let { hours: roundedHours, minutes: roundedMinutes } = estimator._roundToQuarterHour(hours, minutes)
-
-  const amOrPm = roundedHours > 11 ? 'pm' : 'am'
-  roundedHours = roundedHours % 12 === 0 ? 12 : roundedHours % 12
-
-  if (roundedMinutes === 0 && options.hideMinutesOnTheHour) {
-    return `${roundedHours}${amOrPm}`
-  } else {
-    const minutesPad = roundedMinutes < 10 ? '0' : ''
-    return `${roundedHours}:${minutesPad}${roundedMinutes}${amOrPm}`
-  }
 }
 
 /**
