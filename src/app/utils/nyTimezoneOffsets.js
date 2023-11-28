@@ -24,8 +24,8 @@ export const nyTimezoneOffsets = (from = new Date(), numDays = 7) => {
   // change day:
   from = new Date(from.getTime() - MS_PER_DAY)
 
-  // Build an array reprsenting current TZ offset and all changes over the next
-  // `numDays` days
+  // Build an array representing current TZ offset and all changes over the
+  // next `numDays` days
   return Array(numDays)
     .fill()
     .map((_, index) => {
