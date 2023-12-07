@@ -8,6 +8,7 @@ import {
 } from '@nypl/design-system-react-components';
 
 import Search from '../components/Search/Search';
+import EDSLink from '../components/EDSLink/EDSLink';
 import LinkTabSet from '../components/AccountPage/LinkTabSet';
 import AccountSettings from '../components/AccountPage/AccountSettings';
 import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
@@ -24,7 +25,6 @@ import {
 import {
   setCookieWithExpiration,
 } from '../utils/cookieUtils';
-
 
 const AccountPage = (props, context) => {
   const { patron, accountHtml, appConfig } = useSelector(state => ({
@@ -166,6 +166,7 @@ const AccountPage = (props, context) => {
             router={context.router}
             createAPIQuery={basicQuery()}
           />
+          <EDSLink />
         </div>
       </div>
       <div className="nypl-patron-page">

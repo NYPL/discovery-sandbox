@@ -10,9 +10,16 @@
     padding: 0 var(--nypl-space-s);
 
     #advanced-search-link-container {
+
+
       a {
-        float: right;
+        display: block;
         margin-top: 3px;
+        text-align: right;
+
+        @include media($nypl-breakpoint-large) {
+          float: right;
+        }
       }
     }
 
@@ -64,6 +71,10 @@
 h3.electronic-resources-search-header {
   font-size: var(--nypl-fontSizes-text-default);
   margin-bottom: var(--nypl-space-xs)
+}
+
+.eds-link {
+  font-size: var(--nypl-fontSizes-desktop-body-body2);
 }
 
 .nypl-results-list {
