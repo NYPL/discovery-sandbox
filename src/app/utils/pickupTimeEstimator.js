@@ -385,18 +385,22 @@ estimator._addMinutes = (dateString, minutes) => {
  *  calculating estimates just before/after Daylight Savings days)
  */
 estimator._nyOffset = (timestamp = estimator._now()) => {
-  // TODO: This should be driven by server time, i.e.:
-  //
-  // Assume we build a nyOffsets var on the server representing the next week
-  // of offsets and make it available as:
-  //   window.nyOffsets = { '2023-01-01': 5, '2023-01-02': 5, ...}
-  // Then this function can determine the NY offset for the requested
-  // timestamp via:
-  //   const day = timestamp.split('T').shift()
-  //   const offset = window && window.nyOffsets ? window.nyOffsets[day] : new Date(timestamp).getTimezoneOffset() / 60
+  if (window.nyOffsets && window.nyOffsets.length) {
+    // Identify the offset that starts before timestamp:
+    const currentOffset = window.nyOffsets
+      .filter((offset) => new Date(offset.from) < new Date(timestamp))
+      .pop()
+    if (currentOffset) {
+      return currentOffset.offset
+    } else {
+      // If no matching offset found, local clock is out of sync with server
+      // time; return first server offset:
+      return window.nyOffsets[0].offset
+    }
+  }
 
-  const offset = new Date(timestamp).getTimezoneOffset() / 60
-  return offset
+  // If server.js is failing to populate window.nyOffsets, default to 5:
+  return 5
 }
 
 /**

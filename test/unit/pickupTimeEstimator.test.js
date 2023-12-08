@@ -146,6 +146,15 @@ describe('pickupTimeEstimator', () => {
     ]
   }
 
+  before(() => {
+    // Add window global nyOffsets var, emulating a global var set by server
+    // for the client, giving the current and future NY TZ offsets
+    window.nyOffsets = [
+      { from: '2023-03-10T06:00:00.000Z', offset: 4 },
+      { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+    ]
+  })
+
   beforeEach(() => {
     nowTimestamp = '2023-06-01T12:00:00'
 
@@ -355,12 +364,16 @@ describe('pickupTimeEstimator', () => {
 
   describe('_setHoursMinutes', () => {
     it('should set hours and minutes', () => {
-      // This is the zulu representation of 230 eastern:
+      // This is the zulu representation of 230 eastern (DST):
       const local230 = '2023-06-07T18:30:00.000Z'
       // Eastern:
       expect(estimator._setHoursMinutes('2023-06-07T18:00:00-04:00', 14, 30)).to.equal(local230)
       // Zulu time; return Eastern:
       expect(estimator._setHoursMinutes('2023-06-07T22:00:00+00:00', 14, 30)).to.equal(local230)
+
+      // Check that hour is set to 14:30 + 5 after DST end:
+      expect(estimator._setHoursMinutes('2023-11-15T22:00:00+00:00', 14, 30))
+        .to.equal('2023-11-15T19:30:00.000Z')
     })
   })
 
@@ -510,6 +523,42 @@ describe('pickupTimeEstimator', () => {
     it('should round date to next quarter hour', () => {
       expect(estimator._roundToQuarterHour(new Date('2023-06-01T14:31:00.000Z')).toISOString())
         .to.equal('2023-06-01T14:45:00.000Z')
+    })
+  })
+
+  describe('_nyOffset', () => {
+
+    it('should return default offset of 5 when window.nyOffsets is unset', () => {
+      delete window.nyOffsets
+      expect(window.nyOffsets).to.be.a('undefined')
+      expect(estimator._nyOffset()).to.equal(5)
+    })
+
+    it('should return offset based on window.nyOffsets', () => {
+      window.nyOffsets = [ { from: '2023-11-01T06:00:00.000Z', offset: 4 } ]
+      nowTimestamp = '2023-11-01T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(4)
+    })
+
+    it('should return appropriate offset based on how requested time relates to registered offsets', () => {
+      window.nyOffsets = [
+        { from: '2023-11-01T06:00:00.000Z', offset: 4 },
+        { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+      ]
+      // When requesting the NY offset for Nov 2, should use first window.nyOffsets entry:
+      nowTimestamp = '2023-11-02T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(4)
+
+      // When requesting the NY offset for Nov 5, should use second window.nyOffsets entry:
+      nowTimestamp = '2023-11-05T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(5)
+      // Equivalently, should honor time given as param:
+      expect(estimator._nyOffset('2023-11-15T14:10:00.000Z')).to.equal(5)
+
+      // If requested time is less than all registered offsets (indicating
+      // server time and client time are out of sync), should return first
+      // offset:
+      expect(estimator._nyOffset('2023-01-00T00:00:00.000Z')).to.equal(4)
     })
   })
 
