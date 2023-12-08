@@ -116,21 +116,41 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
   let adjustedSpecialScheduleTime = new Date(time)
   let secondFloorScholarRooms = ['mal17', 'mala', 'malc', 'maln', 'malw']
   let mapRooms = ['mapp8', 'mapp9', 'map08']
-  let firstHour
+  let getFirstHour
   let getNextHour
-  let lastHour
+  let getLastHour
+  let offSet =
+    1000 * 60 * (adjustedSpecialScheduleTime.getTimezoneOffset() - 60 * estimator._nyOffset())
+    - adjustedSpecialScheduleTime.getMilliseconds() - 1
+
+  // adjust time to simulate being in New York
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() + offSet
+  )
 
   if (secondFloorScholarRooms.includes(locationId)) {
     hasSpecialDeliverySchedule = true
-    getFirstHour = 10
-    getLastHour = 16
+    getFirstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 14 : 10
+    }
+    getLastHour = (time) => {
+      let day = time.getDay()
+      return day > 1 ? 18 : 16
+    }
     getNextHour = hour => 2*(parseInt(hour/2 + 1))
   }
 
   if (mapRooms.includes(locationId)) {
     hasSpecialDeliverySchedule = true
-    firstHour = 11
-    lastHour = 15
+    firstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 11 : 13
+    }
+    lastHour = (time) => {
+      let day = time.getDay()
+      return day === 2 || day === 3 ? 17 : 15
+    }
     getNextHour = hour => 2*(parseInt(hour/2 + 0.5)) + 1
   }
 
@@ -141,17 +161,32 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
 
     let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
     // set to next hour
+    adjustedSpecialScheduleTime.setHours(nextHour, 0, 0)
 
     let firstHour = getFirstHour(adjustedSpecialScheduleTime)
     if (adjustedSpecialScheduleTime.getHours() < firstHour) {
       // set to first hour
+      adjustedSpecialScheduleTime.setHours(firstHour, 0, 0)
     }
 
     let lastHour = getLastHour(adjustedSpecialScheduleTime)
     if (adjustedSpecialScheduleTime.getHours() > lastHour) {
-      // set to first hour of next day
+      // set to day to next day
+      adjustedSpecialScheduleTime.setDate(
+        adjustedSpecialScheduleTime.getDate() + 1
+      )
+
+      // set hour to first hour of day
+      adjustedSpecialScheduleTime.setHours(
+        getFirstHour(adjustedSpecialScheduleTime), 0, 0
+      )
     }
   }
+
+  // set time back to local time
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() - offSet
+  )
 
   let arrivalAtHoldshelf = adjustedSpecialScheduleTime.toISOString()
 
