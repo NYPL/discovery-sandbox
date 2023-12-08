@@ -122,8 +122,8 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
 
   if (secondFloorScholarRooms.includes(locationId)) {
     hasSpecialDeliverySchedule = true
-    firstHour = 10
-    lastHour = 16
+    getFirstHour = 10
+    getLastHour = 16
     getNextHour = hour => 2*(parseInt(hour/2 + 1))
   }
 
@@ -140,29 +140,16 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     )
 
     let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
-    adjustedSpecialScheduleTime.setHours(nextHour)
-    adjustedSpecialScheduleTime.setMinutes(0)
-    adjustedSpecialScheduleTime.setSeconds(0)
-    adjustedSpecialScheduleTime.setMilliseconds(0)
+    // set to next hour
 
+    let firstHour = getFirstHour(adjustedSpecialScheduleTime)
     if (adjustedSpecialScheduleTime.getHours() < firstHour) {
-      adjustedSpecialScheduleTime.setHours(firstHour)
+      // set to first hour
     }
 
+    let lastHour = getLastHour(adjustedSpecialScheduleTime)
     if (adjustedSpecialScheduleTime.getHours() > lastHour) {
-      adjustedSpecialScheduleTime.setDate(
-        adjustedSpecialScheduleTime.getDate() + 1
-      )
-      adjustedSpecialScheduleTime.setHours(firstHour)
-    }
-
-    let day = adjustedSpecialScheduleTime.getDay()
-    if (day === 0 || day === 6) {
-      let daysToIncrement = (8 - day) % 7
-      adjustedSpecialScheduleTime.setDate(
-        adjustedSpecialScheduleTime.getDate() + daysToIncrement
-      )
-      adjustedSpecialScheduleTime.setHours(firstHour)
+      // set to first hour of next day
     }
   }
 
