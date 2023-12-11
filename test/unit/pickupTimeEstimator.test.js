@@ -879,7 +879,6 @@ describe('pickupTimeEstimator', () => {
       describe('Map rooms', () => {
         it('updates correctly on Monday just before opening', async () => {
           dateString = '2023-06-05T15:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-05T16:00:00')
@@ -936,7 +935,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday just before opening', async () => {
           dateString = '2023-06-06T15:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T16:00:00')
@@ -986,7 +984,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Wednesday just before opening', async () => {
           dateString = '2023-06-07T15:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-07T16:00:00')
@@ -1060,7 +1057,6 @@ describe('pickupTimeEstimator', () => {
       describe('Second floor scholar rooms', () => {
         it('updates correctly on Tuesday just before opening', async () => {
           dateString = '2023-06-06T14:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T15:00:00')
@@ -1068,7 +1064,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday at opening', async () => {
           dateString = '2023-06-06T15:00:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T15:00:00')
@@ -1076,7 +1071,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday just after opening', async () => {
           dateString = '2023-06-06T15:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T17:00:00')
@@ -1084,7 +1078,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday at odd hours', async () => {
           dateString = '2023-06-06T16:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T17:00:00')
@@ -1092,7 +1085,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday at even times off the hour', async () => {
           dateString = '2023-06-06T17:15:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T19:00:00')
@@ -1100,7 +1092,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday at just before closing', async () => {
           dateString = '2023-06-06T22:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T23:00:00')
@@ -1108,7 +1099,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday at closing', async () => {
           dateString = '2023-06-06T23:00:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-06T23:00:00')
@@ -1116,7 +1106,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Tuesday just after closing', async () => {
           dateString = '2023-06-06T23:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-07T15:00:00')
@@ -1124,7 +1113,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Saturday just after closing', async () => {
           dateString = '2023-06-10T23:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-11T19:00:00')
@@ -1132,7 +1120,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Sunday before opening', async () => {
           dateString = '2023-06-11T14:59:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-11T19:00:00')
@@ -1140,7 +1127,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Sunday after closing', async () => {
           dateString = '2023-06-11T21:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-12T15:00:00')
@@ -1148,7 +1134,6 @@ describe('pickupTimeEstimator', () => {
 
         it('updates correctly on Monday after closing', async () => {
           dateString = '2023-06-12T21:01:00+00:00'
-          console.log('timezone: ', process.env.TZ)
           setWindow()
           expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
           .to.include('2023-06-13T15:00:00')

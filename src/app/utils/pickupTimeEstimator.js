@@ -123,14 +123,10 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     1000 * 60 * (adjustedSpecialScheduleTime.getTimezoneOffset() - 60 * estimator._nyOffset())
     - adjustedSpecialScheduleTime.getMilliseconds() - 1
 
-  console.log('offset: ', offSet, estimator._nyOffset(), adjustedSpecialScheduleTime.getTimezoneOffset(), process.env.TZ)
-
   // adjust time to simulate being in New York
-  console.log('before: ', adjustedSpecialScheduleTime)
   adjustedSpecialScheduleTime.setTime(
     adjustedSpecialScheduleTime.getTime() + offSet
   )
-  console.log('after adjustment: ', adjustedSpecialScheduleTime)
 
   if (secondFloorScholarRooms.includes(locationId)) {
     hasSpecialDeliverySchedule = true
@@ -163,32 +159,27 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
     // set to next hour
     adjustedSpecialScheduleTime.setHours(nextHour, 0, 0, 0)
-    console.log('after setting next hours: ', adjustedSpecialScheduleTime, nextHour)
 
 
     // set to day to next day if after last hour
     if (adjustedSpecialScheduleTime.getHours() > getLastHour(adjustedSpecialScheduleTime)) {
 
-      console.log('setting date: ', adjustedSpecialScheduleTime)
       adjustedSpecialScheduleTime.setDate(
         adjustedSpecialScheduleTime.getDate() + 1
       )
 
-      console.log('after setting date: ', adjustedSpecialScheduleTime)
 
       let firstHour = getFirstHour(adjustedSpecialScheduleTime)
       adjustedSpecialScheduleTime.setHours(
         firstHour, 0, 0, 0
       )
 
-      console.log('after setting first hours for date: ', adjustedSpecialScheduleTime, firstHour)
     }
 
     // set to first hour if before first hour
     let firstHour = getFirstHour(adjustedSpecialScheduleTime)
     if (firstHour > adjustedSpecialScheduleTime.getHours()) {
       adjustedSpecialScheduleTime.setHours(firstHour, 0, 0, 0)
-      console.log('after setting first hours: ', adjustedSpecialScheduleTime, firstHour)
     }
 
   }
@@ -198,7 +189,6 @@ estimator._adjustToSpecialSchedule = (locationId, time) => {
     adjustedSpecialScheduleTime.getTime() - offSet
   )
 
-  console.log('after setting final reset: ', adjustedSpecialScheduleTime)
 
   let arrivalAtHoldshelf = adjustedSpecialScheduleTime.toISOString()
 
@@ -226,18 +216,12 @@ estimator._makeFriendly = (time, options = {}) => {
     useTodayByTime: false
   }, options)
 
-  console.log('makeFriendly params: ', time, options)
-
   const { days, hours, minutes } = estimator._dateDifference(time)
 
   let date = new Date(time)
   date = estimator._roundToQuarterHour(date)
 
-  console.log('rounded date: ', date)
-
   const { time: formattedTime, date: formattedDate, dayOfWeek } = estimator._formatDateAndTime(date)
-
-  console.log('formatted time/date: ', formattedTime, formattedDate)
 
   // One or more days:
   if (days && days === 1) {
@@ -280,9 +264,6 @@ estimator._formatDateAndTime = (date) => {
   const values = Intl.DateTimeFormat('en', formatOptions)
     .formatToParts(date)
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
-
-  console.log('values: ', values, 'date: ', date)
-
 
   // In Node 10, this one comes through all lowercase:
   values.dayPeriod = values.dayperiod || values.dayPeriod || ''
