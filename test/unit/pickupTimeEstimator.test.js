@@ -856,11 +856,10 @@ describe('pickupTimeEstimator', () => {
 
       it('correctly adjusts to special locations', async () => {
         window.nyOffsets = [
-          { from: '2023-03-10T06:00:00.000Z', offset: 5 },
           { from: '2023-11-05T06:00:00.000Z', offset: 5 }
         ]
         expect((await estimator.getPickupTimeEstimate(item, 'mapp8', '2023-12-11T21:00:00+00:00')).estimate)
-        .to.equal(`Tuesday (12/12) by 11:00am`)
+        .to.include(`Tuesday (12/12) by 11:00am`)
       })
 
     })

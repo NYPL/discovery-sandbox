@@ -12,7 +12,7 @@
     "dist": "cross-env NODE_ENV=production webpack --config webpack.config.js",
     "preinstall": "npm i webpack-cli",
     "postinstall": "npm run dist",
-    "test": "TZ=America/Bogota mocha test/helpers/browser.js test/unit/*.test.js*",
+    "test": "mocha test/helpers/browser.js test/unit/*.test.js*",
     "test-dev": "mocha -w test/helpers/browser.js test/unit/*.test.js",
     "test-file": "mocha -w test/helpers/browser.js",
     "coverage": "BABEL_ENV=test node_modules/.bin/nyc --require mocha npm test",
