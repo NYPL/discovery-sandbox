@@ -81,6 +81,45 @@ describe('pickupTimeEstimator', () => {
         endTime: '2023-06-07T20:00:00+00:00'
       }
     ],
+    mapp8: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00+00:00',
+        endTime: '2023-06-01T23:00:00+00:00',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00+00:00',
+        endTime: '2023-06-02T23:00:00+00:00',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Saturday',
+        startTime: '2023-06-03T14:00:00+00:00',
+        endTime: '2023-06-03T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00+00:00',
+        endTime: '2023-06-05T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-12-11T14:00:00+00:00',
+        endTime: '2023-12-11T23:00:00+00:00'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00+00:00',
+        endTime: '2023-06-06T20:00:00+00:00'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00+00:00',
+        endTime: '2023-06-07T20:00:00+00:00'
+      }
+    ],
     rc: [
       {
         day: 'Thursday',
@@ -127,7 +166,7 @@ describe('pickupTimeEstimator', () => {
     clientStub = stub(NyplApiClient.prototype, 'get').callsFake((path) => {
       // Read location_code from query string:
       const locationCode = querystring.parse(path.split('?').pop()).location_codes
-      if (['sc', 'ma', 'rc'].includes(locationCode)) {
+      if (['sc', 'ma', 'rc', 'mapp8'].includes(locationCode)) {
         return Promise.resolve({
           // Return relevant fixture:
           [locationCode]: [{ label: null, hours: hoursArray[locationCode] }]
@@ -566,7 +605,7 @@ describe('pickupTimeEstimator', () => {
       nowTimestamp = '2023-06-01T15:00:00.000Z'
       expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T15:15:00.000Z')
     })
-     
+
     it('should return a pickup time estimate of 45mins for requests placed on-site at MA during business hours', async () => {
       // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
       const item = {
@@ -814,6 +853,293 @@ describe('pickupTimeEstimator', () => {
         expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-03T22:00:00+00:00')).estimate)
           .to.equal(`Monday (6/5) by 10:30am${tzNote}`)
       })
+
+      it('correctly adjusts to special locations', async () => {
+        window.nyOffsets = [
+          { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+        ]
+        expect((await estimator.getPickupTimeEstimate(item, 'mapp8', '2023-12-11T21:00:00+00:00')).estimate)
+        .to.include(`Tuesday (12/12) by 11:00am`)
+      })
+
+    })
+
+    describe('_adjustToSpecialSchedule', () => {
+      let dateString
+
+      let setWindow = () => {
+        let date = new Date(dateString)
+        window.nyOffsets = [
+          { from: '2023-03-10T06:00:00.000Z', offset: 5 },
+          { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+        ]
+      }
+
+      describe('Map rooms', () => {
+        it('updates correctly on Monday just before opening', async () => {
+          dateString = '2023-06-05T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T16:00:00')
+        })
+
+        it('updates correctly on Monday at opening', async () => {
+          dateString = '2023-06-05T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T16:00:00')
+        })
+
+        it('updates correctly on Monday after opening', async () => {
+          dateString = '2023-06-05T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday at even times', async () => {
+          dateString = '2023-06-05T17:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday at even off-hour times', async () => {
+          dateString = '2023-06-05T17:10:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday just before closing', async () => {
+          dateString = '2023-06-05T19:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T20:00:00')
+        })
+
+        it('updates correctly on Monday at closing', async () => {
+          dateString = '2023-06-05T20:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T20:00:00')
+        })
+
+        it('updates correctly on Monday after closing', async () => {
+          dateString = '2023-06-05T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday just before opening', async () => {
+          dateString = '2023-06-06T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday at opening', async () => {
+          dateString = '2023-06-06T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday after opening', async () => {
+          dateString = '2023-06-06T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T18:00:00')
+        })
+
+        it('updates correctly on Tuesday after 3', async () => {
+          dateString = '2023-06-06T20:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday just before closing', async () => {
+          dateString = '2023-06-06T21:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday at closing', async () => {
+          dateString = '2023-06-06T22:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday after closing', async () => {
+          dateString = '2023-06-06T22:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday just before opening', async () => {
+          dateString = '2023-06-07T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday at opening', async () => {
+          dateString = '2023-06-07T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday after opening', async () => {
+          dateString = '2023-06-07T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T18:00:00')
+        })
+
+        it('updates correctly on Wednesday after 3', async () => {
+          dateString = '2023-06-07T20:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday just before closing', async () => {
+          dateString = '2023-06-07T21:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday at closing', async () => {
+          dateString = '2023-06-07T22:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday after closing', async () => {
+          dateString = '2023-06-07T22:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-08T16:00:00')
+        })
+
+        it('updates correctly on Thursday after closing', async () => {
+          dateString = '2023-06-08T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-09T16:00:00')
+        })
+
+        it('updates correctly on Saturday after closing', async () => {
+          dateString = '2023-06-10T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T18:00:00')
+        })
+
+        it('updates correctly on Sunday before opening', async () => {
+          dateString = '2023-06-11T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T18:00:00')
+        })
+
+      })
+
+      describe('Second floor scholar rooms', () => {
+        it('updates correctly on Tuesday just before opening', async () => {
+          dateString = '2023-06-06T14:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T15:00:00')
+        })
+
+        it('updates correctly on Tuesday at opening', async () => {
+          dateString = '2023-06-06T15:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T15:00:00')
+        })
+
+        it('updates correctly on Tuesday just after opening', async () => {
+          dateString = '2023-06-06T15:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T17:00:00')
+        })
+
+        it('updates correctly on Tuesday at odd hours', async () => {
+          dateString = '2023-06-06T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T17:00:00')
+        })
+
+        it('updates correctly on Tuesday at even times off the hour', async () => {
+          dateString = '2023-06-06T17:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T19:00:00')
+        })
+
+        it('updates correctly on Tuesday at just before closing', async () => {
+          dateString = '2023-06-06T22:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T23:00:00')
+        })
+
+        it('updates correctly on Tuesday at closing', async () => {
+          dateString = '2023-06-06T23:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T23:00:00')
+        })
+
+        it('updates correctly on Tuesday just after closing', async () => {
+          dateString = '2023-06-06T23:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T15:00:00')
+        })
+
+        it('updates correctly on Saturday just after closing', async () => {
+          dateString = '2023-06-10T23:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T19:00:00')
+        })
+
+        it('updates correctly on Sunday before opening', async () => {
+          dateString = '2023-06-11T14:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T19:00:00')
+        })
+
+        it('updates correctly on Sunday after closing', async () => {
+          dateString = '2023-06-11T21:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-12T15:00:00')
+        })
+
+        it('updates correctly on Monday after closing', async () => {
+          dateString = '2023-06-12T21:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-13T15:00:00')
+        })
+      })
+
+
     })
   })
 })

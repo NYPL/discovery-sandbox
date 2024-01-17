@@ -58,11 +58,8 @@ estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp
   rationale.push({ time: arrivalAtHoldshelf, activity: 'onsite travel time' })
 
   // Adjust to special delivery schedules for special rooms:
-  const hasSpecialDeliverySchedule = estimator._hasSpecialDeliverySchedule(deliveryLocationId)
-  if (hasSpecialDeliverySchedule) {
-    arrivalAtHoldshelf = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf)
-  }
-
+  let hasSpecialDeliverySchedule
+  ({ arrivalAtHoldshelf, hasSpecialDeliverySchedule } = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf))
   // console.log(`Rationale for request from ${originLocationId} to ${deliveryLocationId}:`, rationale)
 
   // Return the specific `time` and a human readable `estimate` string
@@ -107,28 +104,98 @@ estimator._addOnsiteTravelDuration = async (serviceTime, locationId) => {
   return estimator._addDuration(serviceTime, onsiteTravelDuration)
 }
 
-
 /**
- *  Returns true if the named location has a special delivery schedule (e.g. is
- *  a scholar room)
- *
- *  TODO: Implement
- */
-estimator._hasSpecialDeliverySchedule = (locationId) => {
-  // Return true if locationId matches room known to have a specific delivery schedule
-  return false
-}
-
-/**
- *  Given a location id and a timestamp string, returns a new timestamp string
- *  representing the future delivery time for the location given the known
- *  delivery schedule.
- *
- *  TODO: Implement
+ * Given a location id and a timestamp string, returns an object with:
+ * hasSpecialDeliverySchedule: a Boolean which is true if the location matches a
+ * location with a special delivery schedule
+ * adjustedSpecialScheduleTime: a timestamp string, representing the future delivery time for
+ * the given known delivery schedule
  */
 estimator._adjustToSpecialSchedule = (locationId, time) => {
-  // Update time to next delivery schedule after given time
-  return time
+  let hasSpecialDeliverySchedule = false
+  let adjustedSpecialScheduleTime = new Date(time)
+  let secondFloorScholarRooms = ['mal17', 'mala', 'malc', 'maln', 'malw']
+  let mapRooms = ['mapp8', 'mapp9', 'map08']
+  let getFirstHour
+  let getNextHour
+  let getLastHour
+  let offSet =
+    1000 * 60 * (adjustedSpecialScheduleTime.getTimezoneOffset() - 60 * estimator._nyOffset())
+    - adjustedSpecialScheduleTime.getMilliseconds() - 1
+
+  // adjust time to simulate being in New York
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() + offSet
+  )
+
+  if (secondFloorScholarRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    getFirstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 14 : 10
+    }
+    getLastHour = (time) => {
+      let day = time.getDay()
+      return day > 1 ? 18 : 16
+    }
+    getNextHour = hour => 2*(parseInt(hour/2 + 1))
+  }
+
+  if (mapRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    getFirstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 13 : 11
+    }
+    getLastHour = (time) => {
+      let day = time.getDay()
+      return day === 2 || day === 3 ? 17 : 15
+    }
+    getNextHour = hour => 2*(parseInt(hour/2 + 0.5)) + 1
+  }
+
+  if (hasSpecialDeliverySchedule) {
+
+    let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
+    // set to next hour
+    adjustedSpecialScheduleTime.setHours(nextHour, 0, 0, 0)
+
+
+    // set to day to next day if after last hour
+    if (adjustedSpecialScheduleTime.getHours() > getLastHour(adjustedSpecialScheduleTime)) {
+
+      adjustedSpecialScheduleTime.setDate(
+        adjustedSpecialScheduleTime.getDate() + 1
+      )
+
+
+      let firstHour = getFirstHour(adjustedSpecialScheduleTime)
+      adjustedSpecialScheduleTime.setHours(
+        firstHour, 0, 0, 0
+      )
+
+    }
+
+    // set to first hour if before first hour
+    let firstHour = getFirstHour(adjustedSpecialScheduleTime)
+    if (firstHour > adjustedSpecialScheduleTime.getHours()) {
+      adjustedSpecialScheduleTime.setHours(firstHour, 0, 0, 0)
+    }
+
+  }
+
+  // set time back to local time
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() - offSet
+  )
+
+
+  let arrivalAtHoldshelf = adjustedSpecialScheduleTime.toISOString()
+
+  return {
+    hasSpecialDeliverySchedule,
+    arrivalAtHoldshelf
+  }
 }
 
 /**
@@ -161,7 +228,7 @@ estimator._makeFriendly = (time, options = {}) => {
     return `tomorrow (${formattedDate}) by ${formattedTime}`
   } else if (days) {
     return `${dayOfWeek} (${formattedDate}) by ${formattedTime}`
-  } 
+  }
   // Use exacting language? (for fixed special schedules)
   if (options.useTodayAtTime) {
     return `today ${formattedTime}`
@@ -193,6 +260,7 @@ estimator._formatDateAndTime = (date) => {
     month: 'numeric',
     timeZone: 'America/New_York'
   }
+
   const values = Intl.DateTimeFormat('en', formatOptions)
     .formatToParts(date)
     .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
@@ -254,7 +322,7 @@ estimator._isAtOrBeforeServiceHours = async (locationId, time = estimator._now()
 }
 
 /**
- *  Given a location, 
+ *  Given a location,
  */
 estimator._getServiceTime = async (locationId, afterTimestamp = estimator._now()) => {
   const holdServiceHours = await estimator._getNextServiceHours(locationId, afterTimestamp)
@@ -343,6 +411,7 @@ estimator._addMinutes = (dateString, minutes) => {
   date.setTime(date.getTime() + minutes * 60 * 1000)
   return date.toISOString()
 }
+
 
 /**
  *  Return the current hours offset for NY (either 4 or 5)
