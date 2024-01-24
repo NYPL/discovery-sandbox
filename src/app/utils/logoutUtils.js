@@ -30,7 +30,7 @@ const loadLogoutIframe = (onload) => {
 };
 
 /**
-  * logoutRedirect (redirectUri)
+  * logoutViaRedirect (redirectUri)
   * Immediately enter Logout flow with optional redirectUri
   */
 export const logoutViaRedirect = (redirectUri = '') => {
@@ -38,9 +38,8 @@ export const logoutViaRedirect = (redirectUri = '') => {
 }
 
 /**
-  * logoutInIframe (cb)
-  * The timer to delete log in related cookies and call the method to completely log out from Encore
-  * and Catalog. It is called by setEncoreLoggedInTimer.
+  * logoutViaIframe (cb)
+  * Delete login cookies and load a hidden iframe that loads the Logout route.
   */
 export const logoutViaIframe = (onload) => {
   deleteCookie('PAT_LOGGED_IN');
