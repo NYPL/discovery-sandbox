@@ -138,7 +138,7 @@ describe('TimedLogoutModal', () => {
     let component;
     let sandbox;
 
-    before(() => {
+    beforeEach(() => {
       sandbox = sinon.createSandbox();
       const iframes = global.document.getElementsByTagName('iframe');
 
@@ -149,6 +149,7 @@ describe('TimedLogoutModal', () => {
       window.location = { replace: () => {} };
       global.document.cookie = 'accountPageExp=;expires=Thu, 01-Jan-1970 00:00:01 GMT;';
       sandbox.stub(window.location, 'replace').callsFake((arg) => { callRecord.push({ replace: arg }); });
+      sandbox.stub(window.location, 'origin').value('example.com')
       sandbox.stub(global, 'setTimeout').callsFake((fn, timeout) => {
         callRecord.push({ setTimeout: timeout });
         fn();
@@ -167,16 +168,16 @@ describe('TimedLogoutModal', () => {
       component = mount(
         <TimedLogoutModal
           stayLoggedIn={() => {}}
-          baseUrl="fakeBaseUrl"
+          baseUrl="/fakeBaseUrl"
         />,
       );
     });
 
     it('should log out and redirect', () => {
-      const onload = global.document.getElementsByTagName('iframe')[0].onload;
-      expect(!!onload).to.equal(true);
-      onload();
-      expect(callRecord.some(call => call.replace === 'fakeBaseUrl')).to.equal(true);
+      // Expect component to redirect to Logout endpoint, passing a
+      // redirect_uri built from window.location.origin and baseUrl:
+      const redirectUri = 'https://login.nypl.org/auth/logout?redirect_uri=example.com/fakeBaseUrl'
+      expect(callRecord.some(call => call.replace === redirectUri)).to.equal(true);
     });
 
     it('should not call update', () => {
@@ -186,7 +187,7 @@ describe('TimedLogoutModal', () => {
       // expect(callRecord.some(call => call.setUpdate === true)).to.equal(false);
     });
 
-    after(() => {
+    afterEach(() => {
       sandbox.restore();
     });
   });
@@ -205,10 +206,10 @@ describe('TimedLogoutModal', () => {
         iframes[index].parentNode.removeChild(iframes[index]);
       }
 
-      window.location = { replace: () => {} };
       global.document.cookie = 'accountPageExp=63000;';
       sandbox.stub(window.location, 'replace').callsFake((arg) => { replace = arg; });
-      sandbox.stub(global, 'setTimeout').callsFake(() => {});
+      sandbox.stub(window.location, 'origin').value('example.com')
+      sandbox.stub(global, 'setTimeout').callsFake(() => null);
       sandbox.stub(Date.prototype, 'getTime').callsFake(function() {
         return this.toString().includes('63000') ? 63000 : 0;
       });
@@ -216,7 +217,7 @@ describe('TimedLogoutModal', () => {
       component = mount(
         <TimedLogoutModal
           stayLoggedIn={() => { stayLoggedIn = true; }}
-          baseUrl="fakeBaseUrl"
+          baseUrl="/fakeBaseUrl"
         />,
       );
     });
@@ -224,9 +225,8 @@ describe('TimedLogoutModal', () => {
     it('should log the user out and redirect if they click log off', () => {
       const logOffButton = component.find('button').at(0);
       logOffButton.simulate('click');
-      const onload = global.document.getElementsByTagName('iframe')[0].onload;
-      onload();
-      expect(replace).to.equal('fakeBaseUrl');
+      const redirectUri = 'https://login.nypl.org/auth/logout?redirect_uri=example.com/fakeBaseUrl'
+      expect(replace).to.equal(redirectUri);
     });
 
     it('should call the stayLoggedIn param if they click stay logged in', () => {

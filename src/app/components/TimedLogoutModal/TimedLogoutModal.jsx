@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@nypl/design-system-react-components';
 
-import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
+import { logoutViaRedirect } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
 
 /**
@@ -20,10 +20,9 @@ const TimedLogoutModal = (props) => {
   const [update, setUpdate] = React.useState(false);
 
   const logOutAndRedirect = () => {
-    logOutFromEncoreAndCatalogIn(() => {
-      deleteCookie('accountPageExp');
-      window.location.replace(baseUrl);
-    });
+    deleteCookie('accountPageExp');
+    const redirectUri = (typeof window !== 'undefined') ? `${window.location.origin}${baseUrl}` : '';
+    logoutViaRedirect(redirectUri);
   };
 
   let minutes = 0;
