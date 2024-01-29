@@ -52,7 +52,7 @@ ItemSorter.itemWithSortableShelfMark = (item) => {
   let shelfMarkSort;
   // Order by id if we have no call numbers, but make sure these items
   // go after items with call numbers
-  if (!item.shelfMark || item.shelfMark.length === 0) {
+  if (!item.callNumber || item.callNumber.length === 0) {
     if (item.uri) {
       shelfMarkSort = `b${item.uri}`;
     } else {
@@ -60,7 +60,7 @@ ItemSorter.itemWithSortableShelfMark = (item) => {
     }
   } else {
     // order by call number, put these items first
-    shelfMarkSort = `a${ItemSorter.sortableShelfMark(item.shelfMark[0])}`;
+    shelfMarkSort = `a${ItemSorter.sortableShelfMark(item.callNumber)}`;
   }
 
   return { item, shelfMarkSort };

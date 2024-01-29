@@ -251,6 +251,7 @@ function LibraryItem() {
       holdingLocationCode: holdingLocation['@id'] || '',
       callNumber,
       url,
+      uri: item.uri,
       requestable,
       suppressed,
       barcode,
