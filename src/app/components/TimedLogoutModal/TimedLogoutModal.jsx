@@ -20,7 +20,10 @@ const TimedLogoutModal = (props) => {
   const [update, setUpdate] = React.useState(false);
 
   const logOutAndRedirect = () => {
+    // If patron clicked Log Out before natural expiration of cookie,
+    // explicitly delete it:
     deleteCookie('accountPageExp');
+
     const redirectUri = (typeof window !== 'undefined') ? `${window.location.origin}${baseUrl}` : '';
     logoutViaRedirect(redirectUri);
   };
@@ -36,7 +39,7 @@ const TimedLogoutModal = (props) => {
       .find(el => el.includes('accountPageExp'))
       .split('=')[1];
 
-    const timeLeft = new Date(expTime).getTime() - new Date().getTime();
+    const timeLeft = (new Date(expTime).getTime() - new Date().getTime()) / 1000;
 
     React.useEffect(() => {
       const timeout = setTimeout(() => {
@@ -48,10 +51,11 @@ const TimedLogoutModal = (props) => {
       };
     });
 
-    minutes = parseInt(timeLeft / (60 * 1000), 10);
-    seconds = parseInt((timeLeft % (60 * 1000)) / 1000, 10);
+    minutes = Math.max(parseInt(timeLeft / 60), 0);
+    seconds = Math.max(parseInt(timeLeft % 60), 0);
   }
 
+  // Show warning when 2m remaining:
   const open = minutes < 2;
   if (!open) return null;
 
