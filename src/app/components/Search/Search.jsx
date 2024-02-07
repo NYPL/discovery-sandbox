@@ -158,9 +158,16 @@ function Search(props) {
         textInputElement={inputElement}
       />
       <div id="advanced-search-link-container">
-        <DSLink>
-          <Link to={`${appConfig.baseUrl}/search/advanced`} reloadDocument={appConfig.reverseProxyEnabled}>Advanced Search</Link>
-        </DSLink>
+        {appConfig.reverseProxyEnabled ? (
+          <DSLink
+            href={`${appConfig.baseUrl}/search/advanced`}
+          >Advanced Search</DSLink>
+        ) : (
+          <DSLink>
+            <Link to={`${appConfig.baseUrl}/search/advanced`}>Advanced Search</Link>
+          </DSLink>
+        )}
+
       </div>
     </>
   );
