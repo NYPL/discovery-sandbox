@@ -29,7 +29,8 @@ SubNavLink.propTypes = {
 
 const SubNav = (props) => {
   const features = useSelector(state => state.features);
-  const { baseUrl } = appConfig;
+  const { baseUrl, reverseProxyEnabled } = appConfig;
+  console.log("reverseProxyEnabled", reverseProxyEnabled)
 
   return (
     <nav
@@ -40,7 +41,7 @@ const SubNav = (props) => {
         <SubNavLink
           type="search"
           href={`${baseUrl}/`}
-          clientSideRoutingDisabled={appConfig.reverseProxyEnabled}
+          clientSideRoutingDisabled={reverseProxyEnabled}
           {...props}
         >
           Search
