@@ -31,7 +31,6 @@ const SubNav = (props) => {
   const features = useSelector(state => state.features);
   const { baseUrl, reverseProxyEnabled } = appConfig;
   console.log("reverseProxyEnabled", reverseProxyEnabled)
-  console.log(appConfig)
 
   return (
     <nav
