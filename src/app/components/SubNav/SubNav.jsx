@@ -7,8 +7,8 @@ import { useSelector } from 'react-redux';
 import LogoutLink from '../LogoutLink/LogoutLink';
 import appConfig from '../../data/appConfig';
 
-const SubNavLink = ({ type, activeSection, href, children, clientSideRoutingDisabled }) => {
-  return (clientSideRoutingDisabled ?
+const SubNavLink = ({ type, activeSection, href, children, reverseProxyEnabled }) => {
+  return (reverseProxyEnabled ?
     <DSLink
       className={`sub-nav__link${type === activeSection ? ' active-section' : ''}`}
       href={href}
@@ -24,13 +24,12 @@ SubNavLink.propTypes = {
   activeSection: PropTypes.string,
   href: PropTypes.string,
   children: PropTypes.string,
-  clientSideRoutingDisabled: PropTypes.bool
+  reverseProxyEnabled: PropTypes.bool
 };
 
 const SubNav = (props) => {
   const features = useSelector(state => state.features);
   const { baseUrl, reverseProxyEnabled } = appConfig;
-  console.log("reverseProxyEnabled", reverseProxyEnabled)
 
   return (
     <nav
@@ -41,7 +40,7 @@ const SubNav = (props) => {
         <SubNavLink
           type="search"
           href={`${baseUrl}/`}
-          clientSideRoutingDisabled={reverseProxyEnabled}
+          reverseProxyEnabled={reverseProxyEnabled}
           {...props}
         >
           Search
