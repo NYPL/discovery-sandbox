@@ -29,7 +29,9 @@ SubNavLink.propTypes = {
 
 const SubNav = (props) => {
   const features = useSelector(state => state.features);
-  const { baseUrl, reverseProxyEnabled } = appConfig;
+  const { baseUrl, sierraUpgradeAugust2023, reverseProxyEnabled } = appConfig;
+  console.log("sierraUpgradeAugust2023", sierraUpgradeAugust2023)
+  console.log("reverseProxyEnabled", reverseProxyEnabled)
 
   return (
     <nav
