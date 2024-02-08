@@ -98,8 +98,7 @@ const appConfig = {
   nyplHeaderUrl: process.env.NYPL_HEADER_URL || 'https://qa-ds-header.nypl.org',
   launchEmbedUrl: process.env.LAUNCH_EMBED_URL || '',
   sierraUpgradeAugust2023: process.env.SIERRA_UPGRADE_AUG_2023 === 'true',
-  // This fallback of true is temporary while we investigate why the env variable isn't available on the client side in QA.
-  reverseProxyEnabled: process.env.REVERSE_PROXY_ENABLED === 'true' || true
+  reverseProxyEnabled: process.env.REVERSE_PROXY_ENABLED === 'true'
 };
 
 export default appConfig;
