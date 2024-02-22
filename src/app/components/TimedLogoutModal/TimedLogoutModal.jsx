@@ -53,6 +53,13 @@ const TimedLogoutModal = (props) => {
 
     minutes = Math.max(parseInt(timeLeft / 60), 0);
     seconds = Math.max(parseInt(timeLeft % 60), 0);
+
+    // Theoretically, accountPageExp should disappear after 5mins, causing
+    // logOutAndRedirect() to be fired above, but let's make sure a failure
+    // there never allows the timer to pass zero:
+    if (timeLeft <= 0) {
+      logOutAndRedirect();
+    }
   }
 
   // Show warning when 2m remaining:
