@@ -3,178 +3,545 @@ import nyplCoreObjects from '@nypl/nypl-core-objects'
 const fulfillments = nyplCoreObjects('by-fulfillment')
 import nyplApiClient from '../../server/routes/nyplApiClient'
 
+const cache = {}
+const estimator = {}
 
-const OPENING_BUFFER = 1 * (60 * 60 * 1000)
-const REQUEST_CUTOFF_BUFFER = 2 * (60 * 60 * 1000)
-const MONTHS = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.']
+/**
+ *  Given a DiscoverApi item, an optional delivery location id, and a optional request timestamp, returns an object defining:
+ *   - time: An ISO8601 formatted timestamp represeting the estimated time of arrival at the holdshelf
+ *   - estimate: A "friendly" statement built from the estimated time
+ *
+ *  The process for estimating arrival-at-holdshelf is:
+ *   - Compute arrivalAtDestination as:
+ *     - If onsite, it's now
+ *     - If offsite:
+ *       - Determine earliest processing time at origin (now if currently open; otherwise start of next operating hours)
+ *       - Add depository specific travel time
+ *   - Compute destinationServiceTime as:
+ *     - Determine earliest processing time at destination starting at arrivalAtDestination
+ *   - Compute arrivalAtHoldshelf as:
+ *     - Add location specific onsite travel time to destinationServiceTime
+ *     - Bump to next delivery time for rooms with special delivery schoedules
+ */
+estimator.getPickupTimeEstimate = async (item, deliveryLocationId, fromTimestamp = estimator._now()) => {
+  const fulfillment = fulfillments[item.physFulfillment]
 
-const cache = { updatedAt: null }
+  // If no deliveryLocation specified, fall back on the one associated with the
+  // fulfillment or just 'ma' (which is a fine default for offsite requests)
+  deliveryLocationId = deliveryLocationId || fulfillment.location || 'ma'
 
-export const getPickupTimeEstimate = async (fulfillmentId, deliveryLocation, fromDate) => {
-	let activeHoldRequest
-	if (!fromDate) {
-		activeHoldRequest = false
-		fromDate = new Date()
-	}
-	// maybe check for allowed fulfillment id's... ie that they arent lpa or schomburg
-	// Look up item’s linked fulfillment entity in NYPL-Core:
-	const fulfillment = fulfillments[fulfillmentId]
-	if (!fulfillment) return null
-	// Convert duration to seconds:
-	const duration = toSeconds(parseDuration(fulfillment.estimatedTime))
+  const rationale = [{ time: fromTimestamp, activity: 'request time' }]
 
-	// Use fulfillment linked location if no deliveryLocation specified:
-	deliveryLocation = deliveryLocation || fulfillment.location
+  const originLocationId = estimator._locationId(item)
 
-	const availableDay = await _expectedAvailableDay(deliveryLocation, fromDate, duration * 1000)
+  // Assume onsite request (i.e. already arrived at "destination" building)
+  let arrivalAtDestination = fromTimestamp
 
-	return _buildEstimationString(availableDay, activeHoldRequest, fulfillment.estimatedTime)
+  // If offsite:
+  if (/^rc/.test(originLocationId)) {
+    const originServiceTime = await estimator._getServiceTime(originLocationId, fromTimestamp)
+
+    rationale.push({ time: originServiceTime, activity: 'origin service time' })
+
+    const offsiteTravelDuration = estimator._parseOffsiteTravelDuration(fulfillment.estimatedTime)
+    arrivalAtDestination = estimator._addMinutes(originServiceTime, offsiteTravelDuration)
+
+    rationale.push({ time: arrivalAtDestination, activity: 'travel to destination' })
+  }
+
+  // Bump time to next available service time at destination:
+  const destinationServiceTime = await estimator._getServiceTime(deliveryLocationId, arrivalAtDestination)
+  rationale.push({ time: destinationServiceTime, activity: 'destination service time' })
+
+  // Account for travel to reading room:
+  let arrivalAtHoldshelf = await estimator._addOnsiteTravelDuration(destinationServiceTime, deliveryLocationId)
+  rationale.push({ time: arrivalAtHoldshelf, activity: 'onsite travel time' })
+
+  // Adjust to special delivery schedules for special rooms:
+  let hasSpecialDeliverySchedule
+  ({ arrivalAtHoldshelf, hasSpecialDeliverySchedule } = estimator._adjustToSpecialSchedule(deliveryLocationId, arrivalAtHoldshelf))
+  // console.log(`Rationale for request from ${originLocationId} to ${deliveryLocationId}:`, rationale)
+
+  // Return the specific `time` and a human readable `estimate` string
+  return {
+    time: arrivalAtHoldshelf,
+    estimate: estimator._makeFriendly(
+      arrivalAtHoldshelf, {
+        useTodayAtTime: hasSpecialDeliverySchedule,
+        useTodayByTime: await estimator._isAtOrBeforeServiceHours(deliveryLocationId, destinationServiceTime)
+      }
+    )
+  }
 }
 
-// expects a day object: {available (string), estimatedDeliveryTime (Date object), day (string)}, a boolean, and a duration in seconds. Returns delivery estimation string
-export const _buildEstimationString = (availableDay, activeHoldRequest, duration) => {
-	let string
-	const time = _buildTimeString(availableDay.estimatedDeliveryTime)
-	const earliest = time
-	const window = _calculateWindow(duration)
-	const estTime = availableDay.estimatedDeliveryTime
-	const date = MONTHS[estTime.getMonth()] + ' ' + estTime.getDate()
-	switch (availableDay.available) {
-		case 'today':
-			string = activeHoldRequest ?
-				`at approximately ${time} TODAY` :
-				`in approximately ${window} TODAY`
-			break;
-		case 'tomorrow':
-			string = `by approximately ${earliest} TOMORROW`
-			break;
-		case 'two or more days':
-			string = `by approximately ${earliest} ${availableDay.day} ${date}`
-			break;
-	}
-	return string
+/**
+ *  Given an ISO8601 Duration {string} representing the an offsite fulfillment
+ *  turnaround, returns {int} number of minutes it should represent (for the
+ *  purpose of estimating arrival)
+ */
+estimator._parseOffsiteTravelDuration = (duration) => {
+  const statedDurationMinutes = toSeconds(parseDuration(duration)) / 60
+  // Calculate travel time as the stated duration (e.g. PT2D, PT1D) minus 12H
+  // (artificially reduced to translate the colloquial "T2D" into the more
+  // accurate "T1D12H")
+  return statedDurationMinutes - 12 * 60
 }
 
-export const _calculateWindow = (duration) => {
-	const { minutes, hours } = parseDuration(duration)
-	let str = ''
-	let { hours: roundedHours, minutes: roundedMinutes } = _roundToQuarterHour(hours, minutes)
-	const plural = (n) => n === 1 ? '' : 's'
-	if (roundedHours !== 0) str += `${roundedHours} hour${plural(roundedHours)}`
-	if (roundedHours !== 0 && roundedMinutes !== 0) str += ' '
-	if (minutes !== 0) str += `${roundedMinutes} minutes`
-	return str
+/**
+ *  Given a serviceTime representing the start of staff processing and a
+ *  location id, returns an updated timestamp estimating arrival at a holdshelf
+ *  in the same building
+ */
+estimator._addOnsiteTravelDuration = async (serviceTime, locationId) => {
+  let onsiteTravelDuration
+  // If hold placed before opening, travel time is 30mins
+  if (await estimator._isAtOrBeforeServiceHours(locationId, serviceTime)) {
+    onsiteTravelDuration = 'PT30M'
+  } else {
+    // If hold placed after opening, travel time depends on location:
+    onsiteTravelDuration = estimator._onsiteFulfillmentDuration(locationId)
+  }
+  return estimator._addDuration(serviceTime, onsiteTravelDuration)
 }
 
-// round up to the nearest quarter hour, with special accounting for the 
-// last quarter before the hour, because the hour needs to increment
-export const _roundToQuarterHour = (hours, minutes) => {
-	if (minutes < 60 && minutes > 45) {
-		hours++
-		minutes = 0
-	}
-	if (minutes % 15 !== 0) {
-		minutes += 15 - (minutes % 15)
-	}
-	return { hours, minutes }
+/**
+ * Given a location id and a timestamp string, returns an object with:
+ * hasSpecialDeliverySchedule: a Boolean which is true if the location matches a
+ * location with a special delivery schedule
+ * adjustedSpecialScheduleTime: a timestamp string, representing the future delivery time for
+ * the given known delivery schedule
+ */
+estimator._adjustToSpecialSchedule = (locationId, time) => {
+  let hasSpecialDeliverySchedule = false
+  let adjustedSpecialScheduleTime = new Date(time)
+  let secondFloorScholarRooms = ['mal17', 'mala', 'malc', 'maln', 'malw']
+  let mapRooms = ['mapp8', 'mapp9', 'map08']
+  let getFirstHour
+  let getNextHour
+  let getLastHour
+  let offSet =
+    1000 * 60 * (adjustedSpecialScheduleTime.getTimezoneOffset() - 60 * estimator._nyOffset())
+    - adjustedSpecialScheduleTime.getMilliseconds() - 1
+
+  // adjust time to simulate being in New York
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() + offSet
+  )
+
+  if (secondFloorScholarRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    getFirstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 14 : 10
+    }
+    getLastHour = (time) => {
+      let day = time.getDay()
+      return day > 1 ? 18 : 16
+    }
+    getNextHour = hour => 2*(parseInt(hour/2 + 1))
+  }
+
+  if (mapRooms.includes(locationId)) {
+    hasSpecialDeliverySchedule = true
+    getFirstHour = (time) => {
+      let day = time.getDay()
+      return day === 0 ? 13 : 11
+    }
+    getLastHour = (time) => {
+      let day = time.getDay()
+      return day === 2 || day === 3 ? 17 : 15
+    }
+    getNextHour = hour => 2*(parseInt(hour/2 + 0.5)) + 1
+  }
+
+  if (hasSpecialDeliverySchedule) {
+
+    let nextHour = getNextHour(adjustedSpecialScheduleTime.getHours())
+    // set to next hour
+    adjustedSpecialScheduleTime.setHours(nextHour, 0, 0, 0)
+
+
+    // set to day to next day if after last hour
+    if (adjustedSpecialScheduleTime.getHours() > getLastHour(adjustedSpecialScheduleTime)) {
+
+      adjustedSpecialScheduleTime.setDate(
+        adjustedSpecialScheduleTime.getDate() + 1
+      )
+
+
+      let firstHour = getFirstHour(adjustedSpecialScheduleTime)
+      adjustedSpecialScheduleTime.setHours(
+        firstHour, 0, 0, 0
+      )
+
+    }
+
+    // set to first hour if before first hour
+    let firstHour = getFirstHour(adjustedSpecialScheduleTime)
+    if (firstHour > adjustedSpecialScheduleTime.getHours()) {
+      adjustedSpecialScheduleTime.setHours(firstHour, 0, 0, 0)
+    }
+
+  }
+
+  // set time back to local time
+  adjustedSpecialScheduleTime.setTime(
+    adjustedSpecialScheduleTime.getTime() - offSet
+  )
+
+
+  let arrivalAtHoldshelf = adjustedSpecialScheduleTime.toISOString()
+
+  return {
+    hasSpecialDeliverySchedule,
+    arrivalAtHoldshelf
+  }
 }
 
-// expects a timestamp (integer), returns a string
-export const _buildTimeString = (estimatedDeliveryTime) => {
-	let minutes = estimatedDeliveryTime.getMinutes()
-	let hours = estimatedDeliveryTime.getHours()
-	let { hours: roundedHours, minutes: roundedMinutes } = _roundToQuarterHour(hours, minutes)
+/**
+ *  Given a timestamp string (ISO8601 format), returns a phrase like
+ *   - "in an hour" - if time is about an hour away
+ *   - "today by 10:45am" - if time is today and gte 1h
+ *   - "tomorrow (M/D) by HH:MM" - if time is tomorrow
+ *   - "Monday (M/D) by HH:MM" - e.g. if time is beyond tomorrow
+ *   - "today 2pm" - e.g. if time is today at 2 and options.useTodayAtTime is set
+ *
+ *  Options:
+ *   - useTodayAtTime: When true and time is mere hours away, renders "today HH:MM"
+ *   - useTodayByTime: When true and time is mere hours away, renders "today by HH:MM"
+ */
+estimator._makeFriendly = (time, options = {}) => {
+  options = Object.assign({
+    useTodayAtTime: false,
+    useTodayByTime: false
+  }, options)
 
-	if (roundedMinutes < 10) roundedMinutes = `0${roundedMinutes}`
-	const amOrPm = roundedHours > 11 ? 'pm' : 'am'
-	roundedHours = roundedHours % 12 === 0 ? 12 : roundedHours % 12
-	return `${roundedHours}:${roundedMinutes} ${amOrPm}`
+  const { days, hours, minutes } = estimator._dateDifference(time)
+
+  let date = new Date(time)
+  date = estimator._roundToQuarterHour(date)
+
+  const { time: formattedTime, date: formattedDate, dayOfWeek } = estimator._formatDateAndTime(date)
+
+  // One or more days:
+  if (days && days === 1) {
+    return `tomorrow (${formattedDate}) by ${formattedTime}`
+  } else if (days) {
+    return `${dayOfWeek} (${formattedDate}) by ${formattedTime}`
+  }
+  // Use exacting language? (for fixed special schedules)
+  if (options.useTodayAtTime) {
+    return `today ${formattedTime}`
+  }
+  // One or more hours:
+  if (hours >= 1 || options.useTodayByTime) {
+    return `today by ${formattedTime}`
+  }
+  // Call 45+ minutes "an hour":
+  if (minutes >= 45) {
+    return 'in an hour'
+  } else {
+    return `today by approximately ${formattedTime}`
+  }
 }
 
-// Delivery location should be sc, ma, or my (2 letter codes for each research branch). Request time is a Date object
-export const _expectedAvailableDay = async (deliveryLocation, requestTime, duration) => {
-	const locationHours = await _operatingHours(deliveryLocation)
-	let available
-	let today = new Date(locationHours[0].startTime).getDay()
-	let provisionalDeliveryTime
+/**
+ *  Given a Date object, returns a plainobject with:
+ *   - date {string} A string representation of the date (e.g. '10/1')
+ *   - time {string} A string representation of the time of day (e.g. '10:30am')
+ *   - dayOfWeek {string} The day of the week (e.g. 'Wednesday')
+ */
+estimator._formatDateAndTime = (date) => {
+  const formatOptions = {
+    hour: 'numeric',
+    minute: 'numeric',
+    weekday: 'long',
+    day: 'numeric',
+    month: 'numeric',
+    timeZone: 'America/New_York'
+  }
 
-	const hours = locationHours.find((day) => {
-		// convert everything into ms:
-		const { endTimeInMs, startTimeInMs, requestTimeMs, finalRequestTimeMs } = convertTimesToMs(day.startTime, day.endTime, requestTime, duration)
-		provisionalDeliveryTime = requestTimeMs + duration
+  const values = Intl.DateTimeFormat('en', formatOptions)
+    .formatToParts(date)
+    .reduce((h, part) => Object.assign(h, { [part.type]: part.value }), {})
 
-		// if request was made after request cutoff time, today is not your day
-		if (requestTimeMs > finalRequestTimeMs) return false
-		// if estimated delivery time is before the end of the current day, current
-		// day is the day.
-		if (provisionalDeliveryTime < endTimeInMs) {
-			const nextDeliverableTime = provisionalDeliveryTime > startTimeInMs ? provisionalDeliveryTime : startTimeInMs
-			// determine if that is today, tomorrow, or two days from now.
-			const nextDeliverableday = new Date(nextDeliverableTime).getDay()
-			available = _determineNextDeliverableDay(today, nextDeliverableday)
-			return true
-		}
-	})
+  // In Node 10, this one comes through all lowercase:
+  values.dayPeriod = values.dayperiod || values.dayPeriod || ''
 
-	return {
-		available,
-		estimatedDeliveryTime: _calculateDeliveryTime(available, provisionalDeliveryTime, hours.startTime),
-		day: hours.day
-	}
+  values.dayPeriod = values.dayPeriod && values.dayPeriod.toLowerCase()
+
+  const showTimezone = estimator._nyOffset() !== (new Date(estimator._now())).getTimezoneOffset() / 60
+  const timezoneSuffix = showTimezone ? ' ET' : ''
+
+  return {
+    date: `${values.month}/${values.day}`,
+    time: `${values.hour}:${values.minute}${values.dayPeriod}${timezoneSuffix}`,
+    dayOfWeek: values.weekday
+  }
 }
 
-const convertTimesToMs = (startTime, endTime, requestTime, duration) => {
-	const endTimeInMs = Date.parse(endTime)
-	// have to add opening buffer and or duration
-	const startTimeInMs = Date.parse(startTime) + OPENING_BUFFER
-	const requestTimeMs = Date.parse(requestTime)
-	const finalRequestTimeMs = endTimeInMs - REQUEST_CUTOFF_BUFFER
-	return { endTimeInMs, startTimeInMs, requestTimeMs, finalRequestTimeMs }
+/**
+ *  Given a DiscoveryAPI item, returns the holding location id
+ *
+ *  If item is a partner record, returns 'rc'
+ */
+estimator._locationId = (item) => {
+  const nyplSource = item.idNyplSourceId && item.idNyplSourceId['@type']
+
+  if (nyplSource !== 'SierraNypl') return 'rc'
+
+  return item.holdingLocation && item.holdingLocation[0] && item.holdingLocation[0].id
 }
 
-// If it can be delivered today, the provisional estimation still serves.
-// Otherwise, estimated delivery time is the startTime plus the amount
-// of time the branch needs to get their ducks in a row.
-export const _calculateDeliveryTime = (dayAvailable, provisionalDeliveryTime, startTime) => {
-	if (dayAvailable === 'today') return new Date(provisionalDeliveryTime)
-	else {
-		return new Date(Date.parse(startTime) + OPENING_BUFFER)
-	}
+/**
+ *  Given a location id, returns the fulfillment duration as a ISO8601
+ *  Duration string
+ */
+estimator._onsiteFulfillmentDuration = (locationId) => {
+  if (!locationId || locationId.length < 2) return null
+
+  const buildingCode = {
+    ma: 'sasb',
+    pa: 'lpa',
+    sc: 'sc'
+  }[locationId.slice(0, 2)]
+
+  const fulfillment = fulfillments[`fulfillment:${buildingCode}-onsite`]
+  return fulfillment.estimatedTime
 }
 
-// today and nextDeliverableDay are both numbers that correspond to days of the week,
-// according to Date.getDay(). today is today, ie the day the code is running.
-// nextDeliverableDay is the calculated next day an item can be delivered.
-export const _determineNextDeliverableDay = (today, nextDeliverableday) => {
-	if (nextDeliverableday === today) return 'today'
-	// today and nextDeliverableday are one day apart and today is not Saturday
-	if (nextDeliverableday - today === 1) return 'tomorrow'
-	// today is saturday and delivery day is sunday
-	if (today === 6 && nextDeliverableday === 0) return 'tomorrow'
-	// next business day is not tomorrow
-	else return 'two or more days'
-	// TO DO: what happens if the library is closed for a week?
+/**
+ *  Given a location, and an optional timestamp (default now), returns true if
+ *  the timestamp is less than or equal to the start of the service hours for
+ *  the location
+ */
+estimator._isAtOrBeforeServiceHours = async (locationId, time = estimator._now()) => {
+  const nextServiceHours = await estimator._getNextServiceHours(locationId, time)
+  const timeIsBeforeServiceHours = estimator._timestampIsLTE(time, nextServiceHours.startTime)
+  return timeIsBeforeServiceHours
 }
 
-export const _operatingHours = async (deliveryLocation) => {
-	const client = await nyplApiClient()
-	let hours
-	// if cache is less than one hour old, it is still valid
-	if (cache.hours && Date.now() - cache.updatedAt < 60 * 60 * 1000) {
-		hours = await cache.hours
-	}
-	else {
-		cache.hours = client.get(`/locations?location_codes=${deliveryLocation}&fields=hours`)
-		cache.updatedAt = Date.now()
-		hours = await cache.hours
-	}
-	if (!hours || !hours[deliveryLocation] || !hours[deliveryLocation][0] || !hours[deliveryLocation][0].hours) {
-		return []
-	}
-	return hours[deliveryLocation][0].hours
+/**
+ *  Given a location,
+ */
+estimator._getServiceTime = async (locationId, afterTimestamp = estimator._now()) => {
+  const holdServiceHours = await estimator._getNextServiceHours(locationId, afterTimestamp)
+
+  // If we're in the middle of the service window, service-time is now:
+  return estimator._maximumTimestamp(afterTimestamp, holdServiceHours.startTime)
 }
 
-export const _resetCacheForTesting = (time = null) => {
-	cache.updatedAt = time
-	cache.hours = undefined
+/**
+ *  Given a location id (e.g. rc, mal, sc1234) returns the next available
+ *  window in which staff may process a request.
+ *
+ *  The return object defines:
+ *   - startTime
+ *   - endTime
+ */
+estimator._getNextServiceHours = async (locationId, afterTimestamp = estimator._now()) => {
+  const allHours = await estimator._serviceHours(locationId)
+  const hours = estimator._findNextAvailableHours(allHours, afterTimestamp)
+  if (!hours) {
+    console.error(`Error: could not find next available hours for ${locationId} after (${afterTimestamp})`, allHours)
+  }
+  return hours
 }
+
+/**
+ *  Given an array of hours such as is returned from the LocationsService,
+ *  returns the first aviailable entry (i.e. the entry that either includes
+ *  now or is tomorrow)
+ */
+estimator._findNextAvailableHours = (hours, afterTimestamp = estimator._now()) => {
+  return hours
+    // Only consider hours that have not passed (in practice, all hours
+    // considered will be current or future, but let's be sure)
+    .filter((hours) => estimator._timestampIsGreater(hours.endTime, afterTimestamp))
+    // Sort hours ascending, so soonest is first:
+    .sort((h1, h2) => estimator._timestampIsGreater(h1.startTime, h2.startTime) ? 1 : -1)
+    // Get first day:
+    .shift()
+}
+
+/**
+ *  Given a holdingLocation, returns an array of hours such as that returned
+ *  from the LocationsService, which has been adjusted to represent the hours
+ *  during which staff can service a request.
+ */
+estimator._serviceHours = async (locationId) => {
+  const hours = await estimator._operatingHours(locationId)
+
+  return hours
+    .map((hours) => {
+      // Copy object so we don't mutate original:
+      hours = Object.assign({}, hours)
+
+      // If it's at ReCAP, cut-off is 2:30pm:
+      if (/^rc/.test(locationId)) {
+        hours.endTime = estimator._setHoursMinutes(hours.endTime, 14, 30)
+      } else {
+        // Otherwise, cut-off is 1h before closing:
+        hours.endTime = estimator._addMinutes(hours.endTime, -60)
+      }
+      return hours
+    })
+}
+
+/**
+ *  Returns now as an ISO8601 timestamp
+ */
+estimator._now = () => (new Date()).toISOString()
+
+/**
+ *  Given a 8601 timestamp and a 8601 Duration string, adds the two together
+ *  and returns the result as a timestamp string
+ */
+estimator._addDuration = (timestamp, duration) => {
+  const minutes = toSeconds(parseDuration(duration)) / 60
+  return estimator._addMinutes(timestamp, minutes)
+}
+
+/**
+ *  Given a 8601 timestamp string and a number of minutes, adds the two
+ *  together and returns the result as a timestamp string
+ */
+estimator._addMinutes = (dateString, minutes) => {
+  const date = new Date(dateString)
+  date.setTime(date.getTime() + minutes * 60 * 1000)
+  return date.toISOString()
+}
+
+
+/**
+ *  Return the current hours offset for NY (either 4 or 5)
+ *
+ *  This accepts an optiona timestamp so that we can calculate the
+ *  NY offset for both now and some date in the future (important for
+ *  calculating estimates just before/after Daylight Savings days)
+ */
+estimator._nyOffset = (timestamp = estimator._now()) => {
+  if (window.nyOffsets && window.nyOffsets.length) {
+    // Identify the offset that starts before timestamp:
+    const currentOffset = window.nyOffsets
+      .filter((offset) => new Date(offset.from) < new Date(timestamp))
+      .pop()
+    if (currentOffset) {
+      return currentOffset.offset
+    } else {
+      // If no matching offset found, local clock is out of sync with server
+      // time; return first server offset:
+      return window.nyOffsets[0].offset
+    }
+  }
+
+  // If server.js is failing to populate window.nyOffsets, default to 5:
+  return 5
+}
+
+/**
+ *  Given a 8601 timestamp string and a specific time of day (represented as
+ *  integer hours and minutes), sets the time of the timestamp and together and
+ *  returns the result as a timestamp string
+ */
+estimator._setHoursMinutes = (timestamp, hours, minutes = 0) => {
+  hours = hours + estimator._nyOffset(timestamp)
+  const date = new Date(timestamp)
+  date.setUTCHours(hours, minutes)
+  return date.toISOString()
+}
+
+/**
+ *  Given a Date object, returns a new Date object rounded to the next quarter hour
+ */
+estimator._roundToQuarterHour = (date) => {
+  const roundTo = 15
+  const minutesToAdd = (60 + roundTo - date.getMinutes()) % roundTo
+
+  return new Date(date.getTime() + minutesToAdd * 60_000)
+}
+
+/**
+ *  Given a location id, returns an array of operating hours.
+ */
+estimator._operatingHours = async (locationId) => {
+  const client = await nyplApiClient()
+  let hours
+  // if cache is less than one hour old, it is still valid
+  if (cache[locationId] && cache[locationId].hours && Date.now() - cache[locationId].updatedAt < 60 * 60 * 1000) {
+    hours = await cache[locationId].hours
+  }
+  else {
+    cache[locationId] = {}
+    cache[locationId].hours = client.get(`/locations?location_codes=${locationId}&fields=hours`)
+    cache[locationId].updatedAt = Date.now()
+    hours = await cache[locationId].hours
+  }
+  if (!hours || !hours[locationId] || !hours[locationId][0] || !hours[locationId][0].hours) {
+    return []
+  }
+  return hours[locationId][0].hours
+}
+
+/**
+ *  Given a timestamp, returns an object with one of three properties set:
+ *   - days: The number of calendar calendar days away the timestamp is from now
+ *   - hours: The number of hours away the timestamp is from now
+ *   - minutes: The number of minutes away the timestamp is from now
+ */
+estimator._dateDifference = (d1, d2 = estimator._now()) => {
+  const date1 = Date.parse(d1)
+  const date2 = Date.parse(d2)
+
+  const date1Date = new Date(d1)
+  const date2Date = new Date(d2)
+
+  const diffMs = date1 - date2
+
+  let days = Math.floor(diffMs / 86400000)
+  // If date is in a couple days, recalculate it in terms of calendar days:
+  if (days < 2) {
+    days = ((7 + date1Date.getDay()) - date2Date.getDay()) % 7
+  }
+
+  const hours = days ? 0 : Math.floor((diffMs % 86400000) / 3600000)
+  const minutes = days || hours ? 0 : Math.round(((diffMs % 86400000) % 3600000) / 60000)
+  return {
+    days,
+    hours,
+    minutes
+  }
+}
+
+/**
+ *  Given two datestrings, returns the version that represents a larger date
+ */
+estimator._maximumTimestamp = (d1, d2) => {
+  return Date.parse(d1) > Date.parse(d2) ? d1 : d2
+}
+
+/**
+ * Given two ISO8601 formatted timestamps, returns true if the first represents
+ * a date that is greater than the second.
+ */
+estimator._timestampIsGreater = (d1, d2) => {
+  return Date.parse(d1) > Date.parse(d2)
+}
+
+/**
+ * Given two ISO8601 formatted timestamps, returns true if the first represents
+ * a date that is greater than the second.
+ */
+estimator._timestampIsLTE = (d1, d2) => {
+  return Date.parse(d1) <= Date.parse(d2)
+}
+
+
+estimator._resetCacheForTesting = (time = null) => {
+  Object.keys(cache).forEach((deliveryLocation) => {
+    cache[deliveryLocation].updatedAt = time
+    cache[deliveryLocation].hours = undefined
+  })
+}
+
+module.exports = estimator

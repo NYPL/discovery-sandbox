@@ -31,6 +31,11 @@
       });
     </script>
 
+    <script>
+      <% // Pass NY TZ offsets for this week to the client: %>
+      window.nyOffsets = <%- JSON.stringify(nyOffsets, null, 2) %>;
+    </script>
+
     <script src="<%- launchEmbedUrl %>" async></script>
 
     <% if (isProduction) { %>

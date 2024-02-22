@@ -1,212 +1,1145 @@
 import sinon, { stub } from 'sinon'
 import { expect } from 'chai'
+import querystring from 'querystring'
 
 import NyplApiClient from '@nypl/nypl-data-api-client';
+import estimator from '../../src/app/utils/pickupTimeEstimator'
 
-import { _buildTimeString, _calculateDeliveryTime, _determineNextDeliverableDay, _expectedAvailableDay, _operatingHours, getPickupTimeEstimate, _buildEstimationString, _calculateWindow, _resetCacheForTesting } from '../../src/app/utils/pickupTimeEstimator'
+import nyplCoreObjects from '@nypl/nypl-core-objects'
+
+let nowTimestamp
+let tzNote = ''
 
 describe('pickupTimeEstimator', () => {
-	let clientStub
-	const hoursArray = [{
-		day: 'Thursday',
-		startTime: '2023-06-01T14:00:00+00:00',
-		endTime: '2023-06-01T23:00:00+00:00',
-		today: true
-	},
-	{
-		day: 'Friday',
-		startTime: '2023-06-02T14:00:00+00:00',
-		endTime: '2023-06-02T23:00:00+00:00',
-		nextDeliverableDay: true
-	},
-	{
-		day: 'Saturday',
-		startTime: '2023-06-03T14:00:00+00:00',
-		endTime: '2023-06-03T23:00:00+00:00'
-	},
-	{
-		day: 'Monday',
-		startTime: '2023-06-05T14:00:00+00:00',
-		endTime: '2023-06-05T23:00:00+00:00'
-	},
-	{
-		day: 'Tuesday',
-		startTime: '2023-06-06T14:00:00+00:00',
-		endTime: '2023-06-06T20:00:00+00:00'
-	},
-	{
-		day: 'Wednesday',
-		startTime: '2023-06-07T14:00:00+00:00',
-		endTime: '2023-06-07T20:00:00+00:00'
-	}]
-	before(() => {
-		clientStub = stub(NyplApiClient.prototype, 'get').callsFake((path) => {
-			if (path.includes('sc')) {
-				return Promise.resolve({
-					sc:
-						[{
-							label: null, hours: hoursArray
-						}]
-				})
-			}
-			else return Promise.resolve({})
-		})
-		afterEach(() => { clientStub.resetHistory() })
-		after(() => clientStub.restore())
-	})
+  let clientStub
+  const hoursArray = {
+    sc: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00.000Z',
+        endTime: '2023-06-01T23:00:00.000Z',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00.000Z',
+        endTime: '2023-06-02T23:00:00.000Z',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Saturday',
+        startTime: '2023-06-03T14:00:00.000Z',
+        endTime: '2023-06-03T23:00:00.000Z'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00.000Z',
+        endTime: '2023-06-05T23:00:00.000Z'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00.000Z',
+        endTime: '2023-06-06T20:00:00.000Z'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00.000Z',
+        endTime: '2023-06-07T20:00:00.000Z'
+      }
+    ],
+    ma: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00+00:00',
+        endTime: '2023-06-01T23:00:00+00:00',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00+00:00',
+        endTime: '2023-06-02T23:00:00+00:00',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Saturday',
+        startTime: '2023-06-03T14:00:00+00:00',
+        endTime: '2023-06-03T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00+00:00',
+        endTime: '2023-06-05T23:00:00+00:00'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00+00:00',
+        endTime: '2023-06-06T20:00:00+00:00'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00+00:00',
+        endTime: '2023-06-07T20:00:00+00:00'
+      }
+    ],
+    mapp8: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00+00:00',
+        endTime: '2023-06-01T23:00:00+00:00',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00+00:00',
+        endTime: '2023-06-02T23:00:00+00:00',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Saturday',
+        startTime: '2023-06-03T14:00:00+00:00',
+        endTime: '2023-06-03T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00+00:00',
+        endTime: '2023-06-05T23:00:00+00:00'
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-12-11T14:00:00+00:00',
+        endTime: '2023-12-11T23:00:00+00:00'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00+00:00',
+        endTime: '2023-06-06T20:00:00+00:00'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00+00:00',
+        endTime: '2023-06-07T20:00:00+00:00'
+      }
+    ],
+    rc: [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00+00:00',
+        endTime: '2023-06-01T22:00:00+00:00',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00+00:00',
+        endTime: '2023-06-02T22:00:00+00:00',
+        nextDeliverableDay: true
+      },
+      {
+        day: 'Monday',
+        startTime: '2023-06-05T14:00:00+00:00',
+        endTime: '2023-06-05T22:00:00+00:00'
+      },
+      {
+        day: 'Tuesday',
+        startTime: '2023-06-06T14:00:00+00:00',
+        endTime: '2023-06-06T22:00:00+00:00'
+      },
+      {
+        day: 'Wednesday',
+        startTime: '2023-06-07T14:00:00+00:00',
+        endTime: '2023-06-07T22:00:00+00:00'
+      }
+    ]
+  }
 
-	describe('getPickupTimeEstimate', () => {
-		it('in approximately 45 minutes TODAY', async () => {
-			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T16:00:00+00:00')).to.equal('in approximately 45 minutes TODAY')
-		})
-		it('by approximately OPENING TOMORROW', async () => {
-			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-01T22:00:00+00:00')).to.equal('by approximately 11:00 am TOMORROW')
-		})
-		it('request made after request cutoff time, library is closed tomorrow', async () => {
-			expect(await getPickupTimeEstimate('fulfillment:sasb-onsite', 'sc', '2023-06-03T22:00:00+00:00')).to.equal('by approximately 11:00 am Monday Jun. 5')
-		})
-	})
+  before(() => {
+    // Add window global nyOffsets var, emulating a global var set by server
+    // for the client, giving the current and future NY TZ offsets
+    window.nyOffsets = [
+      { from: '2023-03-10T06:00:00.000Z', offset: 4 },
+      { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+    ]
+  })
 
-	describe('_operatingHours', () => {
-		afterEach(() => _resetCacheForTesting())
-		it('should return hours array', async () => {
-			expect(await _operatingHours('sc')).to.deep.equal(hoursArray)
-		})
-		it('should return an empty array if response is mangled', async () => {
-			expect(await _operatingHours('xx')).to.deep.equal([])
-		})
-		it('should only make one get request for successive calls', async () => {
-			await _operatingHours('sc')
-			await _operatingHours('sc')
-			const hours = await _operatingHours('sc')
-			expect(sinon.assert.calledOnce(clientStub))
-			expect(hours).to.deep.equal(hoursArray)
-		})
-		it('should fetch new hours if it is expired', async () => {
-			// set cache with expired time
-			_resetCacheForTesting(1687449047066)
-			await _operatingHours('sc')
-			await _operatingHours('sc')
-			expect(sinon.assert.calledOnce(clientStub))
-		})
-	})
+  beforeEach(() => {
+    nowTimestamp = '2023-06-01T12:00:00'
 
-	describe('_expectedAvailableDay', () => {
-		it('request made in time for today', async () => {
-			const fromDate = '2023-06-01T16:00:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, 270000)
-			expect(availableDay.today)
-			expect(availableDay.day).to.equal('Thursday')
-		})
-		it('request made after cutoff time today', async () => {
-			const fromDate = '2023-06-01T22:30:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, .75 * 3600 * 1000)
-			expect(availableDay.day).to.equal('Friday')
-		})
-		it('request made before cutoff but too late for duration today', async () => {
-			const fromDate = '2023-06-01T20:30:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, 4 * 3600 * 1000)
-			expect(availableDay.day).to.equal('Friday')
-		})
-		it('request made before cutoff but too late for duration today - loong duration', async () => {
-			const fromDate = '2023-06-01T14:00:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, 72 * 3600 * 1000)
-			expect(availableDay.day).to.equal('Monday')
-		})
-		it('request made one week before today, duration 2 hrs', async () => {
-			const fromDate = '2023-05-25T14:00:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, 2 * 3600 * 1000)
-			expect(availableDay.day).to.equal('Thursday')
-		})
-		it('request made today before opening, duration 2 hrs', async () => {
-			const fromDate = '2023-06-01T07:00:00+00:00'
-			const availableDay = await _expectedAvailableDay('sc', fromDate, 2 * 3600 * 1000)
-			expect(availableDay.day).to.equal('Thursday')
-		})
-	})
-	describe('_determineNextDeliverableDay', () => {
-		it('today is tuesday and delivery day is wednesday', () => {
-			expect(_determineNextDeliverableDay(2, 3)).to.equal('tomorrow')
-		})
-		it('today is saturday and delivery day is sunday', () => {
-			expect(_determineNextDeliverableDay(6, 0)).to.equal('tomorrow')
-		})
-		it('today is deliverable day', () => {
-			expect(_determineNextDeliverableDay(2, 2)).to.equal('today')
-		})
-		it('today is monday and delivery day is wednesday', () => {
-			expect(_determineNextDeliverableDay(1, 3)).to.equal('two or more days')
-		})
-	})
-	describe('_buildTimeString', () => {
-		it('time is on the quarter hour', () => {
-			const estimatedDeliveryTime = new Date('2023-06-01T16:00:30.000')
-			expect(_buildTimeString(estimatedDeliveryTime)).to.equal('4:00 pm')
-		})
-		it('time is one minute after the quarter hour', () => {
-			const estimatedDeliveryTime = new Date('2023-06-01T16:01:30.000')
-			expect(_buildTimeString(estimatedDeliveryTime)).to.equal('4:15 pm')
-		})
-		it('time is one minute before the quarter hour', () => {
-			const estimatedDeliveryTime = new Date('2023-06-01T16:59:30.000')
-			expect(_buildTimeString(estimatedDeliveryTime)).to.equal('5:00 pm')
-		})
-	})
-	describe('_buildEstimationString', () => {
-		const duration = 'PT45M'
-		it('today, active hold request', () => {
-			const availableDay = {
-				available: 'today', estimatedDeliveryTime: new Date('2023-06-01T11:00:30.000')
-			}
-			expect(_buildEstimationString(availableDay, true, duration)).to.equal('at approximately 11:00 am TODAY')
-		})
-		it('today, not active hold request', () => {
-			const availableDay = {
-				available: 'today', estimatedDeliveryTime: new Date('2023-06-01T11:00:30.000')
-			}
-			expect(_buildEstimationString(availableDay, false, duration)).to.equal('in approximately 45 minutes TODAY')
-		})
-		it('tomorrow', () => {
-			const availableDay = {
-				available: 'tomorrow', estimatedDeliveryTime: new Date('2023-06-01T11:00:30.000')
-			}
-			expect(_buildEstimationString(availableDay, true, duration)).to.equal('by approximately 11:00 am TOMORROW')
-		})
-		it('two or more days', () => {
-			const availableDay = {
-				day: 'Thursday',
-				available: 'two or more days', estimatedDeliveryTime: new Date('2023-06-01T11:00:30.000')
-			}
-			expect(_buildEstimationString(availableDay, true, 'P2D')).to.equal('by approximately 11:00 am Thursday Jun. 1')
-		})
-	})
-	describe('_calculateDeliveryTime', () => {
-		it('should return the provisionalDeliveryTime if it\'s deliverable today', () => {
-			const pdt = 1686682891000
-			expect(Date.parse(_calculateDeliveryTime('today', pdt, null))).to.equal(pdt)
-		})
-		it('should return the start time plus opening buffer if it is not deliverable until tomorrow or later', () => {
-			const startMs = 1686682891000
-			const start = new Date(startMs)
-			const buffer = 1 * 60 * 60 * 1000
-			expect(Date.parse(_calculateDeliveryTime('tomorrow', null, start))).to.equal(startMs + buffer)
-		})
-	})
-	describe('_calculateWindow', () => {
-		it('45 minutes', () => {
-			expect(_calculateWindow('PT45M')).to.equal('45 minutes')
-		})
-		it('1 hour 45 minutes', () => {
-			expect(_calculateWindow('PT1H45M')).to.equal('1 hour 45 minutes')
-		})
-		it('2 hours 45 minutes', () => {
-			expect(_calculateWindow('PT2H45M')).to.equal('2 hours 45 minutes')
-		})
-		it('2 hours', () => {
-			expect(_calculateWindow('PT2H')).to.equal('2 hours')
-		})
-		it('no hours or mins', () => {
-			expect(_calculateWindow('PT0H0M')).to.equal('')
-		})
-	})
+    clientStub = stub(NyplApiClient.prototype, 'get').callsFake((path) => {
+      // Read location_code from query string:
+      const locationCode = querystring.parse(path.split('?').pop()).location_codes
+      if (['sc', 'ma', 'rc', 'mapp8'].includes(locationCode)) {
+        return Promise.resolve({
+          // Return relevant fixture:
+          [locationCode]: [{ label: null, hours: hoursArray[locationCode] }]
+        })
+      }
+      else return Promise.resolve({})
+    })
+
+    sinon.stub(estimator, '_now').callsFake(() => nowTimestamp)
+
+    // When running tests with TZ set to anything other than ET, let's expect
+    // all statements about time of day to end in "ET":
+    tzNote = (process.env.TZ && process.env.TZ !== 'America/New_York') ? ' ET' : ''
+  })
+
+  afterEach(() => {
+    clientStub.resetHistory()
+    clientStub.restore()
+    estimator._now.restore()
+  })
+
+  describe('_findNextAvailableHours', () => {
+    const hours = [
+      {
+        day: 'Thursday',
+        startTime: '2023-06-01T14:00:00.000Z',
+        endTime: '2023-06-01T23:00:00.000Z',
+        today: true
+      },
+      {
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00.000Z',
+        endTime: '2023-06-02T23:00:00.000Z'
+      }
+    ]
+
+    it('returns today\'s hours when called during business hours', async () => {
+      nowTimestamp = '2023-06-01T10:00:00-04:00'
+      expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
+      nowTimestamp = '2023-06-01T10:31:00-04:00'
+      expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
+      // At 6:59pm, techinically the next avail hours are still today:
+      nowTimestamp = '2023-06-01T18:59:00-04:00'
+      expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[0])
+    })
+
+    it('returns tomorrow\'s hours when called after business hours', async () => {
+      // At 7pm, next avail hours are tomorrow:
+      nowTimestamp = '2023-06-01T19:00:00-04:00'
+      expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[1])
+      // At 9pm, next avail hours are tomorrow:
+      nowTimestamp = '2023-06-01T21:00:00-04:00'
+      expect(await estimator._findNextAvailableHours(hours)).to.equal(hours[1])
+    })
+  })
+
+  describe('_getNextServiceHours', () => {
+    // Each of these times is strictly within the service-hours for Thursday:
+    ; [
+      '2023-06-01T10:30:00-04:00',
+      '2023-06-01T12:00:00-04:00',
+      '2023-06-01T17:59:59-04:00'
+    ].forEach(async (timestamp) => {
+      it(`should return today\'s hours when called mid-service-hours (${timestamp})`, async () => {
+        nowTimestamp = timestamp
+        expect(await estimator._getNextServiceHours('sc')).to.deep.equal({
+          day: 'Thursday',
+          startTime: '2023-06-01T14:00:00.000Z',
+          endTime: '2023-06-01T22:00:00.000Z',
+          today: true
+        })
+      })
+    })
+
+    it('should return tomorrow when called at end of service hours', async () => {
+      nowTimestamp = '2023-06-01T18:00:00'
+      expect(await estimator._getNextServiceHours('sc')).to.deep.equal({
+        day: 'Friday',
+        startTime: '2023-06-02T14:00:00.000Z',
+        endTime: '2023-06-02T22:00:00.000Z',
+        nextDeliverableDay: true
+      })
+    })
+
+    // Each of these times is afterhours
+    ; [
+      // 7pm closing:
+      '2023-06-01T19:00:09',
+      // 8pm:
+      '2023-06-01T20:00:00',
+      // 2am:
+      '2023-06-02T02:00:00'
+    ].forEach(async (timestamp) => {
+      it(`should return tomorrow when called after service hours (${timestamp})`, async () => {
+        nowTimestamp = timestamp
+        expect(await estimator._getNextServiceHours('sc')).to.deep.equal({
+          day: 'Friday',
+          startTime: '2023-06-02T14:00:00.000Z',
+          endTime: '2023-06-02T22:00:00.000Z',
+          nextDeliverableDay: true
+        })
+      })
+    })
+  })
+
+  describe('_getServiceTime', () => {
+    it('should return start of tomorrow\'s service time when after hours', async () => {
+      nowTimestamp = '2023-06-01T23:00:00'
+      expect(await estimator._getServiceTime('sc')).to.equal('2023-06-02T14:00:00.000Z')
+    })
+
+    it('should return now when during service hours', async () => {
+      // nowTimestamp defaults to '2023-06-01T12:00:00'
+      expect(await estimator._getServiceTime('sc')).to.equal(nowTimestamp)
+    })
+
+    it('should return the given time if it falls within the next destination service time', async () => {
+      expect(await estimator._getServiceTime('sc', '2023-06-01T12:00:00')).to.equal('2023-06-01T12:00:00')
+    })
+
+    it('should return the start of the next service time if given time falls outside of service hours', async () => {
+      // Request at 6:01pm ET:
+      expect(await estimator._getServiceTime('sc', '2023-06-01T22:01:00-04:00')).to.equal('2023-06-02T14:00:00.000Z')
+      // Request at 7pm ET:
+      expect(await estimator._getServiceTime('sc', '2023-06-01T23:00:00-04:00')).to.equal('2023-06-02T14:00:00.000Z')
+      // Request at 9pm ET:
+      expect(await estimator._getServiceTime('sc', '2023-06-02T02:00:00-04:00')).to.equal('2023-06-02T14:00:00.000Z')
+    })
+  })
+
+  describe('_timestampIsGreater', () => {
+    it('identifies timestamps that are greater regardless of timezone offsite', () => {
+      // GT checks:
+      expect(estimator._timestampIsGreater('2023-01-01T01:00:00.001Z', '2023-01-01T01:00:00.000Z')).to.equal(true)
+      expect(estimator._timestampIsGreater('2023-01-01T10:00:01-04:00', '2023-01-01T14:00:00.000Z')).to.equal(true)
+      expect(estimator._timestampIsGreater('2023-01-01T14:00:01-00:00', '2023-01-01T10:00:00-04:00')).to.equal(true)
+      // LTE checks:
+      expect(estimator._timestampIsGreater('2023-01-01T01:00:00.000Z', '2023-01-01T01:00:00.000Z')).to.equal(false)
+      expect(estimator._timestampIsGreater('2023-01-01T01:00:00.000Z', '2023-01-01T01:00:00.001Z')).to.equal(false)
+    })
+  })
+
+  describe('_timestampIsLTE', () => {
+    it('identifies timestamps that are less than or equal regardless of timezone offsite', () => {
+      // Equal checks:
+      expect(estimator._timestampIsLTE('2023-01-01T01:00:00.000Z', '2023-01-01T01:00:00.000Z')).to.equal(true)
+      expect(estimator._timestampIsLTE('2023-01-01T01:00:00.000Z', '2023-01-01T01:00:00.000Z')).to.equal(true)
+      // Less than checks:
+      expect(estimator._timestampIsLTE('2023-01-01T01:00:00.000Z', '2023-01-01T01:00:00.001Z')).to.equal(true)
+      expect(estimator._timestampIsLTE('2023-01-01T14:00:00.000Z', '2023-01-01T10:00:01-04:00')).to.equal(true)
+      expect(estimator._timestampIsLTE('2023-01-01T10:00:00-04:00', '2023-01-01T14:00:01-00:00')).to.equal(true)
+      // GT checks:
+      expect(estimator._timestampIsLTE('2023-06-01T14:01:00.000Z', '2023-06-01T14:00:00+00:00')).to.equal(false)
+      expect(estimator._timestampIsLTE('2023-01-01T14:00:01-00:00', '2023-01-01T10:00:00-04:00')).to.equal(false)
+    })
+  })
+
+  describe('_serviceHours', () => {
+    afterEach(() => estimator._resetCacheForTesting())
+    it('should return servic hours array', async () => {
+      expect(await estimator._serviceHours('sc')).to.deep.equal([
+        {
+          day: 'Thursday',
+          // Note that service hours are not padded on the front because
+          // technically staff can service requests immediately at opening.
+          // Standard intra-building travel times apply.
+          startTime: '2023-06-01T14:00:00.000Z',
+          endTime: '2023-06-01T22:00:00.000Z',
+          today: true
+        },
+        {
+          day: 'Friday',
+          startTime: '2023-06-02T14:00:00.000Z',
+          endTime: '2023-06-02T22:00:00.000Z',
+          nextDeliverableDay: true
+        },
+        {
+          day: 'Saturday',
+          startTime: '2023-06-03T14:00:00.000Z',
+          endTime: '2023-06-03T22:00:00.000Z'
+        },
+        {
+          day: 'Monday',
+          startTime: '2023-06-05T14:00:00.000Z',
+          endTime: '2023-06-05T22:00:00.000Z'
+        },
+        {
+          day: 'Tuesday',
+          startTime: '2023-06-06T14:00:00.000Z',
+          endTime: '2023-06-06T19:00:00.000Z'
+        },
+        {
+          day: 'Wednesday',
+          startTime: '2023-06-07T14:00:00.000Z',
+          endTime: '2023-06-07T19:00:00.000Z'
+        }
+      ])
+    })
+  })
+
+  describe('_setHoursMinutes', () => {
+    it('should set hours and minutes', () => {
+      // This is the zulu representation of 230 eastern (DST):
+      const local230 = '2023-06-07T18:30:00.000Z'
+      // Eastern:
+      expect(estimator._setHoursMinutes('2023-06-07T18:00:00-04:00', 14, 30)).to.equal(local230)
+      // Zulu time; return Eastern:
+      expect(estimator._setHoursMinutes('2023-06-07T22:00:00+00:00', 14, 30)).to.equal(local230)
+
+      // Check that hour is set to 14:30 + 5 after DST end:
+      expect(estimator._setHoursMinutes('2023-11-15T22:00:00+00:00', 14, 30))
+        .to.equal('2023-11-15T19:30:00.000Z')
+    })
+  })
+
+  describe('_addMinutes', () => {
+    it('should add 30 mins', () => {
+      // Eastern time
+      expect(estimator._addMinutes('2023-06-07T14:00:00-04:00', 30)).to.equal('2023-06-07T18:30:00.000Z')
+      // Zulu time
+      expect(estimator._addMinutes('2023-06-07T14:00:00+00:00', 30)).to.equal('2023-06-07T14:30:00.000Z')
+    })
+
+    it('should sub 30 mins', () => {
+      expect(estimator._addMinutes('2023-06-07T14:00:00+00:00', -30)).to.equal('2023-06-07T13:30:00.000Z')
+    })
+
+    it('should add 1 hour, rolling over to tomorrow', () => {
+      expect(estimator._addMinutes('2023-06-07T23:00:00+00:00', 60)).to.equal('2023-06-08T00:00:00.000Z')
+    })
+  })
+
+  describe('_operatingHours', () => {
+    afterEach(() => estimator._resetCacheForTesting())
+    it('should return operating hours array', async () => {
+      expect(await estimator._operatingHours('sc')).to.deep.equal(hoursArray.sc)
+    })
+    it('should return an empty array if response is mangled', async () => {
+      expect(await estimator._operatingHours('xx')).to.deep.equal([])
+    })
+    it('should only make one get request for successive calls', async () => {
+      await estimator._operatingHours('sc')
+      await estimator._operatingHours('sc')
+      const hours = await estimator._operatingHours('sc')
+      expect(sinon.assert.calledOnce(clientStub))
+      expect(hours).to.deep.equal(hoursArray.sc)
+    })
+    it('should fetch new hours if it is expired', async () => {
+      // set cache with expired time
+      estimator._resetCacheForTesting(1687449047066)
+      await estimator._operatingHours('sc')
+      await estimator._operatingHours('sc')
+      expect(sinon.assert.calledOnce(clientStub))
+    })
+  })
+
+  describe('_dateDiff', () => {
+    it('should return days, hours, minutes difference from d2 - d1', () => {
+      // 12am ET
+      nowTimestamp = '2023-01-01T00:00:00'
+
+      // Same time:
+      expect(estimator._dateDifference('2023-01-01T00:00:00')).to.deep.equal({
+        days: 0,
+        hours: 0,
+        minutes: 0
+      })
+      // next day at 2:03am: EST:
+      expect(estimator._dateDifference('2023-01-02T02:03:00')).to.deep.equal({
+        days: 1,
+        hours: 0,
+        minutes: 0
+      })
+      // Same day at 10:30am EST:
+      expect(estimator._dateDifference('2023-01-01T10:30:00')).to.deep.equal({
+        days: 0,
+        hours: 10,
+        minutes: 0
+      })
+    })
+
+    it('should consider any time after midnight as 1 day even if < 24h pass', () => {
+      // At closing, 10am tomorrow is "1 day away" (even though it's fewer than 24h)
+      nowTimestamp = '2023-01-01T19:00:00'
+      expect(estimator._dateDifference('2023-01-02T10:00:00')).to.deep.equal({
+        days: 1,
+        hours: 0,
+        minutes: 0
+      })
+
+      // One minute after midnight is, colloquially, 1 day later:
+      nowTimestamp = '2023-01-01T23:59:00'
+      expect(estimator._dateDifference('2023-01-02T00:01:00')).to.deep.equal({
+        days: 1,
+        hours: 0,
+        minutes: 0
+      })
+    })
+  })
+
+  describe('_makeFriendly', () => {
+    it('considers 45-59minutes to be \'in an hour\'', () => {
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect(estimator._makeFriendly('2023-06-01T15:15:00.000Z')).to.equal('in an hour')
+      expect(estimator._makeFriendly('2023-06-01T15:29:00.000Z')).to.equal('in an hour')
+    })
+
+    it('renders 1h+ as specific time', () => {
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect(estimator._makeFriendly('2023-06-01T17:30:00.000Z')).to.equal(`today by 1:30pm${tzNote}`)
+      expect(estimator._makeFriendly('2023-06-01T15:30:00.000Z')).to.equal(`today by 11:30am${tzNote}`)
+    })
+
+    it('renders dates happening tomorrow as "tomorrow"', () => {
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect(estimator._makeFriendly('2023-06-02T14:30:00.000Z')).to.equal(`tomorrow (6/2) by 10:30am${tzNote}`)
+    })
+
+    it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect(estimator._makeFriendly('2023-06-01T15:05:00.000Z')).to.equal(`today by approximately 11:15am${tzNote}`)
+    })
+
+    it('renders dates happening today within 45 minutes as "today by approximately ..."', () => {
+      nowTimestamp = '2023-06-01T15:10:00.000Z'
+      expect(estimator._makeFriendly('2023-06-01T15:10:00.000Z', { useTodayByTime: true })).to.equal(`today by 11:15am${tzNote}`)
+    })
+
+    it('renders specific time when showTime is enabled', () => {
+      nowTimestamp = '2023-06-01T14:10:00.000Z'
+      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z', { useTodayByTime: true })).to.equal(`today by 10:30am${tzNote}`)
+      // Without the use-today-by-time flag, the default is to use "approximately":
+      expect(estimator._makeFriendly('2023-06-01T14:30:00.000Z')).to.equal(`today by approximately 10:30am${tzNote}`)
+    })
+  })
+
+  describe('_formatDateAndTime', () => {
+    it('should format date and time', () => {
+      nowTimestamp = '2023-06-01T14:10:00.000Z'
+      expect(estimator._formatDateAndTime(new Date('2023-06-01T14:30:00.000Z'))).to.deep.equal({
+        time: `10:30am${tzNote}`,
+        date: '6/1',
+        dayOfWeek: 'Thursday'
+      })
+      expect(estimator._formatDateAndTime(new Date('2023-06-02T22:12:34.000Z'))).to.deep.equal({
+        time: `6:12pm${tzNote}`,
+        date: '6/2',
+        dayOfWeek: 'Friday'
+      })
+    })
+  })
+
+  describe('_roundToQuarterHour', () => {
+    it('should return same date if already rounded', () => {
+      expect(estimator._roundToQuarterHour(new Date('2023-06-01T14:30:00.000Z')).toISOString())
+        .to.equal('2023-06-01T14:30:00.000Z')
+    })
+
+    it('should round date to next quarter hour', () => {
+      expect(estimator._roundToQuarterHour(new Date('2023-06-01T14:31:00.000Z')).toISOString())
+        .to.equal('2023-06-01T14:45:00.000Z')
+    })
+  })
+
+  describe('_nyOffset', () => {
+
+    it('should return default offset of 5 when window.nyOffsets is unset', () => {
+      delete window.nyOffsets
+      expect(window.nyOffsets).to.be.a('undefined')
+      expect(estimator._nyOffset()).to.equal(5)
+    })
+
+    it('should return offset based on window.nyOffsets', () => {
+      window.nyOffsets = [ { from: '2023-11-01T06:00:00.000Z', offset: 4 } ]
+      nowTimestamp = '2023-11-01T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(4)
+    })
+
+    it('should return appropriate offset based on how requested time relates to registered offsets', () => {
+      window.nyOffsets = [
+        { from: '2023-11-01T06:00:00.000Z', offset: 4 },
+        { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+      ]
+      // When requesting the NY offset for Nov 2, should use first window.nyOffsets entry:
+      nowTimestamp = '2023-11-02T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(4)
+
+      // When requesting the NY offset for Nov 5, should use second window.nyOffsets entry:
+      nowTimestamp = '2023-11-05T14:10:00.000Z'
+      expect(estimator._nyOffset()).to.equal(5)
+      // Equivalently, should honor time given as param:
+      expect(estimator._nyOffset('2023-11-15T14:10:00.000Z')).to.equal(5)
+
+      // If requested time is less than all registered offsets (indicating
+      // server time and client time are out of sync), should return first
+      // offset:
+      expect(estimator._nyOffset('2023-01-00T00:00:00.000Z')).to.equal(4)
+    })
+  })
+
+  describe('getPickupTimeEstimate', () => {
+    it('should return a pickup time estimate of 30mins for requests placed on-site at any location *before* business hours', async () => {
+      // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
+      const item = {
+        holdingLocation: [{ id: 'ma' }],
+        physFulfillment: 'fulfillment:sasb-onsite',
+        idNyplSourceId: { '@type': 'SierraNypl' }
+      }
+      // 9am:
+      nowTimestamp = '2023-06-01T13:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-01T14:30:00.000Z')
+      // 10am:
+      nowTimestamp = '2023-06-01T14:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-01T14:30:00.000Z')
+
+      // Try SC:
+      item.holdingLocation[0].id = 'sc'
+      nowTimestamp = '2023-06-01T14:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T14:30:00.000Z')
+    })
+
+    it('should return a pickup time estimate of 15mins for requests placed on-site at SC during business hours', async () => {
+      // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
+      const item = {
+        holdingLocation: [{ id: 'sc' }],
+        physFulfillment: 'fulfillment:sc-onsite',
+        idNyplSourceId: { '@type': 'SierraNypl' }
+      }
+      // 10:01am
+      nowTimestamp = '2023-06-01T14:01:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T14:16:00.000Z')
+
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T14:45:00.000Z')
+
+      nowTimestamp = '2023-06-01T15:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'sc')).time).to.equal('2023-06-01T15:15:00.000Z')
+    })
+
+    it('should return a pickup time estimate of 45mins for requests placed on-site at MA during business hours', async () => {
+      // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
+      const item = {
+        holdingLocation: [{ id: 'ma' }],
+        physFulfillment: 'fulfillment:sasb-onsite',
+        idNyplSourceId: { '@type': 'SierraNypl' }
+      }
+      // 10:01am:
+      nowTimestamp = '2023-06-01T14:01:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-01T14:46:00.000Z')
+      // 11am:
+      nowTimestamp = '2023-06-01T15:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-01T15:45:00.000Z')
+      // 4pm:
+      nowTimestamp = '2023-06-01T20:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-01T20:45:00.000Z')
+    })
+
+    it('should return a on-site pickup time estimate of Monday if placed late Sat', async () => {
+      // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
+      const item = {
+        holdingLocation: [{ id: 'ma' }],
+        physFulfillment: 'fulfillment:sasb-onsite',
+        idNyplSourceId: { '@type': 'SierraNypl' }
+      }
+      // 6pm: (closes 7pm)
+      nowTimestamp = '2023-06-03T22:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-05T14:30:00.000Z')
+    })
+
+    it('should return a pickup time estimate of tomorrow for ReCAP requests placed during Recap service hours', async () => {
+      // estimator.getPickupTimeEstimate = async (item, deliveryLocation, fromDate) => {
+      const item = {
+        holdingLocation: [{ id: 'rc' }],
+        physFulfillment: 'fulfillment:recap-offsite'
+      }
+      // 10:30am:
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-02T14:30:00.000Z')
+      // 1:30pm:
+      nowTimestamp = '2023-06-01T17:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-02T14:30:00.000Z')
+    })
+
+    it('should return a pickup time estimate of 2 days for ReCAP requests placed after Recap service hours', async () => {
+      const item = {
+        holdingLocation: [{ id: 'rc' }],
+        physFulfillment: 'fulfillment:recap-offsite'
+      }
+      // 2:30pm ET:
+      nowTimestamp = '2023-06-01T18:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-03T14:30:00.000Z')
+      // 4:30pm ET:
+      nowTimestamp = '2023-06-01T20:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-03T14:30:00.000Z')
+      // 11:30pm ET:
+      nowTimestamp = '2023-06-02T03:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-03T14:30:00.000Z')
+    })
+
+    it('should return a pickup time of tues for ReCAP requests placed after Recap service hours on a Friday', async () => {
+      const item = {
+        holdingLocation: [{ id: 'rc' }],
+        physFulfillment: 'fulfillment:recap-offsite'
+      }
+      // 2:30pm ET on a Friday:
+      nowTimestamp = '2023-06-02T18:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-06T14:30:00.000Z')
+      // 5:30pm ET on a Friday:
+      nowTimestamp = '2023-06-02T21:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-06T14:30:00.000Z')
+      // 8:00am ET on a Mon:
+      nowTimestamp = '2023-06-05T12:00:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-06T14:30:00.000Z')
+    })
+
+    it('should return a pickup time estimate of 2 business days for HD requests placed during Recap service hours', async () => {
+      const item = {
+        holdingLocation: [{ id: 'rc' }],
+        physFulfillment: 'fulfillment:hd-offsite'
+      }
+      // 10:30am:
+      nowTimestamp = '2023-06-01T14:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-03T14:30:00.000Z')
+      // 1:30pm:
+      nowTimestamp = '2023-06-01T17:30:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-03T14:30:00.000Z')
+    })
+
+    it('should return a pickup time estimate of 3 business days for HD requests placed after Recap service hours', async () => {
+      const item = {
+        holdingLocation: [{ id: 'rc' }],
+        physFulfillment: 'fulfillment:hd-offsite'
+      }
+      // 14:30am:
+      nowTimestamp = '2023-06-01T18:30:00.000Z'
+      // No Sunday service, so it gets bumped to Monday:
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-05T14:30:00.000Z')
+      // 14:31pm:
+      nowTimestamp = '2023-06-01T18:31:00.000Z'
+      expect((await estimator.getPickupTimeEstimate(item, 'ma')).time).to.equal('2023-06-05T14:30:00.000Z')
+    })
+
+    describe('estimate without a chosen destination', () => {
+      it('items in HD should build estimate as if being sent to SASB by default', async () => {
+        const item = {
+          holdingLocation: [{ id: 'rc' }],
+          physFulfillment: 'fulfillment:hd-offsite'
+        }
+        // 14:30 EDT:
+        nowTimestamp = '2023-06-01T18:30:00.000Z'
+        // No Sunday service, so it gets bumped to Monday:
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          time: '2023-06-05T14:30:00.000Z',
+          estimate: `Monday (6/5) by 10:30am${tzNote}`
+        })
+      })
+
+      it('items in SASB', async () => {
+        const item = {
+          holdingLocation: [{ id: 'ma' }],
+          physFulfillment: 'fulfillment:sasb-onsite',
+          idNyplSourceId: { '@type': 'SierraNypl' }
+        }
+        // 9am:
+        nowTimestamp = '2023-06-01T13:00:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          estimate: `today by 10:30am${tzNote}`,
+          time: '2023-06-01T14:30:00.000Z'
+        })
+        // 10am:
+        nowTimestamp = '2023-06-01T14:00:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          estimate: `today by 10:30am${tzNote}`,
+          time: '2023-06-01T14:30:00.000Z'
+        })
+      })
+
+      it('items in SC', async () => {
+        const item = {
+          holdingLocation: [{ id: 'sc' }],
+          physFulfillment: 'fulfillment:sasb-onsite',
+          idNyplSourceId: { '@type': 'SierraNypl' }
+        }
+        // After hours:
+        nowTimestamp = '2023-06-01T22:00:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          time: '2023-06-02T14:30:00.000Z',
+          estimate: `tomorrow (6/2) by 10:30am${tzNote}`
+        })
+        // Before opening:
+        nowTimestamp = '2023-06-01T13:59:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          time: '2023-06-01T14:30:00.000Z',
+          estimate: `today by 10:30am${tzNote}`
+        })
+        // At opening:
+        nowTimestamp = '2023-06-01T14:00:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item)).to.deep.equal({
+          time: '2023-06-01T14:30:00.000Z',
+          estimate: `today by 10:30am${tzNote}`
+        })
+      })
+    })
+
+    describe('active hold requests', () => {
+      it('should render approximate pickup time as it draws near', async () => {
+        const item = {
+          holdingLocation: [{ id: 'ma' }],
+          physFulfillment: 'fulfillment:sasb-onsite',
+          idNyplSourceId: { '@type': 'SierraNypl' }
+        }
+        // It's 9:00am
+        nowTimestamp = '2023-06-01T13:00:00.000Z'
+        // Without an active hold request, the estimate is:
+        expect(await estimator.getPickupTimeEstimate(item, 'ma')).to.deep.equal({
+          time: '2023-06-01T14:30:00.000Z',
+          estimate: `today by 10:30am${tzNote}`
+        })
+        // At 10:00am I consider placing a hold request:
+        nowTimestamp = '2023-06-01T14:00:00.000Z'
+        // Without an active hold request, the estimate is:
+        expect(await estimator.getPickupTimeEstimate(item, 'ma')).to.deep.equal({
+          time: '2023-06-01T14:30:00.000Z',
+          estimate: `today by 10:30am${tzNote}`
+        })
+        // At 10:05 I place a hold request:
+        nowTimestamp = '2023-06-01T14:05:00.000Z'
+        const holdPlaced = nowTimestamp
+        expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
+          // 10:05 + 45mins === 10:50am
+          time: '2023-06-01T14:50:00.000Z',
+          // Initially it's 45 mins, so rounds up to about "an hour"
+          estimate: 'in an hour'
+        })
+        // 1 min later...
+        nowTimestamp = '2023-06-01T14:06:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
+          time: '2023-06-01T14:50:00.000Z',
+          estimate: `today by approximately 11:00am${tzNote}`
+        })
+        // 20 min later...
+        nowTimestamp = '2023-06-01T14:06:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
+          time: '2023-06-01T14:50:00.000Z',
+          estimate: `today by approximately 11:00am${tzNote}`
+        })
+        // 45 min later...
+        nowTimestamp = '2023-06-01T14:50:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
+          time: '2023-06-01T14:50:00.000Z',
+          estimate: `today by approximately 11:00am${tzNote}`
+        })
+        // 45 min later...
+        nowTimestamp = '2023-06-01T14:51:00.000Z'
+        expect(await estimator.getPickupTimeEstimate(item, 'ma', holdPlaced)).to.deep.equal({
+          time: '2023-06-01T14:50:00.000Z',
+          estimate: `today by approximately 11:00am${tzNote}`
+        })
+      })
+    })
+
+    describe('human readable estimate', () => {
+      const item = {
+        holdingLocation: [{ id: 'ma' }],
+        physFulfillment: 'fulfillment:sasb-onsite',
+        idNyplSourceId: { '@type': 'SierraNypl' }
+      }
+
+      it('onsite sasb pre-request', async () => {
+        // 10:30am ET on a Friday:
+        nowTimestamp = '2023-06-02T14:30:00.000Z'
+        expect((await estimator.getPickupTimeEstimate(item, 'ma')).estimate).to.equal('in an hour')
+        // 2:30pm ET on a Friday:
+        nowTimestamp = '2023-06-02T18:30:00.000Z'
+        expect((await estimator.getPickupTimeEstimate(item, 'ma')).estimate).to.equal('in an hour')
+      })
+
+      it('by approximately OPENING TOMORROW', async () => {
+        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-01T22:00:00+00:00')).estimate)
+          .to.equal(`tomorrow (6/2) by 10:30am${tzNote}`)
+      })
+
+      it('request made after request cutoff time, library is closed tomorrow', async () => {
+        expect((await estimator.getPickupTimeEstimate(item, 'ma', '2023-06-03T22:00:00+00:00')).estimate)
+          .to.equal(`Monday (6/5) by 10:30am${tzNote}`)
+      })
+
+      it('correctly adjusts to special locations', async () => {
+        window.nyOffsets = [
+          { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+        ]
+        expect((await estimator.getPickupTimeEstimate(item, 'mapp8', '2023-12-11T21:00:00+00:00')).estimate)
+        .to.include(`Tuesday (12/12) by 11:00am`)
+      })
+
+    })
+
+    describe('_adjustToSpecialSchedule', () => {
+      let dateString
+
+      let setWindow = () => {
+        let date = new Date(dateString)
+        window.nyOffsets = [
+          { from: '2023-03-10T06:00:00.000Z', offset: 5 },
+          { from: '2023-11-05T06:00:00.000Z', offset: 5 }
+        ]
+      }
+
+      describe('Map rooms', () => {
+        it('updates correctly on Monday just before opening', async () => {
+          dateString = '2023-06-05T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T16:00:00')
+        })
+
+        it('updates correctly on Monday at opening', async () => {
+          dateString = '2023-06-05T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T16:00:00')
+        })
+
+        it('updates correctly on Monday after opening', async () => {
+          dateString = '2023-06-05T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday at even times', async () => {
+          dateString = '2023-06-05T17:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday at even off-hour times', async () => {
+          dateString = '2023-06-05T17:10:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T18:00:00')
+        })
+
+        it('updates correctly on Monday just before closing', async () => {
+          dateString = '2023-06-05T19:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T20:00:00')
+        })
+
+        it('updates correctly on Monday at closing', async () => {
+          dateString = '2023-06-05T20:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-05T20:00:00')
+        })
+
+        it('updates correctly on Monday after closing', async () => {
+          dateString = '2023-06-05T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday just before opening', async () => {
+          dateString = '2023-06-06T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday at opening', async () => {
+          dateString = '2023-06-06T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T16:00:00')
+        })
+
+        it('updates correctly on Tuesday after opening', async () => {
+          dateString = '2023-06-06T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T18:00:00')
+        })
+
+        it('updates correctly on Tuesday after 3', async () => {
+          dateString = '2023-06-06T20:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday just before closing', async () => {
+          dateString = '2023-06-06T21:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday at closing', async () => {
+          dateString = '2023-06-06T22:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T22:00:00')
+        })
+
+        it('updates correctly on Tuesday after closing', async () => {
+          dateString = '2023-06-06T22:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday just before opening', async () => {
+          dateString = '2023-06-07T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday at opening', async () => {
+          dateString = '2023-06-07T16:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T16:00:00')
+        })
+
+        it('updates correctly on Wednesday after opening', async () => {
+          dateString = '2023-06-07T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T18:00:00')
+        })
+
+        it('updates correctly on Wednesday after 3', async () => {
+          dateString = '2023-06-07T20:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday just before closing', async () => {
+          dateString = '2023-06-07T21:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday at closing', async () => {
+          dateString = '2023-06-07T22:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T22:00:00')
+        })
+
+        it('updates correctly on Wednesday after closing', async () => {
+          dateString = '2023-06-07T22:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-08T16:00:00')
+        })
+
+        it('updates correctly on Thursday after closing', async () => {
+          dateString = '2023-06-08T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-09T16:00:00')
+        })
+
+        it('updates correctly on Saturday after closing', async () => {
+          dateString = '2023-06-10T20:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T18:00:00')
+        })
+
+        it('updates correctly on Sunday before opening', async () => {
+          dateString = '2023-06-11T15:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mapp8', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T18:00:00')
+        })
+
+      })
+
+      describe('Second floor scholar rooms', () => {
+        it('updates correctly on Tuesday just before opening', async () => {
+          dateString = '2023-06-06T14:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T15:00:00')
+        })
+
+        it('updates correctly on Tuesday at opening', async () => {
+          dateString = '2023-06-06T15:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T15:00:00')
+        })
+
+        it('updates correctly on Tuesday just after opening', async () => {
+          dateString = '2023-06-06T15:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T17:00:00')
+        })
+
+        it('updates correctly on Tuesday at odd hours', async () => {
+          dateString = '2023-06-06T16:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T17:00:00')
+        })
+
+        it('updates correctly on Tuesday at even times off the hour', async () => {
+          dateString = '2023-06-06T17:15:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T19:00:00')
+        })
+
+        it('updates correctly on Tuesday at just before closing', async () => {
+          dateString = '2023-06-06T22:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T23:00:00')
+        })
+
+        it('updates correctly on Tuesday at closing', async () => {
+          dateString = '2023-06-06T23:00:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-06T23:00:00')
+        })
+
+        it('updates correctly on Tuesday just after closing', async () => {
+          dateString = '2023-06-06T23:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-07T15:00:00')
+        })
+
+        it('updates correctly on Saturday just after closing', async () => {
+          dateString = '2023-06-10T23:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T19:00:00')
+        })
+
+        it('updates correctly on Sunday before opening', async () => {
+          dateString = '2023-06-11T14:59:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-11T19:00:00')
+        })
+
+        it('updates correctly on Sunday after closing', async () => {
+          dateString = '2023-06-11T21:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-12T15:00:00')
+        })
+
+        it('updates correctly on Monday after closing', async () => {
+          dateString = '2023-06-12T21:01:00+00:00'
+          setWindow()
+          expect((estimator._adjustToSpecialSchedule('mala', dateString)).arrivalAtHoldshelf)
+          .to.include('2023-06-13T15:00:00')
+        })
+      })
+
+
+    })
+  })
 })
