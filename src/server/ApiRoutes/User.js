@@ -7,6 +7,8 @@ function requireUser(req, res) {
     !req.patronTokenResponse.decodedPatron || !req.patronTokenResponse.decodedPatron.sub) {
     // redirect to login
     const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api/`), `${appConfig.baseUrl}/`)
+    // TODO: Express 4.x strips the port from req.hostname, inconveniencing
+    // local development. May cautiously retrieve it from headers or local config
     const fullUrl = encodeURIComponent(`${req.protocol}://${req.hostname}${originalUrl}`);
     redirect = `${appConfig.loginUrl}?redirect_uri=${fullUrl}`;
     if (!req.originalUrl.includes('/api/')) {

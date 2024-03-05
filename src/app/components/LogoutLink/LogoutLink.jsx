@@ -13,7 +13,9 @@ const LogoutLink = ({
   delineate = false
 }) => {
   const logoutLink = `${appConfig.logoutUrl}?redirect_uri=`;
-  const [backLink, setBackLink] = useState('');
+  // Set reasonable default for logout redirect_uri for noscript users,
+  // to be overwritten by useEffect client-side:
+  const [backLink, setBackLink] = useState(`https://www.nypl.org${baseUrl}`);
   const { loggedIn } = useContext(PatronContext);
 
   useEffect(() => {

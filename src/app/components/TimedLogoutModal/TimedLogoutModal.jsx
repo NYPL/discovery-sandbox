@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button } from '@nypl/design-system-react-components';
 
-import { logOutFromEncoreAndCatalogIn } from '../../utils/logoutUtils';
+import { logoutViaRedirect } from '../../utils/logoutUtils';
 import { deleteCookie } from '../../utils/cookieUtils';
 
 /**
@@ -20,10 +20,12 @@ const TimedLogoutModal = (props) => {
   const [update, setUpdate] = React.useState(false);
 
   const logOutAndRedirect = () => {
-    logOutFromEncoreAndCatalogIn(() => {
-      deleteCookie('accountPageExp');
-      window.location.replace(baseUrl);
-    });
+    // If patron clicked Log Out before natural expiration of cookie,
+    // explicitly delete it:
+    deleteCookie('accountPageExp');
+
+    const redirectUri = (typeof window !== 'undefined') ? `${window.location.origin}${baseUrl}` : '';
+    logoutViaRedirect(redirectUri);
   };
 
   let minutes = 0;
@@ -37,7 +39,7 @@ const TimedLogoutModal = (props) => {
       .find(el => el.includes('accountPageExp'))
       .split('=')[1];
 
-    const timeLeft = new Date(expTime).getTime() - new Date().getTime();
+    const timeLeft = (new Date(expTime).getTime() - new Date().getTime()) / 1000;
 
     React.useEffect(() => {
       const timeout = setTimeout(() => {
@@ -49,10 +51,18 @@ const TimedLogoutModal = (props) => {
       };
     });
 
-    minutes = parseInt(timeLeft / (60 * 1000), 10);
-    seconds = parseInt((timeLeft % (60 * 1000)) / 1000, 10);
+    minutes = Math.max(parseInt(timeLeft / 60), 0);
+    seconds = Math.max(parseInt(timeLeft % 60), 0);
+
+    // Theoretically, accountPageExp should disappear after 5mins, causing
+    // logOutAndRedirect() to be fired above, but let's make sure a failure
+    // there never allows the timer to pass zero:
+    if (timeLeft <= 0) {
+      logOutAndRedirect();
+    }
   }
 
+  // Show warning when 2m remaining:
   const open = minutes < 2;
   if (!open) return null;
 

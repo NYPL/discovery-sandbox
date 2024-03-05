@@ -15,7 +15,7 @@ import LoadingLayer from '../components/LoadingLayer/LoadingLayer';
 import TimedLogoutModal from '../components/TimedLogoutModal/TimedLogoutModal';
 import CancelConfirmationModal from '../components/AccountPage/CancelConfirmationModal';
 import SccContainer from '../components/SccContainer/SccContainer';
-import { logOutFromEncoreAndCatalogIn } from '../utils/logoutUtils';
+import { logoutViaIframe } from '../utils/logoutUtils';
 
 import { manipulateAccountPage, makeRequest, buildReqBody, formatPatronExpirationDate } from '../utils/accountPageUtils';
 import {
@@ -85,7 +85,7 @@ const AccountPage = (props, context) => {
   useEffect(() => {
     if (typeof window !== 'undefined' && (!patron.id || accountHtml.error)) {
       const fullUrl = encodeURIComponent(window.location.href);
-      logOutFromEncoreAndCatalogIn(() => {
+      logoutViaIframe(() => {
         const redirectFromTracker = trackRedirects();
         if (!redirectFromTracker) window.location.replace(`${appConfig.loginUrl}?redirect_uri=${fullUrl}`);
       });

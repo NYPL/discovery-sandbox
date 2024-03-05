@@ -30,11 +30,18 @@ const loadLogoutIframe = (onload) => {
 };
 
 /**
-  * logOutFromEncoreAndCatalogIn(time, isTest)
-  * The timer to delete log in related cookies and call the method to completely log out from Encore
-  * and Catalog. It is called by setEncoreLoggedInTimer.
+  * logoutViaRedirect (redirectUri)
+  * Immediately enter Logout flow with optional redirectUri
   */
-export const logOutFromEncoreAndCatalogIn = (onload) => {
+export const logoutViaRedirect = (redirectUri = '') => {
+  window.location.replace(`${appConfig.logoutUrl}?redirect_uri=${redirectUri}`);
+}
+
+/**
+  * logoutViaIframe (cb)
+  * Delete login cookies and load a hidden iframe that loads the Logout route.
+  */
+export const logoutViaIframe = (onload) => {
   deleteCookie('PAT_LOGGED_IN');
   deleteCookie('VALID_DOMAIN_LAST_VISITED');
   deleteCookie('nyplIdentityPatron');
