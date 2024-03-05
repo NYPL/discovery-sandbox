@@ -7,25 +7,29 @@ import { useSelector } from 'react-redux';
 import LogoutLink from '../LogoutLink/LogoutLink';
 import appConfig from '../../data/appConfig';
 
-const SubNavLink = ({ type, activeSection, href, children, reloadDocument }) => (
-  <DSLink
-    className={`sub-nav__link${type === activeSection ? ' active-section' : ''}`}
-  >
-    <Link to={href} reloadDocument={reloadDocument}>{children}</Link>
-  </DSLink>
-);
+const SubNavLink = ({ type, activeSection, href, children, reverseProxyEnabled }) => {
+  return (reverseProxyEnabled ?
+    <DSLink
+      className={`sub-nav__link${type === activeSection ? ' active-section' : ''}`}
+      href={href}
+    >{children}</DSLink> :
+    <DSLink
+      className={`sub-nav__link${type === activeSection ? ' active-section' : ''}`}
+    ><Link to={href}>{children}</Link></DSLink>
+  )
+};
 
 SubNavLink.propTypes = {
   type: PropTypes.string,
   activeSection: PropTypes.string,
   href: PropTypes.string,
   children: PropTypes.string,
-  reloadDocument: PropTypes.bool
+  reverseProxyEnabled: PropTypes.bool
 };
 
 const SubNav = (props) => {
   const features = useSelector(state => state.features);
-  const { baseUrl } = appConfig;
+  const { baseUrl, sierraUpgradeAugust2023, reverseProxyEnabled } = appConfig;
 
   return (
     <nav
@@ -36,7 +40,7 @@ const SubNav = (props) => {
         <SubNavLink
           type="search"
           href={`${baseUrl}/`}
-          reloadDocument={appConfig.reverseProxyEnabled}
+          reverseProxyEnabled={reverseProxyEnabled}
           {...props}
         >
           Search
