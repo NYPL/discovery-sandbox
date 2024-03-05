@@ -71,7 +71,8 @@ const commonSettings = {
         WEBPAC_BASE_URL: JSON.stringify(process.env.WEBPAC_BASE_URL),
         FEATURES: JSON.stringify(process.env.FEATURES),
         SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
-        SIERRA_UPGRADE_AUG_2023: JSON.stringify(process.env.SIERRA_UPGRADE_AUG_2023)
+        LAUNCH_EMBED_URL: JSON.stringify(process.env.LAUNCH_EMBED_URL),
+        REVERSE_PROXY_ENABLED: JSON.stringify(process.env.REVERSE_PROXY_ENABLED)
       },
     }),
     // new BundleAnalyzerPlugin({
