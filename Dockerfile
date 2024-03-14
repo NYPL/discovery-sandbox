@@ -1,15 +1,12 @@
 # Setup node environment
-FROM node:16.12.0
+FROM node:14
 # # Build the environment.
 # FROM node:15.2.0-alpine
 
 # Install git to resolve issues installing the
 # nypl/dgx-header-component package.
-# RUN apk update 
+# RUN apk update
 # RUN apk add git
-
-RUN apt-get update
-RUN apt-get install -y build-essential
 
 WORKDIR /app
 
@@ -31,7 +28,7 @@ EXPOSE 3000
 
 # Build the app!
 
-RUN npm run build 
+#RUN npm run build
 
 # CMD is the default command when running the docker container.
 
