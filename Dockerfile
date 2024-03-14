@@ -8,6 +8,9 @@ FROM node:16.12.0
 # RUN apk update 
 # RUN apk add git
 
+RUN apt-get update
+RUN apt-get install -y build-essential
+
 WORKDIR /app
 
 # Set environment variables. NODE_ENV is set early because we
