@@ -39,7 +39,7 @@ export const defaultHtml = '<div> Unable to load your account information. ' +
   'Please try again after a few minutes. ' +
   'You can also view your account in our <a href="' +
   appConfig.circulatingCatalog +
-  '/iii/encore/myaccount" > Circulating Catalog</a></div>'
+  '/?openAccount=checkouts" > Circulating Catalog</a></div>'
 
 export const preprocessAccountHtml = (html) => {
   try {
