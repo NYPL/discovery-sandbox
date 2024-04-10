@@ -1,5 +1,10 @@
 ## CHANGE LOG
 
+### 1.8.2
+
+### Updates
+- Updates Circulating Link paths to match those expected by the new borrow.nypl.org domain.
+
 ### 1.8.1
 
 ### Adds
