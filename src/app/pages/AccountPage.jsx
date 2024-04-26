@@ -22,9 +22,6 @@ import {
   basicQuery,
   ajaxCall,
 } from '../utils/utils';
-import {
-  setCookieWithExpiration,
-} from '../utils/cookieUtils';
 
 const AccountPage = (props, context) => {
   const { patron, accountHtml, appConfig } = useSelector(state => ({
@@ -67,8 +64,8 @@ const AccountPage = (props, context) => {
       if (currentCount > 3) {
         ajaxCall(
           `${baseUrl}/api/accountError?type=redirect_loop&page=${encodeURI(window.location.href)}`,
-          () => {},
-          () => {},
+          () => { },
+          () => { },
         );
         window.location.replace(`${baseUrl}/accountError`);
         return true;
@@ -160,15 +157,6 @@ const AccountPage = (props, context) => {
       activeSection="account"
       pageTitle="Account"
     >
-      <div className="content-header research-search">
-        <div className="research-search__inner-content">
-          <Search
-            router={context.router}
-            createAPIQuery={basicQuery()}
-          />
-          <EDSLink />
-        </div>
-      </div>
       <div className="nypl-patron-page">
         <Heading
           level="two"
