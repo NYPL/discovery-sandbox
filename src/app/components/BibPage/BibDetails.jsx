@@ -291,16 +291,28 @@ const BibDetails = (props) => {
       router.push(`${appConfig.baseUrl}/search?${query}`);
     };
 
-    return (
-      <DSLink dir={stringDirection(label, useParallels)}>
+    // In the reverse proxy state, we want to navigate to the page and
+    // cause a refresh. Otherwise, we want to use react-router to
+    // stay within the app. This is to work with the new
+    // Research Catalog update.
+    return (appConfig.reverseProxyEnabled ? (
+        <DSLink
+          dir={stringDirection(label, useParallels)}
+          key={label.trim().replace(/ /g, '')}
+          href={`${appConfig.baseUrl}/search?${query}`}
+        >
+          {label}
+        </DSLink>
+      ) : (
         <Link
+          dir={stringDirection(label, useParallels)}
           key={label.trim().replace(/ /g, '')}
           onClick={onClick}
           to={`${appConfig.baseUrl}/search?${query}`}
         >
           {label}
         </Link>
-      </DSLink>
+      )
     );
   };
 

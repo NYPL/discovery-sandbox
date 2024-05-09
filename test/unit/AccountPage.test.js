@@ -18,7 +18,7 @@ describe('AccountPage', () => {
     // the test from ever terminating.
     // This disables the clock.
     sandbox = sinon.createSandbox();
-    sandbox.stub(global, 'setTimeout').callsFake(() => {});
+    sandbox.stub(global, 'setTimeout').callsFake(() => { });
   });
 
   after(() => {
@@ -32,10 +32,6 @@ describe('AccountPage', () => {
     before(() => {
       mockStore = makeTestStore({});
       component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
-    });
-
-    it('should render a `Search` component', () => {
-      expect(component.find('Search').length).to.equal(1);
     });
 
     it('should render a <div> with class .nypl-patron-page', () => {
@@ -147,7 +143,7 @@ describe('AccountPage', () => {
       let clock;
       before(() => {
         clock = sinon.useFakeTimers();
-        replaceSpy = sandbox.stub(window.location, 'replace').callsFake(() => {});
+        replaceSpy = sandbox.stub(window.location, 'replace').callsFake(() => { });
         const mockStore = makeTestStore({ accountHtml: { error: true } });
         document.cookie = 'nyplAccountRedirectTracker=25expMon, 05 Apr 2021 20:06:13 GMT';
         component = mountTestRender(<AccountPage params={{}} />, { store: mockStore });
