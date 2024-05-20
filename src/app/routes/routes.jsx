@@ -41,7 +41,7 @@ const routes = {
       <Route path="/hold/confirmation/:bibId-:itemId" component={HoldConfirmation} />
       <Route path="/subject_headings/:subjectHeadingUuid" component={SubjectHeadingShowPage} />
       <Route path="/subject_headings" component={SubjectHeadingsIndexPage} />
-      <Redirect from="/account(/:content)" to="/" />
+      <Route path="/account(/:content)" component={AccountPage} />
       <Route path="/accountError" component={AccountError} />
       <Route path="/404/redirect" component={Redirect404} />
       <Route path="/404" component={NotFound404} />
@@ -61,7 +61,7 @@ const routes = {
       <Route path={`${baseUrl}/hold/confirmation/:bibId-:itemId`} component={HoldConfirmation} />
       <Route path={`${baseUrl}/subject_headings/:subjectHeadingUuid`} component={SubjectHeadingShowPage} />
       <Route path={`${baseUrl}/subject_headings`} component={SubjectHeadingsIndexPage} />
-      <Redirect from={`${baseUrl}/account(/:content)`} to={baseUrl} />
+      <Route path={`${baseUrl}/account(/:content)`} component={AccountPage} />
       <Route path={`${baseUrl}/accountError`} component={AccountError} />
       <Route path={`${baseUrl}/404/redirect`} component={Redirect404} />
       <Route path={`${baseUrl}/404`} component={NotFound404} />
