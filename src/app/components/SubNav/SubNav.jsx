@@ -59,6 +59,7 @@ const SubNav = (props) => {
               <SubNavLink
                 type="account"
                 href={`${baseUrl}/account`}
+                reverseProxyEnabled={reverseProxyEnabled}
                 {...props}
               >
                 My Account
