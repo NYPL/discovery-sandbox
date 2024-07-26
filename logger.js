@@ -55,7 +55,7 @@ const getLogLevelCode = (levelString) => {
 // const timestamp = () => new Date().toISOString();
 const formatter = printf((options) => {
   const result = {
-    timestamp: options.timestamp(),
+    timestamp: options.timestamp,
     levelCode: getLogLevelCode(options.level),
     level: options.level.toUpperCase(),
   };
