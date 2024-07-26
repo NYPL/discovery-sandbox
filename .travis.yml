@@ -4,7 +4,7 @@ node_js:
 before_install:
 - # We need to set TZ outside the Node process. See ./ENVIRONMENTVARS.md
 - export TZ=America/New_York
-install: npm rebuild node-sass && npm install
+install: npm install
 before_script: npm run dist
 script: npm test
 before_deploy: echo 'All unit tests passed; Successfull built distribution assets;

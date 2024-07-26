@@ -14,9 +14,39 @@ App-specific utilities and defaults
 /*
 Import style rules from NYPL React module components
 */
-@import "~@nypl/dgx-header-component/dist/styles/main";
-@import "~@nypl/dgx-react-footer/dist/styles/styles";
-@import "components/**/*.scss";
+@import "components/Drbb/Drbb";
+@import "components/SubjectHeadings/AdditionalSubjectHeadingsButton";
+@import "components/SubjectHeadings/AlphabeticalPagination";
+@import "components/SubjectHeadings/BibsList";
+@import "components/SubjectHeadings/NestedTableHeader";
+@import "components/SubjectHeadings/PreviewComponents";
+@import "components/SubjectHeadings/SubjectHeading";
+@import "components/SubjectHeadings/SubjectHeadingSearch";
+@import "components/SubjectHeadings/SubjectHeadingShow";
+@import "components/SubjectHeadings/SubjectHeadingsTable";
+@import "components/SubjectHeadings/SubjectHeadingsTableHeader";
+@import "components/AccountPage";
+@import "components/AdvancedSearch";
+@import "components/aeonRequestButton";
+@import "components/BibDetails";
+@import "components/BibPage";
+@import "components/FilterPopup";
+@import "components/HoldConfirmation";
+@import "components/HoldRequest";
+@import "components/Home";
+@import "components/ItemFilter";
+@import "components/ItemFilters";
+@import "components/ItemsContainer";
+@import "components/ItemTable";
+@import "components/LoadingLayer";
+@import "components/Notification";
+@import "components/Redirect404";
+@import "components/SccContainer";
+@import "components/Search";
+@import "components/SelectedFilters";
+@import "components/SubjectHeadings";
+@import "components/SubNav";
+@import "components/TimedLogoutModal";
 @import "style-v2.scss";
 
 // From older DS version

@@ -258,7 +258,8 @@
   .clear-filters-button {
     padding: 7px 16px;
     margin-bottom: 20px;
-    @include border-radius(5px);
+    // TODO
+    // @include border-radius(5px);
 
     @include media($nypl-breakpoint-small) {
       margin-bottom: 0;

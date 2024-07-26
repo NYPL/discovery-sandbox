@@ -2,13 +2,11 @@
 
 # NYPL Discovery Application
 
-## The [NYPL](https://www.nypl.org/) [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
+## The NYPL [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
 
 For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=flat-square)](https://github.com/NYPL/discovery-front-end)
-[![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=flat-square&label=Dev)](https://app.travis-ci.com/NYPL/discovery-front-end)
-[![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=flat-square&label=Pro)](https://app.travis-ci.com/NYPL/discovery-front-end)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
@@ -57,18 +55,7 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 
 ### Node Runtime
 
-```
-Version 10.17.0
-```
-
-#### NVM
-
-Best practices (though not required) suggest using Node Version Manger (nvm) to aid in managing which Node runtime to use during development. Through nvm, you can quickly migrate between different node versions for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
-
-Relevant packages can be found here:
-
-- [NVM for Windows](https://github.com/coreybutler/nvm-windows)
-- [NVM for Mac](https://github.com/nvm-sh/nvm)
+Version 20. If using `nvm`, run `nvm use` to pick up the version configured in the `.nvmrc` file.
 
 ### Installation
 
@@ -104,9 +91,7 @@ See [ENVIRONMENTVARS](ENVIRONMENTVARS.md) for futher information on all environm
 
 #### VPN
 
-Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly, Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
-
-**To set up Cisco AnyConnect contact a coworker.**
+Data is fetched via two APIs: Platform and `Subject Heading Explorer` (SHEP). For SHEP to perform correctly, OpenVPN Connect must be installed and connected. Contact DevOps if you need VPN access.
 
 #### Authentication
 
@@ -161,7 +146,7 @@ Visit `localhost:3001` to see the web app locally.
 
 ## Technology
 
-- Universal React
+- React
 - Redux
 - Webpack 4 & Webpack Dev Server
 - ES6 and Babel
