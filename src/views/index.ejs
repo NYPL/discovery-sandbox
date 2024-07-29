@@ -41,6 +41,8 @@
     <% if (isProduction) { %>
     	<!-- Minified Styles -->
     	<link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
+    <% } else { %>
+      <link rel="stylesheet" type="text/css" href="/styles.css">
     <% } %>
 
     <!--min height on header container to avoid jump on page load-->

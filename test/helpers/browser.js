@@ -18,6 +18,13 @@ global.document = jsdom('');
 const { document } = global;
 global.window = document.defaultView;
 
+window.requestAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};
+window.cancelAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};
+
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
     exposedProperties.push(property);

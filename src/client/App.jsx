@@ -5,7 +5,7 @@ import 'core-js/stable';
 import { DSProvider } from '@nypl/design-system-react-components';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Router } from 'react-router';
+import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
 import a11y from 'react-a11y';
 import { Provider } from 'react-redux';
 // import useScroll from 'react-router-scroll/lib/useScroll';
@@ -29,8 +29,8 @@ window.onload = () => {
     <DSProvider>
       <Provider store={store}>
         <Router
-          // history={browserHistory}
-          // render={applyRouterMiddleware(useScroll())}
+          history={browserHistory}
+          render={applyRouterMiddleware()}
         >
           {routes.client}
         </Router>

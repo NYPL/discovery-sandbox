@@ -11,7 +11,6 @@ const appConfig = {
   legacyBaseUrl: process.env.LEGACY_BASE_URL,
   favIconPath: 'https://ux-static.nypl.org/images/favicon.ico',
   port: 3001,
-  webpackDevServerPort: 3000,
   environment: process.env.APP_ENV || 'production',
   api: {
     platform: {
