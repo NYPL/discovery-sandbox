@@ -6,7 +6,6 @@
 - [Server and Application-wide Variables](#server-and-application-wide-variables)
 - [Application Variables](#application-variables)
 - [Testing](#testing)
-- [AWS Elastic Beanstalk Environment Variables](#aws-elastic-beanstalk-environment-variables)
 
 ## General Information
 

@@ -2,7 +2,6 @@ const fs = require('fs');
 
 const IGNORE = [
   '.ebextensions',
-  '.elasticbeanstalk',
   '.git',
   '.nyc_output',
   'coverage',

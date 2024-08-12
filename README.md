@@ -43,7 +43,6 @@ For searching, discovering and placing a hold on research items from NYPL and Re
   - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
   - [react-a11y](#react-a11y)
 - [Deployment](#deployment)
-  - [Elastic Beanstalk](#elastic-beanstalk)
 - [Feedback Form](#feedback-form)
 - [Alarm and Monitoring with AWS CloudWatch](#alarm-and-monitoring-with-aws-cloudwatch)
 - [Adding Locations](#adding-locations)
@@ -294,10 +293,6 @@ We have CI/CD configured through Github Actions for the following branches:
 - `qa` deploys `qa-discovery.nypl.org/`
 - `production` deploys `discovery.nypl.org/`
 - `on-site-edd-development` to `DiscoveryUi-edd-training`
-
-### Elastic Beanstalk
-
-We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
 
 ### Production Ready Checklist
 
