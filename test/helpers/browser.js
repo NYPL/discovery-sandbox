@@ -1,14 +1,13 @@
 require('dotenv').config({ path: 'test.env' });
-
+require('@babel/register')();
 require('mock-local-storage');
+
 global.window = {};
 
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 
 enzyme.configure({ adapter: new Adapter() });
-
-require('@babel/register')();
 
 const jsdom = require('jsdom').jsdom;
 
