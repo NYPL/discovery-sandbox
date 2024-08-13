@@ -25,7 +25,7 @@ describe('EDSLink', () => {
     const edsLink = component.find('a')
     expect(edsLink.text()).to.include('Article Search');
     expect(edsLink.prop('href')).to.equal(
-      'https://research.ebsco.com/c/2styhb'
+      'https://discovery.ebsco.com/c/tvrejk?acr_values=guest'
     );
   });
 });

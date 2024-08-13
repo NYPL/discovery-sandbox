@@ -8,7 +8,7 @@ const EDSLink = () => {
   return (
     <Box mt="s" mb="s">
       <Text size="body2" className="eds-link">
-        <span style={{color: "var(--nypl-colors-ui-success-primary)"}}>New!</span> Try our <DSLink href="https://research.ebsco.com/c/2styhb" target="_blank"><strong>Article Search</strong></DSLink> to discover online journals, books, and more from home{" "}
+        <span style={{color: "var(--nypl-colors-ui-success-primary)"}}>New!</span> Try our <DSLink href="https://discovery.ebsco.com/c/tvrejk?acr_values=guest" target="_blank"><strong>Article Search</strong></DSLink> to discover online journals, books, and more from home{" "}
         with your library card.
       </Text>
     </Box>
