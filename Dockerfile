@@ -13,7 +13,7 @@ RUN npm install --force
 
 # Copy the app files.
 COPY . .
-COPY .env .env
+# COPY .env .env
 
 
 # Build the app!
