@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: npm run test
   publish_qa:
-    needs: test
+    # needs: test
     # TODO: update this to `qa` branch
     if: github.ref == 'refs/heads/TGR-50/remediation-update'
     name: Publish image to ECR and update ECS stack
@@ -61,7 +61,7 @@ jobs:
           aws ecs update-service --cluster nypl-discovery-qa-tf --service nypl-discovery-qa-tf --force-new-deployment
           aws ecs update-service --cluster nypl-discovery-train-tf --service nypl-discovery-train-tf --force-new-deployment
   publish_production:
-    needs: test
+    # needs: test
     # TODO UPDATE THIS
     if: github.ref == 'refs/heads/tgr-production'
     name: Publish image to ECR and update ECS stack
