@@ -58,8 +58,8 @@ jobs:
       - name: Force ECS Update
         # Deploy to both the production and train clusters
         run: |
-          aws ecs update-service --cluster nypl-discovery-qa-tf --service nypl-discovery-qa-tf --force-new-deployment
-          aws ecs update-service --cluster nypl-discovery-train-tf --service nypl-discovery-train-tf --force-new-deployment
+          aws ecs update-service --cluster nypl-discovery-qa --service nypl-discovery-qa --force-new-deployment
+          aws ecs update-service --cluster nypl-discovery-train --service nypl-discovery-train --force-new-deployment
   publish_production:
     # needs: test
     # TODO UPDATE THIS
