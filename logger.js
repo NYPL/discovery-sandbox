@@ -12,8 +12,6 @@ const {
   colorize,
 } = format;
 
-// Supress error handling
-// winston.emitErrs = false;
 // Set default NYPL agreed upon log levels
 const nyplLogLevels = {
   levels: {
@@ -51,8 +49,6 @@ const getLogLevelCode = (levelString) => {
   }
 };
 
-// const logLevel = (process.env.NODE_ENV === 'production') ? 'info' : 'debug';
-// const timestamp = () => new Date().toISOString();
 const formatter = printf((options) => {
   const result = {
     timestamp: options.timestamp,

@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
-// import FocusTrap from 'focus-trap-react';
 
 import { getLabelsForValues, isOptionSelected } from './itemFilterUtils';
 
@@ -122,73 +121,61 @@ const ItemFilter = ({
   const open = mobile ? mobileIsOpen : isOpen;
 
   return (
-    // <FocusTrap
-    //   focusTrapOptions={{
-    //     clickOutsideDeactivates: true,
-    //     onDeactivate: () => {
-    //       if (!mobile) manageFilterDisplay('none');
-    //     },
-    //     returnFocusOnDeactivate: false,
-    //   }}
-    //   active={isOpen}
-    //   className="item-filter"
-    // >
-      <div className="item-filter">
-        <Button
-          buttonType="secondary"
-          className={`item-filter-button ${open ? ' open' : ''}`}
-          id="item-filter-button"
-          onClick={clickHandler}
-          type="button"
-        >
-          {field}{numOfSelections}
-          <Icon name={open ? 'minus' : 'plus'} size='medium' />
-        </Button>
-        {open ? (
-          <div className="item-filter-content">
-            <fieldset>
-              {updatedOptions.map((option, key) => (
-                <Checkbox
-                  id={option.value}
-                  labelText={option.label}
-                  onChange={() => handleCheckbox(option)}
-                  key={key}
-                  isChecked={isSelected(option)}
-                  __css={{
-                    span: {
-                      fontSize: '15px',
-                      fontWeight: 'medium',
-                    }
-                  }}
-                />
-              ))}
-            </fieldset>
-            {
-              !mobile ?
-                (
-                  <div className="item-filter-buttons">
-                    <Button
-                      buttonType="link"
-                      onClick={() => clear()}
-                      isDisabled={!selectedFields[field].length}
-                      id="clear-filter-button"
-                    >
-                      Clear
-                    </Button>
-                    <Button
-                      onClick={() => submitFilterSelections()}
-                      isDisabled={!selectionMade}
-                      id="apply-filter-button"
-                    >
-                      Apply
-                    </Button>
-                  </div>
-                ) : null
-            }
-          </div>
-        ) : null}
-      </div>
-    // </FocusTrap>
+    <div className="item-filter">
+      <Button
+        buttonType="secondary"
+        className={`item-filter-button ${open ? ' open' : ''}`}
+        id="item-filter-button"
+        onClick={clickHandler}
+        type="button"
+      >
+        {field}{numOfSelections}
+        <Icon name={open ? 'minus' : 'plus'} size='medium' />
+      </Button>
+      {open ? (
+        <div className="item-filter-content">
+          <fieldset>
+            {updatedOptions.map((option, key) => (
+              <Checkbox
+                id={option.value}
+                labelText={option.label}
+                onChange={() => handleCheckbox(option)}
+                key={key}
+                isChecked={isSelected(option)}
+                __css={{
+                  span: {
+                    fontSize: '15px',
+                    fontWeight: 'medium',
+                  }
+                }}
+              />
+            ))}
+          </fieldset>
+          {
+            !mobile ?
+              (
+                <div className="item-filter-buttons">
+                  <Button
+                    buttonType="link"
+                    onClick={() => clear()}
+                    isDisabled={!selectedFields[field].length}
+                    id="clear-filter-button"
+                  >
+                    Clear
+                  </Button>
+                  <Button
+                    onClick={() => submitFilterSelections()}
+                    isDisabled={!selectionMade}
+                    id="apply-filter-button"
+                  >
+                    Apply
+                  </Button>
+                </div>
+              ) : null
+          }
+        </div>
+      ) : null}
+    </div>
   );
 };
 
