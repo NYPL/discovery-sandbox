@@ -56,10 +56,46 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:qa-latest
 
       - name: Force ECS Update
-        # Deploy to both the production and train clusters
+        # Deploy to the qa cluster
         run: |
           aws ecs update-service --cluster discovery-ui-qa --service discovery-ui-qa --force-new-deployment
-          aws ecs update-service --cluster nypl-discovery-train --service nypl-discovery-train --force-new-deployment
+  publish_train:
+    # needs: test
+    # TODO: update this to `train` branch
+    if: github.ref == 'refs/heads/TGR-50/remediation-update'
+    name: Publish image to ECR and update ECS stack
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          role-to-assume: arn:aws:iam::946183545209:role/GithubActionsDeployerRole
+          aws-region: us-east-1
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: discovery-ui
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:train-latest
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:train-latest
+
+      - name: Force ECS Update
+        # Deploy to the train cluster
+        run: |
+          aws ecs update-service --cluster discovery-ui-edd --service nypl-discovery-train --force-new-deployment
   publish_production:
     # needs: test
     # TODO UPDATE THIS
