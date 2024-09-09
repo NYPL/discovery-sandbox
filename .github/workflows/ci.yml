@@ -95,7 +95,7 @@ jobs:
       - name: Force ECS Update
         # Deploy to the train cluster
         run: |
-          aws ecs update-service --cluster discovery-ui-edd --service nypl-discovery-train --force-new-deployment
+          aws ecs update-service --cluster discovery-ui-edd --service discovery-ui-edd --force-new-deployment
   publish_production:
     # needs: test
     # TODO UPDATE THIS
