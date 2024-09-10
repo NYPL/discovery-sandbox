@@ -23,9 +23,8 @@ jobs:
       - name: Test
         run: npm run test
   publish_qa:
-    # needs: test
-    # TODO: update this to `qa` branch
-    if: github.ref == 'refs/heads/TGR-50/remediation-update'
+    needs: test
+    if: github.ref == 'refs/heads/qa'
     name: Publish image to ECR and update ECS stack
     runs-on: ubuntu-latest
     permissions:
@@ -60,9 +59,8 @@ jobs:
         run: |
           aws ecs update-service --cluster discovery-ui-qa --service discovery-ui-qa --force-new-deployment
   publish_train:
-    # needs: test
-    # TODO: update this to `train` branch
-    if: github.ref == 'refs/heads/TGR-50/remediation-update'
+    needs: test
+    if: github.ref == 'refs/heads/train'
     name: Publish image to ECR and update ECS stack
     runs-on: ubuntu-latest
     permissions:
@@ -97,9 +95,8 @@ jobs:
         run: |
           aws ecs update-service --cluster discovery-ui-edd --service discovery-ui-edd --force-new-deployment
   publish_production:
-    # needs: test
-    # TODO UPDATE THIS
-    if: github.ref == 'refs/heads/tgr-production'
+    needs: test
+    if: github.ref == 'refs/heads/production'
     name: Publish image to ECR and update ECS stack
     runs-on: ubuntu-latest
     permissions:

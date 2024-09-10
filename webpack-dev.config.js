@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 
-// Sets appEnv so the the header component will point to the search app on either Dev or Prod
 const appEnv = process.env.APP_ENV ? process.env.APP_ENV : 'production';
 
 module.exports = {

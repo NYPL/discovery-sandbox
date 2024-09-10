@@ -58,16 +58,16 @@ Version 20. If using `nvm`, run `nvm use` to pick up the version configured in t
 
 ### Installation
 
-To install packages, in the repo directory run:
+To install packages, in the repo directory run the following command. Because of node version and npm package version issues, the `--force` flag is needed to override any conflicts.
 
 ```bash
-$ npm install
+$ npm install --force
 ```
 
 or
 
 ```bash
-$ npm i
+$ npm i --force
 ```
 
 #### Note: Pre and Post Installation
