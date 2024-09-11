@@ -180,16 +180,11 @@ This app has an unusual Git Workflow / deployment scheme:
 
 - Cut feature branches off of the `development` branch
 - Post a PR targeting `development`
-- After an approved PR to `development`, tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
-  - Alternatively, use `qa2-` as a tag prefix to deploy the change to ["edd-training"](https://discoveryui-edd-training.nypl.org/), our "QA2" server. This may be preferable when QA is locked up with another review and/or when you're seeking feedback on a feature while it's in active development.
-- Only after feature branch is approved in QA, merge to `development`
-- Merge `development` into `production` to deploy to production
+- Merge `development` into `qa` to deploy to QA
+- Merge `qa` into `train` to deploy to the Training site
+- Merge `qa` into `production` to deploy to production
 
 There are a couple of scenarios that complicate the above workflow:
-
-1. Sometimes, feature branches do not require QA, for instance changes to the README. In this case, it is OK to merge into `development` and `production` without a QA tag, but this should only be done in cases where no QA is necessary. Ideally we never QA work that is already merged to `development`.
-
-2. Sometimes, feature branches may be bundled together into a release branch. In this case, the release may be tagged for QA, and upon passing QA merged into `development`. The other branches can then be deleted. Ideally, anything merged to `development` should have been on QA exactly as it is at the time of merge.
 
 ## Webpack Bundle Analyzer
 
@@ -290,9 +285,9 @@ This will output warnings in the browser's console for elements that do not meet
 
 We have CI/CD configured through Github Actions for the following branches:
 
-- `qa` deploys `qa-discovery.nypl.org/`
-- `production` deploys `discovery.nypl.org/`
-- `on-site-edd-development` to `DiscoveryUi-edd-training`
+- `qa` deploys `qa-new-discovery.nypl.org/`
+- `train` deploys `new-discovery-training.nypl.org/`
+- `production` deploys `new-discovery.nypl.org/`
 
 ### Production Ready Checklist
 
