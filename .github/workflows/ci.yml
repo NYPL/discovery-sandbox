@@ -128,4 +128,4 @@ jobs:
 
       - name: Force ECS Update
         run: |
-          aws ecs update-service --cluster discovery-ui-production-tf --service discovery-ui-production --force-new-deployment
+          aws ecs update-service --cluster discovery-ui-production --service discovery-ui-production --force-new-deployment
