@@ -1,4 +1,4 @@
-import { Text, Card, CardHeading, CardActions, CardContent } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardActions, CardContent, DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -109,7 +109,7 @@ const ResultsList = ({
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <Card className="search-results-bib-card">
           <CardHeading level="three">
-            <Link onClick={
+            <DSLink onClick={
               () => {
                 updateResultSelection({
                   fromUrl: `${pathname}${search}`,
@@ -120,7 +120,7 @@ const ResultsList = ({
               to={bibUrl}
               className="title">
               {bibTitle}
-            </Link>
+            </DSLink>
           </CardHeading>
           <CardContent className="nypl-results-item-description">
             <ul>
@@ -155,7 +155,7 @@ const ResultsList = ({
                 {
                   totalPhysicalItems > 3 ?
                     (<CardActions className="results-items-element">
-                      <Link
+                      <DSLink
                         onClick={resourcesOnClick}
                         to={`${bibUrl}#items-table`}
                         className="search-results-list-link"
@@ -164,7 +164,7 @@ const ResultsList = ({
                         <Text isBold size="caption">
                           {`View All ${itemMessage}`} <RightWedgeIcon />
                         </Text>
-                      </Link>
+                      </DSLink>
                     </CardActions>
                     ) :
                     null
