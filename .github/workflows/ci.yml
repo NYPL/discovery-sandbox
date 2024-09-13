@@ -60,7 +60,7 @@ jobs:
           aws ecs update-service --cluster discovery-ui-qa --service discovery-ui-qa --force-new-deployment
   publish_train:
     # needs: test
-    if: github.ref == 'refs/heads/train'
+    if: github.ref == 'refs/heads/TGR-50/remediation-update'
     name: Publish image to ECR and update ECS stack
     runs-on: ubuntu-latest
     permissions:
