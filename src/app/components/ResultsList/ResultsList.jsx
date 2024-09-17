@@ -1,4 +1,4 @@
-import { Text, Card, CardHeading, CardActions, CardContent } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardActions, CardContent, Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router';
@@ -109,18 +109,33 @@ const ResultsList = ({
       <li key={i} className={`nypl-results-item ${hasRequestTable ? 'has-request' : ''}`}>
         <Card className="search-results-bib-card">
           <CardHeading level="three">
-            <Link onClick={
-              () => {
-                updateResultSelection({
-                  fromUrl: `${pathname}${search}`,
-                  bibId,
-                });
-              }
-            }
-              to={bibUrl}
-              className="title">
-              {bibTitle}
-            </Link>
+            {appConfig.reverseProxyEnabled ? (
+              <DSLink
+                onClick={() => {
+                  updateResultSelection({
+                    fromUrl: `${pathname}${search}`,
+                    bibId,
+                  });
+                }}
+                to={bibUrl}
+                className='title'
+              >
+                {bibTitle}
+              </DSLink>
+            ) : (
+              <Link
+                onClick={() => {
+                  updateResultSelection({
+                    fromUrl: `${pathname}${search}`,
+                    bibId,
+                  });
+                }}
+                to={bibUrl}
+                className='title'
+              >
+                {bibTitle}
+              </Link>
+            )}
           </CardHeading>
           <CardContent className="nypl-results-item-description">
             <ul>

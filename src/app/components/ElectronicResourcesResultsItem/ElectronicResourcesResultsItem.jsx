@@ -5,6 +5,7 @@ import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
 import { Heading, Text } from '@nypl/design-system-react-components';
+import {appConfig} from '../../appConfig';
 
 
 /**
@@ -36,7 +37,18 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
             >
               {resources[0].label || resources[0].url}
             </DSLink> :
-            <Link
+            (appConfig.reverseProxyEnabled ? (
+              <DSLink
+              onClick={onClick}
+              to={
+                `${bibUrl}#electronic-resources`
+              }
+              className="search-results-list-link"
+              >
+                <Text isBold size="caption">See All Available Online Resources <RightWedgeIcon /></Text>
+              </DSLink>
+            ) : (
+              <Link
               onClick={onClick}
               to={
                 `${bibUrl}#electronic-resources`
@@ -47,6 +59,7 @@ const ElectronicResourcesResultsItem = ({ resources, onClick, bibUrl }) => {
                 <Text isBold size="caption">See All Available Online Resources <RightWedgeIcon /></Text>
               }
             </Link>
+            ))
         }
     </section>
   )
