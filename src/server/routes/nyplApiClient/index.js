@@ -44,6 +44,9 @@ function nyplApiClient(options = { apiName: 'platform' }) {
   }
 
   const baseUrl = config.api[apiName][appEnvironment];
+  console.log({apiName})
+  console.log({appEnvironment})
+  console.log({baseUrl})
 
   if (kmsEnvironment === 'encrypted') {
     return new Promise((resolve, reject) => {

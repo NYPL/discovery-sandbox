@@ -54,6 +54,7 @@ const shepApiCall = (path, queryParams) => {
   const timeout = setTimeout(() => {
     source.cancel()
   }, 5000)
+  console.log({path})
   return axios({
     method: 'GET',
     url: `${appConfig.shepApi}${path}`,

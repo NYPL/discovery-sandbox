@@ -6,7 +6,10 @@ import logger from '../../../logger';
 import SubjectHeadings from './SubjectHeadings';
 
 const nyplApiClientCall = query => nyplApiClient()
-  .then(client => client.get(`/discovery/resources${query}`, { cache: false }))
+  .then(client => {
+    console.log(`/discovery/resources${query}`)
+    return client.get(`/discovery/resources${query}`, { cache: false })
+  })
   .catch(console.error);
 
 function fetchBibs(page, perPage, sortBy, order, subjectLiteral, shepApiBibCount, cb, errorcb) {
@@ -31,6 +34,7 @@ const bibsAjax = (req, res) => {
   const { subjectLiteral } = req.params;
   const { page, perPage, sort, order } = getReqParams(req.query);
   const shepApiBibCount = req.query.shep_bib_count;
+  console.log({shepApiBibCount})
   const bibsSource = req.query.source;
 
   const shepApiBibsCall = () => {
@@ -66,7 +70,13 @@ const bibsAjax = (req, res) => {
 
   const processData = (data) => {
     const { totalResults } = data;
-    if (bibsSource === 'discoveryApi' || useDiscoveryResults(totalResults)) {
+    console.log({bibsSource})
+    console.log(useDiscoveryResults(totalResults))
+    console.log({shepApiBibCount})
+    console.log(data)
+    if (true) {
+    // if (bibsSource === 'discoveryApi' || useDiscoveryResults(totalResults)) {
+      console.log('Using Discovery API');
       return res.json({
         results: data.itemListElement,
         page,
@@ -74,7 +84,8 @@ const bibsAjax = (req, res) => {
         bibsSource: 'discoveryApi',
       });
     }
-
+    
+    console.log('Using SHEP API');
     return shepApiBibsCall();
   };
 
