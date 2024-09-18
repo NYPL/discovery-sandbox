@@ -1,7 +1,6 @@
-import { Text, Card, CardHeading, CardActions, CardContent, DSLink } from '@nypl/design-system-react-components';
+import { Text, Card, CardHeading, CardActions, CardContent, Link as DSLink } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router';
 import {
   isEmpty as _isEmpty,
   isArray as _isArray,
@@ -117,7 +116,7 @@ const ResultsList = ({
                 });
               }
             }
-              to={bibUrl}
+              href={bibUrl}
               className="title">
               {bibTitle}
             </DSLink>
@@ -157,7 +156,7 @@ const ResultsList = ({
                     (<CardActions className="results-items-element">
                       <DSLink
                         onClick={resourcesOnClick}
-                        to={`${bibUrl}#items-table`}
+                        href={`${bibUrl}#items-table`}
                         className="search-results-list-link"
                         id="physical-items-link"
                       >
