@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router';
 import { aeonUrl } from '../../utils/utils';
 import { MediaContext } from '../Application/Application';
+import { useSelector } from 'react-redux';
 
 const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
+  const features = useSelector(state => state.features);
   const media = React.useContext(MediaContext);
 
   const ifAvailableHandler = (handler, available) => (available ? handler : (e) => { e.preventDefault() })
@@ -12,15 +14,12 @@ const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
     closedLocations,
     recapClosedLocations,
     nonRecapClosedLocations,
-    features,
   } = appConfig;
   const isRecap = item.isRecap;
   const allClosed = closedLocations
     .concat(isRecap ? recapClosedLocations : nonRecapClosedLocations)
     .includes('');
-  console.log({closedLocations, recapClosedLocations, nonRecapClosedLocations, allClosed})
   const isAeon = item.aeonUrl && features.includes('aeon-links');
-  console.log(item.aeonUrl, features, isAeon)
 
   const physRequestButton = () => {
     if (isAeon || allClosed || !item.physRequestable) {
