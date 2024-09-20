@@ -1,11 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router'
-import { Link as DSLink } from '@nypl/design-system-react-components'
+import { Heading, Text, Link as DSLink } from '@nypl/design-system-react-components'
 import {
   RightWedgeIcon,
 } from '@nypl/dgx-svg-icons';
-import { Heading, Text } from '@nypl/design-system-react-components';
-import {appConfig} from '../../appConfig';
+import appConfig from '../../data/appConfig';
 
 
 /**
