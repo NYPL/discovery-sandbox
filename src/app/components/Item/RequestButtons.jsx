@@ -18,7 +18,9 @@ const RequestButtons = ({ item, bibId, searchKeywords, appConfig, page }) => {
   const allClosed = closedLocations
     .concat(isRecap ? recapClosedLocations : nonRecapClosedLocations)
     .includes('');
+  console.log({closedLocations, recapClosedLocations, nonRecapClosedLocations, allClosed})
   const isAeon = item.aeonUrl && features.includes('aeon-links');
+  console.log(item.aeonUrl, features, isAeon)
 
   const physRequestButton = () => {
     if (isAeon || allClosed || !item.physRequestable) {
