@@ -233,12 +233,12 @@ export class HoldRequest extends React.Component {
     const bibLink =
       bibId && title ? (
         <h2>
-          <Link
+          <DSLink
             id='item-link'
-            to={`${appConfig.baseUrl}/bib/${bibId}`}
+            href={`${appConfig.baseUrl}/bib/${bibId}`}
           >
             {title}
-          </Link>
+          </DSLink>
         </h2>
       ) : null;
     const callNo =
