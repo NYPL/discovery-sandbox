@@ -9,7 +9,9 @@ function requireUser(req, res) {
     const originalUrl = req.originalUrl.replace(new RegExp(`^${appConfig.baseUrl}/api/`), `${appConfig.baseUrl}/`)
     // TODO: Express 4.x strips the port from req.hostname, inconveniencing
     // local development. May cautiously retrieve it from headers or local config
-    const fullUrl = encodeURIComponent(`${req.protocol}://${req.hostname}${originalUrl}`);
+    const fullUrl = encodeURIComponent(`${req.protocol}://${req.hostname}${originalUrl}`)
+      // Don't allow internal hostname ([qa-]discovery.nypl.org) to be used in redirect:
+      .replace('discovery.nypl.org', 'www.nypl.org');
     redirect = `${appConfig.loginUrl}?redirect_uri=${fullUrl}`;
     if (!req.originalUrl.includes('/api/')) {
       res.redirect(redirect);
