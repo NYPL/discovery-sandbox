@@ -8,7 +8,6 @@ import ReactDOM from 'react-dom';
 import { Router, browserHistory, applyRouterMiddleware } from 'react-router';
 import a11y from 'react-a11y';
 import { Provider } from 'react-redux';
-import useScroll from 'react-router-scroll/lib/useScroll';
 
 import store from '../app/stores/Store';
 import './styles/main.scss';
@@ -30,7 +29,7 @@ window.onload = () => {
       <Provider store={store}>
         <Router
           history={browserHistory}
-          render={applyRouterMiddleware(useScroll())}
+          render={applyRouterMiddleware()}
         >
           {routes.client}
         </Router>

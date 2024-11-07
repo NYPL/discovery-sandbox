@@ -3,9 +3,10 @@ import express from 'express';
 import compress from 'compression';
 import DocumentTitle from 'react-document-title';
 import { match } from 'react-router';
-import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import webpack from 'webpack';
+import WebpackDevMiddleware from 'webpack-dev-middleware';
 
 import appConfig from './src/app/data/appConfig';
 import webpackConfig from './webpack.config';
@@ -22,17 +23,23 @@ import { updateLoadingStatus } from './src/app/actions/Actions';
 import initializeReduxReact from './src';
 import { nyTimezoneOffsets } from './src/app/utils/nyTimezoneOffsets';
 
+const compiler = webpack(webpackConfig);
 const ROOT_PATH = __dirname;
 const INDEX_PATH = path.resolve(ROOT_PATH, 'src/client');
 const DIST_PATH = path.resolve(ROOT_PATH, 'dist');
 const VIEWS_PATH = path.resolve(ROOT_PATH, 'src/views');
-const WEBPACK_DEV_PORT = appConfig.webpackDevServerPort || 3000;
 const NYPL_HEADER_URL = appConfig.nyplHeaderUrl;
 const isProduction = process.env.NODE_ENV === 'production';
 const isTest = process.env.NODE_ENV === 'test';
 const app = express();
 
 app.use(compress());
+
+if (!isProduction) {
+  app.use(WebpackDevMiddleware(compiler, {
+    publicPath: webpackConfig.output.publicPath,
+  }));
+}
 
 // Disables the Server response from
 // displaying Express as the server engine
@@ -131,7 +138,6 @@ app.get('/*', (req, res) => {
           appData: JSON.stringify(store.getState()).replace(/</g, '\\u003c'),
           appTitle: title,
           favicon: appConfig.favIconPath,
-          webpackPort: WEBPACK_DEV_PORT,
           nyplHeaderUrl: NYPL_HEADER_URL,
           path: req.url,
           isProduction,
@@ -179,32 +185,5 @@ const gracefulShutdown = () => {
 process.on('SIGTERM', gracefulShutdown);
 // listen for INT signal e.g. Ctrl-C
 process.on('SIGINT', gracefulShutdown);
-
-/* Development Environment Configuration
- * -------------------------------------
- * - Using Webpack Dev Server
- */
-if (!isProduction && !isTest) {
-  const WebpackDevServer = require('webpack-dev-server');
-
-  new WebpackDevServer(webpack(webpackConfig), {
-    disableHostCheck: true,
-    publicPath: webpackConfig.output.publicPath,
-    hot: true,
-    historyApiFallback: true,
-    headers: {
-      'Access-Control-Allow-Origin': 'http://localhost:3001',
-      'Access-Control-Allow-Headers': 'X-Requested-With',
-    },
-  }).listen(WEBPACK_DEV_PORT, 'localhost', (error) => {
-    if (error) {
-      logger.error(error);
-    }
-
-    logger.info(
-      `Webpack Dev Server listening at localhost: ${WEBPACK_DEV_PORT}.`,
-    );
-  });
-}
 
 module.exports = app;

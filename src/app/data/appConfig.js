@@ -4,14 +4,13 @@ import mapLocations from '../utils/mapLocations';
 const appConfig = {
   appTitle: 'NYPL | Discovery',
   appName: 'discovery',
-  displayTitle: process.env.DISPLAY_TITLE || 'Shared Collection Catalog',
+  displayTitle: process.env.DISPLAY_TITLE || 'Research Catalog',
   baseUrl:
     process.env.BASE_URL || '/research/research-catalog',
-  redirectFromBaseUrl: process.env.REDIRECT_FROM_BASE_URL,
-  legacyBaseUrl: process.env.LEGACY_BASE_URL,
+  redirectFromBaseUrl: process.env.REDIRECT_FROM_BASE_URL || '/research/collections/shared-collection-catalog',
+  legacyBaseUrl: process.env.LEGACY_BASE_URL || 'https://legacycatalog.nypl.org',
   favIconPath: 'https://ux-static.nypl.org/images/favicon.ico',
   port: 3001,
-  webpackDevServerPort: 3000,
   environment: process.env.APP_ENV || 'production',
   api: {
     platform: {
@@ -43,7 +42,7 @@ const appConfig = {
         'https://digital-research-books-api.nypl.org/v3/sfr/search',
     },
   },
-  circulatingCatalog: process.env.CIRCULATING_CATALOG,
+  circulatingCatalog: process.env.CIRCULATING_CATALOG || 'https://borrow.nypl.org',
   shepApi: process.env.SHEP_API,
   loginUrl: process.env.LOGIN_URL || 'https://login.nypl.org/auth/login',
   logoutUrl: process.env.LOGIN_BASE_URL ? process.env.LOGIN_BASE_URL + '/logout' : 'https://login.nypl.org/auth/logout',
@@ -98,7 +97,8 @@ const appConfig = {
   nyplHeaderUrl: process.env.NYPL_HEADER_URL || 'https://qa-ds-header.nypl.org',
   launchEmbedUrl: process.env.LAUNCH_EMBED_URL || '',
   sierraUpgradeAugust2023: process.env.SIERRA_UPGRADE_AUG_2023 === 'true',
-  reverseProxyEnabled: process.env.REVERSE_PROXY_ENABLED === 'true'
+  // Hardcoded for now, but should be configurable in the future
+  reverseProxyEnabled: true, //process.env.REVERSE_PROXY_ENABLED === 'true'
 };
 
 export default appConfig;

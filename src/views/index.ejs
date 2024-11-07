@@ -41,6 +41,8 @@
     <% if (isProduction) { %>
     	<!-- Minified Styles -->
     	<link rel="stylesheet" type="text/css" href="<%- baseUrl %>/styles.css">
+    <% } else { %>
+      <link rel="stylesheet" type="text/css" href="/styles.css">
     <% } %>
 
     <!--min height on header container to avoid jump on page load-->
@@ -72,7 +74,7 @@
     <% if (isProduction) { %>
       <script async src="<%- baseUrl %>/bundle.js"></script>
     <% } else { %>
-      <script src="http://localhost:<%- webpackPort %>/bundle.js"></script>
+      <script src="http://localhost:3001/bundle.js"></script>
     <% } %>
 
     <!-- OptinMonster -->

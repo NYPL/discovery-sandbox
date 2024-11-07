@@ -1,14 +1,13 @@
 require('dotenv').config({ path: 'test.env' });
-
+require('@babel/register')();
 require('mock-local-storage');
+
 global.window = {};
 
 const enzyme = require('enzyme');
 const Adapter = require('enzyme-adapter-react-16');
 
 enzyme.configure({ adapter: new Adapter() });
-
-require('@babel/register')();
 
 const jsdom = require('jsdom').jsdom;
 
@@ -17,6 +16,13 @@ const exposedProperties = ['window', 'navigator', 'document'];
 global.document = jsdom('');
 const { document } = global;
 global.window = document.defaultView;
+
+window.requestAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};
+window.cancelAnimationFrame = function(callback) {
+  setTimeout(callback, 0);
+};
 
 Object.keys(document.defaultView).forEach((property) => {
   if (typeof global[property] === 'undefined') {
