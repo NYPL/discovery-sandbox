@@ -96,7 +96,7 @@ jobs:
           aws ecs update-service --cluster discovery-ui-edd --service discovery-ui-edd --force-new-deployment
   publish_production:
     # needs: test
-    if: github.ref == 'refs/heads/TGR-50/remediation-update'
+    if: github.ref == 'refs/heads/production'
     name: Publish image to ECR and update ECS stack
     runs-on: ubuntu-latest
     permissions:
