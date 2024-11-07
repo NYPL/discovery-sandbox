@@ -40,6 +40,8 @@ export class Application extends React.Component {
   }
 
   componentDidMount () {
+    console.log("App: v1.9.0");
+
     window.addEventListener('resize', this.onWindowResize.bind(this));
     this.onWindowResize();
     const { router } = this.context;

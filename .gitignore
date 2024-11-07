@@ -16,11 +16,6 @@ log/*.log
 # Local env:
 .env
 
-# Elastic Beanstalk Files
-.elasticbeanstalk/*
-!.elasticbeanstalk/*.cfg.yml
-!.elasticbeanstalk/*.global.yml
-
 #Files with names of missing fields
 
 # VS code Configuration Files

@@ -5,8 +5,7 @@ import { expect } from 'chai';
 import { shallow } from 'enzyme';
 import { stub } from 'sinon';
 
-import WrappedApplication, { Application } from '@Application';
-import { Header, navConfig } from '@nypl/dgx-header-component';
+import { Application } from '@Application';
 import { mockRouterContext } from '../helpers/routing';
 import { breakpoints } from '../../src/app/data/constants';
 

@@ -74,7 +74,7 @@ const bibsAjax = (req, res) => {
         bibsSource: 'discoveryApi',
       });
     }
-
+    
     return shepApiBibsCall();
   };
 

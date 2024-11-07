@@ -23,7 +23,7 @@ const kmsClientHelper = (options) => {
 
     decryptKMS = (key) => {
       const params = {
-        CiphertextBlob: new Buffer(key, 'base64'),
+        CiphertextBlob: Buffer.from(key, 'base64'),
       };
 
       return new Promise((resolve, reject) => {

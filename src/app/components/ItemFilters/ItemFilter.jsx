@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Button, Checkbox, Icon } from '@nypl/design-system-react-components';
-import FocusTrap from 'focus-trap-react';
 
 import { getLabelsForValues, isOptionSelected } from './itemFilterUtils';
 
@@ -122,17 +121,7 @@ const ItemFilter = ({
   const open = mobile ? mobileIsOpen : isOpen;
 
   return (
-    <FocusTrap
-      focusTrapOptions={{
-        clickOutsideDeactivates: true,
-        onDeactivate: () => {
-          if (!mobile) manageFilterDisplay('none');
-        },
-        returnFocusOnDeactivate: false,
-      }}
-      active={isOpen}
-      className="item-filter"
-    >
+    <div className="item-filter">
       <Button
         buttonType="secondary"
         className={`item-filter-button ${open ? ' open' : ''}`}
@@ -186,7 +175,7 @@ const ItemFilter = ({
           }
         </div>
       ) : null}
-    </FocusTrap>
+    </div>
   );
 };
 

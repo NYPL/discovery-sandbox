@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import FocusTrap from 'focus-trap-react';
 
 const LoadingLayer = ({ loading, title, focus }) => {
   useEffect(() => {
@@ -16,36 +15,26 @@ const LoadingLayer = ({ loading, title, focus }) => {
 
 
   return (
-    <FocusTrap
-      focusTrapOptions={{
-        onDeactivate: () => {
-          if (focus) {
-            focus();
-          }
-        },
-      }}
+    <div
+      className="loadingLayer focus-trap"
+      aria-labelledby="loading-animation"
+      aria-describedby="loading-description"
+      role="alert"
+      tabIndex="0"
     >
-      <div
-        className="loadingLayer focus-trap"
-        aria-labelledby="loading-animation"
-        aria-describedby="loading-description"
-        role="alert"
-        tabIndex="0"
-      >
-        <div className="loadingLayer-layer" />
-        <div className="loadingLayer-texts">
-          <span id="loading-animation" className="loadingLayer-texts-loadingWord">
-            Loading...
-          </span>
-          <div className="loadingDots">
-            <span />
-            <span />
-            <span />
-            <span />
-          </div>
+      <div className="loadingLayer-layer" />
+      <div className="loadingLayer-texts">
+        <span id="loading-animation" className="loadingLayer-texts-loadingWord">
+          Loading...
+        </span>
+        <div className="loadingDots">
+          <span />
+          <span />
+          <span />
+          <span />
         </div>
       </div>
-    </FocusTrap>
+    </div>
   );
 };
 
