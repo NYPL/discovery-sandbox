@@ -1,16 +1,15 @@
 const path = require('path');
 const webpack = require('webpack');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const appEnv = process.env.APP_ENV ? process.env.APP_ENV : 'production';
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     bundle: path.resolve(__dirname, 'src/client/App.jsx'),
   },
   resolve: {
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx', '.scss', '.png'],
   },
   output: {
     filename: '[name].js',
@@ -18,16 +17,28 @@ module.exports = {
     clean: true,
     publicPath: '/',
   },
+  devtool: 'inline-source-map',
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    port: 3001,
+    open: true,
+    hot: true,
+    compress: true,
+    historyApiFallback: true,
+  },
   module: {
     rules: [
       {
         test: /\.(png|jpe?g|gif)$/i,
-        include: path.resolve(__dirname, 'src'),
         use: [
           {
             loader: 'file-loader',
           },
         ],
+        include: path.resolve(__dirname, 'src'),
+        exclude: /node_modules/,
       },
       {
         test: /\.jsx?$/,
@@ -35,18 +46,14 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            presets: [
-              '@babel/preset-env',
-              '@babel/preset-react',
-            ],
+            presets: ['@babel/preset-env', '@babel/preset-react'],
           },
         },
       },
       {
-        test: /\.scss$/,
-        include: path.resolve(__dirname, 'src'),
+        test: /\.scss?$/,
         use: [
-          MiniCssExtractPlugin.loader,
+          'style-loader',
           'css-loader',
           'sass-loader',
         ],
@@ -54,9 +61,6 @@ module.exports = {
     ],
   },
   plugins: [
-    new MiniCssExtractPlugin({
-      filename: 'styles.css',
-    }),
     new webpack.DefinePlugin({
       loadA11y: process.env.loadA11y || false,
       appEnv: JSON.stringify(appEnv),
@@ -82,7 +86,6 @@ module.exports = {
         SHEP_BIBS_LIMIT: JSON.stringify(process.env.SHEP_BIBS_LIMIT),
         LAUNCH_EMBED_URL: JSON.stringify(process.env.LAUNCH_EMBED_URL),
         REVERSE_PROXY_ENABLED: JSON.stringify(process.env.REVERSE_PROXY_ENABLED),
-        NODE_ENV: JSON.stringify('production'),
         SIERRA_UPGRADE_AUG_2023: JSON.stringify(process.env.SIERRA_UPGRADE_AUG_2023)
       },
     }),

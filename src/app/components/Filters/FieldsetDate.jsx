@@ -1,7 +1,7 @@
 import { Heading } from '@nypl/design-system-react-components';
 import React from 'react';
 import PropTypes from 'prop-types';
-import NumberFormat from 'react-number-format';
+import { NumericFormat } from 'react-number-format';
 
 class FieldsetDate extends React.Component {
   constructor(props) {
@@ -58,7 +58,7 @@ class FieldsetDate extends React.Component {
         <legend><Heading level="three">Date</Heading></legend>
         <div id="input-container" className={`nypl-name-field nypl-filter-date-field ${errorClass}`}>
           <label htmlFor="dateAfter" id="dateAfter-label">Start Year
-            <NumberFormat
+            <NumericFormat
               id="dateAfter"
               name="dateAfter"
               className="form-text"
@@ -71,7 +71,7 @@ class FieldsetDate extends React.Component {
           </label>
           <span className="date-divider">to</span>
           <label htmlFor="dateBefore" id="dateBefore-label">End Year
-            <NumberFormat
+            <NumericFormat
               id="dateBefore"
               name="dateBefore"
               className="form-text"

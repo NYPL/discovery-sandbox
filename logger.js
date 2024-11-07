@@ -1,6 +1,17 @@
-import winston from 'winston';
-// Supress error handling
-winston.emitErrs = false;
+/* eslint-disable new-cap */
+import {
+  createLogger,
+  transports,
+  format,
+} from 'winston';
+
+const {
+  combine,
+  timestamp,
+  printf,
+  colorize,
+} = format;
+
 // Set default NYPL agreed upon log levels
 const nyplLogLevels = {
   levels: {
@@ -38,11 +49,9 @@ const getLogLevelCode = (levelString) => {
   }
 };
 
-// const logLevel = (process.env.NODE_ENV === 'production') ? 'info' : 'debug';
-const timestamp = () => new Date().toISOString();
-const formatter = (options) => {
+const formatter = printf((options) => {
   const result = {
-    timestamp: options.timestamp(),
+    timestamp: options.timestamp,
     levelCode: getLogLevelCode(options.level),
     level: options.level.toUpperCase(),
   };
@@ -67,10 +76,10 @@ const formatter = (options) => {
   }
 
   return JSON.stringify(result);
-};
+});
 
 const loggerTransports = [
-  new winston.transports.File({
+  new transports.File({
     filename: './log/discovery-ui.log',
     // winston should not attempt to catch and log uncaught exceptions when
     // running test suite, as that causes them to be hidden (and causes mocha
@@ -80,26 +89,30 @@ const loggerTransports = [
     maxFiles: 5,
     colorize: false,
     json: false,
-    timestamp,
-    formatter,
+    format: combine(
+      timestamp(),
+      formatter,
+    ),
   }),
 ];
 
 // spewing logs while running tests is annoying
 if (process.env.NODE_ENV !== 'test') {
   loggerTransports.push(
-    new winston.transports.Console({
+    new transports.Console({
       handleExceptions: true,
-      json: false,
-      stringify: true,
-      colorize: true,
-      timestamp,
-      formatter,
+      format: combine(
+        timestamp(),
+        formatter,
+        colorize({
+          all: true,
+        }),
+      ),
     }),
   );
 }
 
-const logger = new winston.Logger({
+const logger = new createLogger({
   levels: nyplLogLevels.levels,
   transports: loggerTransports,
   exitOnError: false,

@@ -1,5 +1,36 @@
 ## CHANGE LOG
 
+### 1.9.0
+
+Remediation Project Update
+
+### Adds
+
+- Adds `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` as example env vars needed in `.env-sample`. They are required for building Docker images.
+- Adds `Dockerfile` and instructions on how to use it locally.
+- Adds the following npm packages:
+  `sass`, `webpack-dev-middleware`
+
+### Updates
+
+- Updates `.nvmrc` to use Node 20.
+- Updates the logger file.
+- Updates npm scripts to be more conventional with `build` and `dev`.
+- Updates how the webpack dev server is implemented.
+- Updates how the `react-number-format` package is used in the `FieldsetDate` component.
+- Updates implementation of the `focus-trap-react` package.
+- Updates node's Buffer implementation for KMS package usage.
+- Updates the following npm packages:
+  `@babel/preset-env`, `@babel/preset-react`, `@babel/preset-register`, `@nypl/nypl-core-objects`, `@nypl/nypl-data-api-client`, `@typescript-eslint/eslint-plugin`, `axios`, `babel-plugin-module-resolver`, `body-parser`, `chai`, `clean-webpack-plugin`, `compression`, `cookie-parser`, `cross-env`, `css-loader`, `doctoc`, `dotenv`, `ejs`, `enzyme-adapter-react-16`, `eslint`, `eslint-config-airbnb`, `eslint-config-prettier`, `eslint-plugin-import`, `eslint-plugin-jsx-a11y`, `eslint-plugin-prettier`, `eslint-plugin-react`, `eslint-plugin-react-hooks`, `express`, `file-loader`, `focus-trap-react`, `jsonwebtoken`, `mini-css-extract-plugin`, `mocha`, `mock-local-storage`, `nock`, `react`, `react-autosuggest`, `react-dom`, `react-number-format`, `react-redux`, `redux`, `redux-thunk`, `prettier`, `sass-loader`, `sinon`, `sinon-chai`, `style-loader`, `supertest`, `typescript`, `webpack`, `webpack-cli`, `winston`, `underscore`, `url-parse`, `validator`
+
+### Removals
+
+- Removes the `.ebextensions` folder since this repos should no longer deploy to ElasticBeanstalk.
+- Removes the `.travis.yml` file to not use Travis CI.
+- Removes the `Procfile` since this we don't use Heroku.
+- Removes the following npm packages:
+  `@babel/core`, `@babel/polyfill`, `@nypl/dgx-header-component`, `@nypl/dgx-react-footer`, `@typescript-eslint/parser`, `node-sass`, `node-sass-glob-importer`, `react-router-scroll`, `webpack-bundle-analyzer`, `webpack-dev-server`, `webpack-merge`
+
 ### 1.8.2
 
 ### Updates

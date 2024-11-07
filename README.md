@@ -2,13 +2,11 @@
 
 # NYPL Discovery Application
 
-## The [NYPL](https://www.nypl.org/) [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
+## The NYPL [Research Catalog](https://www.nypl.org/research/research-catalog/) (formerly Shared Collection Catalog)
 
 For searching, discovering and placing a hold on research items from NYPL and ReCAP partners. Leverages data from our [Discovery API](https://github.com/NYPL-discovery/registry-api).
 
 [![GitHub package.json version](https://img.shields.io/github/package-json/v/nypl/discovery-front-end?style=flat-square)](https://github.com/NYPL/discovery-front-end)
-[![Travis (.com)](https://img.shields.io/travis/com/nypl/discovery-front-end?style=flat-square&label=Dev)](https://app.travis-ci.com/NYPL/discovery-front-end)
-[![Travis (.com) branch](https://img.shields.io/travis/com/nypl/discovery-front-end/production?style=flat-square&label=Pro)](https://app.travis-ci.com/NYPL/discovery-front-end)
 
 [![forthebadge](http://forthebadge.com/images/badges/built-with-love.svg)](https://nypl.org)
 
@@ -45,7 +43,6 @@ For searching, discovering and placing a hold on research items from NYPL and Re
   - [eslint-plugin-jsx-a11y](#eslint-plugin-jsx-a11y)
   - [react-a11y](#react-a11y)
 - [Deployment](#deployment)
-  - [Elastic Beanstalk](#elastic-beanstalk)
 - [Feedback Form](#feedback-form)
 - [Alarm and Monitoring with AWS CloudWatch](#alarm-and-monitoring-with-aws-cloudwatch)
 - [Adding Locations](#adding-locations)
@@ -57,31 +54,20 @@ For searching, discovering and placing a hold on research items from NYPL and Re
 
 ### Node Runtime
 
-```
-Version 10.17.0
-```
-
-#### NVM
-
-Best practices (though not required) suggest using Node Version Manger (nvm) to aid in managing which Node runtime to use during development. Through nvm, you can quickly migrate between different node versions for base development and/or testing purposes. Depending on your OS (\*Nix vs Windows) installation of a nvm varies.
-
-Relevant packages can be found here:
-
-- [NVM for Windows](https://github.com/coreybutler/nvm-windows)
-- [NVM for Mac](https://github.com/nvm-sh/nvm)
+Version 20. If using `nvm`, run `nvm use` to pick up the version configured in the `.nvmrc` file.
 
 ### Installation
 
-To install packages, in the repo directory run:
+To install packages, in the repo directory run the following command. Because of node version and npm package version issues, the `--force` flag is needed to override any conflicts.
 
 ```bash
-$ npm install
+$ npm install --force
 ```
 
 or
 
 ```bash
-$ npm i
+$ npm i --force
 ```
 
 #### Note: Pre and Post Installation
@@ -94,7 +80,7 @@ There are a few consideration to be aware of when spinning up a local developmen
 
 #### Node
 
-Ensure you are running the proper [node version](#node-runtime). If misconfigured, there will be issues with webpack building the project due to how **_`sass`_** is configured.
+Ensure you are running the proper [node version](#node-runtime). This app should run on node v20. If using `nvm`, run `nvm use` to use the app's node version set in the `.nvmrc` file.
 
 #### Environment Variables
 
@@ -104,9 +90,7 @@ See [ENVIRONMENTVARS](ENVIRONMENTVARS.md) for futher information on all environm
 
 #### VPN
 
-Data is fetched via two APIs: Platform and Shep. For Shep to perform correctly, Cisco's AnyConnect must be installed and connected. Fetching data for the `Subject Heading Explorer` and to perform an effective search in the `research catalog` you must connect to Cisco AnyConnect VPN.
-
-**To set up Cisco AnyConnect contact a coworker.**
+Data is fetched via two APIs: Platform and `Subject Heading Explorer` (SHEP). For SHEP to perform correctly, OpenVPN Connect must be installed and connected. Contact DevOps if you need VPN access.
 
 #### Authentication
 
@@ -126,15 +110,17 @@ Add this to your `etc/hosts` file. There is no need to remove or update any othe
 	127.0.0.1       local.nypl.org
 ```
 
+You can then view the site locally for testing on `http://local.nypl.org:3001/research/research-catalog/`
+
 ### Development
 
 To run a local instance of the Discovery Front End application using configurations from `.env`, run:
 
 ```bash
-$ npm start
+$ npm run dev
 ```
 
-Visit `localhost:3001` to see the web app locally. If login authentication is needed, visit `local.nypl.org:3001` (configured in the previous [Authentication](#authentication) section).
+Visit `localhost:3001/research/research-catalog/` to see the web app locally. If login authentication is needed, visit `local.nypl.org:3001/research/research-catalog/` (configured in the previous [Authentication](#authentication) section).
 
 #### Different API environments
 
@@ -154,21 +140,20 @@ By default, the app runs with `NODE_ENV=development`, which means a separate ser
 
 To run the app locally in production mode you need to run two commands:
 
-- `npm run dist`: This builds the assets.
+- `npm run build`: This builds the assets.
 - `source .env; npm run prod-start`: Start servers using production API & serve prebundled assets.
 
 Visit `localhost:3001` to see the web app locally.
 
 ## Technology
 
-- Universal React
+- React
 - Redux
 - Webpack 4 & Webpack Dev Server
 - ES6 and Babel
 - ESLint with [Airbnb's config](https://github.com/airbnb/javascript/tree/master/packages/eslint-config-airbnb)
 - Unit Testing with [Mocha](https://mochajs.org/) and [Enzyme](http://airbnb.io/enzyme/)
 - Express Server
-- [Travis](https://travis-ci.org/)
 - [Prettier](https://prettier.io/docs/en/index.html)
 
 ## Tools
@@ -195,30 +180,21 @@ This app has an unusual Git Workflow / deployment scheme:
 
 - Cut feature branches off of the `development` branch
 - Post a PR targeting `development`
-- After an approved PR to `development`, tag your feature branch\* `qa-deployment-{YYYY}-{MM}-{DD}` to deploy to QA
-  - Alternatively, use `qa2-` as a tag prefix to deploy the change to ["edd-training"](https://discoveryui-edd-training.nypl.org/), our "QA2" server. This may be preferable when QA is locked up with another review and/or when you're seeking feedback on a feature while it's in active development.
-- Only after feature branch is approved in QA, merge to `development`
-- Merge `development` into `production` to deploy to production
+- Merge `development` into `qa` to deploy to QA
+- Merge `qa` into `train` to deploy to the Training site
+- Merge `qa` into `production` to deploy to production
 
 There are a couple of scenarios that complicate the above workflow:
 
-1. Sometimes, feature branches do not require QA, for instance changes to the README. In this case, it is OK to merge into `development` and `production` without a QA tag, but this should only be done in cases where no QA is necessary. Ideally we never QA work that is already merged to `development`.
-
-2. Sometimes, feature branches may be bundled together into a release branch. In this case, the release may be tagged for QA, and upon passing QA merged into `development`. The other branches can then be deleted. Ideally, anything merged to `development` should have been on QA exactly as it is at the time of merge.
-
 ## Webpack Bundle Analyzer
 
-We're using the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) to analyze what is making the bundle file so big. When starting the app locally, or when running `npm run dist`, a `report.html` file will be generated in `/dist`. View this file in the browser to see the results from `webpack-bundle-analyzer`.
+We're using the [webpack-bundle-analyzer](https://github.com/th0r/webpack-bundle-analyzer) to analyze what is making the bundle file so big. When starting the app locally, or when running `npm run build`, a `report.html` file will be generated in `/dist`. View this file in the browser to see the results from `webpack-bundle-analyzer`.
 
 ## Testing
 
 ### Unit Tests
 
 Unit tests are currently written in the [Mocha](https://mochajs.org/) testing framework. [Chai](http://chaijs.com/) is used as the assertion library and [Enzyme](http://airbnb.io/enzyme/) is used as the React testing utility.
-
-We are also integrating [Travis](https://travis-ci.org/) for better test work flow. After every push to the github repo, Travis will help us build and test the code.
-
-You can see the current build result at [here](https://travis-ci.org/NYPL/discovery-front-end).
 
 The tests can be found in the `test` folder.
 
@@ -307,16 +283,11 @@ This will output warnings in the browser's console for elements that do not meet
 
 ## Deployment
 
-We have CI/CD configured through travis for the following branches:
+We have CI/CD configured through Github Actions for the following branches:
 
-- `development` deploying to `discovery-ui-development`
-- `qa` deploying to `DiscoveryUi-10-17-qa`
-- `production` deploying to `DiscoveryUi-production`
-- `on-site-edd-development` to `DiscoveryUi-edd-training`
-
-### Elastic Beanstalk
-
-We are using AWS EB to deploy our app. Check the [deployment file](DEPLOYMENT.md) for more information.
+- `qa` deploys `qa-new-discovery.nypl.org/`
+- `train` deploys `new-discovery-training.nypl.org/`
+- `production` deploys `new-discovery.nypl.org/`
 
 ### Production Ready Checklist
 
@@ -386,3 +357,44 @@ There are variables available in the `.env` file to configure the requestable lo
 Specifying `no-onsite-edd` as a feature will ensure that the discovery api returns all onsite items as eddRequestable: false.
 Specifying `parallels` as a feature will enable interleaving of Bib fields with parallel fields.
 
+## Run Application with Dockers Container
+
+This application has been set up with Docker to ensure a controlled environment. To take advantage of this set up
+
+1. Start your Docker Desktop.
+2. Build docker container by running:
+
+```sh
+docker build --no-cache -t discovery-ui .
+```
+
+This command will build an image tagged (-t) as `discovery-ui` using the current directory. Any changes to the application will require a new tagged image to be created to view those changes. Either remove the existing image (copy the image ID to use in the `docker image rm` command) and run the same command above:
+
+```sh
+$ docker images
+
+REPOSITORY          TAG       IMAGE ID       CREATED          SIZE
+discovery-ui   latest    244d3d70e498   21 seconds ago   631MB
+
+$ docker image rm 244d3d70e498
+$ docker build -t discovery-ui  .
+```
+
+3. Start Docker using the newly created image:
+
+```sh
+docker run -d --name mycontainer -p 3001:3001 discovery-ui
+```
+
+4. Open app in browser at `http://localhost:3001`
+
+Note: When introducing code changes you will have to rebuild the container:
+
+1. Find the id of current container `docker container ls`
+2. Remove current container `docker rm -f <container-id>`
+
+To stop a Docker container, run:
+
+```sh
+$ docker stop mycontainer
+```
